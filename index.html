@@ -151,7 +151,7 @@
     <!-- Hero con Imagen en Movimiento -->
     <section class="hero-section relative flex items-center justify-center text-center px-6 pt-20">
         <div class="absolute inset-0 z-0 overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=1600" alt="Jardín Floral" class="w-full h-full object-cover hero-bg-animate">
+            <img id="hero-background" src="img/portada01.jpg" alt="Jardín Floral" class="w-full h-full object-cover hero-bg-animate">
             <div class="absolute inset-0 bg-white/40 backdrop-blur-[1px]"></div>
         </div>
         
@@ -353,16 +353,31 @@
         ];
 
         window.onload = function() {
-            const randomIdx = Math.floor(Math.random() * variations.length);
-            const choice = variations[randomIdx];
-            
-            document.getElementById('random-tagline').textContent = choice.tagline;
-            document.getElementById('random-title-top').textContent = choice.titleTop;
-            document.getElementById('random-title-bottom').textContent = choice.titleBottom;
-            document.getElementById('random-description').textContent = choice.desc;
+    const randomIdx = Math.floor(Math.random() * variations.length);
+    const choice = variations[randomIdx];
+    
+    document.getElementById('random-tagline').textContent = choice.tagline;
+    document.getElementById('random-title-top').textContent = choice.titleTop;
+    document.getElementById('random-title-bottom').textContent = choice.titleBottom;
+    document.getElementById('random-description').textContent = choice.desc;
 
-            initStock();
-        };
+    // === NUEVO: CAMBIO DE IMAGEN ALEATORIA ===
+    const imagenes = [
+        "img/portada01.jpg",
+        "img/portada02.jpg",
+        "img/portada03.jpg",
+        "img/portada04.jpg",
+        "img/portada05.jpg"
+    ];
+    
+    const heroBg = document.getElementById('hero-background');
+    if (heroBg) {
+        const indiceAleatorio = Math.floor(Math.random() * imagenes.length);
+        heroBg.src = imagenes[indiceAleatorio];
+    }
+
+    initStock();
+};
 
         function initStock() {
             let stockActual = 4;
