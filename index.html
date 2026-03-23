@@ -136,6 +136,19 @@
             background: linear-gradient(145deg, #ffffff, #f3f2ed);
             border: 1px solid #e5e3da;
         }
+        /* Hero text enhancement */
+.hero-text-glow {
+    text-shadow: 0 2px 8px rgba(0,0,0,0.15), 0 1px 2px rgba(255,255,255,0.3);
+}
+
+.hero-text-soft {
+    text-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* Overlay mejorado */
+.hero-overlay {
+    background: linear-gradient(105deg, rgba(30,30,25,0.2) 0%, rgba(255,250,240,0.4) 100%);
+}
     </style>
 </head>
 <body>
@@ -159,23 +172,23 @@
 
     <!-- Hero con Imagen en Movimiento -->
     <section class="hero-section relative flex items-center justify-center text-center px-6 pt-20">
-        <div class="absolute inset-0 z-0 overflow-hidden">
-            <img id="hero-background" src="img/portada01.jpg" alt="Jardín Floral" class="w-full h-full object-cover hero-bg-animate">
-            <div class="absolute inset-0 bg-gradient-to-br from-white/20 via-white/30 to-black/15 backdrop-blur-[2px]"></div>
-        </div>
-        
-        <div class="relative z-10 max-w-4xl">
-            <span id="random-tagline" class="inline-block mb-4 text-[#6b705c] font-bold text-[10px] uppercase tracking-[0.4em] fade-in-text">Estudio Botánico & Floral</span>
-            <h1 class="text-fluid-lg font-serif leading-[1.05] mb-6 fade-in-text">
-    <span id="random-title-top" class="text-white drop-shadow-lg">Decide regalar</span><br>
-    <span id="random-title-bottom" class="italic font-light text-[#f5efe7] drop-shadow-md">emociones.</span>
-</h1>
-<p id="random-description" class="text-sm md:text-lg font-light text-white/90 drop-shadow-md max-w-lg mx-auto mb-8 leading-relaxed fade-in-text">
-    Un ramo nunca es solo un ramo. Es un te quiero, un te recuerdo, un te acompaño.
-</p>
-            <a href="#oferta-estelar" class="bg-black text-white px-10 py-5 text-[10px] font-bold uppercase tracking-[0.2em] rounded-sm shadow-2xl hover:bg-[#6b705c] transition-all">Ver Ramo del Día</a>
-        </div>
-    </section>
+    <div class="absolute inset-0 z-0 overflow-hidden">
+        <img id="hero-background" src="img/portada01.jpg" alt="Jardín Floral" class="w-full h-full object-cover hero-bg-animate">
+        <div class="absolute inset-0 hero-overlay backdrop-blur-[1px]"></div>
+    </div>
+    
+    <div class="relative z-10 max-w-4xl">
+        <span id="random-tagline" class="inline-block mb-4 text-white/90 font-bold text-[10px] uppercase tracking-[0.4em] fade-in-text hero-text-soft">Dilo con Flores</span>
+        <h1 class="text-fluid-lg font-serif leading-[1.05] mb-6 fade-in-text hero-text-glow">
+            <span id="random-title-top" class="text-white">Decide regalar</span><br>
+            <span id="random-title-bottom" class="italic font-light text-[#f5efe0]">emociones.</span>
+        </h1>
+        <p id="random-description" class="text-sm md:text-lg font-light text-white/95 max-w-lg mx-auto mb-8 leading-relaxed fade-in-text hero-text-soft">
+            Un ramo nunca es solo un ramo. Es un te quiero, un te recuerdo, un te acompaño.
+        </p>
+        <a href="#oferta-estelar" class="bg-black text-white px-10 py-5 text-[10px] font-bold uppercase tracking-[0.2em] rounded-sm shadow-2xl hover:bg-[#6b705c] transition-all">Ver Ramo del Día</a>
+    </div>
+</section>
 
     <!-- OFERTA ESTELAR: EL RAMO DEL DÍA -->
     <section id="oferta-estelar" class="py-24 px-6 bg-white">
