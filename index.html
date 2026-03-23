@@ -264,52 +264,52 @@
     </section>
 
     <!-- SECCIÓN TALLER -->
-    <section class="py-24 px-6 bg-[#f8f7f2]">
-        <div class="max-w-7xl mx-auto">
-            <div class="mb-16 text-center md:text-left">
-                <span class="text-[#6b705c] font-bold text-[10px] uppercase tracking-[0.5em]">La Galería del Taller</span>
-                <h2 class="font-serif text-4xl md:text-5xl italic mt-3">Recién Salidos del Jardín</h2>
-                <div class="w-20 h-[1px] bg-[#6b705c] mt-6 mx-auto md:mx-0"></div>
-            </div>
+<section class="py-24 px-6 bg-[#f8f7f2]">
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-16 text-center md:text-left">
+            <span class="text-[#6b705c] font-bold text-[10px] uppercase tracking-[0.5em]">La Galería del Taller</span>
+            <h2 class="font-serif text-4xl md:text-5xl italic mt-3">Recién Salidos del Jardín</h2>
+            <div class="w-20 h-[1px] bg-[#6b705c] mt-6 mx-auto md:mx-0"></div>
+        </div>
 
-            <div class="product-grid">
-                <script>
-                    const ramosGarden = [
-                        { nombre: "Pradera Silvestre", precio: "$28.000", img: "https://images.unsplash.com/photo-1527061011665-3652c757a4d4" },
-                        { nombre: "Jardín de Invierno", precio: "$34.500", img: "https://images.unsplash.com/photo-1464226184884-fa280b87c399" },
-                        { nombre: "Amanecer Botánico", precio: "$22.900", img: "https://images.unsplash.com/photo-1596003903067-bf0942abc29f" },
-                        { nombre: "Rosas de la Selva", precio: "$41.000", img: "https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11" },
-                        { nombre: "Brisa del Maipo", precio: "$29.000", img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946" },
-                        { nombre: "Canto de Pájaro", precio: "$25.500", img: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2" },
-                        { nombre: "Luz de Atardecer", precio: "$39.000", img: "https://images.unsplash.com/photo-1533616688419-b7a585564566" },
-                        { nombre: "Sinfonía Blanca", precio: "$26.500", img: "https://images.unsplash.com/photo-1523694559145-8012d7139366" },
-                        { nombre: "Fuego Interior", precio: "$44.000", img: "https://images.unsplash.com/photo-1548841151-61010336261c" },
-                        { nombre: "Mistral", precio: "$31.900", img: "https://images.unsplash.com/photo-1519370334115-22624cf3d1ce" },
-                        { nombre: "Oro Vegetal", precio: "$37.000", img: "https://images.unsplash.com/photo-1494336021217-0635da07da45" },
-                        { nombre: "Tierra Adorada", precio: "$32.500", img: "https://images.unsplash.com/photo-1525263235872-796ac241cba9" }
-                    ];
+        <div class="product-grid">
+            <script>
+                const ramosGarden = [
+                    { nombre: "Pradera Silvestre", precio: "$28.000", img: "RAMOS01.jpeg" },
+                    { nombre: "Jardín de Invierno", precio: "$34.500", img: "RAMOS02.jpeg" },
+                    { nombre: "Amanecer Botánico", precio: "$22.900", img: "RAMOS03.jpeg" },
+                    { nombre: "Rosas de la Selva", precio: "$41.000", img: "RAMOS04.jpeg" },
+                    { nombre: "Brisa del Maipo", precio: "$29.000", img: "RAMOS05.jpeg" },
+                    { nombre: "Canto de Pájaro", precio: "$25.500", img: "RAMOS06.jpeg" },
+                    { nombre: "Luz de Atardecer", precio: "$39.000", img: "RAMOS07.jpeg" },
+                    { nombre: "Sinfonía Blanca", precio: "$26.500", img: "RAMOS08.jpeg" },
+                    { nombre: "Fuego Interior", precio: "$44.000", img: "RAMOS09.jpeg" },
+                    { nombre: "Mistral", precio: "$31.900", img: "RAMOS10.jpeg" },
+                    { nombre: "Oro Vegetal", precio: "$37.000", img: "RAMOS11.jpeg" },
+                    { nombre: "Tierra Adorada", precio: "$32.500", img: "RAMOS12.jpeg" }
+                ];
 
-                    document.write(ramosGarden.map(r => `
-                        <div class="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500">
-                            <div class="aspect-[4/5] overflow-hidden relative">
-                                <img src="${r.img}?w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="${r.nombre}">
-                                <div class="absolute top-4 right-4">
-                                    <div class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[9px] font-bold text-[#6b705c] shadow-sm uppercase">Recién Vendido</div>
-                                </div>
-                            </div>
-                            <div class="p-6 md:p-8 text-center">
-                                <h3 class="font-serif text-xl italic mb-1 text-gray-800">${r.nombre}</h3>
-                                <p class="text-sm font-medium text-gray-400 mb-6">${r.precio}</p>
-                                <a href="https://wa.me/56912345678?text=Hola%20La%20Foresta%20Garden!%20Me%20encantó%20el%20ramo%20'${encodeURIComponent(r.nombre)}'%20¿Se%20puede%20hacer%20uno%20similar?" class="inline-block w-full py-3.5 border border-gray-100 text-gray-800 text-[9px] font-bold uppercase tracking-widest rounded-xl hover:bg-[#6b705c] hover:text-white hover:border-[#6b705c] transition-all">
-                                    Quiero este
-                                </a>
+                document.write(ramosGarden.map(r => `
+                    <div class="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500">
+                        <div class="aspect-[4/5] overflow-hidden relative">
+                            <img src="${r.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="${r.nombre}">
+                            <div class="absolute top-4 right-4">
+                                <div class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[9px] font-bold text-[#6b705c] shadow-sm uppercase">Recién Vendido</div>
                             </div>
                         </div>
-                    `).join(''));
-                </script>
-            </div>
+                        <div class="p-6 md:p-8 text-center">
+                            <h3 class="font-serif text-xl italic mb-1 text-gray-800">${r.nombre}</h3>
+                            <p class="text-sm font-medium text-gray-400 mb-6">${r.precio}</p>
+                            <a href="https://wa.me/56912345678?text=Hola%20La%20Foresta%20Garden!%20Me%20encantó%20el%20ramo%20'${encodeURIComponent(r.nombre)}'%20¿Se%20puede%20hacer%20uno%20similar?" class="inline-block w-full py-3.5 border border-gray-100 text-gray-800 text-[9px] font-bold uppercase tracking-widest rounded-xl hover:bg-[#6b705c] hover:text-white hover:border-[#6b705c] transition-all">
+                                Quiero este
+                            </a>
+                        </div>
+                    </div>
+                `).join(''));
+            </script>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Footer -->
     <footer class="bg-[#1a1c17] text-white py-20 px-6 text-center">
