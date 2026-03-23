@@ -75,12 +75,21 @@
             }
         }
 
-        .hero-section {
-            height: 75vh;
-            min-height: 550px;
-            overflow: hidden;
-            margin-top: 35px;
-        }
+        /* Mejora de contraste en el Hero */
+.hero-section .text-black {
+    color: #1e1e1e !important;
+    text-shadow: 0 1px 4px rgba(255,255,255,0.8);
+}
+
+.hero-section .text-gray-800 {
+    color: #2d2d2d !important;
+    text-shadow: 0 1px 3px rgba(255,255,255,0.6);
+}
+
+/* Alternativa: overlay más oscuro para mejor contraste */
+.hero-section .absolute.inset-0.bg-white\/40 {
+    background: linear-gradient(135deg, rgba(255,255,240,0.3) 0%, rgba(200,195,180,0.5) 100%);
+}
 
         .text-fluid-lg { font-size: clamp(2.2rem, 8vw, 6rem); }
 
@@ -152,18 +161,18 @@
     <section class="hero-section relative flex items-center justify-center text-center px-6 pt-20">
         <div class="absolute inset-0 z-0 overflow-hidden">
             <img id="hero-background" src="img/portada01.jpg" alt="Jardín Floral" class="w-full h-full object-cover hero-bg-animate">
-            <div class="absolute inset-0 bg-white/40 backdrop-blur-[1px]"></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-white/20 via-white/30 to-black/15 backdrop-blur-[2px]"></div>
         </div>
         
         <div class="relative z-10 max-w-4xl">
             <span id="random-tagline" class="inline-block mb-4 text-[#6b705c] font-bold text-[10px] uppercase tracking-[0.4em] fade-in-text">Estudio Botánico & Floral</span>
-            <h1 class="text-fluid-lg font-serif leading-[1.05] mb-6 text-black fade-in-text">
-                <span id="random-title-top">Lo Natural en</span><br>
-                <span id="random-title-bottom" class="italic font-light text-[#6b705c]">tu habitación.</span>
-            </h1>
-            <p id="random-description" class="text-sm md:text-lg font-light text-gray-800 max-w-lg mx-auto mb-8 leading-relaxed fade-in-text">
-                Diseños frescos creados artesanalmente.
-            </p>
+            <h1 class="text-fluid-lg font-serif leading-[1.05] mb-6 fade-in-text">
+    <span id="random-title-top" class="text-white drop-shadow-lg">Decide regalar</span><br>
+    <span id="random-title-bottom" class="italic font-light text-[#f5efe7] drop-shadow-md">emociones.</span>
+</h1>
+<p id="random-description" class="text-sm md:text-lg font-light text-white/90 drop-shadow-md max-w-lg mx-auto mb-8 leading-relaxed fade-in-text">
+    Un ramo nunca es solo un ramo. Es un te quiero, un te recuerdo, un te acompaño.
+</p>
             <a href="#oferta-estelar" class="bg-black text-white px-10 py-5 text-[10px] font-bold uppercase tracking-[0.2em] rounded-sm shadow-2xl hover:bg-[#6b705c] transition-all">Ver Ramo del Día</a>
         </div>
     </section>
