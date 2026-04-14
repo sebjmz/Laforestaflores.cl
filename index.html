@@ -292,77 +292,22 @@
 
     <!-- SECCIÓN: THE VAULT (CATÁLOGO) -->
     <section id="vault" class="bg-white py-12 border-t border-zinc-100">
-        <div class="max-w-7xl mx-auto px-6">
-            <div onclick="openVault()" class="flex justify-between items-center cursor-pointer py-10 group">
-                <h2 class="text-6xl md:text-8xl font-serif italic group-hover:text-gold-leaf transition-colors">The Vault</h2>
-                <div id="vault-plus" class="text-4xl font-light transition-transform duration-700">+</div>
-            </div>
-
-            <div id="vault-content" class="expandable-section">
-                <!-- Filtros del catálogo -->
-                <div class="flex flex-wrap gap-4 mb-16 border-b pb-8">
-                    <button class="text-[10px] font-bold uppercase tracking-widest text-gold-leaf underline underline-offset-8">Todos</button>
-                    <button class="text-[10px] font-bold uppercase tracking-widest opacity-40 hover:opacity-100 transition">Colección Signature</button>
-                    <button class="text-[10px] font-bold uppercase tracking-widest opacity-40 hover:opacity-100 transition">Ramos de Venta</button>
-                    <button class="text-[10px] font-bold uppercase tracking-widest opacity-40 hover:opacity-100 transition">Cierre Inmobiliario</button>
-                </div>
-
-                <!-- Grid de Productos -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-20 pb-20">
-                    
-                    <!-- Producto 1 -->
-                    <div class="product-card group">
-                        <div class="img-zoom-container aspect-[3/4] mb-6 relative">
-                            <img src="https://images.unsplash.com/photo-1563241527-3004b7be0fab?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0" alt="Arreglo Imperial">
-                            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest">Signature</div>
-                        </div>
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 class="font-serif text-2xl italic">Imperial Forest</h3>
-                                <p class="text-[10px] uppercase tracking-widest opacity-50">Lirios & Eucalipto Preservado</p>
-                            </div>
-                            <span class="font-serif text-xl">$145.000</span>
-                        </div>
-                        <button onclick="addToCart(1, 'Imperial Forest', 145000, 'https://images.unsplash.com/photo-1563241527-3004b7be0fab?auto=format&fit=crop&q=80&w=200')" class="w-full py-4 border border-forest-green text-[10px] font-bold uppercase tracking-widest hover:bg-forest-green hover:text-gold-leaf transition">Añadir al Atelier</button>
-                    </div>
-
-                    <!-- Producto 2 -->
-                    <div class="product-card group">
-                        <div class="img-zoom-container aspect-[3/4] mb-6 relative">
-                            <img src="https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0" alt="Arreglo Minimal">
-                            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest">Edición Limitada</div>
-                        </div>
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 class="font-serif text-2xl italic">Pacific Mist</h3>
-                                <p class="text-[10px] uppercase tracking-widest opacity-50">Hortensias & Orquídeas</p>
-                            </div>
-                            <span class="font-serif text-xl">$95.000</span>
-                        </div>
-                        <button onclick="addToCart(2, 'Pacific Mist', 95000, 'https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&q=80&w=200')" class="w-full py-4 border border-forest-green text-[10px] font-bold uppercase tracking-widest hover:bg-forest-green hover:text-gold-leaf transition">Añadir al Atelier</button>
-                    </div>
-
-                    <!-- Producto 3 -->
-                    <div class="product-card group">
-                        <div class="img-zoom-container aspect-[3/4] mb-6 relative">
-                            <img src="https://images.unsplash.com/photo-1523694559145-8010d10e63f7?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0" alt="Arreglo Inmobiliario">
-                            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest">Corporate</div>
-                        </div>
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 class="font-serif text-2xl italic">Reñaca Gold</h3>
-                                <p class="text-[10px] uppercase tracking-widest opacity-50">Rosas Heritage & Musgo</p>
-                            </div>
-                            <span class="font-serif text-xl">$75.000</span>
-                        </div>
-                        <button onclick="addToCart(3, 'Reñaca Gold', 75000, 'https://images.unsplash.com/photo-1523694559145-8010d10e63f7?auto=format&fit=crop&q=80&w=200')" class="w-full py-4 border border-forest-green text-[10px] font-bold uppercase tracking-widest hover:bg-forest-green hover:text-gold-leaf transition">Añadir al Atelier</button>
-                    </div>
-
-                </div>
-            </div>
+    <div class="max-w-7xl mx-auto px-6">
+        <div onclick="openVault()" class="flex justify-between items-center cursor-pointer py-10 group">
+            <h2 class="text-6xl md:text-8xl font-serif italic group-hover:text-gold-leaf transition-colors">The Vault</h2>
+            <div id="vault-plus" class="text-4xl font-light transition-transform duration-700">+</div>
         </div>
-    </section>
 
+        <div id="vault-content" class="expandable-section">
+            <div class="flex flex-wrap gap-4 mb-16 border-b pb-8">
+                <button class="text-[10px] font-bold uppercase tracking-widest text-gold-leaf underline underline-offset-8">Colección Completa</button>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-20 pb-20">
+                </div>
+        </div>
+    </div>
+</section>
     <!-- SECCIÓN: THE PRIVILEGE ROOM (B2B) -->
     <section id="privilege" class="b2b-portal py-32">
         <div class="max-w-7xl mx-auto px-6">
@@ -683,5 +628,45 @@ window.addEventListener('load', function() {
         }
     })();
     </script>
+    <script>
+    const catalog = [
+        { id: 1, name: "Amanecer en Reñaca", price: 85000, img: "img/RAMOS01.jpeg", desc: "Rosas Heritage & Follaje Silvestre" },
+        { id: 2, name: "Brisa del Pacífico", price: 92000, img: "img/RAMOS02.jpeg", desc: "Lirios Blancos & Eucalipto" },
+        { id: 3, name: "Jardín Secreto", price: 78000, img: "img/RAMOS03.jpeg", desc: "Mezcla de Temporada Premium" },
+        { id: 4, name: "Elegancia Imperial", price: 120000, img: "img/RAMOS04.jpeg", desc: "Orquídeas & Flores Exóticas" },
+        { id: 5, name: "Monte Mar Signature", price: 95000, img: "img/RAMOS05.jpeg", desc: "Composición Escultural" },
+        { id: 6, name: "Atardecer de Oro", price: 88000, img: "img/RAMOS06.jpeg", desc: "Tonos Cálidos & Texturas" },
+        { id: 7, name: "Sinfonía Blanca", price: 110000, img: "img/RAMOS07.jpeg", desc: "Colección Minimalista" },
+        { id: 8, name: "Bosque Nativo", price: 75000, img: "img/RAMOS08.jpeg", desc: "Verdes Profundos & Proteas" },
+        { id: 9, name: "Cierre Inmobiliario VIP", price: 145000, img: "img/RAMOS09.jpeg", desc: "Diseño de Alto Impacto" },
+        { id: 10, name: "Boutique Selection", price: 68000, img: "img/RAMOS10.jpeg", desc: "Ramo de Mano Signature" },
+        { id: 11, name: "Aroma de La Foresta", price: 82000, img: "img/RAMOS11.jpeg", desc: "Flores Aromáticas Seleccionadas" },
+        { id: 12, name: "Legado Visual", price: 130000, img: "img/RAMOS12.jpeg", desc: "Nuestra Pieza Maestra" }
+    ];
+
+    const grid = document.getElementById('product-grid');
+    
+    grid.innerHTML = catalog.map(product => `
+        <div class="product-card group">
+            <div class="img-zoom-container aspect-[3/4] mb-6 relative bg-zinc-100">
+                <img src="${product.img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="${product.name}" loading="lazy">
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest">
+                    ${product.id <= 3 ? 'Bestseller' : 'Vault'}
+                </div>
+            </div>
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h3 class="font-serif text-2xl italic">${product.name}</h3>
+                    <p class="text-[10px] uppercase tracking-widest opacity-50">${product.desc}</p>
+                </div>
+                <span class="font-serif text-xl">$${product.price.toLocaleString()}</span>
+            </div>
+            <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
+                    class="w-full py-4 border border-forest-green text-[10px] font-bold uppercase tracking-widest hover:bg-forest-green hover:text-gold-leaf transition">
+                Añadir al Atelier
+            </button>
+        </div>
+    `).join('');
+</script>
 </body>
 </html>
