@@ -476,13 +476,13 @@
     <script>
         // Función para cargar el video de fondo de forma discreta
 window.addEventListener('load', function() {
-    // ID: oSfVgn7oC_I en Base64 para discreción
-    const _vId = atob("b1NmVmduN29DX0k="); 
+    // ID: HMaN_DmpbMA en Base64 para mantener el código limpio
+    const _vId = atob("SE1hTl9EbXBiTUE="); 
     const container = document.getElementById('video-bg-layer');
     
     if (container) {
         const iframe = document.createElement('iframe');
-        // Parámetros optimizados para loop infinito y ocultar branding de YouTube
+        // Parámetros: Autoplay, Mute, Loop, y ocultar elementos de marca de YouTube
         iframe.src = `https://www.youtube.com/embed/${_vId}?autoplay=1&mute=1&loop=1&playlist=${_vId}&controls=0&showinfo=0&rel=0&enablejsapi=1&modestbranding=1&iv_load_policy=3&disablekb=1`;
         iframe.frameBorder = "0";
         iframe.allow = "autoplay; encrypted-media";
