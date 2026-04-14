@@ -121,14 +121,30 @@
 
         /* Marquee de prestigio */
         .prestige-marquee {
-            white-space: nowrap;
-            display: inline-block;
-            animation: marquee 30s linear infinite;
+        display: flex;
+        width: max-content;
+        animation: marquee-infinite 30s linear infinite;
+    }
+
+    .marquee-content {
+        display: inline-block;
+        padding-right: 0; /* Asegura que no haya gaps extra */
+    }
+
+    @keyframes marquee-infinite {
+        0% {
+            transform: translateX(0);
         }
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        100% {
+            /* Se desplaza exactamente la mitad (el primer bloque completo) */
+            transform: translateX(-50%);
         }
+    }
+
+    /* Opcional: Pausar al pasar el mouse para que sea más elegante */
+    .prestige-marquee:hover {
+        animation-play-state: paused;
+    }
 
         /* B2B Privilege Area */
         .b2b-portal {
