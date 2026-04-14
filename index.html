@@ -123,25 +123,28 @@
     .prestige-marquee {
         display: flex;
         width: max-content;
-        /* Quitamos cualquier espacio entre elementos inline-block */
-        letter-spacing: 0; 
-        word-spacing: 0;
         animation: marquee-infinite 40s linear infinite;
     }
 
     .marquee-item {
-        display: flex; /* Cambiamos a flex para control total */
-        align-items: center;
+        display: inline-block;
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-size: 1.25rem;
+        color: rgba(197, 160, 89, 0.4); /* Tu color gold-leaf con opacidad */
         white-space: nowrap;
-        padding: 0;
-        margin: 0;
-        /* Evita que el navegador añada espacios por su cuenta */
-        float: left; 
+        /* Este padding asegura que la distancia entre el final de un bloque 
+           y el inicio del siguiente sea exactamente igual a la de las frases internas */
+        padding-right: 0; 
     }
 
     @keyframes marquee-infinite {
         0% { transform: translateX(0); }
-        100% { transform: translateX(-25%); } /* Si usas 4 bloques idénticos */
+        100% { 
+            /* Como usamos 4 bloques, al llegar al final del primero (-25%) 
+               el segundo está en la posición exacta del inicio. */
+            transform: translateX(-25%); 
+        }
     }
         /* B2B Privilege Area */
         .b2b-portal {
@@ -244,7 +247,18 @@
 
     <!-- MARQUEE DE PRESTIGIO -->
     <div class="prestige-marquee flex">
-    <div class="marquee-item">Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;</div><div class="marquee-item">Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;</div><div class="marquee-item">Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;</div><div class="marquee-item">Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;</div>
+    <div class="marquee-item">
+        Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;
+    </div>
+    <div class="marquee-item">
+        Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;
+    </div>
+    <div class="marquee-item">
+        Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;
+    </div>
+    <div class="marquee-item">
+        Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;
+    </div>
 </div>
 
     <!-- MANIFIESTO / CULTURA -->
