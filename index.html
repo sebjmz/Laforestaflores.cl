@@ -120,15 +120,17 @@
         }
 
         /* Marquee de prestigio */
-        .prestige-marquee {
+    .prestige-marquee {
         display: flex;
         width: max-content;
-        animation: marquee-infinite 30s linear infinite;
+        /* Ajusta los segundos (40s) para que vaya más lento o rápido */
+        animation: marquee-infinite 40s linear infinite;
     }
 
     .marquee-content {
         display: inline-block;
-        padding-right: 0; /* Asegura que no haya gaps extra */
+        /* Añadimos un poco más de separación entre bloques para que respire */
+        padding-right: 2rem; 
     }
 
     @keyframes marquee-infinite {
@@ -136,16 +138,16 @@
             transform: translateX(0);
         }
         100% {
-            /* Se desplaza exactamente la mitad (el primer bloque completo) */
-            transform: translateX(-50%);
+            /* IMPORTANTE: Movemos solo el equivalente a un bloque (25% si son 4 bloques) */
+            /* para que el inicio del segundo bloque calce exacto con el inicio del primero */
+            transform: translateX(-25%);
         }
     }
 
-    /* Opcional: Pausar al pasar el mouse para que sea más elegante */
+    /* Pausa sutil al pasar el mouse */
     .prestige-marquee:hover {
         animation-play-state: paused;
     }
-
         /* B2B Privilege Area */
         .b2b-portal {
             background-color: var(--forest-green);
@@ -248,6 +250,12 @@
     <!-- MARQUEE DE PRESTIGIO -->
     <div class="bg-forest-green py-4 border-y border-gold-leaf/20 overflow-hidden flex">
     <div class="prestige-marquee flex whitespace-nowrap">
+        <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
+            Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;
+        </div>
+        <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
+            Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;
+        </div>
         <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
             Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;
         </div>
