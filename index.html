@@ -232,8 +232,8 @@
 </div>        <div class="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
             <h4 class="text-gold-leaf text-white md:text-sm font-bold uppercase tracking-[0.8em] mb-8 animate-pulse">No son solo flores</h4>
             <h1 class="text-white text-6xl md:text-[120px] font-serif leading-none mb-12 italic">
-                Foresta Flores <br> <span class="not-italic text-white/90">Viña del Mar, Reñaca</span>
-            </h1>
+    <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
+</h1>
             <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
                 <button onclick="openVault()" class="btn-premium">EXPLORAR CATÁLOGO</button>
                 <a href="#privilege" class="btn-gold-outline flex items-center justify-center uppercase text-xs font-bold tracking-widest">Portal Empresas</a>
@@ -651,6 +651,37 @@ window.addEventListener('load', function() {
                 nav.classList.remove('py-3');
             }
         };
+        (function() {
+        const phrases = [
+            "Lujo<br><span class='not-italic text-white/90'>Orgánico</span>",
+            "La Estética<br><span class='not-italic text-white/90'>del Silencio</span>",
+            "Naturaleza<br><span class='not-italic text-white/90'>Irreverente</span>",
+            "El Estándar<br><span class='not-italic text-white/90'>de Reñaca</span>",
+            "Diseño<br><span class='not-italic text-white/90'>Sin Límites</span>",
+            "Elegancia<br><span class='not-italic text-white/90'>Botánica</span>",
+            "Poder<br><span class='not-italic text-white/90'>Visual</span>",
+            "Simplicidad<br><span class='not-italic text-white/90'>Absoluta</span>"
+        ];
+
+        function injectPhrase() {
+            const textElement = document.getElementById('hero-dynamic-text');
+            if (textElement) {
+                const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+                textElement.innerHTML = randomPhrase;
+                
+                // Animación de entrada profesional
+                textElement.style.transition = "opacity 1.5s ease-in-out";
+                textElement.style.opacity = "1";
+            }
+        }
+
+        // Ejecuta tan pronto como el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', injectPhrase);
+        } else {
+            injectPhrase();
+        }
+    })();
     </script>
 </body>
 </html>
