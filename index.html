@@ -121,11 +121,17 @@
 
         /* Marquee de prestigio */
     .prestige-marquee {
-        display: flex;
-        width: max-content;
-        /* Ajusta los segundos (40s) para que vaya más lento o rápido */
-        animation: marquee-infinite 40s linear infinite;
-    }
+    display: flex;
+    width: max-content;
+    animation: marquee-infinite 40s linear infinite;
+}
+
+.marquee-item {
+    display: inline-block;
+    white-space: nowrap;
+    padding: 0; /* Esto elimina el error de separación */
+    margin: 0;  /* Por seguridad, eliminamos márgenes también */
+}
 
     .marquee-content {
         display: inline-block;
