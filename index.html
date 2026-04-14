@@ -37,9 +37,22 @@
             background-color: var(--deep-black);
         }
 
-        .hero-overlay {
-            background: linear-gradient(to bottom, rgba(5,5,5,0.4), rgba(5,5,5,0.1), rgba(10,31,28,0.8));
-        }
+        /* Reemplaza o ajusta esta clase en tu bloque <style> */
+.hero-overlay {
+    background: linear-gradient(
+        to bottom, 
+        rgba(5, 15, 13, 0.6) 0%,   /* Oscuro en la parte superior para el nav */
+        rgba(10, 31, 28, 0.3) 40%, /* Tinte verde bosque sutil en el medio */
+        rgba(10, 31, 28, 0.8) 100% /* Muy oscuro abajo para dar peso a la marca */
+    );
+    z-index: 10;
+}
+
+/* Efecto de sombra sutil al texto para mayor "lujo" y contraste */
+.hero-video-container h1, 
+.hero-video-container h4 {
+    text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
 
         /* Secciones Expandibles */
         .expandable-section {
@@ -463,14 +476,14 @@
     <script>
         // Función para cargar el video de fondo de forma discreta
 window.addEventListener('load', function() {
-    // ID ofuscado en Base64
-    const _vId = atob("LUFqci1LRjUyRVU="); 
+    // ID: oSfVgn7oC_I en Base64 para discreción
+    const _vId = atob("b1NmVmduN29DX0k="); 
     const container = document.getElementById('video-bg-layer');
     
     if (container) {
         const iframe = document.createElement('iframe');
-        // Parámetros para asegurar autoplay, mute y loop infinito sin controles
-        iframe.src = `https://www.youtube.com/embed/${_vId}?autoplay=1&mute=1&loop=1&playlist=${_vId}&controls=0&showinfo=0&rel=0&enablejsapi=1&modestbranding=1&iv_load_policy=3`;
+        // Parámetros optimizados para loop infinito y ocultar branding de YouTube
+        iframe.src = `https://www.youtube.com/embed/${_vId}?autoplay=1&mute=1&loop=1&playlist=${_vId}&controls=0&showinfo=0&rel=0&enablejsapi=1&modestbranding=1&iv_load_policy=3&disablekb=1`;
         iframe.frameBorder = "0";
         iframe.allow = "autoplay; encrypted-media";
         container.appendChild(iframe);
