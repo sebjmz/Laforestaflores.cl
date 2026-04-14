@@ -123,30 +123,28 @@
     .prestige-marquee {
         display: flex;
         width: max-content;
-        /* Ajusta los segundos (40s) para que vaya más lento o rápido */
         animation: marquee-infinite 40s linear infinite;
     }
 
-    .marquee-content {
+    .marquee-item {
         display: inline-block;
-        /* Añadimos un poco más de separación entre bloques para que respire */
-        padding-right: 2rem; 
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-size: 1.25rem;
+        color: rgba(197, 160, 89, 0.4); /* Tu color gold-leaf con opacidad */
+        white-space: nowrap;
+        /* Este padding asegura que la distancia entre el final de un bloque 
+           y el inicio del siguiente sea exactamente igual a la de las frases internas */
+        padding-right: 0; 
     }
 
     @keyframes marquee-infinite {
-        0% {
-            transform: translateX(0);
+        0% { transform: translateX(0); }
+        100% { 
+            /* Como usamos 4 bloques, al llegar al final del primero (-25%) 
+               el segundo está en la posición exacta del inicio. */
+            transform: translateX(-25%); 
         }
-        100% {
-            /* IMPORTANTE: Movemos solo el equivalente a un bloque (25% si son 4 bloques) */
-            /* para que el inicio del segundo bloque calce exacto con el inicio del primero */
-            transform: translateX(-25%);
-        }
-    }
-
-    /* Pausa sutil al pasar el mouse */
-    .prestige-marquee:hover {
-        animation-play-state: paused;
     }
         /* B2B Privilege Area */
         .b2b-portal {
