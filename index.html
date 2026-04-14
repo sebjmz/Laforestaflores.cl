@@ -3,435 +3,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LA FORESTA GARDEN | Diseño Floral Vivo</title>
+    <title>BLOOM REBEL | La Revolución Floral</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --accent: #6b705c; 
-            --accent-soft: #a5a58d;
-            --bg-garden: #fdfcfb;
+            --neon-pink: #ff007f;
+            --deep-black: #0a0a0a;
+            --acid-green: #ccff00;
         }
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-garden);
-            color: #1a1a1a;
+            background-color: var(--deep-black);
+            color: white;
+            font-family: 'Space Grotesk', sans-serif;
             overflow-x: hidden;
         }
-        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-sync { font-family: 'Syncopate', sans-serif; }
+        
+        .marquee {
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
 
-        /* Barra de anuncios superior */
-        .announcement-bar {
-            background-color: #1a1c17;
+        .glitch-hover:hover {
+            text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--acid-green);
+        }
+
+        .ad-card {
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .ad-card:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .cta-button {
+            background: white;
+            color: black;
+            transition: 0.3s;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+        .cta-button:hover {
+            background: var(--neon-pink);
             color: white;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 60;
+            padding-left: 2rem;
+            padding-right: 2rem;
         }
 
-        .nav-glass {
-    background: rgba(253, 252, 251, 0.9);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    top: 35px; /* Ajuste por la barra de anuncios */
-}
-
-        /* Animación suave para la imagen del Hero (Efecto Ken Burns) */
-        @keyframes kenBurns {
-            0% { transform: scale(1) translate(0, 0); }
-            50% { transform: scale(1.1) translate(-1%, 1%); }
-            100% { transform: scale(1) translate(0, 0); }
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
-        .hero-bg-animate {
-            animation: kenBurns 20s ease-in-out infinite;
+        /* Estilos para el catálogo expandible */
+        #catalog-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        /* Grilla de productos */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.25rem;
+        #catalog-content.expanded {
+            max-height: 2500px; /* Suficiente para el contenido */
         }
-        @media (min-width: 768px) {
-            .product-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 2rem;
-            }
+        
+        .catalog-item {
+            border: 1px solid #333;
+            transition: 0.4s;
         }
-        @media (min-width: 1024px) {
-            .product-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 2.5rem;
-            }
+        .catalog-item:hover {
+            border-color: var(--neon-pink);
+            background: #111;
         }
-
-        /* Mejora de contraste en el Hero */
-.hero-section .text-black {
-    color: #1e1e1e !important;
-    text-shadow: 0 1px 4px rgba(255,255,255,0.8);
-}
-
-.hero-section .text-gray-800 {
-    color: #2d2d2d !important;
-    text-shadow: 0 1px 3px rgba(255,255,255,0.6);
-}
-
-/* Alternativa: overlay más oscuro para mejor contraste */
-.hero-section .absolute.inset-0.bg-white\/40 {
-    background: linear-gradient(135deg, rgba(255,255,240,0.3) 0%, rgba(200,195,180,0.5) 100%);
-}
-
-        .text-fluid-lg { font-size: clamp(2.2rem, 8vw, 6rem); }
-
-        .stock-badge {
-            background: #d4a373;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); opacity: 0.9; }
-            100% { transform: scale(1); }
-        }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .btn-garden {
-            @apply transition-all duration-300 transform active:scale-95;
-            background-color: var(--accent);
-        }
-        .btn-garden:hover {
-            background-color: #3f4238;
-        }
-
-        /* Fade in para las frases */
-        .fade-in-text {
-            animation: fadeIn 1.5s ease-out forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .subscription-card {
-            background: linear-gradient(145deg, #ffffff, #f3f2ed);
-            border: 1px solid #e5e3da;
-        }
-        /* Hero text enhancement */
-.hero-text-glow {
-    text-shadow: 0 2px 8px rgba(0,0,0,0.15), 0 1px 2px rgba(255,255,255,0.3);
-}
-
-.hero-text-soft {
-    text-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
-
-/* Overlay mejorado */
-.hero-overlay {
-    background: linear-gradient(105deg, rgba(30,30,25,0.2) 0%, rgba(255,250,240,0.4) 100%);
-}
     </style>
 </head>
 <body>
 
-    <!-- Barra de anuncios -->
-    <div class="announcement-bar">
-        <span id="announcement-text">Quedan pocos ramos del día • Envío gratis por sobre $50.000</span>
-    </div>
-
-    <!-- Header -->
-    <nav class="fixed w-full z-50 nav-glass border-b border-gray-100 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="font-serif text-xl md:text-2xl font-black text-[#6b705c] italic tracking-tighter">La Foresta Garden</div>
-            <div class="flex items-center gap-4">
-                <a href="https://wa.me/56912345678" class="btn-garden text-white px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-sm">
-                    WhatsApp
-                </a>
-            </div>
+    <!-- Navegación Disruptiva -->
+    <nav class="fixed w-full z-50 mix-blend-difference p-6 flex justify-between items-center">
+        <div class="text-2xl font-sync font-bold tracking-tighter">BLOOM REBEL</div>
+        <div class="hidden md:flex space-x-8 font-bold uppercase text-sm">
+            <a href="#vault" class="hover:text-pink-500">Catálogo</a>
+            <a href="#" class="hover:text-pink-500">Manifiesto</a>
+            <a href="#" class="hover:text-pink-500">Suscripción</a>
         </div>
+        <div class="border border-white px-4 py-1 cursor-pointer hover:bg-white hover:text-black transition">MENU</div>
     </nav>
 
-    <!-- Hero con Imagen en Movimiento -->
-<section class="hero-section relative flex items-center justify-center text-center px-6 pt-28 md:pt-32">
-    <div class="absolute inset-0 z-0 overflow-hidden">
-        <img id="hero-background" src="img/portada01.jpg" alt="Jardín Floral" class="w-full h-full object-cover hero-bg-animate">
-        <div class="absolute inset-0 hero-overlay backdrop-blur-[1px]"></div>
-    </div>
-    
-    <div class="relative z-10 max-w-4xl">
-        <span id="random-tagline" class="inline-block mb-4 text-white/90 font-bold text-[10px] uppercase tracking-[0.4em] fade-in-text hero-text-soft">Dilo con Flores</span>
-        <h1 class="text-fluid-lg font-serif leading-[1.05] mb-6 fade-in-text hero-text-glow">
-            <span id="random-title-top" class="text-white">Decide regalar</span><br>
-            <span id="random-title-bottom" class="italic font-light text-[#f5efe0]">emociones.</span>
-        </h1>
-        <p id="random-description" class="text-sm md:text-lg font-light text-white/95 max-w-lg mx-auto mb-8 leading-relaxed fade-in-text hero-text-soft">
-            Un ramo nunca es solo un ramo. Es un te quiero, un te recuerdo, un te acompaño.
-        </p>
-        <a href="#oferta-estelar" class="bg-black text-white px-10 py-5 text-[10px] font-bold uppercase tracking-[0.2em] rounded-sm shadow-2xl hover:bg-[#6b705c] transition-all">Ver Ramo del Día</a>
-    </div>
-</section>
+    <!-- Hero Section -->
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0 opacity-40">
+            <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=2000" class="w-full h-full object-cover grayscale" alt="Fondo floral abstracto">
+        </div>
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-6xl md:text-9xl font-sync font-bold leading-none mb-4 glitch-hover">
+                FLORES <br> <span class="text-transparent border-t-2 border-b-2 border-white" style="-webkit-text-stroke: 1px white;">MUERTAS</span> <br> <span class="text-pink-600">JAMÁS.</span>
+            </h1>
+            <p class="max-w-md mx-auto text-lg md:text-xl font-light mb-8">No vendemos plantas. Vendemos declaraciones de guerra emocional. Ramos diseñados para los que no piden perdón.</p>
+            <button onclick="toggleCatalog()" class="cta-button px-10 py-4 text-xl font-bold uppercase">Explorar Catálogo</button>
+        </div>
+        
+        <!-- Scrolling Text -->
+        <div class="absolute bottom-10 w-full bg-pink-600 py-2 rotate-2">
+            <div class="marquee flex space-x-8 text-black font-bold uppercase tracking-widest">
+                <span>Botanical Anarchy • Design without limits • Fuck Ordinary Flowers • Limited Drops • Artisan Chaos • </span>
+                <span>Botanical Anarchy • Design without limits • Fuck Ordinary Flowers • Limited Drops • Artisan Chaos • </span>
+            </div>
+        </div>
+    </header>
 
-    <!-- OFERTA ESTELAR: EL RAMO DEL DÍA -->
-    <section id="oferta-estelar" class="py-24 px-6 bg-white">
-        <div class="max-w-5xl mx-auto">
-            <div class="bg-[#faf9f6] rounded-[2.5rem] overflow-hidden border border-[#f0ede6] flex flex-col md:flex-row items-center shadow-sm">
-                <div class="w-full md:w-1/2 aspect-square relative overflow-hidden">
-                    <img src="RAMOS14.jpeg" class="w-full h-full object-cover hover:scale-105 transition-transform duration-[10s]" alt="Ramo del Día">
-                    <div class="absolute top-8 left-8 bg-white/95 backdrop-blur px-5 py-2.5 rounded-full shadow-lg">
-                        <span class="text-[10px] font-black uppercase tracking-tighter text-black italic">Cupos limitados: 10/día</span>
-                    </div>
-                </div>
-                <div class="w-full md:w-1/2 p-10 md:p-14">
-                    <div class="flex items-center gap-3 mb-6">
-                        <span class="stock-badge">Quedan <span id="stock-count">6</span> unidades</span>
-                    </div>
-                    <h2 class="font-serif text-4xl md:text-6xl italic mb-6 leading-tight">El Ramo del Día</h2>
-                    <p class="text-gray-600 font-light text-base mb-10 leading-relaxed">
-                        Nuestra propuesta diaria más fresca. Un diseño de autor con valor de referencia de $24.990, disponible solo para los 10 primeros amantes de las flores.
-                    </p>
-                    
-                    <div class="flex items-center gap-5 mb-10 border-t border-gray-100 pt-8">
-                        <span class="text-5xl font-bold text-[#6b705c]">$12.990</span>
-                        <div class="flex flex-col">
-                            <span class="text-sm text-gray-300 line-through">$24.990</span>
-                            <span class="text-[10px] font-bold text-[#d4a373] uppercase tracking-widest">Ahorra 48%</span>
+    <!-- SECCIÓN CATÁLOGO EXPANDIBLE (THE VAULT) -->
+    <section id="vault" class="py-12 border-y border-zinc-800 bg-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <button onclick="toggleCatalog()" class="w-full flex justify-between items-center group py-8">
+                <h2 class="text-5xl md:text-7xl font-sync font-bold group-hover:text-pink-500 transition-colors uppercase">The Vault [Catalog]</h2>
+                <span id="catalog-icon" class="text-4xl transition-transform duration-500">+</span>
+            </button>
+
+            <div id="catalog-content">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 py-12">
+                    <!-- Producto 1 -->
+                    <div class="catalog-item p-4 group">
+                        <div class="aspect-[3/4] overflow-hidden mb-6 relative">
+                            <img src="https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&q=80&w=600" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Ramo Industrial">
+                            <div class="absolute bottom-0 left-0 bg-acid-green text-black px-4 py-1 font-bold text-xs">NEW DROP</div>
                         </div>
-                    </div>
-
-                    <a href="https://wa.me/56912345678?text=Hola%20La%20Foresta%20Garden!%20Quiero%20reservar%20el%20Ramo%20del%20Día%20de%20$12.990" class="block w-full text-center bg-black text-white py-6 text-[11px] font-bold uppercase tracking-[0.3em] rounded-2xl hover:bg-[#6b705c] transition-all shadow-xl">
-                        Reservar Mi Ramo
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN SUSCRIPCIÓN -->
-    <section class="py-24 px-6 bg-white border-y border-gray-50">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row items-center gap-12">
-                <div class="md:w-1/2">
-                    <span class="text-[#6b705c] font-bold text-[10px] uppercase tracking-[0.4em]">Club La Foresta</span>
-                    <h2 class="font-serif text-4xl md:text-5xl italic mt-4 mb-6 leading-tight">Flores frescas,<br>todas las semanas.</h2>
-                    <p class="text-gray-600 font-light mb-8 leading-relaxed">Suscríbete para recibir en tu hogar u oficina una selección exclusiva de temporada todos los lunes. Sin compromiso, cancela cuando quieras.</p>
-                    <ul class="space-y-4 mb-10">
-                        <li class="flex items-center gap-3 text-sm text-gray-700">
-                            <svg class="w-5 h-5 text-[#6b705c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            Envío preferencial gratuito
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-gray-700">
-                            <svg class="w-5 h-5 text-[#6b705c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            Diseños exclusivos para suscriptores
-                        </li>
-                    </ul>
-                    <a href="https://wa.me/56912345678?text=Hola!%20Me%20interesa%20la%20suscripción%20mensual" class="inline-block bg-[#6b705c] text-white px-10 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest">Consultar Planes</a>
-                </div>
-                <div class="md:w-1/2 w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="subscription-card p-8 rounded-[2rem] text-center">
-                        <h4 class="font-serif text-xl italic mb-2">Plan Esencial</h4>
-                        <p class="text-[10px] text-gray-400 uppercase mb-4">2 Ramos x Mes</p>
-                        <div class="text-2xl font-bold text-[#6b705c] mb-6">$42.900</div>
-                        <button class="w-full py-3 bg-black text-white text-[9px] font-bold uppercase tracking-widest rounded-xl">Elegir</button>
-                    </div>
-                    <div class="subscription-card p-8 rounded-[2rem] text-center border-[#6b705c] shadow-lg">
-                        <h4 class="font-serif text-xl italic mb-2">Plan Premium</h4>
-                        <p class="text-[10px] text-gray-400 uppercase mb-4">4 Ramos x Mes</p>
-                        <div class="text-2xl font-bold text-[#6b705c] mb-6">$76.900</div>
-                        <button class="w-full py-3 bg-black text-white text-[9px] font-bold uppercase tracking-widest rounded-xl">Elegir</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN TALLER -->
-<section class="py-24 px-6 bg-[#f8f7f2]">
-    <div class="max-w-7xl mx-auto">
-        <div class="mb-16 text-center md:text-left">
-            <span class="text-[#6b705c] font-bold text-[10px] uppercase tracking-[0.5em]">La Galería del Taller</span>
-            <h2 class="font-serif text-4xl md:text-5xl italic mt-3">Recién Salidos del Jardín</h2>
-            <div class="w-20 h-[1px] bg-[#6b705c] mt-6 mx-auto md:mx-0"></div>
-        </div>
-
-        <div class="product-grid">
-            <script>
-                const ramosGarden = [
-                    { nombre: "Amor Delicado", precio: "$28.000", img: "img/RAMOS01.jpeg" },
-                    { nombre: "Amor Delicado", precio: "$34.500", img: "img/RAMOS02.jpeg" },
-                    { nombre: "Pasion Absoluta", precio: "$22.900", img: "img/RAMOS03.jpeg" },
-                    { nombre: "Día Perfecto", precio: "$41.000", img: "img/RAMOS04.jpeg" },
-                    { nombre: "Alegría Viva", precio: "$29.000", img: "img/RAMOS05.jpeg" },
-                    { nombre: "Amanecer Silvestre", precio: "$25.500", img: "img/RAMOS06.jpeg" },
-                    { nombre: "Energía Púrpura", precio: "$39.000", img: "img/RAMOS07.jpeg" },
-                    { nombre: "Susurro de Seda", precio: "$26.500", img: "img/RAMOS08.jpeg" },
-                    { nombre: "Jardín de Verano", precio: "$44.000", img: "img/RAMOS09.jpeg" },
-                    { nombre: "Susurro Rosé", precio: "$31.900", img: "img/RAMOS10.jpeg" },
-                    { nombre: "Luz de Atardecer", precio: "$37.000", img: "img/RAMOS11.jpeg" },
-                    { nombre: "Encanto Vivo", precio: "$32.500", img: "img/RAMOS12.jpeg" }
-                ];
-
-                document.write(ramosGarden.map(r => `
-                    <div class="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500">
-                        <div class="aspect-[4/5] overflow-hidden relative">
-                            <img src="${r.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="${r.nombre}">
-                            <div class="absolute top-4 right-4">
-                                <div class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[9px] font-bold text-[#6b705c] shadow-sm uppercase">Recién Vendido</div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="text-xl font-bold uppercase">Chrome Petals</h4>
+                                <p class="text-zinc-500 text-sm italic">Hortensias y estructura metálica.</p>
                             </div>
+                            <span class="font-sync font-bold text-pink-500">$85</span>
                         </div>
-                        <div class="p-6 md:p-8 text-center">
-                            <h3 class="font-serif text-xl italic mb-1 text-gray-800">${r.nombre}</h3>
-                            <p class="text-sm font-medium text-gray-400 mb-6">${r.precio}</p>
-                            <a href="https://wa.me/56912345678?text=Hola%20La%20Foresta%20Garden!%20Me%20encantó%20el%20ramo%20'${encodeURIComponent(r.nombre)}'%20¿Se%20puede%20hacer%20uno%20similar?" class="inline-block w-full py-3.5 border border-gray-100 text-gray-800 text-[9px] font-bold uppercase tracking-widest rounded-xl hover:bg-[#6b705c] hover:text-white hover:border-[#6b705c] transition-all">
-                                Quiero este
-                            </a>
+                        <button class="w-full mt-6 py-2 border border-white hover:bg-white hover:text-black font-bold transition">AÑADIR AL CARRO</button>
+                    </div>
+
+                    <!-- Producto 2 -->
+                    <div class="catalog-item p-4 group">
+                        <div class="aspect-[3/4] overflow-hidden mb-6 relative">
+                            <img src="https://images.unsplash.com/photo-1563241527-3004b7be0fab?auto=format&fit=crop&q=80&w=600" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Ramo Oscuro">
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="text-xl font-bold uppercase">Midnight Ritual</h4>
+                                <p class="text-zinc-500 text-sm italic">Rosas negras y follaje de sombra.</p>
+                            </div>
+                            <span class="font-sync font-bold text-pink-500">$120</span>
+                        </div>
+                        <button class="w-full mt-6 py-2 border border-white hover:bg-white hover:text-black font-bold transition">AÑADIR AL CARRO</button>
+                    </div>
+
+                    <!-- Producto 3 -->
+                    <div class="catalog-item p-4 group">
+                        <div class="aspect-[3/4] overflow-hidden mb-6 relative">
+                            <img src="https://images.unsplash.com/photo-1523694559145-8010d10e63f7?auto=format&fit=crop&q=80&w=600" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Ramo Caótico">
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="text-xl font-bold uppercase">Chaos Theory</h4>
+                                <p class="text-zinc-500 text-sm italic">Mezcla asimétrica de 12 especies.</p>
+                            </div>
+                            <span class="font-sync font-bold text-pink-500">$95</span>
+                        </div>
+                        <button class="w-full mt-6 py-2 border border-white hover:bg-white hover:text-black font-bold transition">AÑADIR AL CARRO</button>
+                    </div>
+
+                    <!-- Producto 4 -->
+                    <div class="catalog-item p-4 group">
+                        <div class="aspect-[3/4] overflow-hidden mb-6 relative">
+                            <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=600" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Ramo Silvestre">
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="text-xl font-bold uppercase">Acid Meadow</h4>
+                                <p class="text-zinc-500 text-sm italic">Flores de campo con acentos flúor.</p>
+                            </div>
+                            <span class="font-sync font-bold text-pink-500">$70</span>
+                        </div>
+                        <button class="w-full mt-6 py-2 border border-white hover:bg-white hover:text-black font-bold transition">AÑADIR AL CARRO</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galería de Anuncios Original -->
+    <section class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <!-- Ad 1: Large Vertical -->
+            <div class="md:col-span-7 ad-card group">
+                <div class="relative aspect-[4/5] bg-zinc-900 rounded-none">
+                    <img src="https://images.unsplash.com/photo-1550983092-249513f015ce?auto=format&fit=crop&q=80&w=1200" alt="Ramo Minimalista" class="w-full h-full object-cover">
+                    <div class="absolute top-8 left-8">
+                        <span class="bg-white text-black px-3 py-1 font-bold text-xs uppercase tracking-widest">Edición Limitada</span>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-8 bg-gradient-to-t from-black to-transparent w-full">
+                        <h3 class="text-4xl font-sync font-bold mb-2">NEON GARDEN</h3>
+                        <p class="text-zinc-400 mb-4">Orquídeas tratadas con pigmento orgánico fotoluminiscente.</p>
+                        <button class="text-pink-500 font-bold hover:underline">ADQUIRIR ARTICULO →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ad 2: Small Square -->
+            <div class="md:col-span-5 flex flex-col justify-center space-y-8">
+                <div class="ad-card group bg-white text-black p-10">
+                    <h2 class="text-6xl font-sync font-bold leading-none mb-6">PURA <br> ADRENALINA.</h2>
+                    <p class="text-lg mb-8">Nuestros ramos no solo decoran, dominan el espacio. El regalo perfecto para quien no se conforma con lo estándar.</p>
+                    <div class="border-l-4 border-black pl-4">
+                        <p class="italic">"La mejor inversión en impacto visual que he hecho."</p>
+                        <p class="font-bold text-sm">- VOGUE (unoffical concept)</p>
+                    </div>
+                </div>
+                
+                <div class="ad-card relative aspect-square">
+                    <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&q=80&w=800" alt="Flores Amarillas" class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-700">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="bg-black/80 p-6 text-center transform -rotate-12">
+                            <p class="text-2xl font-sync">CYBER YELLOW</p>
+                            <p class="text-xs uppercase tracking-[0.5em] text-pink-500">Available Now</p>
                         </div>
                     </div>
-                `).join(''));
-            </script>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <!-- Marketing Psychology Section -->
+    <section class="bg-white text-black py-20">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+            <div>
+                <span class="text-5xl font-sync font-bold text-pink-600">01</span>
+                <h4 class="text-xl font-bold mt-4 uppercase">Diseño Algorítmico</h4>
+                <p class="text-zinc-600 mt-2">Usamos IA para analizar la armonía del color y crear composiciones que el ojo humano no puede ignorar.</p>
+            </div>
+            <div>
+                <span class="text-5xl font-sync font-bold text-pink-600">02</span>
+                <h4 class="text-xl font-bold mt-4 uppercase">Shock & Awe</h4>
+                <p class="text-zinc-600 mt-2">Nuestros envíos llegan en cajas blindadas con luces LED. La experiencia comienza antes de abrir el paquete.</p>
+            </div>
+            <div>
+                <span class="text-5xl font-sync font-bold text-pink-600">03</span>
+                <h4 class="text-xl font-bold mt-4 uppercase">Zero Waste Art</h4>
+                <p class="text-zinc-600 mt-2">Sostenibilidad radical. Flores de proximidad y materiales 100% reciclados transformados en lujo.</p>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="bg-[#1a1c17] text-white py-20 px-6 text-center">
-        <div class="max-w-7xl mx-auto">
-            <div class="font-serif text-3xl font-black text-[#a5a58d] italic mb-6">La Foresta Garden</div>
-            <p class="text-gray-500 text-xs font-light uppercase tracking-[0.4em] mb-10 italic">Diseño floral artesanal & botánica urbana</p>
-            <p class="text-[9px] uppercase tracking-[0.5em] text-gray-600">Viña del mar - Chile • 2026</p>
+    <footer class="py-20 px-6 border-t border-zinc-800">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-end">
+            <div class="mb-12 md:mb-0">
+                <h2 class="text-8xl font-sync font-bold mb-4 leading-none">NO ES <br> AMOR. ES <br> <span class="text-pink-600">OBSESIÓN.</span></h2>
+            </div>
+            <div class="w-full md:w-1/3">
+                <p class="mb-6 text-zinc-400">Suscríbete a nuestra "Black List" para recibir avisos de lanzamientos exclusivos.</p>
+                <form class="flex border-b border-white pb-2">
+                    <input type="email" placeholder="TU EMAIL AQUÍ" class="bg-transparent w-full focus:outline-none text-white font-bold">
+                    <button type="submit" class="text-pink-500 font-bold">UNIRSE</button>
+                </form>
+            </div>
         </div>
     </footer>
 
+    <!-- Botón Flotante -->
+    <div class="fixed bottom-8 right-8 z-[100] floating">
+        <div class="bg-acid-green text-black p-4 rounded-full font-bold shadow-2xl cursor-pointer hover:scale-110 transition flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        </div>
+    </div>
+
     <script>
-        // Mensajes de la barra superior
-        const announcements = [
-            "Quedan pocos ramos del día • Envío gratis desde $50.000",
-            "Sólo 10 ramos disponibles diariamente • No te quedes sin el tuyo",
-            "Suscríbete y recibe flores frescas todas las semanas",
-            "Diseño de autor con 48% de descuento solo por hoy"
-        ];
-        let currentAnn = 0;
-        const annEl = document.getElementById('announcement-text');
-
-        setInterval(() => {
-            currentAnn = (currentAnn + 1) % announcements.length;
-            annEl.style.opacity = 0;
-            setTimeout(() => {
-                annEl.textContent = announcements[currentAnn];
-                annEl.style.opacity = 1;
-            }, 500);
-        }, 4000);
-
-        // Configuración de frases aleatorias
-        const variations = [
-            {
-                tagline: "Estudio Botánico & Floral",
-                titleTop: "El jardín en",
-                titleBottom: "tu habitación.",
-                desc: "Diseños frescos creados artesanalmente."
-            },
-            {
-                tagline: "Flores con Alma",
-                titleTop: "Tu rincón de",
-                titleBottom: "naturaleza pura.",
-                desc: "Cada pétalo cuenta una historia. Confeccionamos piezas exclusivas cada mañana."
-            },
-            {
-                tagline: "Arte Vegetal",
-                titleTop: "Belleza que",
-                titleBottom: "florece hoy.",
-                desc: "Del campo a tu mesa en pocas horas. Reserva una de nuestras ediciones especiales."
-            },
-            {
-                tagline: "Dilo con Flores",
-                titleTop: "Decide regalar",
-                titleBottom: "emociones.",
-                desc: "Un ramo nunca es solo un ramo. Es un te quiero, un te recuerdo, un te acompaño."
-            },
-            {
-                tagline: "No son solo flores",
-                titleTop: "Arte floral que",
-                titleBottom: "late en tus manos.",
-                desc: "Taller de arte floral. Para todos los latidos del corazón."
+        function toggleCatalog() {
+            const content = document.getElementById('catalog-content');
+            const icon = document.getElementById('catalog-icon');
+            const isExpanded = content.classList.contains('expanded');
+            
+            if (isExpanded) {
+                content.classList.remove('expanded');
+                icon.innerText = '+';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('expanded');
+                icon.innerText = '-';
+                icon.style.transform = 'rotate(180deg)';
+                // Scroll suave hasta el inicio del catálogo
+                document.getElementById('vault').scrollIntoView({ behavior: 'smooth' });
             }
-        ];
-
-        window.onload = function() {
-    const randomIdx = Math.floor(Math.random() * variations.length);
-    const choice = variations[randomIdx];
-    
-    document.getElementById('random-tagline').textContent = choice.tagline;
-    document.getElementById('random-title-top').textContent = choice.titleTop;
-    document.getElementById('random-title-bottom').textContent = choice.titleBottom;
-    document.getElementById('random-description').textContent = choice.desc;
-
-    // === NUEVO: CAMBIO DE IMAGEN ALEATORIA ===
-    const imagenes = [
-        "img/portada01.jpg",
-        "img/portada02.jpg",
-        "img/portada03.jpg",
-        "img/portada04.jpg",
-        "img/portada05.jpg"
-    ];
-    
-    const heroBg = document.getElementById('hero-background');
-    if (heroBg) {
-        const indiceAleatorio = Math.floor(Math.random() * imagenes.length);
-        heroBg.src = imagenes[indiceAleatorio];
-    }
-
-    initStock();
-};
-
-        function initStock() {
-            let stockActual = 4;
-            const stockDisplay = document.getElementById('stock-count');
-            setInterval(() => {
-                if(stockActual > 1 && Math.random() > 0.8) {
-                    stockActual--;
-                    stockDisplay.textContent = stockActual;
-                }
-            }, 45000);
         }
     </script>
-    <!-- Botón flotante de WhatsApp -->
-<a href="https://wa.me/56912345678?text=Hola!%20Tengo%20una%20consulta%20sobre%20sus%20flores" 
-   class="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#25D366] hover:bg-[#20b859] text-white px-5 py-3 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 group"
-   target="_blank"
-   rel="noopener noreferrer">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.277-.582c.945.564 1.98.86 3.045.861h.002c3.18 0 5.767-2.586 5.768-5.766.001-3.18-2.585-5.766-5.766-5.766zm-3.015 8.478c-.4-.556-.611-.86-.847-1.408-.166-.385-.166-.81.011-1.162.115-.232.35-.47.597-.691.122-.11.164-.197.23-.338.03-.075.016-.163-.016-.254-.046-.124-.413-1.045-.566-1.431-.149-.375-.303-.325-.418-.331-.109-.006-.234-.007-.359-.007-.234 0-.51.073-.781.365-.348.376-.842.978-.842 2.231 0 1.253.912 2.463 1.039 2.634.127.171 1.795 2.741 4.349 3.842.607.262 1.08.418 1.449.535.609.189 1.163.162 1.602.099.492-.071 1.514-.619 1.727-1.217.213-.598.213-1.111.149-1.218-.064-.107-.234-.171-.49-.299-.255-.128-1.509-.744-1.742-.83-.234-.085-.404-.128-.575.128-.171.255-.662.83-.812 1.001-.149.171-.298.192-.553.064-.255-.128-1.078-.397-2.053-1.267-.759-.677-1.271-1.513-1.42-1.768-.149-.255-.016-.393.112-.52.115-.115.255-.299.383-.448.128-.149.171-.255.255-.425.085-.171.043-.319-.021-.447-.064-.128-.575-1.385-.788-1.896-.21-.5-.422-.416-.576-.425-.15-.008-.322-.009-.493-.009z"/>
-    </svg>
-    <span class="text-sm font-semibold tracking-wide hidden sm:inline-block">¿Tienes dudas? En línea</span>
-    <span class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full animate-pulse">●</span>
-</a>
-
-<style>
-    @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
-    }
-    .animate-pulse {
-        animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-</style>
 </body>
 </html>
