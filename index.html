@@ -121,38 +121,27 @@
 
         /* Marquee de prestigio */
     .prestige-marquee {
-    display: flex;
-    width: max-content;
-    animation: marquee-infinite 40s linear infinite;
-}
+        display: flex;
+        width: max-content;
+        /* Quitamos cualquier espacio entre elementos inline-block */
+        letter-spacing: 0; 
+        word-spacing: 0;
+        animation: marquee-infinite 40s linear infinite;
+    }
 
-.marquee-item {
-    display: inline-block;
-    white-space: nowrap;
-    padding: 0; /* Esto elimina el error de separación */
-    margin: 0;  /* Por seguridad, eliminamos márgenes también */
-}
-
-    .marquee-content {
-        display: inline-block;
-        /* Añadimos un poco más de separación entre bloques para que respire */
-        padding-right: 2rem; 
+    .marquee-item {
+        display: flex; /* Cambiamos a flex para control total */
+        align-items: center;
+        white-space: nowrap;
+        padding: 0;
+        margin: 0;
+        /* Evita que el navegador añada espacios por su cuenta */
+        float: left; 
     }
 
     @keyframes marquee-infinite {
-        0% {
-            transform: translateX(0);
-        }
-        100% {
-            /* IMPORTANTE: Movemos solo el equivalente a un bloque (25% si son 4 bloques) */
-            /* para que el inicio del segundo bloque calce exacto con el inicio del primero */
-            transform: translateX(-25%);
-        }
-    }
-
-    /* Pausa sutil al pasar el mouse */
-    .prestige-marquee:hover {
-        animation-play-state: paused;
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-25%); } /* Si usas 4 bloques idénticos */
     }
         /* B2B Privilege Area */
         .b2b-portal {
