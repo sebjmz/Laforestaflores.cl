@@ -552,14 +552,18 @@
         </div>
 
         <div id="step-6" class="checkout-step flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso Final</span>
-            <h3 class="font-serif text-4xl italic mb-12">Confirmar y Pagar</h3>
-            <p class="text-[10px] uppercase tracking-widest opacity-60 mb-8 leading-loose">
-                Al confirmar, nos pondremos en contacto vía WhatsApp para finalizar el pago y coordinar los detalles artísticos de su pedido.
-            </p>
-            <button onclick="alert('Pedido registrado. Redirigiendo a WhatsApp...')" class="w-full btn-premium !bg-[#c5a059] !text-[#0a1f1c] !border-[#c5a059]">Finalizar Pedido</button>
-            <button onclick="goToStep(5)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-        </div>
+    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso Final</span>
+    <h3 class="font-serif text-4xl italic mb-12">Confirmar y Pagar</h3>
+    <p class="text-[10px] uppercase tracking-widest opacity-60 mb-8 leading-loose">
+        Al confirmar, pagarás vía Mercado Pago y luego serás redirigido a WhatsApp para validar tu comprobante y coordinar el envío.
+    </p>
+    
+    <button onclick="finalizarYCoordinar()" class="w-full btn-premium !bg-[#009EE3] !text-white !border-[#009EE3] hover:!bg-transparent hover:!text-[#009EE3]">
+        Pagar con Mercado Pago
+    </button>
+
+    <button onclick="goToStep(5)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+</div>
     </div>
 </div>
     
@@ -833,6 +837,55 @@ window.addEventListener('load', function() {
             });
             button.style.borderColor = '#c5a059';
             button.style.background = 'rgba(197, 160, 89, 0.05)';
+        }
+        
+        // --- LÓGICA DE CIERRE: PAGO Y COORDINACIÓN ---
+        function finalizarYCoordinar() {
+            if(cart.length === 0) return alert("El atelier está vacío.");
+
+            // 1. Recolección de Datos de los Inputs
+            const emisor = document.getElementById('sender-name').value;
+            const receptor = document.getElementById('receiver-name').value;
+            const direccion = selectedLogistics === 'envio' ? document.getElementById('address').value : 'Retiro en Tienda';
+            const quienRetira = document.getElementById('pickup-name') ? document.getElementById('pickup-name').value : '';
+            const mensaje = document.getElementById('card-message').value;
+            const fonoDestino = document.getElementById('receiver-phone').value;
+            
+            // Buscamos el horario seleccionado (el botón que tiene el estilo de 'selected')
+            const horarioBtn = document.querySelector('#step-time .step-option[style*="background"]');
+            const horario = horarioBtn ? horarioBtn.innerText : 'No especificado';
+
+            // 2. Resumen del Carrito
+            let articulos = cart.map(item => `- ${item.name} (Cant: ${item.qty})`).join('%0A');
+            const total = document.getElementById('cart-total').innerText;
+
+            // 3. Configuración de Links (REEMPLAZA AQUÍ)
+            const LINK_MERCADO_PAGO = "https://link.mercadopago.cl/TU_USUARIO"; 
+            const NUMERO_WHATSAPP = "569XXXXXXXX"; 
+
+            // 4. Construcción del Mensaje
+            let texto = `*ORDEN PAGADA - LA FORESTA*%0A%0A`;
+            texto += `*DE:* ${emisor}%0A`;
+            texto += `*PARA:* ${receptor}%0A`;
+            texto += `*ENTREGA:* ${selectedLogistics === 'envio' ? 'Domicilio' : 'Retiro'}%0A`;
+            if(selectedLogistics === 'envio') texto += `*DIRECCIÓN:* ${direccion}%0A`;
+            if(quienRetira) texto += `*RETIRA:* ${quienRetira}%0A`;
+            texto += `*HORARIO:* ${horario}%0A`;
+            texto += `*FONO:* ${fonoDestino}%0A%0A`;
+            texto += `*TARJETA:* "${mensaje}"%0A%0A`;
+            texto += `*PEDIDO:*%0A${articulos}%0A`;
+            texto += `*TOTAL:* ${total}%0A%0A`;
+            texto += `_Adjunto comprobante de pago a continuación._`;
+
+            // 5. Acción Doble
+            // Abre Mercado Pago en pestaña nueva
+            window.open(LINK_MERCADO_PAGO, '_blank');
+
+            // Redirige la ventana actual a WhatsApp después de un segundo
+            setTimeout(() => {
+                const wpUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${texto}`;
+                window.location.href = wpUrl;
+            }, 1000);
         }
     </script>
 </body>
