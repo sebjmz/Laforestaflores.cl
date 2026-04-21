@@ -175,6 +175,32 @@
 @media (max-aspect-ratio: 16/9) {
     #video-bg-layer iframe { width: 177.78vh; }
 }
+        /* Checkout Multi-Paso Minimalista */
+        #checkout-flow {
+            transform: translateY(100%);
+            transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        #checkout-flow.open { transform: translateY(0); }
+        
+        .checkout-step {
+            display: none;
+            animation: fadeInStep 0.6s ease forwards;
+        }
+        .checkout-step.active { display: flex; }
+        
+        @keyframes fadeInStep {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-option {
+            border: 1px solid rgba(10, 31, 28, 0.15);
+            transition: all 0.3s ease;
+        }
+        .step-option:hover, .step-option.selected {
+            border-color: var(--gold-leaf);
+            background: rgba(197, 160, 89, 0.05);
+        }
     </style>
 </head>
 <body>
@@ -218,7 +244,7 @@
                 <span class="text-xs uppercase tracking-widest font-bold">Total Estimado</span>
                 <span id="cart-total" class="text-2xl font-serif">$0</span>
             </div>
-            <button class="w-full btn-premium uppercase text-xs tracking-[0.2em]">Proceder al Checkout</button>
+            <button onclick="openCheckout()" class="w-full btn-premium uppercase text-xs tracking-[0.2em]">Proceder al Checkout</button>
             <p class="text-[9px] text-center mt-4 uppercase tracking-widest opacity-40">Envío gratis para suscripciones empresariales</p>
         </div>
     </div>
@@ -449,6 +475,58 @@
         </div>
     </footer>
 
+<div id="checkout-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col">
+        <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
+            <h2 class="font-serif text-xl tracking-widest uppercase text-gold-leaf">La Foresta</h2>
+            <button onclick="closeCheckout()" class="text-4xl font-light hover:text-gold-leaf transition-colors">&times;</button>
+        </div>
+
+        <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
+            
+            <div id="step-1" class="checkout-step active flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1 de 4</span>
+                <h3 class="font-serif text-4xl italic mb-12">¿Para quién es el pedido?</h3>
+                <div class="space-y-4 w-full">
+                    <button onclick="selectOption(this, 1); setTimeout(()=>goToStep(2), 400)" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Para Mí (Personal)</button>
+                    <button onclick="selectOption(this, 1); setTimeout(()=>goToStep(2), 400)" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Para mi Empresa</button>
+                </div>
+            </div>
+
+            <div id="step-2" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2 de 4</span>
+                <h3 class="font-serif text-4xl italic mb-12">Destino de la entrega</h3>
+                <div class="space-y-4 w-full">
+                    <button onclick="selectOption(this, 2); setTimeout(()=>goToStep(3), 400)" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Reñaca</button>
+                    <button onclick="selectOption(this, 2); setTimeout(()=>goToStep(3), 400)" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Concón</button>
+                    <button onclick="selectOption(this, 2); setTimeout(()=>goToStep(3), 400)" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Viña del Mar</button>
+                </div>
+                <button onclick="goToStep(1)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-3" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 3 de 4</span>
+                <h3 class="font-serif text-4xl italic mb-12">¿Cuándo lo enviamos?</h3>
+                <div class="w-full space-y-8">
+                    <input type="date" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c] cursor-pointer">
+                    <button onclick="goToStep(4)" class="w-full btn-premium">Continuar al Contacto</button>
+                </div>
+                <button onclick="goToStep(2)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-4" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso Final</span>
+                <h3 class="font-serif text-4xl italic mb-12">Sus Datos</h3>
+                <div class="w-full space-y-6">
+                    <input type="text" placeholder="Nombre Completo" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-xs text-center uppercase tracking-widest placeholder-[#0a1f1c]/40 text-[#0a1f1c]">
+                    <input type="tel" placeholder="Teléfono (+56 9...)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-xs text-center uppercase tracking-widest placeholder-[#0a1f1c]/40 text-[#0a1f1c]">
+                    <input type="email" placeholder="Correo Electrónico" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-xs text-center uppercase tracking-widest placeholder-[#0a1f1c]/40 text-[#0a1f1c]">
+                    <button onclick="alert('Conectando a pasarela de pago segura...')" class="w-full btn-premium !bg-[#c5a059] !text-[#0a1f1c] !border-[#c5a059] hover:!bg-transparent hover:!text-[#c5a059] mt-8">Ir al Pago Seguro</button>
+                </div>
+                <button onclick="goToStep(3)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- LOGICA JAVASCRIPT -->
     <script>
         // Función para cargar el video de fondo de forma discreta
@@ -667,6 +745,38 @@ window.addEventListener('load', function() {
             </button>
         </div>
     `).join('');
-</script>
+
+        // --- LÓGICA DE CHECKOUT MULTI-PASO ---
+        function openCheckout() {
+            if(cart.length === 0) {
+                alert("Su bolsa está vacía. Añada una pieza botánica primero.");
+                return;
+            }
+            toggleCart(); // Cierra el carrito lateral
+            document.getElementById('checkout-flow').classList.add('open');
+            goToStep(1); // Reinicia el flujo al abrir
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-flow').classList.remove('open');
+        }
+
+        function goToStep(stepNumber) {
+            document.querySelectorAll('.checkout-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+        }
+
+        function selectOption(button, step) {
+            const stepContainer = document.getElementById(`step-${step}`);
+            stepContainer.querySelectorAll('.step-option').forEach(btn => {
+                btn.style.borderColor = 'rgba(10, 31, 28, 0.15)';
+                btn.style.background = 'transparent';
+            });
+            button.style.borderColor = '#c5a059';
+            button.style.background = 'rgba(197, 160, 89, 0.05)';
+        }
+    </script>
 </body>
 </html>
