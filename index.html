@@ -876,37 +876,30 @@
 
         function setPalette(option) {
             selectedPalette = option;
-            setTimeout(() => goToStep(3), 400); // Avanza limpiamente al paso de envío/retiro
+            setTimeout(() => goToStep(3), 400);
         }
+
         let shippingCost = 0;
         let selectedZoneName = '';
 
         function calcularEnvio() {
-    const select = document.getElementById('zone-select');
-    const display = document.getElementById('shipping-display');
-    const km = parseFloat(select.value);
+            const select = document.getElementById('zone-select');
+            const display = document.getElementById('shipping-display');
+            const km = parseFloat(select.value);
 
-    // Si no ha seleccionado nada
-    if (km === 0) return;
+            if (km === 0) return;
 
-    // Cálculo: 900 por km
-    let costo = km * 900;
-    
-    // Aplicar mínimo de 3.500
-    if (costo < 3500) {
-        costo = 3500;
-    }
-    
-    // Guardar variables globales para que finalizarYCoordinar las detecte
-    shippingCost = costo; 
-    selectedZoneName = select.options[select.selectedIndex].text;
-    
-    // Mostrar precio en pantalla
-    display.innerText = '$' + costo.toLocaleString();
-    
-    // Actualizar el total general del carrito
-    actualizarTotalConDespacho();
-}
+            let costo = km * 900;
+            if (costo < 3500) {
+                costo = 3500;
+            }
+            
+            shippingCost = costo; 
+            selectedZoneName = select.options[select.selectedIndex].text;
+            
+            display.innerText = '$' + costo.toLocaleString();
+            actualizarTotalConDespacho();
+        } 
 
         // Valida que el usuario haya seleccionado una zona y escrito su dirección
         function verificarDireccionYContinuar() {
@@ -922,26 +915,21 @@
             goToStep('step-time');
         }
 
-        // Modificación sutil para resetear el costo si eligen Retiro en Tienda
-        // Reemplaza tu función setLogistics antigua por esta:
         function setLogistics(option) {
             selectedLogistics = option;
             if(option === 'envio') {
                 setTimeout(() => goToStep('step-envio'), 300);
             } else {
-                shippingCost = 0; // Sin costo si retira
+                shippingCost = 0; 
                 selectedZoneName = 'Retiro en Tienda';
                 actualizarTotalConDespacho();
                 setTimeout(() => goToStep('step-retiro'), 300);
             }
         }
 
-        // Renderiza el total real sumando el envío dinámicamente
         function actualizarTotalConDespacho() {
             const baseTotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
             const totalFinal = baseTotal + shippingCost;
-            
-            // Actualiza el contenedor del total en el checkout/carrito
             document.getElementById('cart-total').innerText = `$${totalFinal.toLocaleString()}`;
         }
     const catalog = [
