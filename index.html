@@ -250,17 +250,22 @@
         </div>
     </div>
 
-    <!-- HERO SECTION -->
+    <!-- HERO SECTION CON VIDEO NATIVO -->
     <section class="hero-video-container">
         <div class="absolute inset-0 hero-overlay z-10"></div>
-        <!-- Imagen de respaldo si no hay video -->
-<div id="video-bg-layer" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-    <!-- El video se inyectará aquí dinámicamente -->
-</div>        <div class="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
+        
+        <div id="video-bg-layer" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+            <!-- Video nativo en bucle, silenciado y optimizado -->
+            <video autoplay muted loop playsinline class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover scale-[1.02]">
+                <source src="img/hero-video.mp4" type="video/mp4">
+            </video>
+        </div>        
+
+        <div class="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
             <h4 class="text-gold-leaf text-white md:text-sm font-bold uppercase tracking-[0.8em] mb-8 animate-pulse">No son solo flores</h4>
             <h1 class="text-white text-6xl md:text-[120px] font-serif leading-none mb-12 italic">
-    <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
-</h1>
+                <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
+            </h1>
             <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
                 <button onclick="openVault()" class="btn-premium">EXPLORAR CATÁLOGO</button>
                 <a href="#privilege" class="btn-gold-outline flex items-center justify-center uppercase text-xs font-bold tracking-widest">Portal Empresas</a>
