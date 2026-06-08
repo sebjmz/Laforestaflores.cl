@@ -603,20 +603,7 @@
     
     <!-- LOGICA JAVASCRIPT -->
     <script>
-// Función para cargar el video de fondo de forma discreta y sin controles
-        window.addEventListener('load', function() {
-    const _vId = atob("SE1hTl9EbXBiTUE="); 
-            const container = document.getElementById('video-bg-layer');
-            
-            if (container) {
-                const iframe = document.createElement('iframe');
-                // Parámetros optimizados: controls=0, modestbranding=1, iv_load_policy=3, disablekb=1, fs=0
-                iframe.src = `https://www.youtube.com/embed/${_vId}?autoplay=1&mute=1&loop=1&playlist=${_vId}&controls=0&showinfo=0&rel=0&enablejsapi=1&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1`;
-                iframe.frameBorder = "0";
-                iframe.allow = "autoplay; encrypted-media";
-                container.appendChild(iframe);
-            }
-        });
+
         // Estado del Carrito
         let cart = [];
 
