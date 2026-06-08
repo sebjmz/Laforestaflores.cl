@@ -326,7 +326,7 @@
     <section id="vault" class="bg-white py-12 border-t border-zinc-100">
     <div class="max-w-7xl mx-auto px-6">
         <div onclick="openVault()" class="flex justify-between items-center cursor-pointer py-10 group">
-            <h2 class="text-6xl md:text-8xl font-serif italic group-hover:text-gold-leaf transition-colors">Colección</h2>
+            <h2 class="text-6xl md:text-8xl font-serif italic group-hover:text-gold-leaf transition-colors">Colección <span id="year-display"></span></h2>
             <div id="vault-plus" class="text-4xl font-light transition-transform duration-700">+</div>
         </div>
 
@@ -870,6 +870,14 @@
             injectPhrase();
         }
     })();
+
+document.addEventListener("DOMContentLoaded", function() {
+    const yearElement = document.getElementById("year-display");
+    if (yearElement) {
+        yearElement.innerText = new Date().getFullYear();
+    }
+});
+        
     </script>
     <script>
         let selectedPalette = '';
