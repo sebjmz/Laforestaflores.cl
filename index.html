@@ -484,28 +484,38 @@
     <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
         
         <div id="step-1" class="checkout-step active flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1 de 7</span>
+            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1 de 8</span>
             <h3 class="font-serif text-4xl italic mb-12">¿Quién envía este ramo?</h3>
             <input type="text" id="sender-name" placeholder="Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
             <button onclick="goToStep(2)" class="mt-12 btn-premium w-full">Siguiente</button>
         </div>
 
         <div id="step-2" class="checkout-step flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2 de 7</span>
+            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2 de 8</span>
             <h3 class="font-serif text-4xl italic mb-12">¿A quién va dirigido?</h3>
             <input type="text" id="receiver-name" placeholder="Nombre y Apellido del destinatario" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-            <button onclick="goToStep(3)" class="mt-12 btn-premium w-full">Siguiente</button>
+            <button onclick="goToStep('step-palette')" class="mt-12 btn-premium w-full">Siguiente</button>
             <button onclick="goToStep(1)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
         </div>
 
+<div id="step-palette" class="checkout-step flex-col items-center w-full max-w-md text-center">
+            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 3 de 8</span>
+            <h3 class="font-serif text-4xl italic mb-12">Seleccione la paleta de color</h3>
+            <div class="space-y-4 w-full">
+                <button onclick="selectOption(this, 'palette'); setPalette('Tonos Pasteles & Calma')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Pasteles & Calma</button>
+                <button onclick="selectOption(this, 'palette'); setPalette('Tonos Vibrantes & Coloridos')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Vibrantes & Coloridos</button>
+            </div>
+            <button onclick="goToStep(2)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+        </div>
+        
         <div id="step-3" class="checkout-step flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 3 de 7</span>
+            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 4 de 8</span>
             <h3 class="font-serif text-4xl italic mb-12">¿Envío o Retiro?</h3>
             <div class="space-y-4 w-full">
                 <button onclick="setLogistics('envio')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Envío a Domicilio</button>
                 <button onclick="setLogistics('retiro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Retiro en Tienda (Reñaca)</button>
             </div>
-            <button onclick="goToStep(2)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            <button onclick="goToStep('step-palette')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
         </div>
 
         <div id="step-envio" class="checkout-step flex-col items-center w-full max-w-md text-center">
@@ -525,7 +535,7 @@
         </div>
 
         <div id="step-time" class="checkout-step flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 4 de 7</span>
+            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 5 de 8</span>
             <h3 class="font-serif text-4xl italic mb-12">¿En qué horario prefiere la entrega?</h3>
             <div class="space-y-4 w-full">
                 <button onclick="selectOption(this, 'time'); setTimeout(()=>goToStep(4), 400)" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Mañana (10:00 - 12:00)</button>
@@ -536,7 +546,7 @@
         </div>
 
         <div id="step-4" class="checkout-step flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 5 de 7</span>
+            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 6 de 8</span>
             <h3 class="font-serif text-4xl italic mb-12">Mensaje en la tarjeta</h3>
             <textarea id="card-message" placeholder="Escriba su mensaje aquí..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-32"></textarea>
             <button onclick="goToStep(5)" class="mt-12 btn-premium w-full">Siguiente</button>
@@ -544,7 +554,7 @@
         </div>
 
         <div id="step-5" class="checkout-step flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 6 de 7</span>
+            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 7 de 8</span>
             <h3 class="font-serif text-4xl italic mb-12">Fono de contacto (Destino)</h3>
             <input type="tel" id="receiver-phone" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
             <button onclick="goToStep(6)" class="mt-12 btn-premium w-full">Siguiente</button>
@@ -747,6 +757,12 @@ window.addEventListener('load', function() {
     })();
     </script>
     <script>
+        let selectedPalette = '';
+
+        function setPalette(option) {
+            selectedPalette = option;
+            setTimeout(() => goToStep(3), 400); // Avanza limpiamente al paso de envío/retiro
+        }
     const catalog = [
     { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias." },
     { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.jpeg", desc: "Lilium majestuosos, rosas premium, nubes de gypso y maule aterciopelado." },
@@ -786,7 +802,6 @@ window.addEventListener('load', function() {
         </div>
     `).join('');
 
-        // --- LÓGICA DE CHECKOUT MULTI-PASO ---
         // --- LÓGICA DE CHECKOUT MULTI-PASO ---
         let selectedLogistics = '';
 
@@ -851,7 +866,7 @@ window.addEventListener('load', function() {
             const mensaje = document.getElementById('card-message').value;
             const fonoDestino = document.getElementById('receiver-phone').value;
             
-            // Buscamos el horario seleccionado (el botón que tiene el estilo de 'selected')
+            // Búsqueda del horario seleccionado
             const horarioBtn = document.querySelector('#step-time .step-option[style*="background"]');
             const horario = horarioBtn ? horarioBtn.innerText : 'No especificado';
 
@@ -859,29 +874,28 @@ window.addEventListener('load', function() {
             let articulos = cart.map(item => `- ${item.name} (Cant: ${item.qty})`).join('%0A');
             const total = document.getElementById('cart-total').innerText;
 
-            // 3. Configuración de Links (REEMPLAZA AQUÍ)
-            const LINK_MERCADO_PAGO = "https://link.mercadopago.cl/TU_USUARIO"; 
+            // 3. Configuración de Cuentas y Enlaces
+            const LINK_MERCADO_PAGO = "https://link.mercadopago.cl/laforestaflores"; 
             const NUMERO_WHATSAPP = "569XXXXXXXX"; 
 
-            // 4. Construcción del Mensaje
-            let texto = `*ORDEN PAGADA - LA FORESTA*%0A%0A`;
+            // 4. Construcción del Mensaje Estructurado para el Taller
+            let texto = `*ORDEN GENERADA - LA FORESTA*%0A%0A`;
+            texto += `*PALETA DE COLOR:* ${selectedPalette}%0A`; // <--- Dato clave para el artista floral
             texto += `*DE:* ${emisor}%0A`;
             texto += `*PARA:* ${receptor}%0A`;
             texto += `*ENTREGA:* ${selectedLogistics === 'envio' ? 'Domicilio' : 'Retiro'}%0A`;
             if(selectedLogistics === 'envio') texto += `*DIRECCIÓN:* ${direccion}%0A`;
-            if(quienRetira) texto += `*RETIRA:* ${quienRetira}%0A`;
+            if(selectedLogistics === 'retiro' && quienRetira) texto += `*RETIRA:* ${quienRetira}%0A`;
             texto += `*HORARIO:* ${horario}%0A`;
             texto += `*FONO:* ${fonoDestino}%0A%0A`;
             texto += `*TARJETA:* "${mensaje}"%0A%0A`;
             texto += `*PEDIDO:*%0A${articulos}%0A`;
             texto += `*TOTAL:* ${total}%0A%0A`;
-            texto += `_Adjunto comprobante de pago a continuación._`;
+            texto += `_Proceso de pago iniciado. Adjunto comprobante emitido por Mercado Pago._`;
 
-            // 5. Acción Doble
-            // Abre Mercado Pago en pestaña nueva
+            // 5. Despliegue de Pasarela y Redirección Dinámica
             window.open(LINK_MERCADO_PAGO, '_blank');
 
-            // Redirige la ventana actual a WhatsApp después de un segundo
             setTimeout(() => {
                 const wpUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${texto}`;
                 window.location.href = wpUrl;
