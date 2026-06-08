@@ -629,21 +629,17 @@
 </div>
     </div>
 </div>
-    // --- LÓGICA INTERACTIVA DEL FLUJO GARDEN ---
-        let selectedGardenSpace = '';
+    
+    <!-- LOGICA JAVASCRIPT -->
+    <script>
 
-        function openGardenFlow() {
-            const flow = document.getElementById('garden-flow');
-            flow.classList.remove('hidden');
-            setTimeout(() => flow.classList.add('opacity-100'), 10);
-            nextGardenStep(1);
-        }
+        // --- LÓGICA INTERACTIVA DEL FLUJO GARDEN ---
+        let selectedGardenSpace = '';
 
         document.addEventListener('DOMContentLoaded', () => {
             const flow = document.getElementById('garden-flow');
             if (flow) {
                 flow.style.transform = 'translateY(100%)';
-                flow.style.transition = 'transform 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease';
             }
         });
 
@@ -652,6 +648,7 @@
             flow.classList.remove('hidden');
             setTimeout(() => {
                 flow.style.transform = 'translateY(0)';
+                flow.classList.add('open');
                 flow.classList.add('opacity-100');
             }, 10);
             nextGardenStep(1);
@@ -660,14 +657,21 @@
         function closeGardenFlow() {
             const flow = document.getElementById('garden-flow');
             flow.style.transform = 'translateY(100%)';
+            flow.classList.remove('open');
             flow.classList.remove('opacity-100');
-            setTimeout(() => flow.classList.add('hidden'), 700);
+            setTimeout(() => flow.classList.add('hidden'), 500);
         }
 
         function nextGardenStep(stepNumber) {
-            document.querySelectorAll('.garden-step').forEach(step => step.classList.add('hidden'));
+            document.querySelectorAll('.garden-step').forEach(step => {
+                step.classList.remove('active');
+                step.classList.add('hidden');
+            });
             const targetStep = document.getElementById(`g-step-${stepNumber}`);
-            if (targetStep) targetStep.classList.remove('hidden');
+            if (targetStep) {
+                targetStep.classList.remove('hidden');
+                targetStep.classList.add('active');
+            }
         }
 
         function selectGardenOption(button, optionName) {
@@ -692,7 +696,7 @@
                 return;
             }
 
-            const NUMERO_WHATSAPP = "569XXXXXXXX"; // Configura tu número aquí
+            const NUMERO_WHATSAPP = "569XXXXXXXX"; 
             
             let texto = `*SOLICITUD ASESORÍA PAISAJISMO - LA FORESTA*%0A%0A`;
             texto += `*CLIENTE:* ${nombre}%0A`;
@@ -704,8 +708,6 @@
             window.open(wpUrl, '_blank');
             closeGardenFlow();
         }
-    <!-- LOGICA JAVASCRIPT -->
-    <script>
 // --- LÓGICA INTERACTIVA DEL FLUJO GARDEN ---
         let selectedGardenSpace = '';
 
