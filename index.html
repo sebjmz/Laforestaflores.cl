@@ -453,9 +453,9 @@
             </div>
             
             <div class="pt-6">
-                <button class="w-full sm:w-auto btn-premium !bg-transparent !text-forest-green !border-forest-green hover:!bg-forest-green hover:!text-gold-leaf uppercase text-xs tracking-widest font-bold px-10 py-4 transition-all duration-300">
-                    Consultar Proyecto Garden
-                </button>
+                <button onclick="openGardenFlow()" class="mt-12 btn-premium !bg-transparent !text-forest-green !border-forest-green hover:!bg-forest-green hover:!text-gold-leaf uppercase text-xs tracking-widest font-bold px-10 py-4 transition-all duration-300">
+    Consultar Proyecto Garden
+</button>
             </div>
         </div>
         
@@ -629,10 +629,158 @@
 </div>
     </div>
 </div>
-    
+    // --- LÓGICA INTERACTIVA DEL FLUJO GARDEN ---
+        let selectedGardenSpace = '';
+
+        function openGardenFlow() {
+            const flow = document.getElementById('garden-flow');
+            flow.classList.remove('hidden');
+            setTimeout(() => flow.classList.add('opacity-100'), 10);
+            nextGardenStep(1);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const flow = document.getElementById('garden-flow');
+            if (flow) {
+                flow.style.transform = 'translateY(100%)';
+                flow.style.transition = 'transform 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease';
+            }
+        });
+
+        function openGardenFlow() {
+            const flow = document.getElementById('garden-flow');
+            flow.classList.remove('hidden');
+            setTimeout(() => {
+                flow.style.transform = 'translateY(0)';
+                flow.classList.add('opacity-100');
+            }, 10);
+            nextGardenStep(1);
+        }
+
+        function closeGardenFlow() {
+            const flow = document.getElementById('garden-flow');
+            flow.style.transform = 'translateY(100%)';
+            flow.classList.remove('opacity-100');
+            setTimeout(() => flow.classList.add('hidden'), 700);
+        }
+
+        function nextGardenStep(stepNumber) {
+            document.querySelectorAll('.garden-step').forEach(step => step.classList.add('hidden'));
+            const targetStep = document.getElementById(`g-step-${stepNumber}`);
+            if (targetStep) targetStep.classList.remove('hidden');
+        }
+
+        function selectGardenOption(button, optionName) {
+            const stepContainer = button.closest('.garden-step');
+            stepContainer.querySelectorAll('.step-option').forEach(btn => {
+                btn.style.borderColor = 'rgba(10, 31, 28, 0.15)';
+                btn.style.background = 'transparent';
+            });
+            button.style.borderColor = '#c5a059';
+            button.style.background = 'rgba(197, 160, 89, 0.05)';
+            selectedGardenSpace = optionName;
+            setTimeout(() => nextGardenStep(3), 400);
+        }
+
+        function sendGardenConsultation() {
+            const nombre = document.getElementById('g-name').value.trim();
+            const detalles = document.getElementById('g-details').value.trim();
+            const fono = document.getElementById('g-phone').value.trim();
+
+            if(!nombre || !fono) {
+                alert("Por favor complete los campos obligatorios.");
+                return;
+            }
+
+            const NUMERO_WHATSAPP = "569XXXXXXXX"; // Configura tu número aquí
+            
+            let texto = `*SOLICITUD ASESORÍA PAISAJISMO - LA FORESTA*%0A%0A`;
+            texto += `*CLIENTE:* ${nombre}%0A`;
+            texto += `*TIPO DE PROYECTO:* ${selectedGardenSpace}%0A`;
+            texto += `*FONO CONTACTO:* ${fono}%0A%0A`;
+            texto += `*DETALLES:*%0A"${detalles}"`;
+
+            const wpUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${texto}`;
+            window.open(wpUrl, '_blank');
+            closeGardenFlow();
+        }
     <!-- LOGICA JAVASCRIPT -->
     <script>
+// --- LÓGICA INTERACTIVA DEL FLUJO GARDEN ---
+        let selectedGardenSpace = '';
 
+        function openGardenFlow() {
+            const flow = document.getElementById('garden-flow');
+            flow.classList.remove('hidden');
+            setTimeout(() => flow.classList.add('opacity-100'), 10);
+            nextGardenStep(1);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const flow = document.getElementById('garden-flow');
+            if (flow) {
+                flow.style.transform = 'translateY(100%)';
+                flow.style.transition = 'transform 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease';
+            }
+        });
+
+        function openGardenFlow() {
+            const flow = document.getElementById('garden-flow');
+            flow.classList.remove('hidden');
+            setTimeout(() => {
+                flow.style.transform = 'translateY(0)';
+                flow.classList.add('opacity-100');
+            }, 10);
+            nextGardenStep(1);
+        }
+
+        function closeGardenFlow() {
+            const flow = document.getElementById('garden-flow');
+            flow.style.transform = 'translateY(100%)';
+            flow.classList.remove('opacity-100');
+            setTimeout(() => flow.classList.add('hidden'), 700);
+        }
+
+        function nextGardenStep(stepNumber) {
+            document.querySelectorAll('.garden-step').forEach(step => step.classList.add('hidden'));
+            const targetStep = document.getElementById(`g-step-${stepNumber}`);
+            if (targetStep) targetStep.classList.remove('hidden');
+        }
+
+        function selectGardenOption(button, optionName) {
+            const stepContainer = button.closest('.garden-step');
+            stepContainer.querySelectorAll('.step-option').forEach(btn => {
+                btn.style.borderColor = 'rgba(10, 31, 28, 0.15)';
+                btn.style.background = 'transparent';
+            });
+            button.style.borderColor = '#c5a059';
+            button.style.background = 'rgba(197, 160, 89, 0.05)';
+            selectedGardenSpace = optionName;
+            setTimeout(() => nextGardenStep(3), 400);
+        }
+
+        function sendGardenConsultation() {
+            const nombre = document.getElementById('g-name').value.trim();
+            const detalles = document.getElementById('g-details').value.trim();
+            const fono = document.getElementById('g-phone').value.trim();
+
+            if(!nombre || !fono) {
+                alert("Por favor complete los campos obligatorios.");
+                return;
+            }
+
+            const NUMERO_WHATSAPP = "569XXXXXXXX"; // Configura tu número aquí
+            
+            let texto = `*SOLICITUD ASESORÍA PAISAJISMO - LA FORESTA*%0A%0A`;
+            texto += `*CLIENTE:* ${nombre}%0A`;
+            texto += `*TIPO DE PROYECTO:* ${selectedGardenSpace}%0A`;
+            texto += `*FONO CONTACTO:* ${fono}%0A%0A`;
+            texto += `*DETALLES:*%0A"${detalles}"`;
+
+            const wpUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${texto}`;
+            window.open(wpUrl, '_blank');
+            closeGardenFlow();
+        }
         // Estado del Carrito
         let cart = [];
 
