@@ -164,8 +164,9 @@
     left: 50%;
     width: 100vw;
     height: 100vh;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
+    transform: translate(-50%, -50%) scale(1.15); /* Escala para ocultar imperfecciones de carga */
+    pointer-events: none; /* Bloquea cualquier clic o foco que active los controles */
+    z-index: 1;
 }
 
 @media (min-aspect-ratio: 16/9) {
@@ -597,21 +598,20 @@
     
     <!-- LOGICA JAVASCRIPT -->
     <script>
-        // Función para cargar el video de fondo de forma discreta
-window.addEventListener('load', function() {
-    // ID: HMaN_DmpbMA en Base64 para mantener el código limpio
-    const _vId = atob("SE1hTl9EbXBiTUE="); 
-    const container = document.getElementById('video-bg-layer');
-    
-    if (container) {
-        const iframe = document.createElement('iframe');
-        // Parámetros: Autoplay, Mute, Loop, y ocultar elementos de marca de YouTube
-        iframe.src = `https://www.youtube.com/embed/${_vId}?autoplay=1&mute=1&loop=1&playlist=${_vId}&controls=0&showinfo=0&rel=0&enablejsapi=1&modestbranding=1&iv_load_policy=3&disablekb=1`;
-        iframe.frameBorder = "0";
-        iframe.allow = "autoplay; encrypted-media";
-        container.appendChild(iframe);
-    }
-});
+// Función para cargar el video de fondo de forma discreta y sin controles
+        window.addEventListener('load', function() {
+            const _vId = atob("SE1hTl9EbXBiTUE="); 
+            const container = document.getElementById('video-bg-layer');
+            
+            if (container) {
+                const iframe = document.createElement('iframe');
+                // Parámetros optimizados: controls=0, modestbranding=1, iv_load_policy=3, disablekb=1, fs=0
+                iframe.src = `https://www.youtube.com/embed/${_vId}?autoplay=1&mute=1&loop=1&playlist=${_vId}&controls=0&showinfo=0&rel=0&enablejsapi=1&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1`;
+                iframe.frameBorder = "0";
+                iframe.allow = "autoplay; encrypted-media";
+                container.appendChild(iframe);
+            }
+        });
         // Estado del Carrito
         let cart = [];
 
