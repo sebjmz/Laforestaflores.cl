@@ -560,11 +560,11 @@
     
     <div class="w-full mb-6">
         <select id="zone-select" onchange="calcularEnvio()" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 text-center text-sm uppercase tracking-widest font-bold focus:outline-none focus:border-[#c5a059]">
-            <option value="0" disabled selected>Seleccione su zona</option>
-            <option value="4">Reñaca Centro / Jardín del Mar</option>
-            <option value="8">Concón / Costa de Montemar</option>
-            <option value="6">Viña del Mar Centro / Poniente</option>
-        </select>
+    <option value="0" disabled selected>Seleccione su zona</option>
+    <option value="3">Reñaca Centro / Jardín del Mar</option>
+    <option value="8">Concón / Costa de Montemar</option>
+    <option value="9">Viña del Mar Centro / Poniente</option>
+</select>
     </div>
 
     <div class="flex justify-between w-full mb-8 px-2">
@@ -883,23 +883,30 @@
         let selectedZoneName = '';
 
         function calcularEnvio() {
-            const select = document.getElementById('zone-select');
-            const display = document.getElementById('shipping-display');
-            const km = parseFloat(select.value);
+    const select = document.getElementById('zone-select');
+    const display = document.getElementById('shipping-display');
+    const km = parseFloat(select.value);
 
-            if (km === 0) return;
+    if (km === 0) return;
 
-            let costo = km * 900;
-            if (costo < 3500) {
-                costo = 3500;
-            }
-            
-            shippingCost = costo; 
-            selectedZoneName = select.options[select.selectedIndex].text;
-            
-            display.innerText = '$' + costo.toLocaleString();
-            actualizarTotalConDespacho();
-        } 
+    // Cálculo: $900 por km
+    let costo = km * 900;
+    
+    // Aplicar mínimo de $3.500
+    if (costo < 3500) {
+        costo = 3500;
+    }
+    
+    // Asignación de variables
+    shippingCost = costo; 
+    selectedZoneName = select.options[select.selectedIndex].text;
+    
+    // Actualización de UI
+    display.innerText = '$' + costo.toLocaleString();
+    
+    // Refrescar total final
+    actualizarTotalConDespacho();
+}
 
         // Valida que el usuario haya seleccionado una zona y escrito su dirección
         function verificarDireccionYContinuar() {
