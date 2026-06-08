@@ -408,60 +408,60 @@
         </div>
     </section>
 
-    <!-- SECCIÓN: LA FORESTA GARDEN -->
     <!-- SECCIÓN: LA FORESTA GARDEN REFINADA -->
-<section id="garden" class="py-32 px-6 md:px-12 bg-zinc-50 border-t border-zinc-100">
-    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
- 
-        <!-- Bloque Izquierdo: Galería Interactiva con transiciones suaves -->
-        <div class="w-full lg:w-1/2">
-            <div onclick="toggleGardenImage()" class="overflow-hidden aspect-[4/5] bg-zinc-200 relative cursor-pointer group">
-                
-                <!-- Imagen 1 (Inicial) -->
-                <img id="garden-img-1" src="img/garden-2.png" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-100" alt="La Foresta Garden Selection - Vista Principal">
-                
-                <!-- Imagen 2 (Alternativa) -->
-                <img id="garden-img-2" src="img/garden-1.png" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-0" alt="La Foresta Garden Selection - Vista Secundaria">
-                
-                <!-- Pequeño indicador de lujo flotante -->
-                <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md px-3 py-1 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                    Cambiar Vista
+    <section id="garden" class="py-32 px-6 md:px-12 bg-zinc-50 border-t border-zinc-100">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
+            <div class="w-full lg:w-1/2">
+                <div onclick="toggleGardenImage()" class="overflow-hidden aspect-[4/5] bg-zinc-200 relative cursor-pointer group">
+                    <img id="garden-img-1" src="img/garden-2.png" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-100" alt="Vista Principal">
+                    <img id="garden-img-2" src="img/garden-1.png" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-0" alt="Vista Secundaria">
+                    <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md px-3 py-1 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">Cambiar Vista</div>
+                </div>
+            </div>
+            <div class="w-full lg:w-1/2 space-y-10 text-left lg:padding-left-8">
+                <div class="space-y-4">
+                    <span class="text-gold-leaf text-xs font-bold uppercase tracking-[0.4em] block">Outdoor & Landscapes</span>
+                    <h2 class="text-5xl md:text-6xl font-serif italic leading-tight text-[#0a1f1c]">La Foresta <br>Garden Selection.</h2>
+                </div>
+                <p class="text-zinc-600 font-light text-lg leading-relaxed max-w-xl">
+                    Extendemos la belleza al exterior. Nuestro equipo de paisajismo diseña terrazas y jardines que respiran el aire de Reñaca.
+                </p>
+                <div class="pt-6">
+                    <button onclick="openGardenFlow()" class="mt-12 btn-premium !bg-transparent !text-forest-green !border-forest-green hover:!bg-forest-green hover:!text-gold-leaf uppercase text-xs tracking-widest font-bold px-10 py-4 transition-all duration-300">
+                        Consultar Proyecto Garden
+                    </button>
                 </div>
             </div>
         </div>
-        
-        <!-- Bloque Derecho: Contenido editorial limpio -->
-        <div class="w-full lg:w-1/2 space-y-10 text-left lg:padding-left-8">
-            <div class="space-y-4">
-                <span class="text-gold-leaf text-xs font-bold uppercase tracking-[0.4em] block">Outdoor & Landscapes</span>
-                <h2 class="text-5xl md:text-6xl font-serif italic leading-tight text-[#0a1f1c]">La Foresta <br>Garden Selection.</h2>
-            </div>
-            
-            <p class="text-zinc-600 font-light text-lg leading-relaxed max-w-xl">
-                Extendemos la belleza al exterior. Nuestro equipo de paisajismo diseña terrazas y jardines que respiran el aire de Reñaca. Ofrecemos especies aclimatadas a la zona costera y macetería de diseño europeo.
-            </p>
-            
-            <!-- Tarifario Minimalista sin bordes pesados -->
-            <div class="space-y-6 max-w-xl pt-4">
-                <div class="flex justify-between items-baseline border-b border-zinc-200/60 pb-3">
-                    <span class="text-xs font-bold uppercase tracking-widest text-[#0a1f1c]">Paisajismo de Terraza</span>
-                    <span class="text-gold-leaf font-serif italic text-lg">Desde $500.000</span>
-                </div>
-                <div class="flex justify-between items-baseline border-b border-zinc-200/60 pb-3">
-                    <span class="text-xs font-bold uppercase tracking-widest text-[#0a1f1c]">Mantenimiento VIP Garden</span>
-                    <span class="text-gold-leaf font-serif italic text-lg">Mensualidad Flat</span>
+    </section>
+
+    <!-- CONTENEDOR DEL GARDEN FLOW (PEGAR ESTO AQUÍ) -->
+    <div id="garden-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden opacity-0 transition-opacity duration-500">
+        <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
+            <h2 class="font-serif text-xl tracking-widest uppercase text-gold-leaf">Garden Selection</h2>
+            <button onclick="closeGardenFlow()" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
+        </div>
+        <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
+            <div id="g-step-1" class="garden-step active flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1 de 2</span>
+                <h3 class="font-serif text-4xl italic mb-12">¿Qué espacio desea intervenir?</h3>
+                <div class="space-y-4 w-full">
+                    <button onclick="selectGardenOption(this, 'Terraza o Balcón')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Terraza o Balcón</button>
+                    <button onclick="selectGardenOption(this, 'Jardín Exterior')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Jardín Exterior</button>
+                    <button onclick="selectGardenOption(this, 'Interior / Corporativo')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Interior / Corporativo</button>
                 </div>
             </div>
-            
-            <div class="pt-6">
-                <button onclick="openGardenFlow()" class="mt-12 btn-premium !bg-transparent !text-forest-green !border-forest-green hover:!bg-forest-green hover:!text-gold-leaf uppercase text-xs tracking-widest font-bold px-10 py-4 transition-all duration-300">
-    Consultar Proyecto Garden
-</button>
+            <div id="g-step-3" class="garden-step flex-col items-center w-full max-w-md text-center hidden">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2 de 2</span>
+                <h3 class="font-serif text-3xl italic mb-8">Detalles del Proyecto</h3>
+                <input type="text" id="g-name" placeholder="Su Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <input type="tel" id="g-phone" placeholder="Teléfono (+56 9...)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <textarea id="g-details" placeholder="Detalles de su idea o medidas del espacio..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-28 mb-8"></textarea>
+                <button onclick="sendGardenConsultation()" class="w-full btn-premium">Enviar Consulta</button>
+                <button onclick="nextGardenStep(1)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
         </div>
-        
     </div>
-</section>
 
     <!-- FOOTER -->
     <footer class="bg-forest-green text-soft-cream py-24 px-6 border-t border-gold-leaf/20">
