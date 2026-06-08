@@ -158,23 +158,17 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--soft-cream); }
         ::-webkit-scrollbar-thumb { background: var(--gold-leaf); }
-        #video-bg-layer iframe {
+        #video-bg-layer video {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 100vw;
-    height: 100vh;
-    transform: translate(-50%, -50%) scale(1.15); /* Escala para ocultar imperfecciones de carga */
-    pointer-events: none; /* Bloquea cualquier clic o foco que active los controles */
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%) scale(1.02);
+    object-fit: cover;
     z-index: 1;
-}
-
-@media (min-aspect-ratio: 16/9) {
-    #video-bg-layer iframe { height: 56.25vw; }
-}
-
-@media (max-aspect-ratio: 16/9) {
-    #video-bg-layer iframe { width: 177.78vh; }
 }
         /* Checkout Multi-Paso Minimalista */
         #checkout-flow {
