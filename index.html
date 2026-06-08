@@ -210,7 +210,7 @@
                 LA FORESTA
             </div>
             <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap">
-                <a href="#vault" onclick="openVault()" class="hover:text-gold-leaf transition">Catálogo</a>
+                <a href="#vault" onclick="openVault()" class="hover:text-gold-leaf transition">Colección</a>
                 <a href="#privilege" class="hover:text-gold-leaf transition">B2B Privilege</a>
                 <a href="#garden" class="hover:text-gold-leaf transition">Garden</a>
             </div>
@@ -267,7 +267,7 @@
                 <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
             </h1>
             <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
-                <button onclick="openVault()" class="btn-premium">EXPLORAR CATÁLOGO</button>
+                <button onclick="openVault()" class="btn-premium">EXPLORAR COLECCIÓN</button>
                 <a href="#privilege" class="btn-gold-outline flex items-center justify-center uppercase text-xs font-bold tracking-widest">Portal Empresas</a>
             </div>
         </div>
@@ -326,7 +326,7 @@
     <section id="vault" class="bg-white py-12 border-t border-zinc-100">
     <div class="max-w-7xl mx-auto px-6">
         <div onclick="openVault()" class="flex justify-between items-center cursor-pointer py-10 group">
-            <h2 class="text-6xl md:text-8xl font-serif italic group-hover:text-gold-leaf transition-colors">The Vault</h2>
+            <h2 class="text-6xl md:text-8xl font-serif italic group-hover:text-gold-leaf transition-colors">Colección</h2>
             <div id="vault-plus" class="text-4xl font-light transition-transform duration-700">+</div>
         </div>
 
@@ -793,7 +793,7 @@
                 container.innerHTML = `
                     <div class="text-center py-20 opacity-40">
                         <p class="uppercase tracking-widest text-[10px]">Su bolsa está vacía</p>
-                        <button onclick="toggleCart(); openVault();" class="mt-4 text-gold-leaf border-b border-gold-leaf text-[10px] font-bold uppercase tracking-widest">Ir al Catálogo</button>
+                        <button onclick="toggleCart(); openVault();" class="mt-4 text-gold-leaf border-b border-gold-leaf text-[10px] font-bold uppercase tracking-widest">Ir a la Colección</button>
                     </div>
                 `;
                 totalEl.innerText = `$0`;
