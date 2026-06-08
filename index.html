@@ -520,9 +520,27 @@
 
         <div id="step-envio" class="checkout-step flex-col items-center w-full max-w-md text-center">
             <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-            <h3 class="font-serif text-4xl italic mb-12">Dirección de entrega</h3>
-            <input type="text" id="address" placeholder="Calle, número, depto / Casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-            <button onclick="goToStep('step-time')" class="mt-12 btn-premium w-full">Siguiente</button>
+            <h3 class="font-serif text-4xl italic mb-6">Zona de Entrega</h3>
+            
+            <div class="space-y-3 w-full mb-8">
+                <button onclick="selectZone(this, 'Reñaca / Jardín del Mar', 4000)" class="step-option w-full py-4 text-xs uppercase tracking-widest font-bold flex justify-between px-6 items-center">
+                    <span>Reñaca Centro / Jardín del Mar</span>
+                    <span class="text-gold-leaf font-serif italic">+$4.000</span>
+                </button>
+                <button onclick="selectZone(this, 'Concón / Montemar', 6000)" class="step-option w-full py-4 text-xs uppercase tracking-widest font-bold flex justify-between px-6 items-center">
+                    <span>Concón / Costa de Montemar</span>
+                    <span class="text-gold-leaf font-serif italic">+$6.000</span>
+                </button>
+                <button onclick="selectZone(this, 'Viña Centro / Poniente', 5000)" class="step-option w-full py-4 text-xs uppercase tracking-widest font-bold flex justify-between px-6 items-center">
+                    <span>Viña del Mar Centro / Poniente</span>
+                    <span class="text-gold-leaf font-serif italic">+$5.000</span>
+                </button>
+            </div>
+
+            <h3 class="font-serif text-2xl italic mb-4">Dirección exacta</h3>
+            <input type="text" id="address" placeholder="Calle, número, depto / Casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-3 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c]">
+            
+            <button onclick="verificarDireccionYContinuar()" class="mt-8 btn-premium w-full">Siguiente</button>
             <button onclick="goToStep(3)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
         </div>
 
@@ -763,6 +781,64 @@ window.addEventListener('load', function() {
             selectedPalette = option;
             setTimeout(() => goToStep(3), 400); // Avanza limpiamente al paso de envío/retiro
         }
+        let shippingCost = 0;
+        let selectedZoneName = '';
+
+        // Función para seleccionar la zona y actualizar visualmente el total
+        function selectZone(button, zoneName, cost) {
+            // Marcar visualmente el botón seleccionado
+            const container = button.closest('.checkout-step');
+            container.querySelectorAll('.step-option').forEach(btn => {
+                btn.style.borderColor = 'rgba(10, 31, 28, 0.15)';
+                btn.style.background = 'transparent';
+            });
+            button.style.borderColor = '#c5a059';
+            button.style.background = 'rgba(197, 160, 89, 0.05)';
+
+            // Guardar valores
+            shippingCost = cost;
+            selectedZoneName = zoneName;
+
+            // Recalcular el total en la pantalla del checkout si es necesario
+            actualizarTotalConDespacho();
+        }
+
+        // Valida que el usuario haya seleccionado una zona y escrito su dirección
+        function verificarDireccionYContinuar() {
+            const dir = document.getElementById('address').value.trim();
+            if (!selectedZoneName) {
+                alert("Por favor, seleccione una zona de entrega para el envío.");
+                return;
+            }
+            if (!dir) {
+                alert("Por favor, ingrese la dirección exacta de entrega.");
+                return;
+            }
+            goToStep('step-time');
+        }
+
+        // Modificación sutil para resetear el costo si eligen Retiro en Tienda
+        // Reemplaza tu función setLogistics antigua por esta:
+        function setLogistics(option) {
+            selectedLogistics = option;
+            if(option === 'envio') {
+                setTimeout(() => goToStep('step-envio'), 300);
+            } else {
+                shippingCost = 0; // Sin costo si retira
+                selectedZoneName = 'Retiro en Tienda';
+                actualizarTotalConDespacho();
+                setTimeout(() => goToStep('step-retiro'), 300);
+            }
+        }
+
+        // Renderiza el total real sumando el envío dinámicamente
+        function actualizarTotalConDespacho() {
+            const baseTotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            const totalFinal = baseTotal + shippingCost;
+            
+            // Actualiza el contenedor del total en el checkout/carrito
+            document.getElementById('cart-total').innerText = `$${totalFinal.toLocaleString()}`;
+        }
     const catalog = [
     { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias." },
     { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.jpeg", desc: "Lilium majestuosos, rosas premium, nubes de gypso y maule aterciopelado." },
@@ -861,18 +937,25 @@ window.addEventListener('load', function() {
             // 1. Recolección de Datos de los Inputs
             const emisor = document.getElementById('sender-name').value;
             const receptor = document.getElementById('receiver-name').value;
-            const direccion = selectedLogistics === 'envio' ? document.getElementById('address').value : 'Retiro en Tienda';
-            const quienRetira = document.getElementById('pickup-name') ? document.getElementById('pickup-name').value : '';
             const mensaje = document.getElementById('card-message').value;
             const fonoDestino = document.getElementById('receiver-phone').value;
             
-            // Búsqueda del horario seleccionado
+            let destinoFinal = "";
+            if(selectedLogistics === 'envio') {
+                destinoFinal = `Envío a Domicilio (${selectedZoneName})%0A• *DIRECCIÓN:* ${document.getElementById('address').value}`;
+            } else {
+                const quienRetira = document.getElementById('pickup-name') ? document.getElementById('pickup-name').value : '';
+                destinoFinal = `Retiro en Atelier Reñaca%0A• *RETIRA:* ${quienRetira}`;
+            }
+            
             const horarioBtn = document.querySelector('#step-time .step-option[style*="background"]');
             const horario = horarioBtn ? horarioBtn.innerText : 'No especificado';
 
-            // 2. Resumen del Carrito
+            // 2. Resumen del Carrito y Cálculos
             let articulos = cart.map(item => `- ${item.name} (Cant: ${item.qty})`).join('%0A');
-            const total = document.getElementById('cart-total').innerText;
+            
+            const baseTotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            const totalFinal = baseTotal + shippingCost;
 
             // 3. Configuración de Cuentas y Enlaces
             const LINK_MERCADO_PAGO = "https://link.mercadopago.cl/laforestaflores"; 
@@ -880,17 +963,16 @@ window.addEventListener('load', function() {
 
             // 4. Construcción del Mensaje Estructurado para el Taller
             let texto = `*ORDEN GENERADA - LA FORESTA*%0A%0A`;
-            texto += `*PALETA DE COLOR:* ${selectedPalette}%0A`; // <--- Dato clave para el artista floral
+            texto += `*PALETA DE COLOR:* ${selectedPalette}%0A`;
             texto += `*DE:* ${emisor}%0A`;
             texto += `*PARA:* ${receptor}%0A`;
-            texto += `*ENTREGA:* ${selectedLogistics === 'envio' ? 'Domicilio' : 'Retiro'}%0A`;
-            if(selectedLogistics === 'envio') texto += `*DIRECCIÓN:* ${direccion}%0A`;
-            if(selectedLogistics === 'retiro' && quienRetira) texto += `*RETIRA:* ${quienRetira}%0A`;
+            texto += `*LOGÍSTICA:* ${destinoFinal}%0A`;
             texto += `*HORARIO:* ${horario}%0A`;
             texto += `*FONO:* ${fonoDestino}%0A%0A`;
             texto += `*TARJETA:* "${mensaje}"%0A%0A`;
             texto += `*PEDIDO:*%0A${articulos}%0A`;
-            texto += `*TOTAL:* ${total}%0A%0A`;
+            if(shippingCost > 0) texto += `*COSTO ENVÍO:* $${shippingCost.toLocaleString()}%0A`;
+            texto += `*TOTAL A PAGAR:* $${totalFinal.toLocaleString()}%0A%0A`;
             texto += `_Proceso de pago iniciado. Adjunto comprobante emitido por Mercado Pago._`;
 
             // 5. Despliegue de Pasarela y Redirección Dinámica
