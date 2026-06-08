@@ -998,6 +998,27 @@
                 const wpUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${texto}`;
                 window.location.href = wpUrl;
             }, 1000);
+        } 
+        // Alternancia interactiva para la sección Garden Selection
+        function toggleGardenImage() {
+            const img1 = document.getElementById('garden-img-1');
+            const img2 = document.getElementById('garden-img-2');
+            
+            if (img1 && img2) {
+                if (img1.classList.contains('opacity-100')) {
+                    // Cambia a Imagen 2
+                    img1.classList.remove('opacity-100');
+                    img1.classList.add('opacity-0');
+                    img2.classList.remove('opacity-0');
+                    img2.classList.add('opacity-100');
+                } else {
+                    // Vuelve a Imagen 1
+                    img2.classList.remove('opacity-100');
+                    img2.classList.add('opacity-0');
+                    img1.classList.remove('opacity-0');
+                    img1.classList.add('opacity-100');
+                }
+            }
         }
     </script>
 </body>
