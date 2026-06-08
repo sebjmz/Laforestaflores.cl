@@ -555,23 +555,24 @@
         </div>
 
         <div id="step-envio" class="checkout-step flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-            <h3 class="font-serif text-4xl italic mb-6">Zona de Entrega</h3>
-            
-            <div class="space-y-3 w-full mb-8">
-                <button onclick="selectZone(this, 'Reñaca / Jardín del Mar', 4000)" class="step-option w-full py-4 text-xs uppercase tracking-widest font-bold flex justify-between px-6 items-center">
-                    <span>Reñaca Centro / Jardín del Mar</span>
-                    <span class="text-gold-leaf font-serif italic">+$4.000</span>
-                </button>
-                <button onclick="selectZone(this, 'Concón / Montemar', 6000)" class="step-option w-full py-4 text-xs uppercase tracking-widest font-bold flex justify-between px-6 items-center">
-                    <span>Concón / Costa de Montemar</span>
-                    <span class="text-gold-leaf font-serif italic">+$6.000</span>
-                </button>
-                <button onclick="selectZone(this, 'Viña Centro / Poniente', 5000)" class="step-option w-full py-4 text-xs uppercase tracking-widest font-bold flex justify-between px-6 items-center">
-                    <span>Viña del Mar Centro / Poniente</span>
-                    <span class="text-gold-leaf font-serif italic">+$5.000</span>
-                </button>
-            </div>
+    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
+    <h3 class="font-serif text-4xl italic mb-6">Zona de Entrega</h3>
+    
+    <div class="space-y-4 w-full mb-8">
+        <select id="zone-select" onchange="updateZoneFromSelect(this)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 text-center text-sm uppercase tracking-widest font-bold focus:outline-none focus:border-[#c5a059]">
+            <option value="" disabled selected>Seleccione su zona</option>
+            <option value="Reñaca / Jardín del Mar|4000">Reñaca / Jardín del Mar (+$4.000)</option>
+            <option value="Concón / Montemar|6000">Concón / Costa de Montemar (+$6.000)</option>
+            <option value="Viña Centro / Poniente|5000">Viña del Mar Centro / Poniente (+$5.000)</option>
+        </select>
+    </div>
+
+    <h3 class="font-serif text-2xl italic mb-4">Dirección exacta</h3>
+    <input type="text" id="address" placeholder="Calle, número, depto / Casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-3 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c]">
+    
+    <button onclick="validarYContinuarEnvio()" class="mt-8 btn-premium w-full">Siguiente</button>
+    <button onclick="goToStep(3)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+</div>
 
             <h3 class="font-serif text-2xl italic mb-4">Dirección exacta</h3>
             <input type="text" id="address" placeholder="Calle, número, depto / Casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-3 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c]">
@@ -633,6 +634,34 @@
     
     <!-- LOGICA JAVASCRIPT -->
     <script>
+
+        // 1. Captura la selección del desplegable
+function updateZoneFromSelect(selectElement) {
+    const [nombre, precio] = selectElement.value.split('|');
+    selectZone(selectElement, nombre, parseInt(precio));
+}
+
+// 2. Valida todo antes de avanzar
+function validarYContinuarEnvio() {
+    const zona = document.getElementById('zone-select').value;
+    const dir = document.getElementById('address').value.trim();
+
+    if (!zona) {
+        alert("Por favor, seleccione una zona de la lista.");
+        return;
+    }
+    if (dir.length < 5) {
+        alert("Por favor, ingrese una dirección válida.");
+        return;
+    }
+    // Si la zona es Reñaca pero la dirección dice Viña, bloquea
+    if (zona.includes('Reñaca') && dir.toLowerCase().includes('viña')) {
+        alert("La dirección ingresada parece corresponder a Viña del Mar, por favor verifique la zona seleccionada.");
+        return;
+    }
+    
+    verificarDireccionYContinuar();
+}
 
         // --- LÓGICA INTERACTIVA DEL FLUJO GARDEN ---
         let selectedGardenSpace = '';
