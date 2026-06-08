@@ -406,11 +406,21 @@
     <!-- SECCIÓN: LA FORESTA GARDEN REFINADA -->
 <section id="garden" class="py-32 px-6 md:px-12 bg-zinc-50 border-t border-zinc-100">
     <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
-        
-        <!-- Bloque Izquierdo: Una sola pieza visual escultural -->
+ 
+        <!-- Bloque Izquierdo: Galería Interactiva con transiciones suaves -->
         <div class="w-full lg:w-1/2">
-            <div class="overflow-hidden aspect-[4/5] bg-zinc-200">
-                <img src="img/garden-2.png" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 ease-out transform hover:scale-105" alt="La Foresta Garden Selection">
+            <div onclick="toggleGardenImage()" class="overflow-hidden aspect-[4/5] bg-zinc-200 relative cursor-pointer group">
+                
+                <!-- Imagen 1 (Inicial) -->
+                <img id="garden-img-1" src="img/garden-2.png" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-100" alt="La Foresta Garden Selection - Vista Principal">
+                
+                <!-- Imagen 2 (Alternativa) -->
+                <img id="garden-img-2" src="img/garden-1.png" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-0" alt="La Foresta Garden Selection - Vista Secundaria">
+                
+                <!-- Pequeño indicador de lujo flotante -->
+                <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md px-3 py-1 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    Cambiar Vista
+                </div>
             </div>
         </div>
         
