@@ -506,7 +506,7 @@
 
         </div>
         <div class="max-w-7xl mx-auto border-t border-white/5 mt-20 pt-10 flex flex-col md:flex-row justify-between items-center opacity-30">
-            <p class="text-[9px] uppercase tracking-widest">© 2024 La Foresta Flores & Garden. Todos los derechos reservados.</p>
+            <p class="text-[9px] uppercase tracking-widest">© <span id="year-footer">2026</span> La Foresta Flores & Garden. Todos los derechos reservados.</p>
             <p class="text-[9px] uppercase tracking-widest mt-4 md:mt-0 italic">World Class Florist - Reñaca Distinction</p>
         </div>
     </footer>
@@ -872,13 +872,12 @@
     })();
 
 document.addEventListener("DOMContentLoaded", function() {
-    const yearElement = document.getElementById("year-display");
-    if (yearElement) {
-        yearElement.innerText = new Date().getFullYear();
-    }
-});
-        
-    </script>
+        const yearElement = document.getElementById("year-display");
+        if (yearElement) {
+            yearElement.innerText = new Date().getFullYear();
+        }
+    });
+</script>
     <script>
         let selectedPalette = '';
 
