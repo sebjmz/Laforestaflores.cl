@@ -1207,33 +1207,40 @@ function closeCheckout() {
             texto += `*TOTAL A PAGAR:* $${totalFinal.toLocaleString()}`;
 
             const preferenceData = {
-                items: [
-                    {
-                        title: "Pedido La Foresta",
-                        quantity: 1,
-                        unit_price: totalFinal,
-                        currency_id: "CLP"
-                    }
-                ],
-                back_urls: {
-                    success: window.location.origin + "?payment_result=success",
-                    failure: window.location.origin + "?payment_result=failure",
-                    pending: window.location.origin + "?payment_result=pending"
-                },
-                auto_return: "approved",
-                metadata: { 
-                    sender_name: emisor,
-                    receiver_name: receptor,
-                    palette: selectedPalette,
-                    logistics_detail: destinoFinal,
-                    time_slot: horario,
-                    destination_phone: fonoDestino,
-                    card_text: mensaje,
-                    order_summary: articulos,
-                    total_price: totalFinal
-                }
-            };
-
+    items: [
+        {
+            title: "Pedido La Foresta",
+            quantity: 1,
+            unit_price: totalFinal,
+            currency_id: "CLP"
+        }
+    ],
+    payer: {
+        name: emisor,
+        email: "laforestaflores@hotmail.com",
+        identification: {
+            type: "RUT",
+            number: "66666666-6"
+        }
+    },
+    back_urls: {
+        success: window.location.origin + "?payment_result=success",
+        failure: window.location.origin + "?payment_result=failure",
+        pending: window.location.origin + "?payment_result=pending"
+    },
+    auto_return: "approved",
+    metadata: { 
+        sender_name: emisor,
+        receiver_name: receptor,
+        palette: selectedPalette,
+        logistics_detail: destinoFinal,
+        time_slot: horario,
+        destination_phone: fonoDestino,
+        card_text: mensaje,
+        order_summary: articulos,
+        total_price: totalFinal
+    }
+};
             try {
                 const response = await fetch('https://old-brook-bf01.sebjmz.workers.dev', {
                     method: 'POST',
