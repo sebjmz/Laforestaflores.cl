@@ -660,8 +660,38 @@
                     const NUMERO_WHATSAPP = "56994783520";
                     
                     let textoFinal = textoGuardado + `\n\n*COMPROBANTE DE PAGO APROBADO*\n• *ID TRANSACCIÓN MP:* ${paymentId}`;
+                    const wpUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(textoFinal)}`;
 
-                    window.location.href = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(textoFinal)}`;
+                    // Intercepta el flujo del Checkout para transformarlo en un Recibo Digital Estático
+                    const checkoutFlow = document.getElementById('checkout-flow');
+                    if (checkoutFlow) {
+                        checkoutFlow.classList.add('open');
+                        checkoutFlow.innerHTML = `
+                            <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
+                                <h2 class="font-serif text-xl tracking-widest uppercase text-gold-leaf">La Foresta | Recibo de Compra</h2>
+                                <button onclick="closeCheckout(); window.location.href=window.location.origin;" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
+                            </div>
+                            <div class="flex-grow flex flex-col justify-center items-center p-6 text-center max-w-md mx-auto space-y-6">
+                                <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-leaf bg-gold-leaf/10 px-4 py-1.5 border border-gold-leaf/20">Pago Exitoso</span>
+                                <h3 class="font-serif text-4xl italic">Transacción Verificada</h3>
+                                <p class="text-xs uppercase tracking-widest opacity-60 leading-relaxed">
+                                    Su orden ha sido procesada correctamente a través de los servidores seguros de Mercado Pago.
+                                </p>
+                                <div class="w-full bg-zinc-50 border p-6 text-left space-y-2 font-mono text-xs text-zinc-700">
+                                    <p class="font-bold border-b pb-2 uppercase tracking-wider font-sans text-[10px] text-forest-green">Comprobante Oficial</p>
+                                    <p><strong>ID Transacción:</strong> ${paymentId}</p>
+                                    <p><strong>Estado de Pago:</strong> Acreditado</p>
+                                    <p><strong>Fecha de Emisión:</strong> ${new Date().toLocaleDateString('es-CL')}</p>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-widest opacity-60 leading-normal">
+                                    Presione el botón inferior para abrir WhatsApp en una nueva pestaña. Así podrá transmitir los detalles y coordinar la entrega sin perder este comprobante de pantalla.
+                                </p>
+                                <a href="${wpUrl}" target="_blank" class="w-full btn-premium inline-block text-center pt-4 uppercase text-xs tracking-widest font-bold hover:bg-forest-green hover:text-gold-leaf transition">
+                                    COORDINAR DESPACHO VÍA WHATSAPP
+                                </a>
+                            </div>
+                        `;
+                    }
                     return;
                 }
             }
