@@ -707,27 +707,36 @@
 
         // --- LOGICA DE FLUJO MULTI-PASO ---
         function openCheckout() {
-            if(cart.length === 0) {
-                alert("Su bolsa está vacía. Añada una pieza botánica primero.");
-                return;
-            }
-            toggleCart();
-            localStorage.setItem('laforesta_checkout_abierto', 'true');
-            document.getElementById('checkout-flow').classList.add('open');
-            
-            const progreso = JSON.parse(localStorage.getItem('laforesta_checkout_inputs'));
-            goToStep(progreso?.currentStep || 1);
-            
-            const currentStepId = progreso?.currentStep || 'step-1';
-            if (currentStepId === 'step-time') {
-                renderHorariosInteligentes();
-            }
-        }
+    if(cart.length === 0) {
+        alert("Su bolsa está vacía. Añada una pieza botánica primero.");
+        return;
+    }
+    toggleCart();
+    localStorage.setItem('laforesta_checkout_abierto', 'true');
+    
+    const flow = document.getElementById('checkout-flow');
+    flow.classList.remove('hidden');
+    setTimeout(() => {
+        flow.classList.add('open');
+    }, 10);
+    
+    const progreso = JSON.parse(localStorage.getItem('laforesta_checkout_inputs'));
+    goToStep(progreso?.currentStep || 1);
+    
+    const currentStepId = progreso?.currentStep || 'step-1';
+    if (currentStepId === 'step-time') {
+        renderHorariosInteligentes();
+    }
+}
 
-        function closeCheckout() {
-            localStorage.removeItem('laforesta_checkout_abierto');
-            document.getElementById('checkout-flow').classList.remove('open');
-        }
+function closeCheckout() {
+    localStorage.removeItem('laforesta_checkout_abierto');
+    const flow = document.getElementById('checkout-flow');
+    flow.classList.remove('open');
+    setTimeout(() => {
+        flow.classList.add('hidden');
+    }, 700); // 700ms coincide con la transición CSS
+}
 
         function goToStep(stepId) {
             const targetId = typeof stepId === 'number' ? `step-${stepId}` : stepId;
