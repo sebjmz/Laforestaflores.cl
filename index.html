@@ -550,17 +550,17 @@
         
         <div id="step-3" class="checkout-step flex-col items-center w-full max-w-md text-center">
     <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 3 de 9</span>
-    <h3 class="font-serif text-4xl italic mb-12">¿Cómo prefiere el encuentro con sus flores?</h3>
+    <h3 class="font-serif text-3xl italic mb-12">Modalidad de entrega</h3>
     <div class="space-y-4 w-full">
-        <button onclick="seleccionarModalidad('envio')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">🚚 Despacho de Autor</button>
-        <button onclick="seleccionarModalidad('retiro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">🏛️ Recoger en Atelier Reñaca</button>
+        <button onclick="seleccionarModalidad('envio')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Despacho a domicilio</button>
+        <button onclick="seleccionarModalidad('retiro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Retiro en tienda</button>
     </div>
     <button onclick="goToStep('step-palette')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
 </div>
 
 <div id="step-zona" class="checkout-step flex-col items-center w-full max-w-md text-center">
     <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-    <h3 class="font-serif text-4xl italic mb-12">¿A qué zona viaja este diseño?</h3>
+    <h3 class="font-serif text-3xl italic mb-12">Zona de entrega</h3>
     <div class="space-y-4 w-full">
         <button onclick="seleccionarZona(3, 'Reñaca Centro / Jardín del Mar')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Reñaca Centro / Jardín del Mar (+$3.500)</button>
         <button onclick="seleccionarZona(9, 'Viña del Mar Centro / Poniente')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Viña del Mar Centro / Poniente (+$8.100)</button>
@@ -571,37 +571,51 @@
 
 <div id="step-direccion" class="checkout-step flex-col items-center w-full max-w-md text-center">
     <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-    <h3 class="font-serif text-4xl italic mb-6">Coordenadas de Entrega</h3>
-    <input type="text" id="address" placeholder="Calle, número, depto o casa..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
-    <button onclick="confirmarDireccion()" class="btn-premium w-full">Confirmar Coordenadas</button>
+    <h3 class="font-serif text-3xl italic mb-6">Dirección exacta</h3>
+    <input type="text" id="address" placeholder="Calle, número, departamento o casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
+    <button onclick="confirmarDireccion()" class="btn-premium w-full">Confirmar dirección</button>
     <button onclick="goToStep('step-zona')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
 </div>
 
 <div id="step-quien-retira" class="checkout-step flex-col items-center w-full max-w-md text-center">
     <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-    <h3 class="font-serif text-4xl italic mb-6">¿Quién retira en el Atelier?</h3>
-    <input type="text" id="pickup-name" placeholder="Nombre completo de quien retira..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
-    <button onclick="goToStep('step-fecha')" class="btn-premium w-full">Confirmar Retiro</button>
+    <h3 class="font-serif text-3xl italic mb-6">Nombre de quien retira</h3>
+    <input type="text" id="pickup-name" placeholder="Nombre y apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
+    <button onclick="goToStep('step-fecha')" class="btn-premium w-full">Confirmar</button>
     <button onclick="goToStep(3)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
 </div>
 
 <div id="step-fecha" class="checkout-step flex-col items-center w-full max-w-md text-center">
     <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 4 de 9</span>
-    <h3 class="font-serif text-4xl italic mb-12">¿Qué día entregamos la experiencia?</h3>
+    <h3 class="font-serif text-3xl italic mb-12">Fecha de entrega</h3>
     <div class="space-y-4 w-full">
-        <button onclick="seleccionarFecha('hoy')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">📅 Hoy Mismo</button>
-        <button onclick="seleccionarFecha('manana')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">🌅 Mañana</button>
-        <button onclick="seleccionarFecha('futuro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">🏛️ Programar Fecha Futura</button>
+        <button onclick="seleccionarFecha('hoy')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Hoy</button>
+        <button onclick="seleccionarFecha('manana')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Mañana</button>
+        <button onclick="seleccionarFecha('futuro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Fecha futura</button>
     </div>
     <button onclick="regresarDesdeFecha()" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
 </div>
 
+<div id="step-calendario" class="checkout-step flex-col items-center w-full max-w-md text-center">
+    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Calendario</span>
+    <h3 class="font-serif text-3xl italic mb-6">Seleccione el día</h3>
+    <div class="flex justify-between items-center w-full mb-6 px-2">
+        <button onclick="cambiarMesCalendario(-1)" id="cal-prev" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Anterior</button>
+        <span id="cal-month-title" class="text-xs uppercase tracking-widest font-bold text-gold-leaf"></span>
+        <button onclick="cambiarMesCalendario(1)" id="cal-next" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Siguiente</button>
+    </div>
+    <div class="grid grid-cols-7 gap-2 w-full text-center text-[9px] uppercase font-bold tracking-wider opacity-40 mb-2">
+        <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div>
+    </div>
+    <div id="calendar-grid" class="grid grid-cols-7 gap-2 w-full"></div>
+    <button onclick="goToStep('step-fecha')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+</div>
+
 <div id="step-time" class="checkout-step flex-col items-center w-full max-w-md text-center">
     <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 5 de 9</span>
-    <h3 class="font-serif text-4xl italic mb-8">El Momento Perfecto</h3>
-    <div id="time-slots-container" class="space-y-4 w-full mb-6">
-        </div>
-    <button onclick="goToStep('step-fecha')" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver a Selección de Día</button>
+    <h3 class="font-serif text-3xl italic mb-8">Horario de entrega</h3>
+    <div id="time-slots-container" class="space-y-4 w-full mb-6"></div>
+    <button onclick="regresarDesdeTime()" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
 </div>
 
         <div id="step-4" class="checkout-step flex-col items-center w-full max-w-md text-center">
@@ -639,9 +653,9 @@
 </div>
     </div>
 </div>
-    
+    <script>
     <!-- LOGICA JAVASCRIPT -->
-<script>
+let currentCalendarDate = new Date();
 
 function seleccionarModalidad(option) {
     selectedLogistics = option;
@@ -649,7 +663,7 @@ function seleccionarModalidad(option) {
         goToStep('step-zona');
     } else {
         shippingCost = 0;
-        selectedZoneName = 'Retiro en Atelier';
+        selectedZoneName = 'Retiro en tienda';
         actualizarTotalConDespacho();
         goToStep('step-quien-retira');
     }
@@ -666,7 +680,7 @@ function seleccionarZona(km, zoneName) {
 
 function confirmarDireccion() {
     const dir = document.getElementById('address').value.trim();
-    if (!dir) return alert("Por favor, ingrese las coordenadas de entrega.");
+    if (!dir) return alert("Ingrese la dirección de entrega.");
     goToStep('step-fecha');
 }
 
@@ -679,10 +693,69 @@ function regresarDesdeFecha() {
 }
 
 function seleccionarFecha(dia) {
-    selectedDate = dia;
-    if(dia !== 'hoy') {
-        isExpressDelivery = false; // Desactivar flag si no es hoy
+    if(dia === 'futuro') {
+        currentCalendarDate = new Date();
+        renderCalendar();
+        goToStep('step-calendario');
+    } else {
+        selectedDate = dia;
+        isExpressDelivery = false;
+        actualizarTotalConDespacho();
+        renderHorariosInteligentes();
+        goToStep('step-time');
     }
+}
+
+function renderCalendar() {
+    const grid = document.getElementById('calendar-grid');
+    const title = document.getElementById('cal-month-title');
+    const hoy = new Date();
+    
+    const year = currentCalendarDate.getFullYear();
+    const month = currentCalendarDate.getMonth();
+    
+    const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    title.innerText = `${nombresMeses[month]} ${year}`;
+    
+    const minMonth = hoy.getMonth();
+    const minYear = hoy.getFullYear();
+    const maxDate = new Date(minYear, minMonth + 1, 1);
+    const maxMonth = maxDate.getMonth();
+    const maxYear = maxDate.getFullYear();
+    
+    document.getElementById('cal-prev').style.visibility = (year === minYear && month === minMonth) ? 'hidden' : 'visible';
+    document.getElementById('cal-next').style.visibility = (year === maxYear && month === maxMonth) ? 'hidden' : 'visible';
+    
+    grid.innerHTML = "";
+    
+    const primerDia = new Date(year, month, 1).getDay();
+    const totalDias = new Date(year, month + 1, 0).getDate();
+    
+    for (let i = 0; i < primerDia; i++) {
+        grid.innerHTML += `<div></div>`;
+    }
+    
+    for (let d = 1; d <= totalDias; d++) {
+        const compCelda = new Date(year, month, d).setHours(0,0,0,0);
+        const compHoy = new Date().setHours(0,0,0,0);
+        
+        if (compCelda < compHoy) {
+            grid.innerHTML += `<div class="py-3 text-zinc-300 font-serif text-sm cursor-not-allowed">${d}</div>`;
+        } else {
+            const fechaStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            grid.innerHTML += `<button onclick="seleccionarDiaCalendario('${fechaStr}')" class="py-3 font-serif text-sm hover:text-gold-leaf transition font-bold text-[#0a1f1c]">${d}</button>`;
+        }
+    }
+}
+
+function cambiarMesCalendario(delta) {
+    currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
+    renderCalendar();
+}
+
+function seleccionarDiaCalendario(fechaStr) {
+    selectedDate = fechaStr;
+    isExpressDelivery = false;
     actualizarTotalConDespacho();
     renderHorariosInteligentes();
     goToStep('step-time');
@@ -692,7 +765,6 @@ function renderHorariosInteligentes() {
     const container = document.getElementById('time-slots-container');
     container.innerHTML = "";
     
-    // Obtener la hora local exacta de Chile (Santiago)
     const ahoraChile = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
     const hora = ahoraChile.getHours();
     const minutos = ahoraChile.getMinutes();
@@ -701,38 +773,28 @@ function renderHorariosInteligentes() {
     let html = "";
 
     if (selectedDate === 'hoy') {
-        // Validación de bloqueo de ramos complejos (ID > 3) para entrega HOY en micro-pasos
         const tieneRamosComplejos = cart.some(item => item.id > 3);
         if(tieneRamosComplejos) {
-            container.innerHTML = `
-                <p class="text-xs uppercase tracking-widest text-zinc-400 p-4 bg-zinc-50 border">
-                    ⚠️ Los diseños de alta complejidad (Vault de Autor) requieren 24 horas de preparación. Por favor, seleccione "Mañana" o una fecha futura.
-                </p>
-            `;
+            container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños de la colección Vault requieren 24 horas de preparación. Seleccione mañana o una fecha futura.</p>`;
             return;
         }
 
-        // Bloque Mañana: Límite 08:30 AM
         if (tiempoDecimal < 8.5) {
-            html += `<button onclick="definirHorario('Mañana (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">🌅 Mañana (10:00 - 12:00)</button>`;
+            html += `<button onclick="definirHorario('Mañana (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Mañana (10:00 - 12:00)</button>`;
         }
-        // Bloque Medio día: Límite 11:00 AM
         if (tiempoDecimal < 11.0) {
-            html += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">☀️ Medio día (14:00 - 17:00)</button>`;
+            html += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Medio día (14:00 - 17:00)</button>`;
         }
-        // Bloque Tarde: Límite 15:00 PM
         if (tiempoDecimal < 15.0) {
-            html += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">🌇 Tarde (18:00 - 20:00)</button>`;
+            html += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
         }
 
-        // --- UPSELL: COMPONENTES EXPRESS PRIORITARIO DE ALTO TICKET ---
         if (selectedLogistics === 'envio' && tiempoDecimal >= 11.0 && tiempoDecimal < 18.0) {
             html += `
-                <div class="border border-gold-leaf bg-gold-leaf/5 p-4 rounded-sm space-y-3 animate-pulse">
-                    <p class="text-[10px] uppercase font-bold tracking-widest text-[#0a1f1c]">⚡ Despacho Prioritario de Emergencia Activo</p>
-                    <p class="text-[11px] font-serif italic text-zinc-600 leading-normal">Los bloques estándar de hoy están cerrados. Procesaremos su orden saltando la fila del taller para entregar en menos de 2 horas.</p>
-                    <button onclick="definirHorario('Envío Express Emergencia (< 2 hrs)', true)" class="w-full bg-[#0a1f1c] text-[#c5a059] py-4 text-xs font-bold uppercase tracking-widest hover:bg-transparent hover:text-[#0a1f1c] border border-[#0a1f1c] transition">
-                        Activar Experiencia Express
+                <div class="border border-gold-leaf p-4 space-y-3">
+                    <p class="text-[10px] uppercase font-bold tracking-widest text-[#0a1f1c]">Despacho prioritario</p>
+                    <button onclick="definirHorario('Envío Express (< 2 hrs)', true)" class="w-full bg-[#0a1f1c] text-[#c5a059] py-4 text-xs font-bold uppercase tracking-widest border border-[#0a1f1c] transition">
+                        Despacho express menos de 2 horas
                     </button>
                 </div>
             `;
@@ -740,31 +802,37 @@ function renderHorariosInteligentes() {
 
         if (html === "") {
             html = `
-                <p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Atelier cerrado para entregas inmediatas por hoy.</p>
-                <button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para Mañana</button>
+                <p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p>
+                <button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>
             `;
         }
     } else {
-        // Mañana o fechas futuras liberan todos los bloques
-        html += `<button onclick="definirHorario('Mañana (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">🌅 Mañana (10:00 - 12:00)</button>`;
-        html += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">☀️ Medio día (14:00 - 17:00)</button>`;
-        html += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">🌇 Tarde (18:00 - 20:00)</button>`;
+        html += `<button onclick="definirHorario('Mañana (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Mañana (10:00 - 12:00)</button>`;
+        html += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Medio día (14:00 - 17:00)</button>`;
+        html += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
     }
 
     container.innerHTML = html;
+}
+
+function regresarDesdeTime() {
+    if (selectedDate === 'hoy' || selectedDate === 'manana') {
+        goToStep('step-fecha');
+    } else {
+        goToStep('step-calendario');
+    }
 }
 
 function definirHorario(slot, esExpress) {
     selectedTimeSlot = slot;
     isExpressDelivery = esExpress;
     actualizarTotalConDespacho();
-    setTimeout(() => goToStep(4), 400); // Avanza directamente al mensaje de la tarjeta
+    setTimeout(() => goToStep(4), 400);
 }
-    
-        const mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', {
-            locale: 'es-CL'
-        });
 
+const mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', {
+    locale: 'es-CL'
+});
         // --- ESTADO GLOBAL DE LA APLICACIÓN ---
         let cart = [];
         let selectedGardenSpace = '';
