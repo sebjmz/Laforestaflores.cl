@@ -25,7 +25,6 @@
 
         .font-serif { font-family: 'Playfair Display', serif; }
 
-        /* Estilos de lujo personalizados */
         .glass-nav {
             background: rgba(252, 250, 247, 0.8);
             backdrop-filter: blur(15px);
@@ -39,38 +38,33 @@
             background-color: var(--deep-black);
         }
 
-        /* Reemplaza o ajusta esta clase en tu bloque <style> */
-.hero-overlay {
-    /* Degradado sofisticado que oscurece los bordes y el centro para resaltar el texto */
-    background: radial-gradient(
-        circle, 
-        rgba(5, 15, 13, 0.4) 0%, 
-        rgba(10, 31, 28, 0.7) 100%
-    );
-    z-index: 10;
-}
+        .hero-overlay {
+            background: radial-gradient(
+                circle, 
+                rgba(5, 15, 13, 0.4) 0%, 
+                rgba(10, 31, 28, 0.7) 100%
+            );
+            z-index: 10;
+        }
 
-/* Añadimos un sutil efecto de profundidad al texto principal */
-.hero-video-container h1 {
-    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    letter-spacing: -0.02em;
-}
+        .hero-video-container h1 {
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            letter-spacing: -0.02em;
+        }
 
-.hero-video-container h4 {
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
+        .hero-video-container h4 {
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
 
-        /* Secciones Expandibles Corregidas */
         .expandable-section {
             max-height: 0;
             overflow: hidden;
             transition: max-height 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .expandable-section.active {
-            max-height: 20000px; /* Incrementado para evitar cortes en la lista de 12 ramos */
+            max-height: 20000px; 
         }
 
-        /* Botones de Lujo */
         .btn-premium {
             position: relative;
             padding: 1rem 2.5rem;
@@ -97,14 +91,12 @@
             color: var(--forest-green);
         }
 
-        /* Carrito Lateral */
         #atelier-bag {
             transform: translateX(100%);
             transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
         }
         #atelier-bag.open { transform: translateX(0); }
 
-        /* Tarjetas de Producto */
         .product-card {
             transition: transform 0.6s ease;
         }
@@ -121,59 +113,48 @@
             transform: scale(1.1);
         }
 
-        /* Marquee de prestigio */
-    .prestige-marquee {
-        display: flex;
-        width: max-content;
-        /* Ajusta los segundos (40s) para que vaya más lento o rápido */
-        animation: marquee-infinite 40s linear infinite;
-    }
-
-    .marquee-content {
-        display: inline-block;
-        /* Añadimos un poco más de separación entre bloques para que respire */
-        padding-right: 2rem; 
-    }
-
-    @keyframes marquee-infinite {
-        0% {
-            transform: translateX(0);
+        .prestige-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee-infinite 40s linear infinite;
         }
-        100% {
-            /* IMPORTANTE: Movemos solo el equivalente a un bloque (25% si son 4 bloques) */
-            /* para que el inicio del segundo bloque calce exacto con el inicio del primero */
-            transform: translateX(-25%);
-        }
-    }
 
-    /* Pausa sutil al pasar el mouse */
-    .prestige-marquee:hover {
-        animation-play-state: paused;
-    }
-        /* B2B Privilege Area */
+        .marquee-content {
+            display: inline-block;
+            padding-right: 2rem; 
+        }
+
+        @keyframes marquee-infinite {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-25%); }
+        }
+
+        .prestige-marquee:hover {
+            animation-play-state: paused;
+        }
+
         .b2b-portal {
             background-color: var(--forest-green);
             color: var(--soft-cream);
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--soft-cream); }
         ::-webkit-scrollbar-thumb { background: var(--gold-leaf); }
+        
         #video-bg-layer video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    transform: translate(-50%, -50%) scale(1.02);
-    object-fit: cover;
-    z-index: 1;
-}
-        /* Checkout Multi-Paso Minimalista */
-        /* Checkout Multi-Paso Minimalista y Garden Flow */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%) scale(1.02);
+            object-fit: cover;
+            z-index: 1;
+        }
+
         #checkout-flow, #garden-flow {
             transform: translateY(100%);
             transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease;
@@ -203,11 +184,8 @@
 </head>
 <body>
 
-    <!-- NAVEGACIÓN -->
     <nav class="fixed w-full z-[100] glass-nav px-6 md:px-12 py-5 flex justify-between items-center">
-        <!-- Contenedor izquierdo: Logo y enlaces -->
         <div class="flex items-center space-x-12 min-w-0">
-            <!-- whitespace-nowrap evita que LA FORESTA se parta en dos líneas -->
             <div class="text-xl font-light tracking-[0.35em] cursor-pointer whitespace-nowrap flex-shrink-0" onclick="window.scrollTo(0,0)">
                 LA FORESTA
             </div>
@@ -218,10 +196,8 @@
             </div>
         </div>
         
-        <!-- Contenedor derecho: Ubicación y Carrito -->
         <div class="flex items-center space-x-8 flex-shrink-0">
             <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest text-gold-leaf whitespace-nowrap">Reñaca, Chile</div>
-            <!-- whitespace-nowrap obliga a que el texto y el contador se mantengan juntos en una línea horizontal -->
             <button onclick="toggleCart()" class="relative group flex items-center whitespace-nowrap">
                 <span class="text-[10px] font-bold uppercase tracking-widest mr-2">Atelier Bag</span>
                 <span id="cart-count" class="bg-gold-leaf text-forest-green px-2 py-0.5 rounded-full text-[10px] font-bold">0</span>
@@ -229,15 +205,13 @@
         </div>
     </nav>
 
-    <!-- CARRITO (DRAWER) -->
     <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/40 z-[110] hidden opacity-0 transition-opacity duration-500"></div>
     <div id="atelier-bag" class="fixed top-0 right-0 h-full w-full md:w-[500px] bg-white z-[120] shadow-2xl flex flex-col">
         <div class="p-8 border-b flex justify-between items-center">
             <h2 class="font-serif text-3xl italic">Su Selección</h2>
-            <button onclick="toggleCart()" class="text-3xl font-light hover:text-gold-leaf">&times;</button>
+            <button onclick="toggleCart()" class="text-3xl font-light hover:text-gold-leaf">×</button>
         </div>
         <div id="cart-items-container" class="flex-grow overflow-y-auto p-8 space-y-8">
-            <!-- Items de JS aquí -->
             <div class="text-center py-20 opacity-40">
                 <p class="uppercase tracking-widest text-xs">Su bolsa está vacía</p>
             </div>
@@ -252,19 +226,16 @@
         </div>
     </div>
 
-    <!-- HERO SECTION CON VIDEO NATIVO -->
     <section class="hero-video-container">
         <div class="absolute inset-0 hero-overlay z-10"></div>
-        
         <div id="video-bg-layer" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-            <!-- Video nativo en bucle, silenciado y optimizado -->
             <video autoplay muted loop playsinline class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover scale-[1.02]">
                 <source src="img/hero-video.mp4" type="video/mp4">
             </video>
         </div>        
 
         <div class="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
-            <h4 class="text-gold-leaf text-white md:text-sm font-bold uppercase tracking-[0.8em] mb-8 animate-pulse">No son solo flores</h4>
+            <h4 class="text-white md:text-sm font-bold uppercase tracking-[0.8em] mb-8 animate-pulse">No son solo flores</h4>
             <h1 class="text-white text-6xl md:text-[120px] font-serif leading-none mb-12 italic">
                 <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
             </h1>
@@ -281,25 +252,23 @@
         </div>
     </section>
 
-    <!-- MARQUEE DE PRESTIGIO -->
     <div class="bg-forest-green py-4 border-y border-gold-leaf/20 overflow-hidden flex">
-    <div class="prestige-marquee flex whitespace-nowrap">
-        <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-            Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;
-        </div>
-        <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-            Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;
-        </div>
-        <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-            Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;
-        </div>
-        <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-            Suscripciones para Inmobiliarias &nbsp; • &nbsp; Diseño de Eventos &nbsp; • &nbsp; Paisajismo Garden &nbsp; • &nbsp; Envío VIP Reñaca &nbsp; • &nbsp;
+        <div class="prestige-marquee flex whitespace-nowrap">
+            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
+                Suscripciones para Inmobiliarias   •   Diseño de Eventos   •   Paisajismo Garden   •   Envío VIP Reñaca   •   
+            </div>
+            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
+                Suscripciones para Inmobiliarias   •   Diseño de Eventos   •   Paisajismo Garden   •   Envío VIP Reñaca   •   
+            </div>
+            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
+                Suscripciones para Inmobiliarias   •   Diseño de Eventos   •   Paisajismo Garden   •   Envío VIP Reñaca   •   
+            </div>
+            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
+                Suscripciones para Inmobiliarias   •   Diseño de Eventos   •   Paisajismo Garden   •   Envío VIP Reñaca   •   
+            </div>
         </div>
     </div>
-</div>
 
-    <!-- MANIFIESTO / CULTURA -->
     <section class="py-32 px-6">
         <div class="max-w-4xl mx-auto text-center">
             <span class="text-gold-leaf text-xs font-bold uppercase tracking-widest mb-6 block">Nuestra Cultura</span>
@@ -324,31 +293,28 @@
         </div>
     </section>
 
-   <section id="vault" class="bg-white py-12 border-t border-zinc-100">
-    <div class="max-w-7xl mx-auto px-6">
-        <div onclick="openVault()" class="flex justify-between items-center cursor-pointer py-10 group">
-    <div>
-        <h2 class="text-6xl md:text-8xl font-serif italic group-hover:text-gold-leaf transition-colors">Colección</h2>
-        <p class="text-sm md:text-base font-serif italic text-zinc-400 lowercase mt-1 group-hover:text-gold-leaf/70 transition-colors">ver nuestra colección</p>
-    </div>
-    <div id="vault-plus" class="text-4xl font-light transition-transform duration-700">+</div>
-</div>
-
-        <div id="vault-content" class="expandable-section">
-            <div class="flex flex-wrap gap-4 mb-16 border-b pb-8">
-                <button class="text-[10px] font-bold uppercase tracking-widest text-gold-leaf underline underline-offset-8">Colección Completa</button>
+    <section id="vault" class="bg-white py-12 border-t border-zinc-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <div onclick="openVault()" class="flex justify-between items-center cursor-pointer py-10 group">
+                <div>
+                    <h2 class="text-6xl md:text-8xl font-serif italic group-hover:text-gold-leaf transition-colors">Colección</h2>
+                    <p class="text-sm md:text-base font-serif italic text-zinc-400 lowercase mt-1 group-hover:text-gold-leaf/70 transition-colors">ver nuestra colección</p>
+                </div>
+                <div id="vault-plus" class="text-4xl font-light transition-transform duration-700">+</div>
             </div>
 
-            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-20 pb-20">
+            <div id="vault-content" class="expandable-section">
+                <div class="flex flex-wrap gap-4 mb-16 border-b pb-8">
+                    <button class="text-[10px] font-bold uppercase tracking-widest text-gold-leaf underline underline-offset-8">Colección Completa</button>
+                </div>
+                <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-20 pb-20"></div>
             </div>
         </div>
-    </div>
-</section>
-    <!-- SECCIÓN: THE PRIVILEGE ROOM (B2B) -->
+    </section>
+
     <section id="privilege" class="b2b-portal py-32">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-                
                 <div class="space-y-12">
                     <span class="text-gold-leaf text-xs font-bold uppercase tracking-[0.5em]">Exclusive B2B Portal</span>
                     <h2 class="text-6xl md:text-8xl font-serif italic leading-none">The <br> Privilege Room.</h2>
@@ -357,17 +323,14 @@
                     </p>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-12">
-                        <!-- Bloque Inmobiliarias Ajustado -->
-<div class="border-l border-gold-leaf/30 pl-6">
-    <h4 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Inmobiliarias & Propiedades</h4>
-    <p class="text-xs opacity-50">Atenciones de cortesía para cierres de negocios y ambientación de espacios piloto.</p>
-</div>
-
-<!-- Bloque Boutiques Ajustado -->
-<div class="border-l border-gold-leaf/30 pl-6">
-    <h4 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Boutiques & Espacios de Autor</h4>
-    <p class="text-xs opacity-50">Suscripciones editoriales periódicas para mantener el estándar visual de su firma.</p>
-</div>
+                        <div class="border-l border-gold-leaf/30 pl-6">
+                            <h4 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Inmobiliarias & Propiedades</h4>
+                            <p class="text-xs opacity-50">Atenciones de cortesía para cierres de negocios y ambientación de espacios piloto.</p>
+                        </div>
+                        <div class="border-l border-gold-leaf/30 pl-6">
+                            <h4 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Boutiques & Espacios de Autor</h4>
+                            <p class="text-xs opacity-50">Suscripciones editoriales periódicas para mantener el estándar visual de su firma.</p>
+                        </div>
                         <div class="border-l border-gold-leaf/30 pl-6">
                             <h4 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Oficinas Corporativas</h4>
                             <p class="text-xs opacity-50">Ambientes de trabajo inspiradores con envío prioritario gratis.</p>
@@ -379,13 +342,11 @@
                     </div>
                 </div>
 
-                <!-- CÓDIGO NUEVO CORREGIDO -->
-<div class="bg-white/5 backdrop-blur-md p-12 border border-white/10 relative">
-    <!-- Encabezado integrado de forma limpia, centrado y con espaciado orgánico -->
-    <div class="text-center w-full bg-gold-leaf/10 border border-gold-leaf/20 text-gold-leaf py-3 px-4 font-bold text-[10px] uppercase tracking-[0.25em] mb-8">
-        Solicitud de Suscripción
-    </div>
-    <form class="space-y-10">
+                <div class="bg-white/5 backdrop-blur-md p-12 border border-white/10 relative">
+                    <div class="text-center w-full bg-gold-leaf/10 border border-gold-leaf/20 text-gold-leaf py-3 px-4 font-bold text-[10px] uppercase tracking-[0.25em] mb-8">
+                        Solicitud de Suscripción
+                    </div>
+                    <form class="space-y-10" onsubmit="event.preventDefault(); alert('Postulación enviada con éxito.');">
                         <div class="space-y-2">
                             <label class="text-[9px] uppercase tracking-[0.3em] opacity-40">Entidad / Empresa</label>
                             <input type="text" class="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-gold-leaf transition text-white">
@@ -393,11 +354,11 @@
                         <div class="space-y-2">
                             <label class="text-[9px] uppercase tracking-[0.3em] opacity-40">Segmento de Negocio</label>
                             <select class="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-gold-leaf transition text-white appearance-none">
-    <option class="bg-zinc-900" value="inmobiliaria">Inmobiliarias & Propiedades</option>
-    <option class="bg-zinc-900" value="retail">Boutiques & Espacios de Autor</option>
-    <option class="bg-zinc-900" value="oficina">Corporativo & Oficinas</option>
-    <option class="bg-zinc-900" value="eventos">Eventos Privados & Galas</option>
-</select>
+                                <option class="bg-zinc-900" value="inmobiliaria">Inmobiliarias & Propiedades</option>
+                                <option class="bg-zinc-900" value="retail">Boutiques & Espacios de Autor</option>
+                                <option class="bg-zinc-900" value="oficina">Corporativo & Oficinas</option>
+                                <option class="bg-zinc-900" value="eventos">Eventos Privados & Galas</option>
+                            </select>
                         </div>
                         <div class="space-y-2">
                             <label class="text-[9px] uppercase tracking-[0.3em] opacity-40">Volumen Estimado Mensual</label>
@@ -407,12 +368,10 @@
                     </form>
                     <p class="text-[9px] text-center mt-8 opacity-30 italic uppercase tracking-widest">Al suscribirse, acepta los términos de envío prioritario gratuito en Reñaca.</p>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- SECCIÓN: LA FORESTA GARDEN REFINADA -->
     <section id="garden" class="py-32 px-6 md:px-12 bg-zinc-50 border-t border-zinc-100">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
             <div class="w-full lg:w-1/2">
@@ -422,7 +381,7 @@
                     <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md px-3 py-1 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">Cambiar Vista</div>
                 </div>
             </div>
-            <div class="w-full lg:w-1/2 space-y-10 text-left lg:padding-left-8">
+            <div class="w-full lg:w-1/2 space-y-10 text-left lg:pl-8">
                 <div class="space-y-4">
                     <span class="text-gold-leaf text-xs font-bold uppercase tracking-[0.4em] block">Outdoor & Landscapes</span>
                     <h2 class="text-5xl md:text-6xl font-serif italic leading-tight text-[#0a1f1c]">La Foresta <br>Garden Selection.</h2>
@@ -431,7 +390,7 @@
                     Extendemos la belleza al exterior. Nuestro equipo de paisajismo diseña terrazas y jardines que respiran el aire de Reñaca.
                 </p>
                 <div class="pt-6">
-                    <button onclick="openGardenFlow()" class="mt-12 btn-premium !bg-transparent !text-forest-green !border-forest-green hover:!bg-forest-green hover:!text-gold-leaf uppercase text-xs tracking-widest font-bold px-10 py-4 transition-all duration-300">
+                    <button onclick="openGardenFlow()" class="btn-premium !bg-transparent !text-forest-green !border-forest-green hover:!bg-forest-green hover:!text-gold-leaf uppercase text-xs tracking-widest font-bold px-10 py-4 transition-all duration-300">
                         Consultar Proyecto Garden
                     </button>
                 </div>
@@ -439,7 +398,6 @@
         </div>
     </section>
 
-    <!-- CONTENEDOR DEL GARDEN FLOW (PEGAR ESTO AQUÍ) -->
     <div id="garden-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden opacity-0 transition-opacity duration-500">
         <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
             <h2 class="font-serif text-xl tracking-widest uppercase text-gold-leaf">Garden Selection</h2>
@@ -467,10 +425,8 @@
         </div>
     </div>
 
-    <!-- FOOTER -->
     <footer class="bg-forest-green text-soft-cream py-24 px-6 border-t border-gold-leaf/20">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
-            
             <div class="md:col-span-4">
                 <h3 class="text-4xl font-serif font-bold italic mb-8">La Foresta</h3>
                 <p class="text-soft-cream/40 text-sm leading-relaxed mb-8 max-w-xs">
@@ -481,7 +437,6 @@
                     <a href="#" class="hover:text-white transition uppercase text-[10px] font-bold tracking-widest">WhatsApp</a>
                 </div>
             </div>
-
             <div class="md:col-span-2">
                 <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Navegación</h4>
                 <ul class="space-y-4 text-sm opacity-60">
@@ -491,7 +446,6 @@
                     <li><a href="#" class="hover:text-gold-leaf">Nuestro Atelier</a></li>
                 </ul>
             </div>
-
             <div class="md:col-span-3">
                 <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Ubicación</h4>
                 <p class="text-sm opacity-60 leading-relaxed mb-4">
@@ -499,15 +453,13 @@
                     Reñaca, Viña del Mar<br>
                     Región de Valparaíso, Chile.
                 </p>
-                <a href="https://maps.app.goo.gl/GPh8Qj3tJPtDBZtf8" target="_blank" class="text-gold-leaf text-[10px] font-bold uppercase tracking-widest border-b border-gold-leaf pb-1">Ver en Google Maps</a>
+                <a href="https://maps.google.com" target="_blank" class="text-gold-leaf text-[10px] font-bold uppercase tracking-widest border-b border-gold-leaf pb-1">Ver en Google Maps</a>
             </div>
-
             <div class="md:col-span-3">
                 <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Atención VIP</h4>
                 <p class="text-sm opacity-60 mb-4">Lunes a Sábado: 10:00 - 19:30</p>
                 <p class="text-sm opacity-60 italic">"Entregamos más que flores, entregamos un legado visual."</p>
             </div>
-
         </div>
         <div class="max-w-7xl mx-auto border-t border-white/5 mt-20 pt-10 flex flex-col md:flex-row justify-between items-center opacity-30">
             <p class="text-[9px] uppercase tracking-widest">© <span id="year-footer">2026</span> La Foresta Flores & Garden. Todos los derechos reservados.</p>
@@ -515,535 +467,621 @@
         </div>
     </footer>
 
-<div id="checkout-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col">
-    <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
-        <h2 class="font-serif text-xl tracking-widest uppercase text-gold-leaf">La Foresta</h2>
-        <button onclick="closeCheckout()" class="text-4xl font-light hover:text-gold-leaf transition-colors">&times;</button>
-    </div>
-
-    <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
-        
-        <div id="step-1" class="checkout-step active flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1 de 8</span>
-            <h3 class="font-serif text-4xl italic mb-12">¿Quién envía este ramo?</h3>
-            <input type="text" id="sender-name" placeholder="Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-            <button onclick="goToStep(2)" class="mt-12 btn-premium w-full">Siguiente</button>
+    <div id="checkout-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden">
+        <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
+            <h2 class="font-serif text-xl tracking-widest uppercase text-gold-leaf">La Foresta</h2>
+            <button onclick="closeCheckout()" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
         </div>
 
-        <div id="step-2" class="checkout-step flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2 de 8</span>
-            <h3 class="font-serif text-4xl italic mb-12">¿A quién va dirigido?</h3>
-            <input type="text" id="receiver-name" placeholder="Nombre y Apellido del destinatario" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-            <button onclick="goToStep('step-palette')" class="mt-12 btn-premium w-full">Siguiente</button>
-            <button onclick="goToStep(1)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-        </div>
-
-<div id="step-palette" class="checkout-step flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 3 de 8</span>
-            <h3 class="font-serif text-4xl italic mb-12">Seleccione la paleta de color</h3>
-            <div class="space-y-4 w-full">
-                <button onclick="selectOption(this, 'palette'); setPalette('Tonos Pasteles & Calma')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Pasteles & Calma</button>
-                <button onclick="selectOption(this, 'palette'); setPalette('Tonos Vibrantes & Coloridos')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Vibrantes & Coloridos</button>
+        <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
+            <div id="step-1" class="checkout-step active flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1</span>
+                <h3 class="font-serif text-4xl italic mb-12">¿Quién envía este ramo?</h3>
+                <input type="text" id="sender-name" oninput="guardarProgresoCheckout()" placeholder="Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <button onclick="goToStep(2)" class="mt-12 btn-premium w-full">Siguiente</button>
             </div>
-            <button onclick="goToStep(2)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-        </div>
-        
-        <div id="step-3" class="checkout-step flex-col items-center w-full max-w-md text-center">
-    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 3 de 9</span>
-    <h3 class="font-serif text-3xl italic mb-12">Modalidad de entrega</h3>
-    <div class="space-y-4 w-full">
-        <button onclick="seleccionarModalidad('envio')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Despacho a domicilio</button>
-        <button onclick="seleccionarModalidad('retiro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Retiro en tienda</button>
-    </div>
-    <button onclick="goToStep('step-palette')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-</div>
 
-<div id="step-zona" class="checkout-step flex-col items-center w-full max-w-md text-center">
-    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-    <h3 class="font-serif text-3xl italic mb-12">Zona de entrega</h3>
-    <div class="space-y-4 w-full">
-        <button onclick="seleccionarZona(3, 'Reñaca Centro / Jardín del Mar')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Reñaca Centro / Jardín del Mar (+$3.500)</button>
-        <button onclick="seleccionarZona(9, 'Viña del Mar Centro / Poniente')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Viña del Mar Centro / Poniente (+$8.100)</button>
-        <button onclick="seleccionarZona(8, 'Concón / Costa de Montemar')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Concón / Costa de Montemar (+$7.200)</button>
-    </div>
-    <button onclick="goToStep(3)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-</div>
+            <div id="step-2" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2</span>
+                <h3 class="font-serif text-4xl italic mb-12">¿A quién va dirigido?</h3>
+                <input type="text" id="receiver-name" oninput="guardarProgresoCheckout()" placeholder="Nombre y Apellido del destinatario" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <button onclick="goToStep('step-palette')" class="mt-12 btn-premium w-full">Siguiente</button>
+                <button onclick="goToStep(1)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
 
-<div id="step-direccion" class="checkout-step flex-col items-center w-full max-w-md text-center">
-    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-    <h3 class="font-serif text-3xl italic mb-6">Dirección exacta</h3>
-    <input type="text" id="address" placeholder="Calle, número, departamento o casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
-    <button onclick="confirmarDireccion()" class="btn-premium w-full">Confirmar dirección</button>
-    <button onclick="goToStep('step-zona')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-</div>
-
-<div id="step-quien-retira" class="checkout-step flex-col items-center w-full max-w-md text-center">
-    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-    <h3 class="font-serif text-3xl italic mb-6">Nombre de quien retira</h3>
-    <input type="text" id="pickup-name" placeholder="Nombre y apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
-    <button onclick="goToStep('step-fecha')" class="btn-premium w-full">Confirmar</button>
-    <button onclick="goToStep(3)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-</div>
-
-<div id="step-fecha" class="checkout-step flex-col items-center w-full max-w-md text-center">
-    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 4 de 9</span>
-    <h3 class="font-serif text-3xl italic mb-12">Fecha de entrega</h3>
-    <div class="space-y-4 w-full">
-        <button onclick="seleccionarFecha('hoy')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Hoy</button>
-        <button onclick="seleccionarFecha('manana')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Mañana</button>
-        <button onclick="seleccionarFecha('futuro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Fecha futura</button>
-    </div>
-    <button onclick="regresarDesdeFecha()" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-</div>
-
-<div id="step-calendario" class="checkout-step flex-col items-center w-full max-w-md text-center">
-    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Calendario</span>
-    <h3 class="font-serif text-3xl italic mb-6">Seleccione el día</h3>
-    <div class="flex justify-between items-center w-full mb-6 px-2">
-        <button onclick="cambiarMesCalendario(-1)" id="cal-prev" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Anterior</button>
-        <span id="cal-month-title" class="text-xs uppercase tracking-widest font-bold text-gold-leaf"></span>
-        <button onclick="cambiarMesCalendario(1)" id="cal-next" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Siguiente</button>
-    </div>
-    <div class="grid grid-cols-7 gap-2 w-full text-center text-[9px] uppercase font-bold tracking-wider opacity-40 mb-2">
-        <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div>
-    </div>
-    <div id="calendar-grid" class="grid grid-cols-7 gap-2 w-full"></div>
-    <button onclick="goToStep('step-fecha')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-</div>
-
-<div id="step-time" class="checkout-step flex-col items-center w-full max-w-md text-center">
-    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 5 de 9</span>
-    <h3 class="font-serif text-3xl italic mb-8">Horario de entrega</h3>
-    <div id="time-slots-container" class="space-y-4 w-full mb-6"></div>
-    <button onclick="regresarDesdeTime()" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-</div>
-
-        <div id="step-4" class="checkout-step flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 6 de 8</span>
-            <h3 class="font-serif text-4xl italic mb-12">Mensaje en la tarjeta</h3>
-            <textarea id="card-message" placeholder="Escriba su mensaje aquí..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-32"></textarea>
-            <button onclick="goToStep(5)" class="mt-12 btn-premium w-full">Siguiente</button>
-            <button onclick="goToStep('step-time')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-        </div>
-
-        <div id="step-5" class="checkout-step flex-col items-center w-full max-w-md text-center">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 7 de 8</span>
-            <h3 class="font-serif text-4xl italic mb-12">Fono de contacto (Destino)</h3>
-            <input type="tel" id="receiver-phone" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-            <button onclick="goToStep(6)" class="mt-12 btn-premium w-full">Siguiente</button>
-            <button onclick="goToStep(4)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-        </div>
-
-        <div id="step-6" class="checkout-step flex-col items-center w-full max-w-md text-center">
-    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso Final</span>
-    <h3 class="font-serif text-4xl italic mb-12">Confirmar y Pagar</h3>
-    <p class="text-[10px] uppercase tracking-widest opacity-60 mb-8 leading-loose">
-        Al confirmar, pagarás vía Mercado Pago y luego serás redirigido a WhatsApp para validar tu comprobante y coordinar el envío.
-    </p>
-    
-    <button onclick="finalizarYCoordinar()" class="w-full btn-premium">
-    Pagar con Mercado Pago
-</button>
-
-<p class="text-[9px] uppercase tracking-widest text-[#c5a059] font-bold mt-4 leading-normal bg-[#0a1f1c]/5 border border-[#c5a059]/20 py-3 px-4 rounded-sm">
-    ⚠️ NOTA IMPORTANTE: Al finalizar su pago, no cierre la ventana. Espere la redirección automática de 5 segundos para que el sistema genere su recibo digital en pantalla y pueda descargar su comprobante en PDF.
-</p>
-
-    <button onclick="goToStep(5)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-</div>
-    </div>
-</div>
-    <script>
-    <!-- LOGICA JAVASCRIPT -->
-let currentCalendarDate = new Date();
-
-function seleccionarModalidad(option) {
-    selectedLogistics = option;
-    if(option === 'envio') {
-        goToStep('step-zona');
-    } else {
-        shippingCost = 0;
-        selectedZoneName = 'Retiro en tienda';
-        actualizarTotalConDespacho();
-        goToStep('step-quien-retira');
-    }
-}
-
-function seleccionarZona(km, zoneName) {
-    let costo = km * 900;
-    if (costo < 3500) costo = 3500;
-    shippingCost = costo;
-    selectedZoneName = zoneName;
-    actualizarTotalConDespacho();
-    goToStep('step-direccion');
-}
-
-function confirmarDireccion() {
-    const dir = document.getElementById('address').value.trim();
-    if (!dir) return alert("Ingrese la dirección de entrega.");
-    goToStep('step-fecha');
-}
-
-function regresarDesdeFecha() {
-    if(selectedLogistics === 'envio') {
-        goToStep('step-direccion');
-    } else {
-        goToStep('step-quien-retira');
-    }
-}
-
-function seleccionarFecha(dia) {
-    if(dia === 'futuro') {
-        currentCalendarDate = new Date();
-        renderCalendar();
-        goToStep('step-calendario');
-    } else {
-        selectedDate = dia;
-        isExpressDelivery = false;
-        actualizarTotalConDespacho();
-        renderHorariosInteligentes();
-        goToStep('step-time');
-    }
-}
-
-function renderCalendar() {
-    const grid = document.getElementById('calendar-grid');
-    const title = document.getElementById('cal-month-title');
-    const hoy = new Date();
-    
-    const year = currentCalendarDate.getFullYear();
-    const month = currentCalendarDate.getMonth();
-    
-    const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    title.innerText = `${nombresMeses[month]} ${year}`;
-    
-    const minMonth = hoy.getMonth();
-    const minYear = hoy.getFullYear();
-    const maxDate = new Date(minYear, minMonth + 1, 1);
-    const maxMonth = maxDate.getMonth();
-    const maxYear = maxDate.getFullYear();
-    
-    document.getElementById('cal-prev').style.visibility = (year === minYear && month === minMonth) ? 'hidden' : 'visible';
-    document.getElementById('cal-next').style.visibility = (year === maxYear && month === maxMonth) ? 'hidden' : 'visible';
-    
-    grid.innerHTML = "";
-    
-    const primerDia = new Date(year, month, 1).getDay();
-    const totalDias = new Date(year, month + 1, 0).getDate();
-    
-    for (let i = 0; i < primerDia; i++) {
-        grid.innerHTML += `<div></div>`;
-    }
-    
-    for (let d = 1; d <= totalDias; d++) {
-        const compCelda = new Date(year, month, d).setHours(0,0,0,0);
-        const compHoy = new Date().setHours(0,0,0,0);
-        
-        if (compCelda < compHoy) {
-            grid.innerHTML += `<div class="py-3 text-zinc-300 font-serif text-sm cursor-not-allowed">${d}</div>`;
-        } else {
-            const fechaStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-            grid.innerHTML += `<button onclick="seleccionarDiaCalendario('${fechaStr}')" class="py-3 font-serif text-sm hover:text-gold-leaf transition font-bold text-[#0a1f1c]">${d}</button>`;
-        }
-    }
-}
-
-function cambiarMesCalendario(delta) {
-    currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
-    renderCalendar();
-}
-
-function seleccionarDiaCalendario(fechaStr) {
-    selectedDate = fechaStr;
-    isExpressDelivery = false;
-    actualizarTotalConDespacho();
-    renderHorariosInteligentes();
-    goToStep('step-time');
-}
-
-function renderHorariosInteligentes() {
-    const container = document.getElementById('time-slots-container');
-    container.innerHTML = "";
-    
-    const ahoraChile = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-    const hora = ahoraChile.getHours();
-    const minutos = ahoraChile.getMinutes();
-    const tiempoDecimal = hora + (minutos / 60);
-
-    let html = "";
-
-    if (selectedDate === 'hoy') {
-        const tieneRamosComplejos = cart.some(item => item.id > 3);
-        if(tieneRamosComplejos) {
-            container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños de la colección Vault requieren 24 horas de preparación. Seleccione mañana o una fecha futura.</p>`;
-            return;
-        }
-
-        if (tiempoDecimal < 8.5) {
-            html += `<button onclick="definirHorario('Mañana (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Mañana (10:00 - 12:00)</button>`;
-        }
-        if (tiempoDecimal < 11.0) {
-            html += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Medio día (14:00 - 17:00)</button>`;
-        }
-        if (tiempoDecimal < 15.0) {
-            html += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
-        }
-
-        if (selectedLogistics === 'envio' && tiempoDecimal >= 11.0 && tiempoDecimal < 18.0) {
-            html += `
-                <div class="border border-gold-leaf p-4 space-y-3">
-                    <p class="text-[10px] uppercase font-bold tracking-widest text-[#0a1f1c]">Despacho prioritario</p>
-                    <button onclick="definirHorario('Envío Express (< 2 hrs)', true)" class="w-full bg-[#0a1f1c] text-[#c5a059] py-4 text-xs font-bold uppercase tracking-widest border border-[#0a1f1c] transition">
-                        Despacho express menos de 2 horas
-                    </button>
+            <div id="step-palette" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 3</span>
+                <h3 class="font-serif text-4xl italic mb-12">Seleccione la paleta de color</h3>
+                <div class="space-y-4 w-full">
+                    <button onclick="selectOption(this, 'palette'); setPalette('Tonos Pasteles & Calma')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Pasteles & Calma</button>
+                    <button onclick="selectOption(this, 'palette'); setPalette('Tonos Vibrantes & Coloridos')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Vibrantes & Coloridos</button>
                 </div>
-            `;
-        }
-
-        if (html === "") {
-            html = `
-                <p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p>
-                <button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>
-            `;
-        }
-    } else {
-        html += `<button onclick="definirHorario('Mañana (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Mañana (10:00 - 12:00)</button>`;
-        html += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Medio día (14:00 - 17:00)</button>`;
-        html += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
-    }
-
-    container.innerHTML = html;
-}
-
-function regresarDesdeTime() {
-    if (selectedDate === 'hoy' || selectedDate === 'manana') {
-        goToStep('step-fecha');
-    } else {
-        goToStep('step-calendario');
-    }
-}
-
-function definirHorario(slot, esExpress) {
-    selectedTimeSlot = slot;
-    isExpressDelivery = esExpress;
-    actualizarTotalConDespacho();
-    setTimeout(() => goToStep(4), 400);
-}
-
-const mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', {
-    locale: 'es-CL'
-});
-        // --- ESTADO GLOBAL DE LA APLICACIÓN ---
-        let cart = [];
-        let selectedGardenSpace = '';
-        let selectedPalette = '';
-        let shippingCost = 0;
-        let selectedZoneName = '';
-        let selectedLogistics = '';
-        let selectedDate = '';        // 'hoy', 'manana', 'futuro'
-        let selectedTimeSlot = '';    // Bloque horario final
-        let isExpressDelivery = false; // Flag de recargo de producto
-
-const RECARGO_EXPRESS_PRODUCTO = 1.25; // +25% sobre el valor del ramo por priorización
-
-        // --- DETECTOR POST-PAGO (RETORNO DE MERCADO PAGO) ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const paymentResult = urlParams.get('payment_result');
-            const status = urlParams.get('status') || urlParams.get('collection_status');
+                <button onclick="goToStep(2)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
             
-            // Validación estricta: Solo entra si la pasarela redirigió por éxito Y el estado es approved
-            if (paymentResult === 'success' && status === 'approved') {
-                const textoGuardado = localStorage.getItem('pending_laforesta_order');
-                if (textoGuardado) {
-                    localStorage.removeItem('pending_laforesta_order');
-                    
-                    const paymentId = urlParams.get('payment_id') || urlParams.get('collection_id');
-                    const NUMERO_WHATSAPP = "56994783520";
-                    
-                    let textoFinal = textoGuardado + `\n\n*COMPROBANTE DE PAGO APROBADO*\n• *ID TRANSACCIÓN MP:* ${paymentId}`;
-                    const wpUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(textoFinal)}`;
+            <div id="step-3" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 4</span>
+                <h3 class="font-serif text-3xl italic mb-12">Modalidad de entrega</h3>
+                <div class="space-y-4 w-full">
+                    <button onclick="seleccionarModalidad('envio')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Despacho a domicilio</button>
+                    <button onclick="seleccionarModalidad('retiro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Retiro en tienda</button>
+                </div>
+                <button onclick="goToStep('step-palette')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
 
-                    const checkoutFlow = document.getElementById('checkout-flow');
-                    if (checkoutFlow) {
-                        checkoutFlow.classList.add('open');
-                        checkoutFlow.innerHTML = `
-                            <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
-                                <h2 class="font-serif text-xl tracking-widest uppercase text-gold-leaf">La Foresta | Panel de Confirmación</h2>
-                                <button onclick="closeCheckout(); window.location.href=window.location.origin;" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
-                            </div>
-                            <div class="flex-grow flex flex-col justify-center items-center p-6 text-center max-w-md mx-auto space-y-6">
-                                <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-leaf bg-gold-leaf/10 px-4 py-1.5 border border-gold-leaf/20">Pago Exitoso</span>
-                                <h3 class="font-serif text-4xl italic">Transacción Verificada</h3>
-                                
-                                <div id="recibo-pdf" class="w-full bg-white border border-zinc-200 p-6 text-left space-y-3 text-xs text-zinc-700 shadow-sm rounded-sm">
-                                    <div class="border-b pb-3 flex justify-between items-center">
-                                        <div>
-                                            <p class="font-sans font-bold text-sm tracking-wider text-[#0a1f1c] uppercase">LA FORESTA</p>
-                                            <p class="text-[9px] opacity-50 uppercase tracking-widest">Flores & Jardín Reñaca</p>
-                                        </div>
-                                        <div class="text-right">
-                                            <p class="font-bold text-[10px] text-emerald-600 uppercase bg-emerald-50 px-2 py-0.5 rounded-sm">Acreditado</p>
-                                        </div>
-                                    </div>
-                                    <div class="space-y-1 font-mono text-[11px]">
-                                        <p><strong>ID Transacción:</strong> ${paymentId}</p>
-                                        <p><strong>Operador Financiero:</strong> Mercado Pago</p>
-                                        <p><strong>Fecha Emisión:</strong> ${new Date().toLocaleDateString('es-CL')}</p>
-                                        <p><strong>Hora:</strong> ${new Date().toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})} hrs</p>
-                                    </div>
-                                    <div class="border-t pt-2 text-[9px] opacity-40 uppercase tracking-widest text-center">
-                                        Documento no válido como boleta fiscal
-                                    </div>
-                                </div>
+            <div id="step-zona" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
+                <h3 class="font-serif text-3xl italic mb-12">Zona de entrega</h3>
+                <div class="space-y-4 w-full">
+                    <button onclick="seleccionarZona(3, 'Reñaca Centro / Jardín del Mar')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Reñaca Centro / Jardín del Mar (+$3.500)</button>
+                    <button onclick="seleccionarZona(9, 'Viña del Mar Centro / Poniente')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Viña del Mar Centro / Poniente (+$8.100)</button>
+                    <button onclick="seleccionarZona(8, 'Concón / Costa de Montemar')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Concón / Costa de Montemar (+$7.200)</button>
+                </div>
+                <button onclick="goToStep(3)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
 
-                                <div class="w-full space-y-3">
-                                    <a href="${wpUrl}" target="_blank" class="w-full btn-premium inline-block text-center pt-4 uppercase text-xs tracking-widest font-bold transition">
-                                        COORDINAR DESPACHO VÍA WHATSAPP
-                                    </a>
-                                    <button onclick="descargarPDF('${paymentId}')" class="w-full py-3 border border-zinc-300 text-zinc-700 bg-white text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-50 transition flex items-center justify-center space-x-2">
-                                        <span>DESCARGAR COMPROBANTE (PDF)</span>
-                                    </button>
-                                </div>
-                            </div>
-                        `;
+            <div id="step-direccion" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
+                <h3 class="font-serif text-3xl italic mb-6">Dirección exacta</h3>
+                <input type="text" id="address" oninput="guardarProgresoCheckout()" placeholder="Calle, número, departamento o casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
+                <button onclick="confirmarDireccion()" class="btn-premium w-full">Confirmar dirección</button>
+                <button onclick="goToStep('step-zona')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-quien-retira" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
+                <h3 class="font-serif text-3xl italic mb-6">Nombre de quien retira</h3>
+                <input type="text" id="pickup-name" oninput="guardarProgresoCheckout()" placeholder="Nombre y apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
+                <button onclick="goToStep('step-fecha')" class="btn-premium w-full">Confirmar</button>
+                <button onclick="goToStep(3)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-fecha" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 5</span>
+                <h3 class="font-serif text-3xl italic mb-12">Fecha de entrega</h3>
+                <div class="space-y-4 w-full">
+                    <button onclick="seleccionarFecha('hoy')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Hoy</button>
+                    <button onclick="seleccionarFecha('manana')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Mañana</button>
+                    <button onclick="seleccionarFecha('futuro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Fecha futura</button>
+                </div>
+                <button onclick="regresarDesdeFecha()" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-calendario" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Calendario</span>
+                <h3 class="font-serif text-3xl italic mb-6">Seleccione el día</h3>
+                <div class="flex justify-between items-center w-full mb-6 px-2">
+                    <button onclick="cambiarMesCalendario(-1)" id="cal-prev" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Anterior</button>
+                    <span id="cal-month-title" class="text-xs uppercase tracking-widest font-bold text-gold-leaf"></span>
+                    <button onclick="cambiarMesCalendario(1)" id="cal-next" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Siguiente</button>
+                </div>
+                <div class="grid grid-cols-7 gap-2 w-full text-center text-[9px] uppercase font-bold tracking-wider opacity-40 mb-2">
+                    <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div>
+                </div>
+                <div id="calendar-grid" class="grid grid-cols-7 gap-2 w-full"></div>
+                <button onclick="goToStep('step-fecha')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-time" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 6</span>
+                <h3 class="font-serif text-3xl italic mb-8">Horario de entrega</h3>
+                <div id="time-slots-container" class="space-y-4 w-full mb-6"></div>
+                <button onclick="regresarDesdeTime()" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-4" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 7</span>
+                <h3 class="font-serif text-4xl italic mb-12">Mensaje en la tarjeta</h3>
+                <textarea id="card-message" oninput="guardarProgresoCheckout()" placeholder="Escriba su mensaje aquí..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-32"></textarea>
+                <button onclick="goToStep(5)" class="mt-12 btn-premium w-full">Siguiente</button>
+                <button onclick="goToStep('step-time')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-5" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 8</span>
+                <h3 class="font-serif text-4xl italic mb-12">Fono de contacto (Destino)</h3>
+                <input type="tel" id="receiver-phone" oninput="guardarProgresoCheckout()" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <button onclick="goToStep(6)" class="mt-12 btn-premium w-full">Siguiente</button>
+                <button onclick="goToStep(4)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-6" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso Final</span>
+                <h3 class="font-serif text-4xl italic mb-12">Confirmar y Pagar</h3>
+                <p class="text-[10px] uppercase tracking-widest opacity-60 mb-8 leading-loose">
+                    Al confirmar, pagarás vía Mercado Pago y luego serás redirigido a WhatsApp para validar tu comprobante y coordinar el envío.
+                </p>
+                <button onclick="finalizarYCoordinar()" class="w-full btn-premium">Pagar con Mercado Pago</button>
+                <p class="text-[9px] uppercase tracking-widest text-[#c5a059] font-bold mt-4 leading-normal bg-[#0a1f1c]/5 border border-[#c5a059]/20 py-3 px-4 rounded-sm">
+                    ⚠️ NOTA IMPORTANTE: Al finalizar su pago, no cierre la ventana. Espere la redirección automática de 5 segundos para que el sistema genere su recibo digital en pantalla y pueda descargar su comprobante en PDF.
+                </p>
+                <button onclick="goToStep(5)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- ESTADO GLOBAL DE LA APLICACIÓN (CON PERSISTENCIA DE ARRANQUE) ---
+        let cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
+        let selectedGardenSpace = localStorage.getItem('laforesta_selectedGardenSpace') || '';
+        let selectedPalette = localStorage.getItem('laforesta_selectedPalette') || '';
+        let shippingCost = parseInt(localStorage.getItem('laforesta_shippingCost')) || 0;
+        let selectedZoneName = localStorage.getItem('laforesta_selectedZoneName') || '';
+        let selectedLogistics = localStorage.getItem('laforesta_selectedLogistics') || '';
+        let selectedDate = localStorage.getItem('laforesta_selectedDate') || '';
+        let selectedTimeSlot = localStorage.getItem('laforesta_selectedTimeSlot') || '';
+        let isExpressDelivery = localStorage.getItem('laforesta_isExpressDelivery') === 'true';
+
+        const RECARGO_EXPRESS_PRODUCTO = 1.25; 
+        let currentCalendarDate = new Date();
+
+        // --- INSTANCIA MERCADO PAGO ---
+        const mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', {
+            locale: 'es-CL'
+        });
+
+        // --- CATALOGO ---
+        const catalog = [
+            { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias." },
+            { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.jpeg", desc: "Lilium majestuosos, rosas premium, nubes de gypso y maule aterciopelado." },
+            { id: 3, name: "Amor Eterno", price: 230900, img: "img/RAMOS03.jpeg", desc: "Una declaración absoluta: imponente pieza maestra de 70 rosas seleccionadas." },
+            { id: 4, name: "Pasión de Sol", price: 45900, img: "img/RAMOS04.jpeg", desc: "Girasoles esculturales y rosas finas, entrelazados con gypso y maule silvestre." },
+            { id: 5, name: "Monte Mar Signature", price: 28900, img: "img/RAMOS05.jpeg", desc: "Gerberas vibrantes y rosas de autor, balanceadas con maules y gypso etéreo." },
+            { id: 6, name: "Brisa de Primavera", price: 36900, img: "img/RAMOS06.jpeg", desc: "Una sinfonía botánica de gerberas, astromelias, lisianthus y follaje de ruscus." },
+            { id: 7, name: "Golden Bloom", price: 47900, img: "img/RAMOS07.jpeg", desc: "Girasoles, lisianthus, maule, astromelias, gypso y delicadas clavelinas." },
+            { id: 8, name: "Suave Amanecer", price: 37900, img: "img/RAMOS08.jpeg", desc: "Lisianthus de colección, rosas finas, maules y una suave neblina de gypso." },
+            { id: 9, name: "Jardin de Verano", price: 28900, img: "img/RAMOS09.jpeg", desc: "Diseño de alto impacto con astromelias, gerberas selectas, lilium y limonium." },
+            { id: 10, name: "Susurro Rosé", price: 48900, img: "img/RAMOS10.jpeg", desc: "Tulipanes de corte limpio y siluetas dramáticas de limonium." },
+            { id: 11, name: "Luz de Atardecer", price: 42900, img: "img/RAMOS11.jpeg", desc: "Cálida composición de rosas, astromelias costeras y acentos de limonium." },
+            { id: 12, name: "Encanto Vivo", price: 37900, img: "img/RAMOS12.jpeg", desc: "Astromelias, lisianthus, gypso, gerberas, maules y el verde profundo del ruscus." }
+        ];
+
+        // RENDER DE PRODUCTOS
+        const grid = document.getElementById('product-grid');
+        grid.innerHTML = catalog.map(product => `
+            <div class="product-card group">
+                <div class="img-zoom-container aspect-square md:aspect-[3/4] mb-6 relative bg-zinc-100">
+                    <img src="${product.img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="${product.name}" loading="lazy">
+                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest">
+                        ${product.id <= 3 ? 'Bestseller' : 'Vault'}
+                    </div>
+                </div>
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="font-serif text-2xl italic">${product.name}</h3>
+                        <p class="text-[10px] uppercase tracking-widest opacity-50">${product.desc}</p>
+                    </div>
+                    <span class="font-serif text-xl">$${product.price.toLocaleString()}</span>
+                </div>
+                <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
+                        class="w-full py-4 border border-forest-green text-[10px] font-bold uppercase tracking-widest hover:bg-forest-green hover:text-gold-leaf transition">
+                    Añadir al Atelier
+                </button>
+            </div>
+        `).join('');
+
+        // --- SISTEMA DE GUARDADO DE PROGRESO LOCAL ---
+        function guardarProgresoCheckout() {
+            const progresoInputs = {
+                senderName: document.getElementById('sender-name')?.value || '',
+                receiverName: document.getElementById('receiver-name')?.value || '',
+                address: document.getElementById('address')?.value || '',
+                pickupName: document.getElementById('pickup-name')?.value || '',
+                cardMessage: document.getElementById('card-message')?.value || '',
+                receiverPhone: document.getElementById('receiver-phone')?.value || '',
+                currentStep: document.querySelector('.checkout-step.active')?.id || 'step-1'
+            };
+            localStorage.setItem('laforesta_checkout_inputs', JSON.stringify(progresoInputs));
+            
+            localStorage.setItem('laforesta_selectedLogistics', selectedLogistics);
+            localStorage.setItem('laforesta_selectedDate', selectedDate);
+            localStorage.setItem('laforesta_selectedTimeSlot', selectedTimeSlot);
+            localStorage.setItem('laforesta_isExpressDelivery', isExpressDelivery);
+            localStorage.setItem('laforesta_shippingCost', shippingCost);
+            localStorage.setItem('laforesta_selectedZoneName', selectedZoneName);
+            localStorage.setItem('laforesta_selectedPalette', selectedPalette);
+        }
+
+        function restaurarProgresoCheckout() {
+            const progreso = JSON.parse(localStorage.getItem('laforesta_checkout_inputs'));
+            if (!progreso) return;
+
+            if (document.getElementById('sender-name')) document.getElementById('sender-name').value = progreso.senderName;
+            if (document.getElementById('receiver-name')) document.getElementById('receiver-name').value = progreso.receiverName;
+            if (document.getElementById('address')) document.getElementById('address').value = progreso.address;
+            if (document.getElementById('pickup-name')) document.getElementById('pickup-name').value = progreso.pickupName;
+            if (document.getElementById('card-message')) document.getElementById('card-message').value = progreso.cardMessage;
+            if (document.getElementById('receiver-phone')) document.getElementById('receiver-phone').value = progreso.receiverPhone;
+
+            if (localStorage.getItem('laforesta_checkout_abierto') === 'true') {
+                const checkoutFlow = document.getElementById('checkout-flow');
+                if (checkoutFlow) {
+                    checkoutFlow.classList.add('open');
+                    goToStep(progreso.currentStep);
+                    if (progreso.currentStep === 'step-time') {
+                        renderHorariosInteligentes();
                     }
+                }
+            }
+        }
+
+        // --- LOGICA DE FLUJO MULTI-PASO ---
+        function openCheckout() {
+            if(cart.length === 0) {
+                alert("Su bolsa está vacía. Añada una pieza botánica primero.");
+                return;
+            }
+            toggleCart();
+            localStorage.setItem('laforesta_checkout_abierto', 'true');
+            document.getElementById('checkout-flow').classList.add('open');
+            
+            const progreso = JSON.parse(localStorage.getItem('laforesta_checkout_inputs'));
+            goToStep(progreso?.currentStep || 1);
+            
+            const currentStepId = progreso?.currentStep || 'step-1';
+            if (currentStepId === 'step-time') {
+                renderHorariosInteligentes();
+            }
+        }
+
+        function closeCheckout() {
+            localStorage.removeItem('laforesta_checkout_abierto');
+            document.getElementById('checkout-flow').classList.remove('open');
+        }
+
+        function goToStep(stepId) {
+            const targetId = typeof stepId === 'number' ? `step-${stepId}` : stepId;
+            document.querySelectorAll('.checkout-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            const targetElement = document.getElementById(targetId);
+            if(targetElement) {
+                targetElement.classList.add('active');
+            }
+            guardarProgresoCheckout();
+        }
+
+        function selectOption(button, step) {
+            const stepContainer = button.closest('.checkout-step');
+            stepContainer.querySelectorAll('.step-option').forEach(btn => {
+                btn.style.borderColor = 'rgba(10, 31, 28, 0.15)';
+                btn.style.background = 'transparent';
+            });
+            button.style.borderColor = '#c5a059';
+            button.style.background = 'rgba(197, 160, 89, 0.05)';
+        }
+
+        function setPalette(option) {
+            selectedPalette = option;
+            setTimeout(() => goToStep(3), 400);
+        }
+
+        function seleccionarModalidad(option) {
+            selectedLogistics = option;
+            if(option === 'envio') {
+                goToStep('step-zona');
+            } else {
+                shippingCost = 0;
+                selectedZoneName = 'Retiro en tienda';
+                actualizarTotalConDespacho();
+                goToStep('step-quien-retira');
+            }
+        }
+
+        function seleccionarZona(km, zoneName) {
+            let costo = km * 900;
+            if (costo < 3500) costo = 3500;
+            shippingCost = costo;
+            selectedZoneName = zoneName;
+            actualizarTotalConDespacho();
+            goToStep('step-direccion');
+        }
+
+        function confirmarDireccion() {
+            const dir = document.getElementById('address').value.trim();
+            if (!dir) return alert("Ingrese la dirección de entrega.");
+            goToStep('step-fecha');
+        }
+
+        function regresarDesdeFecha() {
+            if(selectedLogistics === 'envio') {
+                goToStep('step-direccion');
+            } else {
+                goToStep('step-quien-retira');
+            }
+        }
+
+        function seleccionarFecha(dia) {
+            if(dia === 'futuro') {
+                currentCalendarDate = new Date();
+                renderCalendar();
+                goToStep('step-calendario');
+            } else {
+                selectedDate = dia;
+                isExpressDelivery = false;
+                actualizarTotalConDespacho();
+                renderHorariosInteligentes();
+                goToStep('step-time');
+            }
+        }
+
+        // --- SISTEMA DE CALENDARIO ---
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const title = document.getElementById('cal-month-title');
+            const hoy = new Date();
+            
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+            
+            const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            title.innerText = `${nombresMeses[month]} ${year}`;
+            
+            const minMonth = hoy.getMonth();
+            const minYear = hoy.getFullYear();
+            const maxDate = new Date(minYear, minMonth + 1, 1);
+            const maxMonth = maxDate.getMonth();
+            const maxYear = maxDate.getFullYear();
+            
+            document.getElementById('cal-prev').style.visibility = (year === minYear && month === minMonth) ? 'hidden' : 'visible';
+            document.getElementById('cal-next').style.visibility = (year === maxYear && month === maxMonth) ? 'hidden' : 'visible';
+            
+            grid.innerHTML = "";
+            
+            const primerDia = new Date(year, month, 1).getDay();
+            const totalDias = new Date(year, month + 1, 0).getDate();
+            
+            for (let i = 0; i < primerDia; i++) {
+                grid.innerHTML += `<div></div>`;
+            }
+            
+            for (let d = 1; d <= totalDias; d++) {
+                const compCelda = new Date(year, month, d).setHours(0,0,0,0);
+                const compHoy = new Date().setHours(0,0,0,0);
+                
+                if (compCelda < compHoy) {
+                    grid.innerHTML += `<div class="py-3 text-zinc-300 font-serif text-sm cursor-not-allowed">${d}</div>`;
+                } else {
+                    const fechaStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                    grid.innerHTML += `<button onclick="seleccionarDiaCalendario('${fechaStr}')" class="py-3 font-serif text-sm hover:text-gold-leaf transition font-bold text-[#0a1f1c]">${d}</button>`;
+                }
+            }
+        }
+
+        function cambiarMesCalendario(delta) {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
+            renderCalendar();
+        }
+
+        function seleccionarDiaCalendario(fechaStr) {
+            selectedDate = fechaStr;
+            isExpressDelivery = false;
+            actualizarTotalConDespacho();
+            renderHorariosInteligentes();
+            goToStep('step-time');
+        }
+
+        // --- FILTRADO HORARIO REACTIVO CHILE ---
+        function renderHorariosInteligentes() {
+            const container = document.getElementById('time-slots-container');
+            container.innerHTML = "";
+            
+            const ahoraChile = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
+            const hora = ahoraChile.getHours();
+            const minutos = ahoraChile.getMinutes();
+            const tiempoDecimal = hora + (minutos / 60);
+
+            let html = "";
+
+            if (selectedDate === 'hoy') {
+                const tieneRamosComplejos = cart.some(item => item.id > 3);
+                if(tieneRamosComplejos) {
+                    container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños de la colección Vault requieren 24 horas de preparación. Seleccione mañana o una fecha futura.</p>`;
                     return;
                 }
-            } 
-            // Si el pago falló, está pendiente o el estado explícito es de cancelación
-            else if (paymentResult === 'failure' || paymentResult === 'pending' || status === 'rejected' || status === 'cancelled') {
-                localStorage.removeItem('pending_laforesta_order');
-                alert("El pago no fue acreditado. Intente nuevamente.");
-                window.history.replaceState({}, document.title, window.location.origin);
+
+                if (tiempoDecimal < 8.5) {
+                    html += `<button onclick="definirHorario('Mañana (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Mañana (10:00 - 12:00)</button>`;
+                }
+                if (tiempoDecimal < 11.0) {
+                    html += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Medio día (14:00 - 17:00)</button>`;
+                }
+                if (tiempoDecimal < 15.0) {
+                    html += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
+                }
+
+                if (selectedLogistics === 'envio' && tiempoDecimal >= 11.0 && tiempoDecimal < 18.0) {
+                    html += `
+                        <div class="border border-gold-leaf p-4 space-y-3">
+                            <p class="text-[10px] uppercase font-bold tracking-widest text-[#0a1f1c]">Despacho prioritario</p>
+                            <button onclick="definirHorario('Envío Express (< 2 hrs)', true)" class="w-full bg-[#0a1f1c] text-[#c5a059] py-4 text-xs font-bold uppercase tracking-widest border border-[#0a1f1c] transition">
+                                Despacho express menos de 2 horas
+                            </button>
+                        </div>
+                    `;
+                }
+
+                if (html === "") {
+                    html = `
+                        <p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p>
+                        <button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>
+                    `;
+                }
+            } else {
+                html += `<button onclick="definirHorario('Mañana (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Mañana (10:00 - 12:00)</button>`;
+                html += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Medio día (14:00 - 17:00)</button>`;
+                html += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
             }
 
-            const yearFooter = document.getElementById("year-footer");
-            if (yearFooter) { yearFooter.innerText = new Date().getFullYear(); }
-            const flow = document.getElementById('garden-flow');
-            if (flow) { flow.style.transform = 'translateY(100%)'; }
-        });
-        
-        // FUNCIÓN GLOBAL PARA GENERAR EL ARCHIVO PDF
-        function descargarPDF(idTransaccion) {
-            const elemento = document.getElementById('recibo-pdf');
-            const opciones = {
-                margin:       1.5,
-                filename:     `comprobante-laforesta-${idTransaccion}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 3, logging: false, useCORS: true },
-                jsPDF:        { unit: 'cm', format: 'letter', orientation: 'portrait' }
-            };
-            html2pdf().set(opciones).from(elemento).save();
+            container.innerHTML = html;
         }
 
-       // --- LÓGICA DE CHECKOUT Y ENTRADA SEGURA A BACKEND (WORKER) ---
-async function finalizarYCoordinar() {
-    if(cart.length === 0) return alert("El atelier está vacío.");
-
-    const emisor = document.getElementById('sender-name').value;
-    const receptor = document.getElementById('receiver-name').value;
-    const mensaje = document.getElementById('card-message').value;
-    const fonoDestino = document.getElementById('receiver-phone').value;
-    
-    let destinoFinal = "";
-    if(selectedLogistics === 'envio') {
-        destinoFinal = `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById('address').value}`;
-    } else {
-        const quienRetira = document.getElementById('pickup-name') ? document.getElementById('pickup-name').value : '';
-        destinoFinal = `Retiro en Atelier Reñaca\n• *RETIRA:* ${quienRetira}`;
-    }
-    
-    const horarioBtn = document.querySelector('#step-time .step-option[style*="background"]');
-    const horario = horarioBtn ? horarioBtn.innerText : 'No especificado';
-    
-    // 1. Cálculo del total dinámico real (incluye recargos de prioridad si aplica)
-    const totalFinal = actualizarTotalConDespacho(); 
-
-    // 2. Mapeo de artículos con inyección de precio dinámico (Afecto a tarifa express)
-    let articulos = cart.map(item => {
-        let precioReal = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
-        return `- ${item.name} (Cant: ${item.qty}) [c/u: $${precioReal.toLocaleString()}]`;
-    }).join('\n');
-
-    // 3. Formateo de la fecha de entrega seleccionada
-    let fechaTexto = selectedDate === 'hoy' ? 'Hoy' : (selectedDate === 'manana' ? 'Mañana' : selectedDate);
-
-    // 4. Construcción estructurada del string de texto único para WhatsApp y almacenamiento
-    let texto = `*ORDEN GENERADA - LA FORESTA*\n\n`;
-    texto += `*PALETA DE COLOR:* ${selectedPalette}\n`;
-    texto += `*FECHA ENTREGA:* ${fechaTexto}\n`;
-    if(isExpressDelivery) {
-        texto += `*SERVICIO:* Despacho express prioritario\n`;
-    }
-    texto += `*DE:* ${emisor}\n`;
-    texto += `*PARA:* ${receptor}\n`;
-    texto += `*LOGÍSTICA:* ${destinoFinal}\n`;
-    texto += `*HORARIO:* ${horario}\n`;
-    texto += `*FONO DESTINO:* ${fonoDestino}\n\n`; 
-    texto += `*TARJETA:* "${mensaje}"\n\n`;
-    texto += `*PEDIDO:*\n${articulos}\n`;
-    if(shippingCost > 0) {
-        texto += `*COSTO ENVÍO:* $${shippingCost.toLocaleString()}\n`;
-    }
-    if(isExpressDelivery) {
-        texto += `*RECARGO LOGÍSTICA EXPRESS:* $7.900\n`;
-    }
-    texto += `*TOTAL A PAGAR:* $${totalFinal.toLocaleString()}`;
-
-    // 5. Estructuración del objeto de preferencia para Mercado Pago y Cloudflare Worker
-    const preferenceData = {
-        items: [
-            {
-                title: "Pedido La Foresta",
-                quantity: 1,
-                unit_price: totalFinal,
-                currency_id: "CLP"
+        function regresarDesdeTime() {
+            if (selectedDate === 'hoy' || selectedDate === 'manana') {
+                goToStep('step-fecha');
+            } else {
+                goToStep('step-calendario');
             }
-        ],
-        back_urls: {
-            success: window.location.origin + "?payment_result=success",
-            failure: window.location.origin + "?payment_result=failure",
-            pending: window.location.origin + "?payment_result=pending"
-        },
-        auto_return: "approved",
-        metadata: { 
-            sender_name: emisor,
-            receiver_name: receptor,
-            palette: selectedPalette,
-            logistics_detail: destinoFinal,
-            time_slot: horario,
-            destination_phone: fonoDestino,
-            card_text: mensaje,
-            order_summary: articulos,
-            total_price: totalFinal
-        }
-    };
-
-    try {
-        const response = await fetch('https://old-brook-bf01.sebjmz.workers.dev', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(preferenceData)
-        });
-
-        const preference = await response.json();
-        
-        if (preference.init_point) {
-            localStorage.setItem('pending_laforesta_order', texto);
-            window.location.href = preference.init_point;
-        } else {
-            throw new Error("No se obtuvo la pasarela desde el servidor seguro.");
         }
 
-    } catch (error) {
-        console.error("Error en la conexión segura:", error);
-        alert("No se pudo procesar el pago de forma segura. Intente nuevamente.");
-    }
-}
-        // --- LÓGICA INTERACTIVA DEL FLUJO GARDEN ---
+        function definirHorario(slot, esExpress) {
+            selectedTimeSlot = slot;
+            isExpressDelivery = esExpress;
+            actualizarTotalConDespacho();
+            setTimeout(() => goToStep(4), 400);
+        }
+
+        function actualizarTotalConDespacho() {
+            let baseTotal = cart.reduce((acc, item) => {
+                let precioItem = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
+                return acc + (precioItem * item.qty);
+            }, 0);
+            
+            let recargoEnvioExpress = isExpressDelivery ? 7900 : 0;
+            const totalFinal = baseTotal + shippingCost + recargoEnvioExpress;
+            
+            document.getElementById('cart-total').innerText = `$${totalFinal.toLocaleString()}`;
+            return totalFinal;
+        }
+
+        // --- MANEJO DEL CARRITO INTERACTIVO ---
+        function toggleCart() {
+            const drawer = document.getElementById('atelier-bag');
+            const overlay = document.getElementById('cart-overlay');
+            drawer.classList.toggle('open');
+            
+            if (drawer.classList.contains('open')) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.add('opacity-100'), 10);
+            } else {
+                overlay.classList.remove('opacity-100');
+                setTimeout(() => overlay.classList.add('hidden'), 500);
+            }
+        }
+
+        function addToCart(id, name, price, img) {
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ id, name, price, img, qty: 1 });
+            }
+            updateCartUI();
+            
+            const badge = document.getElementById('cart-count');
+            badge.classList.add('scale-150');
+            setTimeout(() => badge.classList.remove('scale-150'), 300);
+
+            if(!document.getElementById('atelier-bag').classList.contains('open')) {
+                toggleCart();
+            }
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        function updateQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) removeFromCart(id);
+                else updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            localStorage.setItem('laforesta_cart', JSON.stringify(cart));
+            const container = document.getElementById('cart-items-container');
+            const totalEl = document.getElementById('cart-total');
+            const countNav = document.getElementById('cart-count');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-20 opacity-40">
+                        <p class="uppercase tracking-widest text-[10px]">Su bolsa está vacía</p>
+                        <button onclick="toggleCart(); openVault();" class="mt-4 text-gold-leaf border-b border-gold-leaf text-[10px] font-bold uppercase tracking-widest">Ir a la Colección</button>
+                    </div>
+                `;
+                totalEl.innerText = `$0`;
+                countNav.innerText = "0";
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="flex space-x-6 items-start">
+                    <div class="w-24 h-32 bg-zinc-100 overflow-hidden">
+                        <img src="${item.img}" class="w-full h-full object-cover grayscale" alt="${item.name}">
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="font-serif text-lg italic mb-1">${item.name}</h4>
+                        <p class="text-gold-leaf text-sm font-bold">$${(item.price).toLocaleString()}</p>
+                        <div class="flex items-center space-x-6 mt-4">
+                            <div class="flex items-center space-x-3 border px-2 py-1">
+                                <button onclick="updateQty(${item.id}, -1)" class="hover:text-gold-leaf">-</button>
+                                <span class="text-xs font-bold">${item.qty}</span>
+                                <button onclick="updateQty(${item.id}, 1)" class="hover:text-gold-leaf">+</button>
+                            </div>
+                            <button onclick="removeFromCart(${item.id})" class="text-[9px] uppercase tracking-widest opacity-40 hover:opacity-100">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            actualizarTotalConDespacho();
+            const itemsCount = cart.reduce((acc, item) => acc + item.qty, 0);
+            countNav.innerText = itemsCount;
+        }
+
+        // --- EFECTOS VISUALES HOME ---
+        function openVault() {
+            const content = document.getElementById('vault-content');
+            const plus = document.getElementById('vault-plus');
+            content.classList.toggle('active');
+            
+            if(content.classList.contains('active')) {
+                plus.innerText = '-';
+                plus.style.transform = 'rotate(180deg)';
+                setTimeout(() => {
+                    document.getElementById('vault').scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            } else {
+                plus.innerText = '+';
+                plus.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        window.onscroll = function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('py-3');
+                nav.classList.remove('py-5');
+            } else {
+                nav.classList.add('py-5');
+                nav.classList.remove('py-3');
+            }
+        };
+
+        function toggleGardenImage() {
+            const img1 = document.getElementById('garden-img-1');
+            const img2 = document.getElementById('garden-img-2');
+            if (img1 && img2) {
+                if (img1.classList.contains('opacity-100')) {
+                    img1.classList.remove('opacity-100');
+                    img1.classList.add('opacity-0');
+                    img2.classList.remove('opacity-0');
+                    img2.classList.add('opacity-100');
+                } else {
+                    img2.classList.remove('opacity-100');
+                    img2.classList.add('opacity-0');
+                    img1.classList.remove('opacity-0');
+                    img1.classList.add('opacity-100');
+                }
+            }
+        }
+
+        // --- LÓGICA INTERACTIVA PAISAJISMO GARDEN ---
         function openGardenFlow() {
             const flow = document.getElementById('garden-flow');
             flow.classList.remove('hidden');
@@ -1098,7 +1136,6 @@ async function finalizarYCoordinar() {
             }
 
             const NUMERO_WHATSAPP_GARDEN = "56994783520"; 
-            
             let textoGarden = `*SOLICITUD ASESORÍA PAISAJISMO - LA FORESTA*\n\n`;
             textoGarden += `*CLIENTE:* ${nombre}\n`;
             textoGarden += `*TIPO DE PROYECTO:* ${selectedGardenSpace}\n`;
@@ -1110,126 +1147,122 @@ async function finalizarYCoordinar() {
             closeGardenFlow();
         }
 
-        // --- GESTIÓN DE ATELIER BAG (CARRITO) ---
-        function openVault() {
-            const content = document.getElementById('vault-content');
-            const plus = document.getElementById('vault-plus');
-            content.classList.toggle('active');
+        // --- INTEGRACIÓN BACKEND CLOUDFLARE WORKER ---
+        async function finalizarYCoordinar() {
+            if(cart.length === 0) return alert("El atelier está vacío.");
+
+            const emisor = document.getElementById('sender-name').value;
+            const receptor = document.getElementById('receiver-name').value;
+            const mensaje = document.getElementById('card-message').value;
+            const fonoDestino = document.getElementById('receiver-phone').value;
             
-            if(content.classList.contains('active')) {
-                plus.innerText = '-';
-                plus.style.transform = 'rotate(180deg)';
-                setTimeout(() => {
-                    document.getElementById('vault').scrollIntoView({ behavior: 'smooth' });
-                }, 100);
+            let destinoFinal = "";
+            if(selectedLogistics === 'envio') {
+                destinoFinal = `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById('address').value}`;
             } else {
-                plus.innerText = '+';
-                plus.style.transform = 'rotate(0deg)';
+                const quienRetira = document.getElementById('pickup-name') ? document.getElementById('pickup-name').value : '';
+                destinoFinal = `Retiro en Atelier Reñaca\n• *RETIRA:* ${quienRetira}`;
             }
-        }
-
-        function toggleCart() {
-            const drawer = document.getElementById('atelier-bag');
-            const overlay = document.getElementById('cart-overlay');
-            drawer.classList.toggle('open');
             
-            if (drawer.classList.contains('open')) {
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.add('opacity-100'), 10);
-            } else {
-                overlay.classList.remove('opacity-100');
-                setTimeout(() => overlay.classList.add('hidden'), 500);
-            }
-        }
-
-        function addToCart(id, name, price, img) {
-            const existing = cart.find(item => item.id === id);
-            if (existing) {
-                existing.qty++;
-            } else {
-                cart.push({ id, name, price, img, qty: 1 });
-            }
-            updateCartUI();
+            const horarioBtn = document.querySelector('#step-time .step-option[style*="background"]');
+            const horario = horarioBtn ? horarioBtn.innerText : 'No especificado';
             
-            const badge = document.getElementById('cart-count');
-            badge.classList.add('scale-150');
-            setTimeout(() => badge.classList.remove('scale-150'), 300);
+            const totalFinal = actualizarTotalConDespacho(); 
 
-            if(!document.getElementById('atelier-bag').classList.contains('open')) {
-                toggleCart();
+            let articulos = cart.map(item => {
+                let precioReal = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
+                return `- ${item.name} (Cant: ${item.qty}) [c/u: $${precioReal.toLocaleString()}]`;
+            }).join('\n');
+
+            let fechaTexto = selectedDate === 'hoy' ? 'Hoy' : (selectedDate === 'manana' ? 'Mañana' : selectedDate);
+
+            let texto = `*ORDEN GENERADA - LA FORESTA*\n\n`;
+            texto += `*PALETA DE COLOR:* ${selectedPalette}\n`;
+            texto += `*FECHA ENTREGA:* ${fechaTexto}\n`;
+            if(isExpressDelivery) {
+                texto += `*SERVICIO:* Despacho express prioritario\n`;
+            }
+            texto += `*DE:* ${emisor}\n`;
+            texto += `*PARA:* ${receptor}\n`;
+            texto += `*LOGÍSTICA:* ${destinoFinal}\n`;
+            texto += `*HORARIO:* ${horario}\n`;
+            texto += `*FONO DESTINO:* ${fonoDestino}\n\n`; 
+            texto += `*TARJETA:* "${mensaje}"\n\n`;
+            texto += `*PEDIDO:*\n${articulos}\n`;
+            if(shippingCost > 0) {
+                texto += `*COSTO ENVÍO:* $${shippingCost.toLocaleString()}\n`;
+            }
+            if(isExpressDelivery) {
+                texto += `*RECARGO LOGÍSTICA EXPRESS:* $7.900\n`;
+            }
+            texto += `*TOTAL A PAGAR:* $${totalFinal.toLocaleString()}`;
+
+            const preferenceData = {
+                items: [
+                    {
+                        title: "Pedido La Foresta",
+                        quantity: 1,
+                        unit_price: totalFinal,
+                        currency_id: "CLP"
+                    }
+                ],
+                back_urls: {
+                    success: window.location.origin + "?payment_result=success",
+                    failure: window.location.origin + "?payment_result=failure",
+                    pending: window.location.origin + "?payment_result=pending"
+                },
+                auto_return: "approved",
+                metadata: { 
+                    sender_name: emisor,
+                    receiver_name: receptor,
+                    palette: selectedPalette,
+                    logistics_detail: destinoFinal,
+                    time_slot: horario,
+                    destination_phone: fonoDestino,
+                    card_text: mensaje,
+                    order_summary: articulos,
+                    total_price: totalFinal
+                }
+            };
+
+            try {
+                const response = await fetch('https://old-brook-bf01.sebjmz.workers.dev', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(preferenceData)
+                });
+
+                const preference = await response.json();
+                
+                if (preference.init_point) {
+                    localStorage.setItem('pending_laforesta_order', texto);
+                    window.location.href = preference.init_point;
+                } else {
+                    throw new Error("No se obtuvo la pasarela desde el servidor seguro.");
+                }
+
+            } catch (error) {
+                console.error("Error en la conexión segura:", error);
+                alert("No se pudo procesar el pago de forma segura. Intente nuevamente.");
             }
         }
 
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            updateCartUI();
+        // --- SISTEMA GENERADOR DE COMPROBANTES PDF ---
+        function descargarPDF(idTransaccion) {
+            const elemento = document.getElementById('recibo-pdf');
+            const opciones = {
+                margin:       1.5,
+                filename:     `comprobante-laforesta-${idTransaccion}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 3, logging: false, useCORS: true },
+                jsPDF:        { unit: 'cm', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opciones).from(elemento).save();
         }
 
-        function updateQty(id, delta) {
-            const item = cart.find(i => i.id === id);
-            if (item) {
-                item.qty += delta;
-                if (item.qty <= 0) removeFromCart(id);
-                else updateCartUI();
-            }
-        }
-
-        function updateCartUI() {
-            const container = document.getElementById('cart-items-container');
-            const totalEl = document.getElementById('cart-total');
-            const countNav = document.getElementById('cart-count');
-            
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-20 opacity-40">
-                        <p class="uppercase tracking-widest text-[10px]">Su bolsa está vacía</p>
-                        <button onclick="toggleCart(); openVault();" class="mt-4 text-gold-leaf border-b border-gold-leaf text-[10px] font-bold uppercase tracking-widest">Ir a la Colección</button>
-                    </div>
-                `;
-                totalEl.innerText = `$0`;
-                countNav.innerText = "0";
-                return;
-            }
-
-            container.innerHTML = cart.map(item => `
-                <div class="flex space-x-6 items-start animate-fade-in">
-                    <div class="w-24 h-32 bg-zinc-100 overflow-hidden">
-                        <img src="${item.img}" class="w-full h-full object-cover grayscale" alt="${item.name}">
-                    </div>
-                    <div class="flex-grow">
-                        <h4 class="font-serif text-lg italic mb-1">${item.name}</h4>
-                        <p class="text-gold-leaf text-sm font-bold">$${(item.price).toLocaleString()}</p>
-                        <div class="flex items-center space-x-6 mt-4">
-                            <div class="flex items-center space-x-3 border px-2 py-1">
-                                <button onclick="updateQty(${item.id}, -1)" class="hover:text-gold-leaf">-</button>
-                                <span class="text-xs font-bold">${item.qty}</span>
-                                <button onclick="updateQty(${item.id}, 1)" class="hover:text-gold-leaf">+</button>
-                            </div>
-                            <button onclick="removeFromCart(${item.id})" class="text-[9px] uppercase tracking-widest opacity-40 hover:opacity-100">Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            const total = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-            const itemsCount = cart.reduce((acc, item) => acc + item.qty, 0);
-
-            totalEl.innerText = `$${total.toLocaleString()}`;
-            countNav.innerText = itemsCount;
-        }
-
-        // --- EFECTOS VISUALES COMPLEMENTARIOS ---
-        window.onscroll = function() {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                nav.classList.add('py-3');
-                nav.classList.remove('py-5');
-            } else {
-                nav.classList.add('py-5');
-                nav.classList.remove('py-3');
-            }
-        };
-
+        // PHRASES ROTATOR HERO
         (function() {
             const phrases = [
                 "Lujo<br><span class='not-italic text-white/90'>Orgánico</span>",
@@ -1259,162 +1292,87 @@ async function finalizarYCoordinar() {
             }
         })();
 
-        // --- PARAMETRIZACIÓN DEL FORMULARIO MULTI-PASO ---
-        function setPalette(option) {
-            selectedPalette = option;
-            setTimeout(() => goToStep(3), 400);
-        }
-
-        function calcularEnvio() {
-            const select = document.getElementById('zone-select');
-            const display = document.getElementById('shipping-display');
-            const km = parseFloat(select.value);
-
-            if (km === 0) return;
-
-            let costo = km * 900;
-            if (costo < 3500) {
-                costo = 3500;
-            }
+        // --- DETECTOR POST-PAGO & INICIALIZACIÓN ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paymentResult = urlParams.get('payment_result');
+            const status = urlParams.get('status') || urlParams.get('collection_status');
             
-            shippingCost = costo; 
-            selectedZoneName = select.options[select.selectedIndex].text;
-            display.innerText = '$' + costo.toLocaleString();
-            actualizarTotalConDespacho();
-        }
+            if (paymentResult === 'success' && status === 'approved') {
+                const textoGuardado = localStorage.getItem('pending_laforesta_order');
+                if (textoGuardado) {
+                    localStorage.removeItem('pending_laforesta_order');
+                    localStorage.removeItem('laforesta_cart');            
+                    localStorage.removeItem('laforesta_checkout_inputs');  
+                    localStorage.removeItem('laforesta_checkout_abierto'); 
+                            
+                    const paymentId = urlParams.get('payment_id') || urlParams.get('collection_id');
+                    const NUMERO_WHATSAPP = "56994783520";
+                    
+                    let textoFinal = textoGuardado + `\n\n*COMPROBANTE DE PAGO APROBADO*\n• *ID TRANSACCIÓN MP:* ${paymentId}`;
+                    const wpUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(textoFinal)}`;
 
-        function verificarDireccionYContinuar() {
-            const dir = document.getElementById('address').value.trim();
-            if (!selectedZoneName) {
-                alert("Por favor, seleccione una zona de entrega para el envío.");
-                return;
-            }
-            if (!dir) {
-                alert("Por favor, ingrese la dirección exacta de entrega.");
-                return;
-            }
-            goToStep('step-time');
-        }
+                    const checkoutFlow = document.getElementById('checkout-flow');
+                    if (checkoutFlow) {
+                        checkoutFlow.classList.add('open');
+                        checkoutFlow.innerHTML = `
+                            <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
+                                <h2 class="font-serif text-xl tracking-widest uppercase text-gold-leaf">La Foresta | Panel de Confirmación</h2>
+                                <button onclick="closeCheckout(); window.location.href=window.location.origin;" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
+                            </div>
+                            <div class="flex-grow flex flex-col justify-center items-center p-6 text-center max-w-md mx-auto space-y-6">
+                                <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-leaf bg-gold-leaf/10 px-4 py-1.5 border border-gold-leaf/20">Pago Exitoso</span>
+                                <h3 class="font-serif text-4xl italic">Transacción Verificada</h3>
+                                
+                                <div id="recibo-pdf" class="w-full bg-white border border-zinc-200 p-6 text-left space-y-3 text-xs text-zinc-700 shadow-sm rounded-sm">
+                                    <div class="border-b pb-3 flex justify-between items-center">
+                                        <div>
+                                            <p class="font-sans font-bold text-sm tracking-wider text-[#0a1f1c] uppercase">LA FORESTA</p>
+                                            <p class="text-[9px] opacity-50 uppercase tracking-widest">Flores & Jardín Reñaca</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="font-bold text-[10px] text-emerald-600 uppercase bg-emerald-50 px-2 py-0.5 rounded-sm">Acreditado</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1 font-mono text-[11px]">
+                                        <p><strong>ID Transacción:</strong> ${paymentId}</p>
+                                        <p><strong>Operador Financiero:</strong> Mercado Pago</p>
+                                        <p><strong>Fecha Emisión:</strong> ${new Date().toLocaleDateString('es-CL')}</p>
+                                        <p><strong>Hora:</strong> ${new Date().toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})} hrs</p>
+                                    </div>
+                                    <div class="border-t pt-2 text-[9px] opacity-40 uppercase tracking-widest text-center">
+                                        Documento no válido como boleta fiscal
+                                    </div>
+                                </div>
 
-        function setLogistics(option) {
-            selectedLogistics = option;
-            if(option === 'envio') {
-                setTimeout(() => goToStep('step-envio'), 300);
-            } else {
-                shippingCost = 0; 
-                selectedZoneName = 'Retiro en Tienda';
-                actualizarTotalConDespacho();
-                setTimeout(() => goToStep('step-retiro'), 300);
-            }
-        }
-
-        function actualizarTotalConDespacho() {
-    // Si es express, los ramos suben un 25% por priorización en taller
-    let baseTotal = cart.reduce((acc, item) => {
-        let precioItem = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
-        return acc + (precioItem * item.qty);
-    }, 0);
-    
-    // Recargo de envío de emergencia en la logística de despacho (ej: +$7.900)
-    let recargoEnvioExpress = isExpressDelivery ? 7900 : 0;
-
-    const totalFinal = baseTotal + shippingCost + recargoEnvioExpress;
-    document.getElementById('cart-total').innerText = `$${totalFinal.toLocaleString()}`;
-    return totalFinal;
-}
-
-        // --- CATÁLOGO DE PRODUCTOS (THE VAULT) ---
-        const catalog = [
-            { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias." },
-            { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.jpeg", desc: "Lilium majestuosos, rosas premium, nubes de gypso y maule aterciopelado." },
-            { id: 3, name: "Amor Eterno", price: 230900, img: "img/RAMOS03.jpeg", desc: "Una declaración absoluta: imponente pieza maestra de 70 rosas seleccionadas." },
-            { id: 4, name: "Pasión de Sol", price: 45900, img: "img/RAMOS04.jpeg", desc: "Girasoles esculturales y rosas finas, entrelazados con gypso y maule silvestre." },
-            { id: 5, name: "Monte Mar Signature", price: 28900, img: "img/RAMOS05.jpeg", desc: "Gerberas vibrantes y rosas de autor, balanceadas con maules y gypso etéreo." },
-            { id: 6, name: "Brisa de Primavera", price: 36900, img: "img/RAMOS06.jpeg", desc: "Una sinfonía botánica de gerberas, astromelias, lisianthus y follaje de ruscus." },
-            { id: 7, name: "Golden Bloom", price: 47900, img: "img/RAMOS07.jpeg", desc: "Girasoles, lisianthus, maule, astromelias, gypso y delicadas clavelinas." },
-            { id: 8, name: "Suave Amanecer", price: 37900, img: "img/RAMOS08.jpeg", desc: "Lisianthus de colección, rosas finas, maules y una suave neblina de gypso." },
-            { id: 9, name: "Jardin de Verano", price: 28900, img: "img/RAMOS09.jpeg", desc: "Diseño de alto impacto con astromelias, gerberas selectas, lilium y limonium." },
-            { id: 10, name: "Susurro Rosé", price: 48900, img: "img/RAMOS10.jpeg", desc: "Tulipanes de corte limpio y siluetas dramáticas de limonium." },
-            { id: 11, name: "Luz de Atardecer", price: 42900, img: "img/RAMOS11.jpeg", desc: "Cálida composición de rosas, astromelias costeras y acentos de limonium." },
-            { id: 12, name: "Encanto Vivo", price: 37900, img: "img/RAMOS12.jpeg", desc: "Astromelias, lisianthus, gypso, gerberas, maules y el verde profundo del ruscus." }
-        ];
-
-        const grid = document.getElementById('product-grid');
-        grid.innerHTML = catalog.map(product => `
-            <div class="product-card group">
-                <div class="img-zoom-container aspect-square md:aspect-[3/4] mb-6 relative bg-zinc-100">
-                    <img src="${product.img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="${product.name}" loading="lazy">
-                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest">
-                        ${product.id <= 3 ? 'Bestseller' : 'Vault'}
-                    </div>
-                </div>
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <h3 class="font-serif text-2xl italic">${product.name}</h3>
-                        <p class="text-[10px] uppercase tracking-widest opacity-50">${product.desc}</p>
-                    </div>
-                    <span class="font-serif text-xl">$${product.price.toLocaleString()}</span>
-                </div>
-                <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
-                        class="w-full py-4 border border-forest-green text-[10px] font-bold uppercase tracking-widest hover:bg-forest-green hover:text-gold-leaf transition">
-                    Añadir al Atelier
-                </button>
-            </div>
-        `).join('');
-
-        // --- MANEJO DEL FLUJO DE CHECKOUT MULTI-PASO ---
-        function openCheckout() {
-            if(cart.length === 0) {
-                alert("Su bolsa está vacía. Añada una pieza botánica primero.");
-                return;
-            }
-            toggleCart();
-            document.getElementById('checkout-flow').classList.add('open');
-            goToStep(1);
-        }
-
-        function closeCheckout() {
-            document.getElementById('checkout-flow').classList.remove('open');
-        }
-
-        function goToStep(stepId) {
-            const targetId = typeof stepId === 'number' ? `step-${stepId}` : stepId;
-            document.querySelectorAll('.checkout-step').forEach(step => {
-                step.classList.remove('active');
-            });
-            const targetElement = document.getElementById(targetId);
-            if(targetElement) {
-                targetElement.classList.add('active');
-            }
-        }
-
-        function selectOption(button, step) {
-            const stepContainer = button.closest('.checkout-step');
-            stepContainer.querySelectorAll('.step-option').forEach(btn => {
-                btn.style.borderColor = 'rgba(10, 31, 28, 0.15)';
-                btn.style.background = 'transparent';
-            });
-            button.style.borderColor = '#c5a059';
-            button.style.background = 'rgba(197, 160, 89, 0.05)';
-        }
-
-        function toggleGardenImage() {
-            const img1 = document.getElementById('garden-img-1');
-            const img2 = document.getElementById('garden-img-2');
-            if (img1 && img2) {
-                if (img1.classList.contains('opacity-100')) {
-                    img1.classList.remove('opacity-100');
-                    img1.classList.add('opacity-0');
-                    img2.classList.remove('opacity-0');
-                    img2.classList.add('opacity-100');
-                } else {
-                    img2.classList.remove('opacity-100');
-                    img2.classList.add('opacity-0');
-                    img1.classList.remove('opacity-0');
-                    img1.classList.add('opacity-100');
+                                <div class="w-full space-y-3">
+                                    <a href="${wpUrl}" target="_blank" class="w-full btn-premium inline-block text-center pt-4 uppercase text-xs tracking-widest font-bold transition">
+                                        COORDINAR DESPACHO VÍA WHATSAPP
+                                    </a>
+                                    <button onclick="descargarPDF('${paymentId}')" class="w-full py-3 border border-zinc-300 text-zinc-700 bg-white text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-50 transition flex items-center justify-center space-x-2">
+                                        <span>DESCARGAR COMPROBANTE (PDF)</span>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    return;
                 }
+            } 
+            else if (paymentResult === 'failure' || paymentResult === 'pending' || status === 'rejected' || status === 'cancelled') {
+                localStorage.removeItem('pending_laforesta_order');
+                alert("El pago no fue acreditado. Intente nuevamente.");
+                window.history.replaceState({}, document.title, window.location.origin);
             }
-        }
+
+            const yearFooter = document.getElementById("year-footer");
+            if (yearFooter) { yearFooter.innerText = new Date().getFullYear(); }
+            const flow = document.getElementById('garden-flow');
+            if (flow) { flow.style.transform = 'translateY(100%)'; }
+
+            updateCartUI(); 
+            restaurarProgresoCheckout();
+        });
     </script>
 </body>
 </html>
