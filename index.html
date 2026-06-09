@@ -849,9 +849,11 @@ const RECARGO_EXPRESS_PRODUCTO = 1.25; // +25% sobre el valor del ramo por prior
         // --- DETECTOR POST-PAGO (RETORNO DE MERCADO PAGO) ---
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
+            const paymentResult = urlParams.get('payment_result');
             const status = urlParams.get('status') || urlParams.get('collection_status');
             
-            if (status === 'approved') {
+            // Validación estricta: Solo entra si la pasarela redirigió por éxito Y el estado es approved
+            if (paymentResult === 'success' && status === 'approved') {
                 const textoGuardado = localStorage.getItem('pending_laforesta_order');
                 if (textoGuardado) {
                     localStorage.removeItem('pending_laforesta_order');
@@ -908,6 +910,12 @@ const RECARGO_EXPRESS_PRODUCTO = 1.25; // +25% sobre el valor del ramo por prior
                     }
                     return;
                 }
+            } 
+            // Si el pago falló, está pendiente o el estado explícito es de cancelación
+            else if (paymentResult === 'failure' || paymentResult === 'pending' || status === 'rejected' || status === 'cancelled') {
+                localStorage.removeItem('pending_laforesta_order');
+                alert("El pago no fue acreditado. Intente nuevamente.");
+                window.history.replaceState({}, document.title, window.location.origin);
             }
 
             const yearFooter = document.getElementById("year-footer");
@@ -915,7 +923,7 @@ const RECARGO_EXPRESS_PRODUCTO = 1.25; // +25% sobre el valor del ramo por prior
             const flow = document.getElementById('garden-flow');
             if (flow) { flow.style.transform = 'translateY(100%)'; }
         });
-
+        
         // FUNCIÓN GLOBAL PARA GENERAR EL ARCHIVO PDF
         function descargarPDF(idTransaccion) {
             const elemento = document.getElementById('recibo-pdf');
@@ -994,7 +1002,9 @@ async function finalizarYCoordinar() {
             }
         ],
         back_urls: {
-            success: window.location.origin
+            success: window.location.origin + "?payment_result=success",
+            failure: window.location.origin + "?payment_result=failure",
+            pending: window.location.origin + "?payment_result=pending"
         },
         auto_return: "approved",
         metadata: { 
