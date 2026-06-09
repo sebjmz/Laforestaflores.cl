@@ -641,38 +641,81 @@
         // --- LÓGICA INTERACTIVA DEL FLUJO GARDEN ---
         let selectedGardenSpace = '';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Verificar si Mercado Pago redirigió de vuelta con pago aprobado
-            const urlParams = new URLSearchParams(window.location.search);
-            const status = urlParams.get('status') || urlParams.get('collection_status');
+        async function finalizarYCoordinar() {
+            if(cart.length === 0) return alert("El atelier está vacío.");
+
+            const emisor = document.getElementById('sender-name').value;
+            const receptor = document.getElementById('receiver-name').value;
+            const mensaje = document.getElementById('card-message').value;
+            const fonoDestino = document.getElementById('receiver-phone').value;
             
-            if (status === 'approved') {
-                const textoGuardado = localStorage.getItem('pending_laforesta_order');
-                if (textoGuardado) {
-                    // Limpia la memoria local para evitar duplicaciones
-                    localStorage.removeItem('pending_laforesta_order');
-                    
-                    const paymentId = urlParams.get('payment_id') || urlParams.get('collection_id');
-                    const NUMERO_WHATSAPP = "56994783520";
-                    
-                    // Añadir el ID de comprobante oficial al texto final
-                    let textoFinal = textoGuardado.replace(
-                        `_Proceso de pago iniciado. Adjunto comprobante emitido por Mercado Pago._`,
-                        `*COMPROBANTE DE PAGO APROBADO*%0A• *ID TRANSACCIÓN MP:* ${paymentId}`
-                    );
+            let destinoFinal = "";
+            if(selectedLogistics === 'envio') {
+                destinoFinal = `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById('address').value}`;
+            } else {
+                const quienRetira = document.getElementById('pickup-name') ? document.getElementById('pickup-name').value : '';
+                destinoFinal = `Retiro en Atelier Reñaca\n• *RETIRA:* ${quienRetira}`;
+            }
+            
+            const horarioBtn = document.querySelector('#step-time .step-option[style*="background"]');
+            const horario = horarioBtn ? horarioBtn.innerText : 'No especificado';
 
-                    // Redirigir directamente a WhatsApp
-                    window.location.href = `https://wa.me/${NUMERO_WHATSAPP}?text=${textoFinal}`;
-                    return;
+            let articulos = cart.map(item => `- ${item.name} (Cant: ${item.qty})`).join('\n');
+            
+            const baseTotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            const totalFinal = baseTotal + shippingCost;
+
+            let texto = `*ORDEN GENERADA - LA FORESTA*\n\n`;
+            texto += `*PALETA DE COLOR:* ${selectedPalette}\n`;
+            texto += `*DE:* ${emisor}\n`;
+            texto += `*PARA:* ${receptor}\n`;
+            texto += `*LOGÍSTICA:* ${destinoFinal}\n`;
+            texto += `*HORARIO:* ${horario}\n`;
+            texto += `*FONO:* ${fonoDestino}\n\n`;
+            texto += `*TARJETA:* "${mensaje}"\n\n`;
+            texto += `*PEDIDO:*\n${articulos}\n`;
+            if(shippingCost > 0) texto += `*COSTO ENVÍO:* $${shippingCost.toLocaleString()}\n`;
+            texto += `*TOTAL A PAGAR:* $${totalFinal.toLocaleString()}`;
+
+            const preferenceData = {
+                items: [
+                    {
+                        title: "Pedido La Foresta",
+                        quantity: 1,
+                        unit_price: totalFinal,
+                        currency_id: "CLP"
+                    }
+                ],
+                back_urls: {
+                    success: window.location.origin
+                },
+                auto_return: "approved"
+            };
+
+            try {
+                const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer APP_USR-3495088324063487-060821-8f12830c6285970bcca62d9fb4dc70f9-3458884797',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(preferenceData)
+                });
+
+                const preference = await response.json();
+                
+                if (preference.init_point) {
+                    localStorage.setItem('pending_laforesta_order', texto);
+                    window.location.href = preference.init_point;
+                } else {
+                    throw new Error("No se obtuvo el punto de inicio de pago.");
                 }
-            }
 
-            // Inicialización estándar del flujo garden
-            const flow = document.getElementById('garden-flow');
-            if (flow) {
-                flow.style.transform = 'translateY(100%)';
+            } catch (error) {
+                console.error("Error en la conexión con Mercado Pago:", error);
+                alert("No se pudo procesar el pago automático. Intente nuevamente.");
             }
-        });
+        }
 
         function openGardenFlow() {
             const flow = document.getElementById('garden-flow');
