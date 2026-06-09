@@ -642,6 +642,32 @@
         let selectedGardenSpace = '';
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Verificar si Mercado Pago redirigió de vuelta con pago aprobado
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status') || urlParams.get('collection_status');
+            
+            if (status === 'approved') {
+                const textoGuardado = localStorage.getItem('pending_laforesta_order');
+                if (textoGuardado) {
+                    // Limpia la memoria local para evitar duplicaciones
+                    localStorage.removeItem('pending_laforesta_order');
+                    
+                    const paymentId = urlParams.get('payment_id') || urlParams.get('collection_id');
+                    const NUMERO_WHATSAPP = "56994783520";
+                    
+                    // Añadir el ID de comprobante oficial al texto final
+                    let textoFinal = textoGuardado.replace(
+                        `_Proceso de pago iniciado. Adjunto comprobante emitido por Mercado Pago._`,
+                        `*COMPROBANTE DE PAGO APROBADO*%0A• *ID TRANSACCIÓN MP:* ${paymentId}`
+                    );
+
+                    // Redirigir directamente a WhatsApp
+                    window.location.href = `https://wa.me/${NUMERO_WHATSAPP}?text=${textoFinal}`;
+                    return;
+                }
+            }
+
+            // Inicialización estándar del flujo garden
             const flow = document.getElementById('garden-flow');
             if (flow) {
                 flow.style.transform = 'translateY(100%)';
@@ -1110,15 +1136,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 const preference = await response.json();
                 
                 if (preference.init_point) {
-                    window.open(preference.init_point, '_blank');
+                    // Guarda el texto del mensaje en el navegador antes de ir a pagar
+                    localStorage.setItem('pending_laforesta_order', texto);
+                    // Redirige en la misma pestaña hacia Mercado Pago para no perder el flujo de retorno
+                    window.location.href = preference.init_point;
                 } else {
                     throw new Error("No se obtuvo el punto de inicio de pago.");
                 }
-
-                setTimeout(() => {
-                    const wpUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${texto}`;
-                    window.location.href = wpUrl;
-                }, 1000);
 
             } catch (error) {
                 console.error("Error en la conexión con Mercado Pago:", error);
