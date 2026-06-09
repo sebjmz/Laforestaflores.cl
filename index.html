@@ -638,9 +638,47 @@
             locale: 'es-CL'
         });
 
-        // --- LÓGICA INTERACTIVA DEL FLUJO GARDEN ---
+        // --- ESTADO GLOBAL DE LA APLICACIÓN ---
+        let cart = [];
         let selectedGardenSpace = '';
+        let selectedPalette = '';
+        let shippingCost = 0;
+        let selectedZoneName = '';
+        let selectedLogistics = '';
 
+        // --- DETECTOR POST-PAGO (RETORNO DE MERCADO PAGO) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status') || urlParams.get('collection_status');
+            
+            if (status === 'approved') {
+                const textoGuardado = localStorage.getItem('pending_laforesta_order');
+                if (textoGuardado) {
+                    localStorage.removeItem('pending_laforesta_order');
+                    
+                    const paymentId = urlParams.get('payment_id') || urlParams.get('collection_id');
+                    const NUMERO_WHATSAPP = "56994783520";
+                    
+                    let textoFinal = textoGuardado + `\n\n*COMPROBANTE DE PAGO APROBADO*\n• *ID TRANSACCIÓN MP:* ${paymentId}`;
+
+                    window.location.href = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(textoFinal)}`;
+                    return;
+                }
+            }
+
+            // Sincronizar año dinámico del footer
+            const yearFooter = document.getElementById("year-footer");
+            if (yearFooter) {
+                yearFooter.innerText = new Date().getFullYear();
+            }
+
+            const flow = document.getElementById('garden-flow');
+            if (flow) {
+                flow.style.transform = 'translateY(100%)';
+            }
+        });
+
+        // --- LÓGICA DE CHECKOUT Y ENTRADA SEGURA A BACKEND (WORKER) ---
         async function finalizarYCoordinar() {
             if(cart.length === 0) return alert("El atelier está vacío.");
 
@@ -693,10 +731,10 @@
             };
 
             try {
-                const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
+                // RUTA TOTALMENTE PROTEGIDA VÍA CLOUDFLARE WORKER
+                const response = await fetch('https://old-brook-bf01.sebjmz.workers.dev', {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer APP_USR-3495088324063487-060821-8f12830c6285970bcca62d9fb4dc70f9-3458884797',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(preferenceData)
@@ -708,15 +746,16 @@
                     localStorage.setItem('pending_laforesta_order', texto);
                     window.location.href = preference.init_point;
                 } else {
-                    throw new Error("No se obtuvo el punto de inicio de pago.");
+                    throw new Error("No se obtuvo la pasarela desde el servidor seguro.");
                 }
 
             } catch (error) {
-                console.error("Error en la conexión con Mercado Pago:", error);
-                alert("No se pudo procesar el pago automático. Intente nuevamente.");
+                console.error("Error en la conexión segura:", error);
+                alert("No se pudo procesar el pago de forma segura. Intente nuevamente.");
             }
         }
 
+        // --- LÓGICA INTERACTIVA DEL FLUJO GARDEN ---
         function openGardenFlow() {
             const flow = document.getElementById('garden-flow');
             flow.classList.remove('hidden');
@@ -770,23 +809,20 @@
                 return;
             }
 
-            const NUMERO_WHATSAPP = "569XXXXXXXX"; 
+            const NUMERO_WHATSAPP_GARDEN = "56994783520"; 
             
-            let texto = `*SOLICITUD ASESORÍA PAISAJISMO - LA FORESTA*%0A%0A`;
-            texto += `*CLIENTE:* ${nombre}%0A`;
-            texto += `*TIPO DE PROYECTO:* ${selectedGardenSpace}%0A`;
-            texto += `*FONO CONTACTO:* ${fono}%0A%0A`;
-            texto += `*DETALLES:*%0A"${detalles}"`;
+            let textoGarden = `*SOLICITUD ASESORÍA PAISAJISMO - LA FORESTA*\n\n`;
+            textoGarden += `*CLIENTE:* ${nombre}\n`;
+            textoGarden += `*TIPO DE PROYECTO:* ${selectedGardenSpace}\n`;
+            textoGarden += `*FONO CONTACTO:* ${fono}\n\n`;
+            textoGarden += `*DETALLES:*\n"${detalles}"`;
 
-            const wpUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${texto}`;
+            const wpUrl = `https://wa.me/${NUMERO_WHATSAPP_GARDEN}?text=${encodeURIComponent(textoGarden)}`;
             window.open(wpUrl, '_blank');
             closeGardenFlow();
         }
 
-        // Estado del Carrito
-        let cart = [];
-
-        // Función para abrir/cerrar el catálogo (The Vault)
+        // --- GESTIÓN DE ATELIER BAG (CARRITO) ---
         function openVault() {
             const content = document.getElementById('vault-content');
             const plus = document.getElementById('vault-plus');
@@ -795,7 +831,6 @@
             if(content.classList.contains('active')) {
                 plus.innerText = '-';
                 plus.style.transform = 'rotate(180deg)';
-                // Scroll suave a la sección
                 setTimeout(() => {
                     document.getElementById('vault').scrollIntoView({ behavior: 'smooth' });
                 }, 100);
@@ -805,7 +840,6 @@
             }
         }
 
-        // Función para el Carrito Lateral
         function toggleCart() {
             const drawer = document.getElementById('atelier-bag');
             const overlay = document.getElementById('cart-overlay');
@@ -820,7 +854,6 @@
             }
         }
 
-        // Añadir al Carrito
         function addToCart(id, name, price, img) {
             const existing = cart.find(item => item.id === id);
             if (existing) {
@@ -830,24 +863,20 @@
             }
             updateCartUI();
             
-            // Efecto visual en el botón de la nav
             const badge = document.getElementById('cart-count');
             badge.classList.add('scale-150');
             setTimeout(() => badge.classList.remove('scale-150'), 300);
 
-            // Abrir carrito automáticamente al añadir
             if(!document.getElementById('atelier-bag').classList.contains('open')) {
                 toggleCart();
             }
         }
 
-        // Eliminar del Carrito
         function removeFromCart(id) {
             cart = cart.filter(item => item.id !== id);
             updateCartUI();
         }
 
-        // Cambiar cantidad
         function updateQty(id, delta) {
             const item = cart.find(i => i.id === id);
             if (item) {
@@ -857,7 +886,6 @@
             }
         }
 
-        // Actualizar UI del Carrito
         function updateCartUI() {
             const container = document.getElementById('cart-items-container');
             const totalEl = document.getElementById('cart-total');
@@ -902,7 +930,7 @@
             countNav.innerText = itemsCount;
         }
 
-        // Lógica de Scroll para Navbar
+        // --- EFECTOS VISUALES COMPLEMENTARIOS ---
         window.onscroll = function() {
             const nav = document.querySelector('nav');
             if (window.scrollY > 100) {
@@ -913,83 +941,60 @@
                 nav.classList.remove('py-3');
             }
         };
+
         (function() {
-        const phrases = [
-            "Lujo<br><span class='not-italic text-white/90'>Orgánico</span>",
-            "La Estética<br><span class='not-italic text-white/90'>del Silencio</span>",
-            "Naturaleza<br><span class='not-italic text-white/90'>Irreverente</span>",
-            "La Pureza<br><span class='not-italic text-white/90'>de lo Bello</span>",
-            "Diseño<br><span class='not-italic text-white/90'>Sin Límites</span>",
-            "Elegancia<br><span class='not-italic text-white/90'>Botánica</span>",
-            "Poder<br><span class='not-italic text-white/90'>Visual</span>",
-            "Simplicidad<br><span class='not-italic text-white/90'>Absoluta</span>"
-        ];
+            const phrases = [
+                "Lujo<br><span class='not-italic text-white/90'>Orgánico</span>",
+                "La Estética<br><span class='not-italic text-white/90'>del Silencio</span>",
+                "Naturaleza<br><span class='not-italic text-white/90'>Irreverente</span>",
+                "La Pureza<br><span class='not-italic text-white/90'>de lo Bello</span>",
+                "Diseño<br><span class='not-italic text-white/90'>Sin Límites</span>",
+                "Elegancia<br><span class='not-italic text-white/90'>Botánica</span>",
+                "Poder<br><span class='not-italic text-white/90'>Visual</span>",
+                "Simplicidad<br><span class='not-italic text-white/90'>Absoluta</span>"
+            ];
 
-        function injectPhrase() {
-            const textElement = document.getElementById('hero-dynamic-text');
-            if (textElement) {
-                const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-                textElement.innerHTML = randomPhrase;
-                
-                // Animación de entrada profesional
-                textElement.style.transition = "opacity 1.5s ease-in-out";
-                textElement.style.opacity = "1";
+            function injectPhrase() {
+                const textElement = document.getElementById('hero-dynamic-text');
+                if (textElement) {
+                    const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+                    textElement.innerHTML = randomPhrase;
+                    textElement.style.transition = "opacity 1.5s ease-in-out";
+                    textElement.style.opacity = "1";
+                }
             }
-        }
 
-        // Ejecuta tan pronto como el DOM esté listo
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', injectPhrase);
-        } else {
-            injectPhrase();
-        }
-    })();
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', injectPhrase);
+            } else {
+                injectPhrase();
+            }
+        })();
 
-document.addEventListener("DOMContentLoaded", function() {
-        const yearElement = document.getElementById("year-display");
-        if (yearElement) {
-            yearElement.innerText = new Date().getFullYear();
-        }
-    });
-</script>
-    <script>
-        let selectedPalette = '';
-
+        // --- PARAMETRIZACIÓN DEL FORMULARIO MULTI-PASO ---
         function setPalette(option) {
             selectedPalette = option;
             setTimeout(() => goToStep(3), 400);
         }
 
-        let shippingCost = 0;
-        let selectedZoneName = '';
-
         function calcularEnvio() {
-    const select = document.getElementById('zone-select');
-    const display = document.getElementById('shipping-display');
-    const km = parseFloat(select.value);
+            const select = document.getElementById('zone-select');
+            const display = document.getElementById('shipping-display');
+            const km = parseFloat(select.value);
 
-    if (km === 0) return;
+            if (km === 0) return;
 
-    // Cálculo: $900 por km
-    let costo = km * 900;
-    
-    // Aplicar mínimo de $3.500
-    if (costo < 3500) {
-        costo = 3500;
-    }
-    
-    // Asignación de variables
-    shippingCost = costo; 
-    selectedZoneName = select.options[select.selectedIndex].text;
-    
-    // Actualización de UI
-    display.innerText = '$' + costo.toLocaleString();
-    
-    // Refrescar total final
-    actualizarTotalConDespacho();
-}
+            let costo = km * 900;
+            if (costo < 3500) {
+                costo = 3500;
+            }
+            
+            shippingCost = costo; 
+            selectedZoneName = select.options[select.selectedIndex].text;
+            display.innerText = '$' + costo.toLocaleString();
+            actualizarTotalConDespacho();
+        }
 
-        // Valida que el usuario haya seleccionado una zona y escrito su dirección
         function verificarDireccionYContinuar() {
             const dir = document.getElementById('address').value.trim();
             if (!selectedZoneName) {
@@ -1020,23 +1025,24 @@ document.addEventListener("DOMContentLoaded", function() {
             const totalFinal = baseTotal + shippingCost;
             document.getElementById('cart-total').innerText = `$${totalFinal.toLocaleString()}`;
         }
-    const catalog = [
-    { id: 1, name: "Amor Delicado", price: 100, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias." },
-    { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.jpeg", desc: "Lilium majestuosos, rosas premium, nubes de gypso y maule aterciopelado." },
-    { id: 3, name: "Amor Eterno", price: 230900, img: "img/RAMOS03.jpeg", desc: "Una declaración absoluta: imponente pieza maestra de 70 rosas seleccionadas." },
-    { id: 4, name: "Pasión de Sol", price: 45900, img: "img/RAMOS04.jpeg", desc: "Girasoles esculturales y rosas finas, entrelazados con gypso y maule silvestre." },
-    { id: 5, name: "Monte Mar Signature", price: 28900, img: "img/RAMOS05.jpeg", desc: "Gerberas vibrantes y rosas de autor, balanceadas con maules y gypso etéreo." },
-    { id: 6, name: "Brisa de Primavera", price: 36900, img: "img/RAMOS06.jpeg", desc: "Una sinfonía botánica de gerberas, astromelias, lisianthus y follaje de ruscus." },
-    { id: 7, name: "Golden Bloom", price: 47900, img: "img/RAMOS07.jpeg", desc: "Girasoles, lisianthus, maule, astromelias, gypso y delicadas clavelinas." },
-    { id: 8, name: "Suave Amanecer", price: 37900, img: "img/RAMOS08.jpeg", desc: "Lisianthus de colección, rosas finas, maules y una suave neblina de gypso." },
-    { id: 9, name: "Jardin de Verano", price: 28900, img: "img/RAMOS09.jpeg", desc: "Diseño de alto impacto con astromelias, gerberas selectas, lilium y limonium." },
-    { id: 10, name: "Susurro Rosé", price: 48900, img: "img/RAMOS10.jpeg", desc: "Tulipanes de corte limpio y siluetas dramáticas de limonium." },
-    { id: 11, name: "Luz de Atardecer", price: 42900, img: "img/RAMOS11.jpeg", desc: "Cálida composición de rosas, astromelias costeras y acentos de limonium." },
-    { id: 12, name: "Encanto Vivo", price: 37900, img: "img/RAMOS12.jpeg", desc: "Astromelias, lisianthus, gypso, gerberas, maules y el verde profundo del ruscus." }
-    ];
 
-    const grid = document.getElementById('product-grid');
-        
+        // --- CATÁLOGO DE PRODUCTOS (THE VAULT) ---
+        const catalog = [
+            { id: 1, name: "Amor Delicado", price: 100, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias." },
+            { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.jpeg", desc: "Lilium majestuosos, rosas premium, nubes de gypso y maule aterciopelado." },
+            { id: 3, name: "Amor Eterno", price: 230900, img: "img/RAMOS03.jpeg", desc: "Una declaración absoluta: imponente pieza maestra de 70 rosas seleccionadas." },
+            { id: 4, name: "Pasión de Sol", price: 45900, img: "img/RAMOS04.jpeg", desc: "Girasoles esculturales y rosas finas, entrelazados con gypso y maule silvestre." },
+            { id: 5, name: "Monte Mar Signature", price: 28900, img: "img/RAMOS05.jpeg", desc: "Gerberas vibrantes y rosas de autor, balanceadas con maules y gypso etéreo." },
+            { id: 6, name: "Brisa de Primavera", price: 36900, img: "img/RAMOS06.jpeg", desc: "Una sinfonía botánica de gerberas, astromelias, lisianthus y follaje de ruscus." },
+            { id: 7, name: "Golden Bloom", price: 47900, img: "img/RAMOS07.jpeg", desc: "Girasoles, lisianthus, maule, astromelias, gypso y delicadas clavelinas." },
+            { id: 8, name: "Suave Amanecer", price: 37900, img: "img/RAMOS08.jpeg", desc: "Lisianthus de colección, rosas finas, maules y una suave neblina de gypso." },
+            { id: 9, name: "Jardin de Verano", price: 28900, img: "img/RAMOS09.jpeg", desc: "Diseño de alto impacto con astromelias, gerberas selectas, lilium y limonium." },
+            { id: 10, name: "Susurro Rosé", price: 48900, img: "img/RAMOS10.jpeg", desc: "Tulipanes de corte limpio y siluetas dramáticas de limonium." },
+            { id: 11, name: "Luz de Atardecer", price: 42900, img: "img/RAMOS11.jpeg", desc: "Cálida composición de rosas, astromelias costeras y acentos de limonium." },
+            { id: 12, name: "Encanto Vivo", price: 37900, img: "img/RAMOS12.jpeg", desc: "Astromelias, lisianthus, gypso, gerberas, maules y el verde profundo del ruscus." }
+        ];
+
+        const grid = document.getElementById('product-grid');
         grid.innerHTML = catalog.map(product => `
             <div class="product-card group">
                 <div class="img-zoom-container aspect-square md:aspect-[3/4] mb-6 relative bg-zinc-100">
@@ -1059,9 +1065,7 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
         `).join('');
 
-        // --- LÓGICA DE CHECKOUT MULTI-PASO ---
-        let selectedLogistics = '';
-
+        // --- MANEJO DEL FLUJO DE CHECKOUT MULTI-PASO ---
         function openCheckout() {
             if(cart.length === 0) {
                 alert("Su bolsa está vacía. Añada una pieza botánica primero.");
@@ -1077,31 +1081,17 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         function goToStep(stepId) {
-    // Si le pasas un número (ej. 2), busca "step-2". 
-    // Si le pasas un nombre (ej. 'step-time'), lo usa directamente.
-    const targetId = typeof stepId === 'number' ? `step-${stepId}` : stepId;
-    
-    document.querySelectorAll('.checkout-step').forEach(step => {
-        step.classList.remove('active');
-    });
-    
-    const targetElement = document.getElementById(targetId);
-    if(targetElement) {
-        targetElement.classList.add('active');
-    }
-}
-
-        function setLogistics(option) {
-            selectedLogistics = option;
-            if(option === 'envio') {
-                setTimeout(() => goToStep('step-envio'), 300);
-            } else {
-                setTimeout(() => goToStep('step-retiro'), 300);
+            const targetId = typeof stepId === 'number' ? `step-${stepId}` : stepId;
+            document.querySelectorAll('.checkout-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            const targetElement = document.getElementById(targetId);
+            if(targetElement) {
+                targetElement.classList.add('active');
             }
         }
 
         function selectOption(button, step) {
-            // Función visual para marcar botones
             const stepContainer = button.closest('.checkout-step');
             stepContainer.querySelectorAll('.step-option').forEach(btn => {
                 btn.style.borderColor = 'rgba(10, 31, 28, 0.15)';
@@ -1110,102 +1100,17 @@ document.addEventListener("DOMContentLoaded", function() {
             button.style.borderColor = '#c5a059';
             button.style.background = 'rgba(197, 160, 89, 0.05)';
         }
-        
-        // --- LÓGICA DE CIERRE: PAGO Y COORDINACIÓN ---
-        async function finalizarYCoordinar() {
-            if(cart.length === 0) return alert("El atelier está vacío.");
 
-            const emisor = document.getElementById('sender-name').value;
-            const receptor = document.getElementById('receiver-name').value;
-            const mensaje = document.getElementById('card-message').value;
-            const fonoDestino = document.getElementById('receiver-phone').value;
-            
-            let destinoFinal = "";
-            if(selectedLogistics === 'envio') {
-                destinoFinal = `Envío a Domicilio (${selectedZoneName})%0A• *DIRECCIÓN:* ${document.getElementById('address').value}`;
-            } else {
-                const quienRetira = document.getElementById('pickup-name') ? document.getElementById('pickup-name').value : '';
-                destinoFinal = `Retiro en Atelier Reñaca%0A• *RETIRA:* ${quienRetira}`;
-            }
-            
-            const horarioBtn = document.querySelector('#step-time .step-option[style*="background"]');
-            const horario = horarioBtn ? horarioBtn.innerText : 'No especificado';
-
-            let articulos = cart.map(item => `- ${item.name} (Cant: ${item.qty})`).join('%0A');
-            
-            const baseTotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-            const totalFinal = baseTotal + shippingCost;
-
-            const NUMERO_WHATSAPP = "56994783520"; 
-
-            let texto = `*ORDEN GENERADA - LA FORESTA*%0A%0A`;
-            texto += `*PALETA DE COLOR:* ${selectedPalette}%0A`;
-            texto += `*DE:* ${emisor}%0A`;
-            texto += `*PARA:* ${receptor}%0A`;
-            texto += `*LOGÍSTICA:* ${destinoFinal}%0A`;
-            texto += `*HORARIO:* ${horario}%0A`;
-            texto += `*FONO:* ${fonoDestino}%0A%0A`;
-            texto += `*TARJETA:* "${mensaje}"%0A%0A`;
-            texto += `*PEDIDO:*%0A${articulos}%0A`;
-            if(shippingCost > 0) texto += `*COSTO ENVÍO:* $${shippingCost.toLocaleString()}%0A`;
-            texto += `*TOTAL A PAGAR:* $${totalFinal.toLocaleString()}%0A%0A`;
-            texto += `_Proceso de pago iniciado. Adjunto comprobante emitido por Mercado Pago._`;
-
-            const preferenceData = {
-                items: [
-                    {
-                        title: "Pedido La Foresta",
-                        quantity: 1,
-                        unit_price: totalFinal,
-                        currency_id: "CLP"
-                    }
-                ],
-                back_urls: {
-                    success: window.location.origin
-                },
-                auto_return: "approved"
-            };
-
-            try {
-                const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer APP_USR-515721492877087-060821-263e9288a1f50f97a4538fb9ab5fc2f5-3295518216',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(preferenceData)
-                });
-
-                const preference = await response.json();
-                
-                if (preference.init_point) {
-                    // Guarda el texto del mensaje en el navegador antes de ir a pagar
-                    localStorage.setItem('pending_laforesta_order', texto);
-                    // Redirige en la misma pestaña hacia Mercado Pago para no perder el flujo de retorno
-                    window.location.href = preference.init_point;
-                } else {
-                    throw new Error("No se obtuvo el punto de inicio de pago.");
-                }
-
-            } catch (error) {
-                console.error("Error en la conexión con Mercado Pago:", error);
-                alert("No se pudo procesar el pago automático. Intente nuevamente.");
-            }
-        }
-        // Alternancia interactiva para la sección Garden Selection
         function toggleGardenImage() {
             const img1 = document.getElementById('garden-img-1');
             const img2 = document.getElementById('garden-img-2');
-            
             if (img1 && img2) {
                 if (img1.classList.contains('opacity-100')) {
-                    // Cambia a Imagen 2
                     img1.classList.remove('opacity-100');
                     img1.classList.add('opacity-0');
                     img2.classList.remove('opacity-0');
                     img2.classList.add('opacity-100');
                 } else {
-                    // Vuelve a Imagen 1
                     img2.classList.remove('opacity-100');
                     img2.classList.add('opacity-0');
                     img1.classList.remove('opacity-0');
