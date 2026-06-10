@@ -696,13 +696,13 @@
             const progreso = JSON.parse(localStorage.getItem('laforesta_checkout_inputs'));
             if (!progreso) return;
 
-            if (document.getElementById('sender-name')) document.getElementById('sender-name').value = progreso.senderName;
-            if (document.getElementById('buyer-email')) document.getElementById('buyer-email').value = progreso.buyerEmail; // <- Añadido
-            if (document.getElementById('receiver-name')) document.getElementById('receiver-name').value = progreso.receiverName;
-            if (document.getElementById('address')) document.getElementById('address').value = progreso.address;
-            if (document.getElementById('pickup-name')) document.getElementById('pickup-name').value = progreso.pickupName;
-            if (document.getElementById('card-message')) document.getElementById('card-message').value = progreso.cardMessage;
-            if (document.getElementById('receiver-phone')) document.getElementById('receiver-phone').value = progreso.receiverPhone;
+            if (document.getElementById('sender-name')) document.getElementById('sender-name').value = progreso.senderName || '';
+            if (document.getElementById('buyer-email')) document.getElementById('buyer-email').value = progreso.buyerEmail || '';
+            if (document.getElementById('receiver-name')) document.getElementById('receiver-name').value = progreso.receiverName || '';
+            if (document.getElementById('address')) document.getElementById('address').value = progreso.address || '';
+            if (document.getElementById('pickup-name')) document.getElementById('pickup-name').value = progreso.pickupName || '';
+            if (document.getElementById('card-message')) document.getElementById('card-message').value = progreso.cardMessage || '';
+            if (document.getElementById('receiver-phone')) document.getElementById('receiver-phone').value = progreso.receiverPhone || '';
 
             if (localStorage.getItem('laforesta_checkout_abierto') === 'true') {
                 const checkoutFlow = document.getElementById('checkout-flow');
