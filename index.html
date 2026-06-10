@@ -1240,7 +1240,7 @@ function closeCheckout() {
                 ],
                 payer: {
                     name: emisor,
-                    email: correoComprador, // <- CORRECCIÓN: Envía el correo real a Mercado Pago
+                    email: correoComprador,
                     identification: {
                         type: "RUT",
                         number: "66666666-6"
@@ -1252,6 +1252,7 @@ function closeCheckout() {
                     pending: window.location.origin + "?payment_result=pending"
                 },
                 auto_return: "approved",
+                notification_url: "https://old-brook-bf01.sebjmz.workers.dev/webhook",
                 metadata: { 
                     sender_name: emisor,
                     receiver_name: receptor,
@@ -1264,7 +1265,7 @@ function closeCheckout() {
                     total_price: totalFinal,
                     fecha_entrega: fechaTexto,
                     valor_envio: shippingCost,
-                    comprador_email: correoComprador // <- CORRECCIÓN: Envía el correo real al metadata del Webhook
+                    comprador_email: correoComprador 
                 }
             };
 
