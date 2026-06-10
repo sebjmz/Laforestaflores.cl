@@ -205,6 +205,17 @@
         </div>
     </nav>
 
+<div id="mobile-sticky-cart" class="fixed bottom-0 left-0 w-full bg-[#0a1f1c] text-[#c5a059] p-5 z-[90] flex justify-between items-center md:hidden transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.25)] border-t border-[#c5a059]/20" onclick="toggleCart()">
+        <div class="flex items-center space-x-4">
+            <span class="text-[10px] font-bold uppercase tracking-widest">Atelier Bag</span>
+            <span id="sticky-cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2.5 py-1 rounded-full text-[10px] font-bold">0</span>
+        </div>
+        <div class="flex items-center space-x-3">
+            <span id="sticky-cart-total" class="font-serif text-xl">$0</span>
+            <span class="text-xs">→</span>
+        </div>
+    </div>
+    
     <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/40 z-[110] hidden opacity-0 transition-opacity duration-500"></div>
     <div id="atelier-bag" class="fixed top-0 right-0 h-full w-full md:w-[500px] bg-white z-[120] shadow-2xl flex flex-col">
         <div class="p-8 border-b flex justify-between items-center">
@@ -217,40 +228,54 @@
             </div>
         </div>
         <div class="p-8 bg-zinc-50 border-t">
+            <div class="flex items-center space-x-3 mb-6 bg-white p-4 border border-zinc-200 shadow-sm">
+                <span class="text-xl">🛡️</span>
+                <p class="text-[9px] uppercase tracking-widest leading-relaxed opacity-60">
+                    <strong class="text-[#0a1f1c] opacity-100">Garantía de Atelier:</strong> La pieza botánica entregada será idéntica en volumen y frescura a nuestro registro fotográfico.
+                </p>
+            </div>
+
             <div class="flex justify-between items-center mb-6">
                 <span class="text-xs uppercase tracking-widest font-bold">Total Estimado</span>
                 <span id="cart-total" class="text-2xl font-serif">$0</span>
             </div>
-            <button onclick="openCheckout()" class="w-full btn-premium uppercase text-xs tracking-[0.2em]">Proceder al Checkout</button>
-            <p class="text-[9px] text-center mt-4 uppercase tracking-widest opacity-40">Envío gratis para suscripciones empresariales</p>
+            <button onclick="openCheckout()" class="w-full btn-premium uppercase text-xs tracking-[0.2em] mb-6">Proceder al Checkout</button>
+            
+            <div class="flex justify-center items-center space-x-5 opacity-40 grayscale mb-2">
+                <img src="https://logospng.org/download/mercado-pago/logo-mercado-pago-icono-1024.png" alt="Mercado Pago" class="h-4">
+                <span class="text-xs font-light">|</span>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/1024px-Visa_Inc._logo.svg.png" alt="Visa" class="h-3">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" class="h-4">
+            </div>
+            <p class="text-[8px] text-center uppercase tracking-widest opacity-40">Procesado de forma segura por Mercado Pago. Acepta todas las tarjetas.</p>
         </div>
     </div>
 
     <section class="hero-video-container">
-        <div class="absolute inset-0 hero-overlay z-10"></div>
-        <div id="video-bg-layer" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-            <video autoplay muted loop playsinline class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover scale-[1.02]">
-                <source src="img/hero-video.mp4" type="video/mp4">
-            </video>
-        </div>        
+    <div class="absolute inset-0 hero-overlay z-10"></div>
+    <div id="video-bg-layer" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+        <video autoplay muted loop playsinline poster="img/hero-poster.jpg" class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover scale-[1.02]">
+            <source src="img/hero-video.mp4" type="video/mp4">
+        </video>
+    </div>        
 
-        <div class="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
-            <h4 class="text-white md:text-sm font-bold uppercase tracking-[0.8em] mb-8 animate-pulse">No son solo flores</h4>
-            <h1 class="text-white text-6xl md:text-[120px] font-serif leading-none mb-12 italic">
-                <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
-            </h1>
-            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
-                <button onclick="openVault()" class="btn-premium">EXPLORAR COLECCIÓN</button>
-                <a href="#privilege" class="btn-gold-outline flex items-center justify-center uppercase text-xs font-bold tracking-widest">Portal Empresas</a>
-            </div>
+    <div class="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
+        <h4 class="text-white md:text-sm font-bold uppercase tracking-[0.8em] mb-8 animate-pulse">No son solo flores</h4>
+        <h1 class="text-white text-6xl md:text-[120px] font-serif leading-none mb-12 italic">
+            <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
+        </h1>
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
+            <button onclick="openVault()" class="btn-premium">EXPLORAR COLECCIÓN</button>
+            <a href="#privilege" class="btn-gold-outline flex items-center justify-center uppercase text-xs font-bold tracking-widest">Portal Empresas</a>
         </div>
+    </div>
 
-        <div class="absolute bottom-12 left-12 z-20 hidden lg:block">
-            <p class="text-white/40 text-[10px] uppercase tracking-[0.4em] leading-relaxed">
-                Av. Borgoño 14.580 <br> Reñaca, Viña del Mar
-            </p>
-        </div>
-    </section>
+    <div class="absolute bottom-12 left-12 z-20 hidden lg:block">
+        <p class="text-white/40 text-[10px] uppercase tracking-[0.4em] leading-relaxed">
+            Av. Borgoño 14.580 <br> Reñaca, Viña del Mar
+        </p>
+    </div>
+</section>
 
     <div class="bg-forest-green py-4 border-y border-gold-leaf/20 overflow-hidden flex">
         <div class="prestige-marquee flex whitespace-nowrap">
@@ -304,9 +329,20 @@
             </div>
 
             <div id="vault-content" class="expandable-section">
-                <div class="flex flex-wrap gap-4 mb-16 border-b pb-8">
+                <div class="flex flex-wrap gap-4 mb-6 border-b pb-8">
                     <button class="text-[10px] font-bold uppercase tracking-widest text-gold-leaf underline underline-offset-8">Colección Completa</button>
                 </div>
+                
+                <div class="bg-zinc-50 border border-zinc-200 p-4 text-center mb-12 flex flex-col items-center justify-center">
+                    <p class="text-[10px] uppercase tracking-widest font-bold text-[#0a1f1c] flex items-center justify-center gap-3">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                        </span>
+                        <span id="countdown-timer">Calculando garantía de entrega...</span>
+                    </p>
+                </div>
+
                 <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-20 pb-20"></div>
             </div>
         </div>
@@ -346,10 +382,10 @@
                     <div class="text-center w-full bg-gold-leaf/10 border border-gold-leaf/20 text-gold-leaf py-3 px-4 font-bold text-[10px] uppercase tracking-[0.25em] mb-8">
                         Solicitud de Suscripción
                     </div>
-                    <form class="space-y-10" onsubmit="event.preventDefault(); alert('Postulación enviada con éxito.');">
+                    <form id="b2b-form" class="space-y-10" onsubmit="handleB2BSubmit(event)">
                         <div class="space-y-2">
                             <label class="text-[9px] uppercase tracking-[0.3em] opacity-40">Entidad / Empresa</label>
-                            <input type="text" class="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-gold-leaf transition text-white">
+                            <input type="text" required class="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-gold-leaf transition text-white">
                         </div>
                         <div class="space-y-2">
                             <label class="text-[9px] uppercase tracking-[0.3em] opacity-40">Segmento de Negocio</label>
@@ -362,9 +398,9 @@
                         </div>
                         <div class="space-y-2">
                             <label class="text-[9px] uppercase tracking-[0.3em] opacity-40">Volumen Estimado Mensual</label>
-                            <input type="text" placeholder="Ej: 4 Arreglos Semanales" class="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-gold-leaf transition text-white">
+                            <input type="text" required placeholder="Ej: 4 Arreglos Semanales" class="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-gold-leaf transition text-white">
                         </div>
-                        <button type="submit" class="w-full btn-premium !bg-gold-leaf !text-forest-green !border-gold-leaf hover:!bg-transparent hover:!text-gold-leaf">POSTULAR AL PRIVILEGIO B2B</button>
+                        <button id="b2b-submit-btn" type="submit" class="w-full btn-premium !bg-gold-leaf !text-forest-green !border-gold-leaf hover:!bg-transparent hover:!text-gold-leaf transition-all duration-300">POSTULAR AL PRIVILEGIO B2B</button>
                     </form>
                     <p class="text-[9px] text-center mt-8 opacity-30 italic uppercase tracking-widest">Al suscribirse, acepta los términos de envío prioritario gratuito en Reñaca.</p>
                 </div>
@@ -1037,6 +1073,14 @@ function closeCheckout() {
                 `;
                 totalEl.innerText = `$0`;
                 countNav.innerText = "0";
+
+                // Sincronización Sticky Cart Móvil (Vaciado)
+                const stickyCart = document.getElementById('mobile-sticky-cart');
+                if (stickyCart) {
+                    document.getElementById('sticky-cart-count').innerText = "0";
+                    document.getElementById('sticky-cart-total').innerText = "$0";
+                    stickyCart.classList.add('translate-y-full');
+                }
                 return;
             }
 
@@ -1063,6 +1107,18 @@ function closeCheckout() {
             actualizarTotalConDespacho();
             const itemsCount = cart.reduce((acc, item) => acc + item.qty, 0);
             countNav.innerText = itemsCount;
+
+            // Sincronización Sticky Cart Móvil (Activo)
+            const stickyCart = document.getElementById('mobile-sticky-cart');
+            if (stickyCart) {
+                document.getElementById('sticky-cart-count').innerText = itemsCount;
+                document.getElementById('sticky-cart-total').innerText = document.getElementById('cart-total').innerText;
+                if (cart.length > 0) {
+                    stickyCart.classList.remove('translate-y-full');
+                } else {
+                    stickyCart.classList.add('translate-y-full');
+                }
+            }
         }
 
         // --- EFECTOS VISUALES HOME ---
@@ -1416,6 +1472,57 @@ function closeCheckout() {
             updateCartUI(); 
             restaurarProgresoCheckout();
         });
+
+// --- NOVEDAD: GARANTÍA LOGÍSTICA (URGENCIA) ---
+        function updateCountdown() {
+            const timerEl = document.getElementById('countdown-timer');
+            if(!timerEl) return;
+
+            const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
+            const cutoff = new Date(now);
+            cutoff.setHours(14, 0, 0, 0); // Límite logístico a las 14:00 hrs
+            
+            if (now > cutoff) {
+                timerEl.innerHTML = "Entregas para hoy cerradas. Seleccione piezas para <strong>MAÑANA</strong>.";
+                return;
+            }
+            
+            const diff = cutoff - now;
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            timerEl.innerHTML = `Pide dentro de las próximas <strong class="text-[#c5a059]">${hours}h y ${minutes}m</strong> para entrega garantizada <strong class="text-[#c5a059]">HOY</strong>`;
+        }
+        setInterval(updateCountdown, 60000);
+        updateCountdown();
+
+        // --- NOVEDAD: SPINNER B2B PRIVILEGE ---
+        function handleB2BSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('b2b-submit-btn');
+            const originalText = btn.innerHTML;
+            
+            // Estado 1: Carga
+            btn.innerHTML = `<svg class="animate-spin h-5 w-5 mx-auto text-forest-green" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                // Estado 2: Agendamiento automático simulado
+                btn.innerHTML = `Llamada de calibración agendada ✓`;
+                btn.classList.add('!bg-green-700', '!text-white', '!border-green-700');
+                btn.classList.remove('!bg-gold-leaf', '!text-forest-green');
+                
+                setTimeout(() => {
+                    // Reset
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    btn.classList.remove('!bg-green-700', '!text-white', '!border-green-700');
+                    btn.classList.add('!bg-gold-leaf', '!text-forest-green');
+                    document.getElementById('b2b-form').reset();
+                }, 3500);
+            }, 1500);
+        }
+        
     </script>
 </body>
 </html>
