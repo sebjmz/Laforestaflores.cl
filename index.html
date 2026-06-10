@@ -1196,8 +1196,7 @@ function closeCheckout() {
                 destinoFinal = `Retiro en Atelier Reñaca\n• *RETIRA:* ${quienRetira}`;
             }
             
-            const horarioBtn = document.querySelector('#step-time .step-option[style*="background"]');
-            const horario = horarioBtn ? horarioBtn.innerText : 'No especificado';
+            const horario = selectedTimeSlot || 'No especificado';
             
             const totalFinal = actualizarTotalConDespacho(); 
 
