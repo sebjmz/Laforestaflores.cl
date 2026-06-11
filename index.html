@@ -1476,22 +1476,38 @@ function closeCheckout() {
 // --- NOVEDAD: GARANTÍA LOGÍSTICA (URGENCIA) ---
         function updateCountdown() {
             const timerEl = document.getElementById('countdown-timer');
-            if(!timerEl) return;
+            if (!timerEl) return;
 
             const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-            const cutoff = new Date(now);
-            cutoff.setHours(14, 0, 0, 0); // Límite logístico a las 14:00 hrs
-            
-            if (now > cutoff) {
+            const cutoffExpress = new Date(now);
+            cutoffExpress.setHours(19, 0, 0, 0); 
+            const cutoffEstandar = new Date(now);
+            cutoffEstandar.setHours(15, 0, 0, 0);
+
+            if (now >= cutoffExpress) {
                 timerEl.innerHTML = "Entregas para hoy cerradas. Seleccione piezas para <strong>MAÑANA</strong>.";
                 return;
             }
-            
-            const diff = cutoff - now;
+
+            let diff;
+            let tipo;
+
+            if (now < cutoffEstandar) {
+                diff = cutoffEstandar - now;
+                tipo = "Estándar";
+            } else {
+                diff = cutoffExpress - now;
+                tipo = "Express";
+            }
+
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            
-            timerEl.innerHTML = `Pide dentro de las próximas <strong class="text-[#c5a059]">${hours}h y ${minutes}m</strong> para entrega garantizada <strong class="text-[#c5a059]">HOY</strong>`;
+
+            if (hours < 3) {
+                timerEl.innerHTML = `Ventana de entrega ${tipo} finaliza en <strong class="text-[#c5a059] animate-pulse">${hours}h y ${minutes}m</strong>`;
+            } else {
+                timerEl.innerHTML = `Recepción de pedidos habilitada para entregas <strong>HOY</strong>`;
+            }
         }
         setInterval(updateCountdown, 60000);
         updateCountdown();
