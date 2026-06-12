@@ -349,8 +349,8 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
                 <div class="space-y-12">
-                    <span class="text-gold-leaf text-xs font-bold uppercase tracking-[0.5em]">Portal Exclusivo B2B </span>
-                    <h2 class="text-6xl md:text-8xl font-serif italic leading-none">El <br> Salón Privado.</h2>
+                    <span class="text-gold-leaf text-xs font-bold uppercase tracking-[0.5em]">Portal Exclusivo B2B</span>
+                    <h2 class="text-6xl md:text-8xl font-serif italic leading-none">El Salón <br>Privado.</h2>
                     <p class="text-soft-cream/60 text-lg font-light leading-relaxed">
                         Diseñamos el entorno del éxito para las empresas más prestigiosas de la región. Únase a nuestra red exclusiva y transforme su espacio comercial en un destino sensorial.
                     </p>
@@ -376,28 +376,30 @@
                 </div>
 
                 <div class="bg-white/5 backdrop-blur-md p-12 border border-white/10 relative">
-                    <div class="text-center w-full bg-gold-leaf/10 border border-gold-leaf/20 text-gold-leaf py-3 px-4 font-bold text-[10px] uppercase tracking-[0.25em] mb-8">
-                        Solicitud de Suscripción
+                    <div class="text-center w-full bg-[#c5a059]/10 border border-[#c5a059]/20 text-gold-leaf py-3 px-4 font-bold text-[10px] uppercase tracking-[0.25em] mb-8">
+                        Solicitud de Membresía
                     </div>
                     <form id="b2b-form" class="space-y-10" onsubmit="handleB2BSubmit(event)">
                         <div class="space-y-2">
                             <label class="text-[9px] uppercase tracking-[0.3em] opacity-40">Entidad / Empresa</label>
-                            <input type="text" required class="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-gold-leaf transition text-white">
+                            <input type="text" id="b2b-empresa" required class="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-gold-leaf transition text-white">
                         </div>
                         <div class="space-y-2">
                             <label class="text-[9px] uppercase tracking-[0.3em] opacity-40">Segmento de Negocio</label>
-                            <select class="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-gold-leaf transition text-white appearance-none">
-                                <option class="bg-zinc-900" value="inmobiliaria">Inmobiliarias & Propiedades</option>
-                                <option class="bg-zinc-900" value="retail">Boutiques & Espacios de Autor</option>
-                                <option class="bg-zinc-900" value="oficina">Corporativo & Oficinas</option>
-                                <option class="bg-zinc-900" value="eventos">Eventos Privados & Galas</option>
+                            <select id="b2b-segmento" class="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-gold-leaf transition text-white appearance-none">
+                                <option class="bg-zinc-900" value="Inmobiliarias & Propiedades">Inmobiliarias & Propiedades</option>
+                                <option class="bg-zinc-900" value="Boutiques & Espacios de Autor">Boutiques & Espacios de Autor</option>
+                                <option class="bg-zinc-900" value="Corporativo & Oficinas">Corporativo & Oficinas</option>
+                                <option class="bg-zinc-900" value="Eventos Privados & Galas">Eventos Privados & Galas</option>
                             </select>
                         </div>
                         <div class="space-y-2">
                             <label class="text-[9px] uppercase tracking-[0.3em] opacity-40">Volumen Estimado Mensual</label>
-                            <input type="text" required placeholder="Ej: 4 Arreglos Semanales" class="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-gold-leaf transition text-white">
+                            <input type="text" id="b2b-volumen" required placeholder="Ej: 4 Arreglos Semanales" class="w-full bg-transparent border-b border-white/20 py-3 focus:outline-none focus:border-gold-leaf transition text-white">
                         </div>
-                        <button id="b2b-submit-btn" type="submit" class="w-full btn-premium !bg-gold-leaf !text-forest-green !border-gold-leaf hover:!bg-transparent hover:!text-gold-leaf transition-all duration-300">POSTULAR AL PRIVILEGIO B2B</button>
+                        <button id="b2b-submit-btn" type="submit" class="w-full py-4 bg-transparent border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] transition-all duration-300">
+                            POSTULAR AL SALÓN PRIVADO
+                        </button>
                     </form>
                     <p class="text-[9px] text-center mt-8 opacity-30 italic uppercase tracking-widest">Al suscribirse, acepta los términos de envío prioritario gratuito en Reñaca.</p>
                 </div>
@@ -1512,30 +1514,50 @@ function closeCheckout() {
         // --- NOVEDAD: SPINNER B2B PRIVILEGE ---
         function handleB2BSubmit(e) {
             e.preventDefault();
+            
             const btn = document.getElementById('b2b-submit-btn');
             const originalText = btn.innerHTML;
             
-            // Estado 1: Carga
-            btn.innerHTML = `<svg class="animate-spin h-5 w-5 mx-auto text-forest-green" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+            const empresa = document.getElementById('b2b-empresa').value.trim();
+            const segmento = document.getElementById('b2b-segmento').value;
+            const volumen = document.getElementById('b2b-volumen').value.trim();
+
+            // Construcción del contenido del correo electrónico
+            const emailDestino = "laforestaflores@gmail.com";
+            const asunto = encodeURIComponent("Postulación Comercial - El Salón Privado");
+            
+            let cuerpoTexto = `SOLICITUD DE MEMBRESÍA B2B - LA FORESTA\n\n`;
+            cuerpoTexto += `• Empresa / Entidad: ${empresa}\n`;
+            cuerpoTexto += `• Segmento de Negocio: ${segmento}\n`;
+            cuerpoTexto += `• Volumen Estimado Mensual: ${volumen}\n`;
+            
+            const body = encodeURIComponent(cuerpoTexto);
+
+            // Transición de estado visual en el botón
+            btn.innerHTML = "ABRIENDO CORREO...";
             btn.disabled = true;
             
             setTimeout(() => {
-                // Estado 2: Agendamiento automático simulado
-                btn.innerHTML = `Llamada de calibración agendada ✓`;
-                btn.classList.add('!bg-green-700', '!text-white', '!border-green-700');
-                btn.classList.remove('!bg-gold-leaf', '!text-forest-green');
+                // Ejecución de la redirección nativa mailto
+                window.location.href = `mailto:${emailDestino}?subject=${asunto}&body=${body}`;
+                
+                // Confirmación elegante en pantalla
+                btn.innerHTML = "SOLICITUD REDIRIGIDA ✓";
+                btn.style.borderColor = "#10b981";
+                btn.style.color = "#10b981";
+                btn.style.backgroundColor = "rgba(16, 185, 129, 0.05)";
                 
                 setTimeout(() => {
-                    // Reset
+                    // Restablecimiento del formulario
                     btn.innerHTML = originalText;
                     btn.disabled = false;
-                    btn.classList.remove('!bg-green-700', '!text-white', '!border-green-700');
-                    btn.classList.add('!bg-gold-leaf', '!text-forest-green');
+                    btn.style.borderColor = "#c5a059";
+                    btn.style.color = "#c5a059";
+                    btn.style.backgroundColor = "transparent";
                     document.getElementById('b2b-form').reset();
-                }, 3500);
-            }, 1500);
+                }, 4000);
+            }, 1000);
         }
-        
     </script>
 </body>
 </html>
