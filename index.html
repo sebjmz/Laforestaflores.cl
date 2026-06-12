@@ -1476,10 +1476,11 @@ function closeCheckout() {
             }
 
             // Ejecutar al cargar y activar el temporizador cada 4 segundos
-            document.addEventListener('DOMContentLoaded', () => {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', injectPhrase);
+            } else {
                 injectPhrase();
-                setInterval(injectPhrase, 4000);
-            });
+            }
         })();
 
         // --- DETECTOR POST-PAGO & INICIALIZACIÓN ---
