@@ -1475,11 +1475,11 @@ function closeCheckout() {
                 }
             }
 
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', injectPhrase);
-            } else {
+            // Ejecutar al cargar y activar el temporizador cada 4 segundos
+            document.addEventListener('DOMContentLoaded', () => {
                 injectPhrase();
-            }
+                setInterval(injectPhrase, 4000);
+            });
         })();
 
         // --- DETECTOR POST-PAGO & INICIALIZACIÓN ---
