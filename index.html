@@ -241,6 +241,10 @@
             </div>
             <button onclick="openCheckout()" class="w-full btn-premium uppercase text-xs tracking-[0.2em] mb-6">Proceder al Checkout</button>
             
+            <div class="flex justify-center items-center mb-6 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
+                <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
+            </div>
+            
             <div class="flex justify-center items-center space-x-5 opacity-60 grayscale mb-4">
                 <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" alt="Mercado Pago" class="h-5 w-auto object-contain">
                 <span class="text-xs font-light text-zinc-300">|</span>
@@ -318,6 +322,38 @@
         </div>
     </section>
 
+<section class="py-24 bg-[#0a1f1c] text-[#fcfaf7] border-t border-[#c5a059]/20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-[#c5a059] text-2xl tracking-widest block mb-4">★★★★★</span>
+                <h2 class="font-serif text-4xl md:text-5xl italic mb-4">Aprobación Absoluta.</h2>
+                <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#c5a059]">4.9/5 en +100 Evaluaciones de Google</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-[#c5a059]/20 pb-20">
+                <div class="space-y-4">
+                    <p class="font-light text-sm opacity-80 leading-relaxed">"El nivel de detalle y la frescura de las flores superaron mis expectativas. Cumplieron con el horario exacto para una entrega urgente en Reñaca."</p>
+                    <p class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059]">— Camila V.</p>
+                </div>
+                <div class="space-y-4">
+                    <p class="font-light text-sm opacity-80 leading-relaxed">"Contratamos el servicio B2B para nuestra sala de ventas y el cambio en la percepción de los clientes fue inmediato. Elegancia total."</p>
+                    <p class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059]">— Inmobiliaria Partners</p>
+                </div>
+                <div class="space-y-4">
+                    <p class="font-light text-sm opacity-80 leading-relaxed">"Arte floral real. No son los típicos arreglos de producción masiva. Se nota la curatoría en cada tallo y en el empaque de lujo."</p>
+                    <p class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059]">— Diego M.</p>
+                </div>
+            </div>
+            <div class="pt-16 text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.4em] opacity-40 block mb-10">SOCIOS EN LA EXCELENCIA</span>
+                <div class="flex flex-wrap justify-center items-center gap-12 opacity-50 grayscale">
+                    <img src="https://via.placeholder.com/120x40/0a1f1c/ffffff?text=LOGO+HOTEL" class="h-8 object-contain" alt="Partner">
+                    <img src="https://via.placeholder.com/120x40/0a1f1c/ffffff?text=LOGO+RESTAURANT" class="h-8 object-contain" alt="Partner">
+                    <img src="https://via.placeholder.com/120x40/0a1f1c/ffffff?text=LOGO+BOUTIQUE" class="h-8 object-contain" alt="Partner">
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <section id="vault" class="bg-white py-12 border-t border-zinc-100">
         <div class="max-w-7xl mx-auto px-6">
             <div onclick="openVault()" class="flex justify-between items-center cursor-pointer py-10 group">
@@ -711,8 +747,7 @@
                 <div class="flex justify-between items-start mb-4">
                     <div>
                         <h3 class="font-serif text-2xl italic">${product.name}</h3>
-                        <p class="text-[10px] uppercase tracking-widest opacity-50">${product.desc}</p>
-                    </div>
+<p class="text-[10px] uppercase tracking-widest opacity-50 mt-1"><span class="text-[#c5a059] mr-1">★★★★★</span> ${product.desc}</p>                    </div>
                     <span class="font-serif text-xl">$${product.price.toLocaleString()}</span>
                 </div>
                 <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
