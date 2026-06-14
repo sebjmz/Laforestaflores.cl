@@ -981,7 +981,7 @@ function closeCheckout() {
         }
 
         // --- FILTRADO HORARIO REACTIVO CHILE ---
-        function renderHorariosInteligentes() {
+       function renderHorariosInteligentes() {
             const container = document.getElementById('time-slots-container');
             container.innerHTML = "";
             
@@ -993,14 +993,8 @@ function closeCheckout() {
             let html = "";
 
             if (selectedDate === 'hoy') {
-                const tieneRamosComplejos = cart.some(item => item.id > 3);
-                if(tieneRamosComplejos) {
-                    container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños de la colección Vault requieren 24 horas de preparación. Seleccione mañana o una fecha futura.</p>`;
-                    return;
-                }
-
                 if (tiempoDecimal < 8.5) {
-                    html += `<button onclick="definirHorario('Mañana (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Mañana (10:00 - 12:00)</button>`;
+                    html += `<button onclick="definirHorario('Jornada AM (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Jornada AM (10:00 - 12:00)</button>`;
                 }
                 if (tiempoDecimal < 11.0) {
                     html += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Medio día (14:00 - 17:00)</button>`;
@@ -1009,12 +1003,13 @@ function closeCheckout() {
                     html += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
                 }
 
-                if (selectedLogistics === 'envio' && tiempoDecimal >= 11.0 && tiempoDecimal < 18.0) {
+                if (tiempoDecimal < 19.0) {
+                    const tipoExpress = selectedLogistics === 'envio' ? 'Despacho express' : 'Retiro express';
                     html += `
-                        <div class="border border-gold-leaf p-4 space-y-3">
-                            <p class="text-[10px] uppercase font-bold tracking-widest text-[#0a1f1c]">Despacho prioritario</p>
-                            <button onclick="definirHorario('Envío Express (< 2 hrs)', true)" class="w-full bg-[#0a1f1c] text-[#c5a059] py-4 text-xs font-bold uppercase tracking-widest border border-[#0a1f1c] transition">
-                                Despacho express menos de 2 horas
+                        <div class="border border-gold-leaf p-4 space-y-3 mt-4">
+                            <p class="text-[10px] uppercase font-bold tracking-widest text-[#0a1f1c]">Servicio Prioritario</p>
+                            <button onclick="definirHorario('${tipoExpress} (< 2 hrs)', true)" class="w-full bg-[#0a1f1c] text-[#c5a059] py-4 text-xs font-bold uppercase tracking-widest border border-[#0a1f1c] transition">
+                                ${tipoExpress} en menos de 2 horas
                             </button>
                         </div>
                     `;
@@ -1022,12 +1017,12 @@ function closeCheckout() {
 
                 if (html === "") {
                     html = `
-                        <p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p>
+                        <p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border border-zinc-200 mb-4">Entregas para hoy cerradas.</p>
                         <button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>
                     `;
                 }
             } else {
-                html += `<button onclick="definirHorario('Mañana (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Mañana (10:00 - 12:00)</button>`;
+                html += `<button onclick="definirHorario('Jornada AM (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Jornada AM (10:00 - 12:00)</button>`;
                 html += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Medio día (14:00 - 17:00)</button>`;
                 html += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
             }
@@ -1056,8 +1051,7 @@ function closeCheckout() {
                 return acc + (precioItem * item.qty);
             }, 0);
             
-            let recargoEnvioExpress = isExpressDelivery ? 7900 : 0;
-            const totalFinal = baseTotal + shippingCost + recargoEnvioExpress;
+            const totalFinal = baseTotal + shippingCost;
             
             document.getElementById('cart-total').innerText = `$${totalFinal.toLocaleString()}`;
             return totalFinal;
@@ -1331,9 +1325,6 @@ function closeCheckout() {
             if(shippingCost > 0) {
                 texto += `*COSTO ENVÍO:* $${shippingCost.toLocaleString()}\n`;
             }
-            if(isExpressDelivery) {
-                texto += `*RECARGO LOGÍSTICA EXPRESS:* $7.900\n`;
-            }
             texto += `*TOTAL A PAGAR:* $${totalFinal.toLocaleString()}`;
 
             const preferenceData = {
@@ -1533,30 +1524,18 @@ function closeCheckout() {
             const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
             const cutoffExpress = new Date(now);
             cutoffExpress.setHours(19, 0, 0, 0); 
-            const cutoffEstandar = new Date(now);
-            cutoffEstandar.setHours(15, 0, 0, 0);
 
             if (now >= cutoffExpress) {
                 timerEl.innerHTML = "Entregas para hoy cerradas. Seleccione piezas para <strong>MAÑANA</strong>.";
                 return;
             }
 
-            let diff;
-            let tipo;
-
-            if (now < cutoffEstandar) {
-                diff = cutoffEstandar - now;
-                tipo = "Estándar";
-            } else {
-                diff = cutoffExpress - now;
-                tipo = "Express";
-            }
-
+            let diff = cutoffExpress - now;
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
             if (hours < 3) {
-                timerEl.innerHTML = `Ventana de entrega ${tipo} finaliza en <strong class="text-[#c5a059] animate-pulse">${hours}h y ${minutes}m</strong>`;
+                timerEl.innerHTML = `Ventana de entrega Express finaliza en <strong class="text-[#c5a059] animate-pulse">${hours}h y ${minutes}m</strong>`;
             } else {
                 timerEl.innerHTML = `Recepción de pedidos habilitada para entregas <strong>HOY</strong>`;
             }
