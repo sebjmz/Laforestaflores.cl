@@ -711,24 +711,29 @@
             </div>
 
             <div id="step-6" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Paso Final</span>
-                <h3 class="font-serif text-4xl italic mb-12">Confirmar y Pagar</h3>
-                
-                <p class="text-[10px] uppercase tracking-widest opacity-60 mb-8 leading-loose">
-                    Una vez acreditado el pago, se enviará de forma automática el comprobante y los detalles de logística a su correo electrónico.
-                </p>
-                
-                <button onclick="finalizarYCoordinar()" class="w-full btn-premium">PAGAR CON MERCADO PAGO</button>
-                
-                <div class="mt-6 bg-[#c5a059]/5 border border-[#c5a059]/20 py-3 px-4 flex items-center justify-center space-x-3">
-                    <svg class="w-4 h-4 text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z"></path></svg>
-                    <p class="text-[9px] uppercase tracking-widest text-[#c5a059] font-bold text-left">
-                        Su orden ingresará directamente tras la confirmación de Mercado Pago.
-                    </p>
-                </div>
+    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Paso Final</span>
+    <h3 class="font-serif text-4xl italic mb-12">Confirmar y Pagar</h3>
+    
+    <p class="text-[10px] uppercase tracking-widest opacity-60 mb-8 leading-loose">
+        Una vez acreditado el pago, se enviará de forma automática el comprobante y los detalles de logística a su correo electrónico.
+    </p>
+    
+    <button onclick="finalizarYCoordinar()" class="w-full btn-premium">PAGAR CON MERCADO PAGO</button>
+    
+    <div class="mt-8 flex justify-center items-center mb-4 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
+        <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
+    </div>
+    
+    <div class="flex justify-center items-center space-x-4 opacity-60 grayscale">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" alt="Mercado Pago" class="h-5 w-auto object-contain">
+        <span class="text-xs font-light text-zinc-300">|</span>
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="Visa" class="h-4 w-auto object-contain">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" alt="Mastercard" class="h-4 w-auto object-contain">
+        <span class="text-[8px] font-bold uppercase tracking-widest border border-zinc-400 px-1 rounded-sm">Débito</span>
+    </div>
 
-                <button onclick="goToStep(5)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
+    <button onclick="goToStep(5)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+</div>
         </div>
     </div>
 
