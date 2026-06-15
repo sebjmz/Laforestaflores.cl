@@ -1015,107 +1015,116 @@
 
         // --- FILTRADO HORARIO REACTIVO CHILE ---
         function renderHorariosInteligentes() {
-            const container = document.getElementById('time-slots-container');
-            container.innerHTML = "";
-            
-            const ahoraChile = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-            const hora = ahoraChile.getHours();
-            const minutos = ahoraChile.getMinutes();
-            const tiempoDecimal = hora + (minutos / 60);
+    const container = document.getElementById('time-slots-container');
+    container.innerHTML = "";
+    
+    const ahoraChile = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
+    const hora = ahoraChile.getHours();
+    const minutos = ahoraChile.getMinutes();
+    const tiempoDecimal = hora + (minutos / 60);
 
-            let html = "";
-            let htmlNormal = "";
-            let htmlExpress = "";
+    // Detección estricta de fechas reales para prevenir saltos de calendario
+    const dateStringHoy = `${ahoraChile.getFullYear()}-${String(ahoraChile.getMonth() + 1).padStart(2, '0')}-${String(ahoraChile.getDate()).padStart(2, '0')}`;
+    
+    const mananaChile = new Date(ahoraChile);
+    mananaChile.setDate(mananaChile.getDate() + 1);
+    const dateStringManana = `${mananaChile.getFullYear()}-${String(mananaChile.getMonth() + 1).padStart(2, '0')}-${String(mananaChile.getDate()).padStart(2, '0')}`;
 
-            const esManana = selectedDate === 'manana' || (selectedDate !== 'hoy' && selectedDate !== 'manana' && new Date(selectedDate + "T00:00:00-04:00").getDate() === (ahoraChile.getDate() + 1));
+    const esHoyReal = (selectedDate === 'hoy' || selectedDate === dateStringHoy);
+    const esMananaReal = (selectedDate === 'manana' || selectedDate === dateStringManana);
 
-            if (selectedDate === 'hoy') {
-                const tieneRamosComplejos = cart.some(item => item.id > 3);
-                if(tieneRamosComplejos) {
-                    container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños de la colección Vault requieren 24 horas de preparación. Seleccione mañana o una fecha futura.</p>`;
-                    return;
-                }
+    let html = "";
+    let htmlNormal = "";
+    let htmlExpress = "";
 
-                if (tiempoDecimal < 9.0) {
-                    htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
-                }
-
-                if (tiempoDecimal < 13.0) {
-                    htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
-                }
-
-                if (selectedLogistics === 'envio' && tiempoDecimal < 17.0) {
-                    htmlExpress = generarHorasExpress(tiempoDecimal);
-                }
-
-                if (htmlNormal !== "") {
-                    html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
-                }
-
-                if (htmlExpress !== "") {
-                    html += `
-                    <div class="border-t border-[#c5a059]/30 pt-6 mt-2">
-                        <span class="text-[9px] font-bold uppercase tracking-widest text-[#c5a059] block mb-3 text-left">Servicio Urgente (Menos de 2 hrs)</span>
-                        <div class="grid grid-cols-2 gap-2">${htmlExpress}</div>
-                    </div>`;
-                }
-
-                if (html === "") {
-                    html = `
-                        <p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p>
-                        <button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>
-                    `;
-                }
-            } else {
-                let bloque1Disponible = true;
-
-                if (esManana && tiempoDecimal >= 20.0) {
-                    bloque1Disponible = false;
-                }
-
-                if (bloque1Disponible) {
-                    htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`;
-                }
-                htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
-                htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
-
-                html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
-            }
-
-            container.innerHTML = html;
+    if (esHoyReal) {
+        const tieneRamosComplejos = cart.some(item => item.id > 3);
+        if(tieneRamosComplejos) {
+            container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños de la colección Vault requieren 24 horas de preparación. Seleccione mañana o una fecha futura.</p>`;
+            return;
         }
 
+        if (tiempoDecimal < 9.0) {
+            htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
+        }
+
+        if (tiempoDecimal < 13.0) {
+            htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
+        }
+
+        // Corrección Express: habilitado hasta las 19:00 hrs
+        if (selectedLogistics === 'envio' && tiempoDecimal < 19.0) {
+            htmlExpress = generarHorasExpress(tiempoDecimal);
+        }
+
+        if (htmlNormal !== "") {
+            html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
+        }
+
+        if (htmlExpress !== "") {
+            html += `
+            <div class="border-t border-[#c5a059]/30 pt-6 mt-2">
+                <span class="text-[9px] font-bold uppercase tracking-widest text-[#c5a059] block mb-3 text-left">Servicio Urgente (Menos de 2 hrs)</span>
+                <div class="grid grid-cols-2 gap-2">${htmlExpress}</div>
+            </div>`;
+        }
+
+        if (html === "") {
+            html = `
+                <p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p>
+                <button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>
+            `;
+        }
+    } else {
+        let bloque1Disponible = true;
+
+        if (esMananaReal && tiempoDecimal >= 20.0) {
+            bloque1Disponible = false;
+        }
+
+        if (bloque1Disponible) {
+            htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`;
+        }
+        htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
+        htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
+
+        html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
+    }
+
+    container.innerHTML = html;
+}
         function generarHorasExpress(tiempoDecimal) {
-            let opciones = "";
-            let horaInicio = Math.max(10.0, tiempoDecimal + 2.0);
-            
-            let horaBase = Math.floor(horaInicio);
-            let remanente = horaInicio - horaBase;
-            let minutoBase = 0;
-            
-            if (remanente > 0.001) {
-                if (remanente <= 0.5) {
-                    minutoBase = 30;
-                } else {
-                    minutoBase = 0;
-                    horaBase += 1;
-                }
-            }
-
-            let tiempoOpcion = horaBase + (minutoBase / 60);
-
-            while (tiempoOpcion <= 19.0) {
-                let hh = Math.floor(tiempoOpcion);
-                let mm = Math.round((tiempoOpcion - hh) * 60);
-                let horaFormat = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
-                
-                opciones += `<button onclick="definirHorario('Express (${horaFormat} hrs)', true)" class="step-option text-[10px] uppercase tracking-widest font-bold py-4 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] transition">${horaFormat}</button>`;
-                
-                tiempoOpcion += 0.5;
-            }
-
-            return opciones;
+    let opciones = "";
+    let horaInicio = Math.max(10.0, tiempoDecimal + 2.0);
+    
+    let horaBase = Math.floor(horaInicio);
+    let remanente = horaInicio - horaBase;
+    let minutoBase = 0;
+    
+    if (remanente > 0.001) {
+        if (remanente <= 0.5) {
+            minutoBase = 30;
+        } else {
+            minutoBase = 0;
+            horaBase += 1;
         }
+    }
+
+    let tiempoOpcion = horaBase + (minutoBase / 60);
+
+    // Corrección: Permite despachos hasta las 21:00 para cubrir el límite de compra de las 19:00
+    while (tiempoOpcion <= 21.0) {
+        let hh = Math.floor(tiempoOpcion);
+        let mm = Math.round((tiempoOpcion - hh) * 60);
+        let horaFormat = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+        
+        opciones += `<button onclick="definirHorario('Express (${horaFormat} hrs)', true)" class="step-option text-[10px] uppercase tracking-widest font-bold py-4 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] transition">${horaFormat}</button>`;
+        
+        tiempoOpcion += 0.5;
+    }
+
+    return opciones;
+}
 
         function regresarDesdeTime() {
             if (selectedDate === 'hoy' || selectedDate === 'manana') {
@@ -1607,40 +1616,41 @@
 
         // --- GARANTÍA LOGÍSTICA ---
         function updateCountdown() {
-            const timerEl = document.getElementById('countdown-timer');
-            if (!timerEl) return;
+    const timerEl = document.getElementById('countdown-timer');
+    if (!timerEl) return;
 
-            const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-            const cutoffExpress = new Date(now);
-            cutoffExpress.setHours(19, 0, 0, 0); 
-            const cutoffEstandar = new Date(now);
-            cutoffEstandar.setHours(15, 0, 0, 0);
+    const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
+    const cutoffExpress = new Date(now);
+    cutoffExpress.setHours(19, 0, 0, 0); 
+    const cutoffEstandar = new Date(now);
+    // Corrección: Sincronizado a las 13:00 para alinear visualmente con el bloque 'Tarde (18:00 - 20:00)'
+    cutoffEstandar.setHours(13, 0, 0, 0);
 
-            if (now >= cutoffExpress) {
-                timerEl.innerHTML = "Entregas para hoy cerradas. Seleccione piezas para <strong>MAÑANA</strong>.";
-                return;
-            }
+    if (now >= cutoffExpress) {
+        timerEl.innerHTML = "Entregas para hoy cerradas. Seleccione piezas para <strong>MAÑANA</strong>.";
+        return;
+    }
 
-            let diff;
-            let tipo;
+    let diff;
+    let tipo;
 
-            if (now < cutoffEstandar) {
-                diff = cutoffEstandar - now;
-                tipo = "Estándar";
-            } else {
-                diff = cutoffExpress - now;
-                tipo = "Express";
-            }
+    if (now < cutoffEstandar) {
+        diff = cutoffEstandar - now;
+        tipo = "Estándar";
+    } else {
+        diff = cutoffExpress - now;
+        tipo = "Express";
+    }
 
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-            if (hours < 3) {
-                timerEl.innerHTML = `Ventana de entrega ${tipo} finaliza en <strong class="text-[#c5a059] animate-pulse">${hours}h y ${minutes}m</strong>`;
-            } else {
-                timerEl.innerHTML = `Recepción de pedidos habilitada para entregas <strong>HOY</strong>`;
-            }
-        }
+    if (hours < 3) {
+        timerEl.innerHTML = `Ventana de entrega ${tipo} finaliza en <strong class="text-[#c5a059] animate-pulse">${hours}h y ${minutes}m</strong>`;
+    } else {
+        timerEl.innerHTML = `Recepción de pedidos habilitada para entregas <strong>HOY</strong>`;
+    }
+}
         setInterval(updateCountdown, 60000);
         updateCountdown();
 
