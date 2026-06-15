@@ -275,27 +275,34 @@
     </div>
 
     <div class="absolute bottom-12 left-12 z-20 hidden lg:block">
-        <p class="text-white/40 text-[10px] uppercase tracking-[0.4em] leading-relaxed">
-            Av. Borgoño 14.580 <br> Reñaca, Viña del Mar
-        </p>
-    </div>
+    <p class="text-white/40 text-[10px] uppercase tracking-[0.4em] leading-relaxed">
+        Liágora 14.580, Local 7 <br> Reñaca, Viña del Mar
+    </p>
+</div>
+
+<div class="md:col-span-3">
+    <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Ubicación</h4>
+    <p class="text-sm opacity-60 leading-relaxed mb-4">
+        Liágora 14.580, Local 7<br>
+        Reñaca, Viña del Mar<br>
+        Región de Valparaíso, Chile.
+    </p>
+    <a href="https://maps.google.com" target="_blank" class="text-gold-leaf text-[10px] font-bold uppercase tracking-widest border-b border-gold-leaf pb-1">Ver en Google Maps</a>
+</div>
 </section>
 
     <div class="bg-forest-green py-4 border-y border-gold-leaf/20 overflow-hidden flex">
         <div class="prestige-marquee flex whitespace-nowrap">
-            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-                Suscripciones para Inmobiliarias   •   Diseño de Eventos   •   Paisajismo Garden   •   Envío VIP Reñaca   •   
-            </div>
-            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-                Suscripciones para Inmobiliarias   •   Diseño de Eventos   •   Paisajismo Garden   •   Envío VIP Reñaca   •   
-            </div>
-            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-                Suscripciones para Inmobiliarias   •   Diseño de Eventos   •   Paisajismo Garden   •   Envío VIP Reñaca   •   
-            </div>
-            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-                Suscripciones para Inmobiliarias   •   Diseño de Eventos   •   Paisajismo Garden   •   Envío VIP Reñaca   •   
-            </div>
-        </div>
+    <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
+        Atención Continua 7 Días a la Semana &nbsp; • &nbsp; Envíos Express y Urgentes &nbsp; • &nbsp; Atelier Floral Premium &nbsp; • &nbsp; Cobertura Viña del Mar, Concón y Reñaca &nbsp; • &nbsp;
+    </div>
+    <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
+        Atención Continua 7 Días a la Semana &nbsp; • &nbsp; Envíos Express y Urgentes &nbsp; • &nbsp; Atelier Floral Premium &nbsp; • &nbsp; Cobertura Viña del Mar, Concón y Reñaca &nbsp; • &nbsp;
+    </div>
+    <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
+        Atención Continua 7 Días a la Semana &nbsp; • &nbsp; Envíos Express y Urgentes &nbsp; • &nbsp; Atelier Floral Premium &nbsp; • &nbsp; Cobertura Viña del Mar, Concón y Reñaca &nbsp; • &nbsp;
+    </div>
+</div>
     </div>
 
     <section class="py-32 px-6">
@@ -982,58 +989,113 @@ function closeCheckout() {
 
         // --- FILTRADO HORARIO REACTIVO CHILE ---
         function renderHorariosInteligentes() {
-            const container = document.getElementById('time-slots-container');
-            container.innerHTML = "";
-            
-            const ahoraChile = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-            const hora = ahoraChile.getHours();
-            const minutos = ahoraChile.getMinutes();
-            const tiempoDecimal = hora + (minutos / 60);
+    const container = document.getElementById('time-slots-container');
+    container.innerHTML = "";
+    
+    const ahoraChile = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
+    const hora = ahoraChile.getHours();
+    const minutos = ahoraChile.getMinutes();
+    const tiempoDecimal = hora + (minutos / 60);
 
-            let html = "";
+    let html = "";
+    let htmlNormal = "";
+    let htmlExpress = "";
 
-            if (selectedDate === 'hoy') {
-                const tieneRamosComplejos = cart.some(item => item.id > 3);
-                if(tieneRamosComplejos) {
-                    container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños de la colección Vault requieren 24 horas de preparación. Seleccione mañana o una fecha futura.</p>`;
-                    return;
-                }
+    // Evalúa si la selección corresponde a la fecha de 'mañana' considerando la TZ chilena
+    const esManana = selectedDate === 'manana' || (selectedDate !== 'hoy' && selectedDate !== 'manana' && new Date(selectedDate + "T00:00:00-04:00").getDate() === (ahoraChile.getDate() + 1));
 
-                if (tiempoDecimal < 8.5) {
-                    html += `<button onclick="definirHorario('Mañana (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Mañana (10:00 - 12:00)</button>`;
-                }
-                if (tiempoDecimal < 11.0) {
-                    html += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Medio día (14:00 - 17:00)</button>`;
-                }
-                if (tiempoDecimal < 15.0) {
-                    html += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
-                }
-
-                if (selectedLogistics === 'envio' && tiempoDecimal >= 11.0 && tiempoDecimal < 18.0) {
-                    html += `
-                        <div class="border border-gold-leaf p-4 space-y-3">
-                            <p class="text-[10px] uppercase font-bold tracking-widest text-[#0a1f1c]">Despacho prioritario</p>
-                            <button onclick="definirHorario('Envío Express (< 2 hrs)', true)" class="w-full bg-[#0a1f1c] text-[#c5a059] py-4 text-xs font-bold uppercase tracking-widest border border-[#0a1f1c] transition">
-                                Despacho express menos de 2 horas
-                            </button>
-                        </div>
-                    `;
-                }
-
-                if (html === "") {
-                    html = `
-                        <p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p>
-                        <button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>
-                    `;
-                }
-            } else {
-                html += `<button onclick="definirHorario('Mañana (10:00 - 12:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Mañana (10:00 - 12:00)</button>`;
-                html += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Medio día (14:00 - 17:00)</button>`;
-                html += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
-            }
-
-            container.innerHTML = html;
+    if (selectedDate === 'hoy') {
+        const tieneRamosComplejos = cart.some(item => item.id > 3);
+        if(tieneRamosComplejos) {
+            container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños de la colección Vault requieren 24 horas de preparación. Seleccione mañana o una fecha futura.</p>`;
+            return;
         }
+
+        // Envío Normal: Bloque 1 (11:00-13:00) permanece oculto para entregas en el mismo día.
+
+        // Envío Normal: Bloque 2 (14:00-17:00). Corte a las 09:00 hrs.
+        if (tiempoDecimal < 9.0) {
+            htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
+        }
+
+        // Envío Normal: Bloque 3 (18:00-20:00). Corte a las 13:00 hrs.
+        if (tiempoDecimal < 13.0) {
+            htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
+        }
+
+        // Envío Express: Dinámico (10:00 a 19:00 hrs). Corte de generación a las 17:00 hrs.
+        if (selectedLogistics === 'envio' && tiempoDecimal < 17.0) {
+            htmlExpress = generarHorasExpress(tiempoDecimal);
+        }
+
+        if (htmlNormal !== "") {
+            html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
+        }
+
+        if (htmlExpress !== "") {
+            html += `
+            <div class="border-t border-[#c5a059]/30 pt-6 mt-2">
+                <span class="text-[9px] font-bold uppercase tracking-widest text-[#c5a059] block mb-3 text-left">Servicio Urgente (Menos de 2 hrs)</span>
+                <div class="grid grid-cols-2 gap-2">${htmlExpress}</div>
+            </div>`;
+        }
+
+        if (html === "") {
+            html = `
+                <p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p>
+                <button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>
+            `;
+        }
+    } else {
+        let bloque1Disponible = true;
+
+        if (esManana && tiempoDecimal >= 20.0) {
+            bloque1Disponible = false;
+        }
+
+        if (bloque1Disponible) {
+            htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`;
+        }
+        htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
+        htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
+
+        html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
+    }
+
+    container.innerHTML = html;
+}
+
+        function generarHorasExpress(tiempoDecimal) {
+    let opciones = "";
+    let horaInicio = Math.max(10.0, tiempoDecimal + 2.0);
+    
+    let horaBase = Math.floor(horaInicio);
+    let remanente = horaInicio - horaBase;
+    let minutoBase = 0;
+    
+    if (remanente > 0.001) {
+        if (remanente <= 0.5) {
+            minutoBase = 30;
+        } else {
+            minutoBase = 0;
+            horaBase += 1;
+        }
+    }
+
+    let tiempoOpcion = horaBase + (minutoBase / 60);
+
+    while (tiempoOpcion <= 19.0) {
+        let hh = Math.floor(tiempoOpcion);
+        let mm = Math.round((tiempoOpcion - hh) * 60);
+        let horaFormat = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+        
+        opciones += `<button onclick="definirHorario('Express (${horaFormat} hrs)', true)" class="step-option text-[10px] uppercase tracking-widest font-bold py-4 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] transition">${horaFormat}</button>`;
+        
+        tiempoOpcion += 0.5;
+    }
+
+    return opciones;
+}
 
         function regresarDesdeTime() {
             if (selectedDate === 'hoy' || selectedDate === 'manana') {
