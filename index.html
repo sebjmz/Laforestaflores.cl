@@ -1049,7 +1049,7 @@
         }
 
         if (tiempoDecimal < 13.0) {
-            htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
+            htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 21:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 21:00)</button>`;
         }
 
         // Corrección Express: habilitado hasta las 19:00 hrs
@@ -1086,7 +1086,7 @@
             htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`;
         }
         htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
-        htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
+        htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 21:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 21:00)</button>`;
 
         html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
     }
@@ -1618,7 +1618,7 @@
     const cutoffExpress = new Date(now);
     cutoffExpress.setHours(19, 0, 0, 0); 
     const cutoffEstandar = new Date(now);
-    // Corrección: Sincronizado a las 13:00 para alinear visualmente con el bloque 'Tarde (18:00 - 20:00)'
+    // Corrección: Sincronizado a las 13:00 para alinear visualmente con el bloque 'Tarde (18:00 - 21:00)'
     cutoffEstandar.setHours(13, 0, 0, 0);
 
     if (now >= cutoffExpress) {
