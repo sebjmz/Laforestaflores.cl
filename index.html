@@ -42,7 +42,6 @@
     }
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
@@ -1489,19 +1488,6 @@
     }
 }
 
-        // --- SISTEMA GENERADOR DE COMPROBANTES PDF ---
-        function descargarPDF(idTransaccion) {
-            const elemento = document.getElementById('recibo-pdf');
-            const opciones = {
-                margin:       1.5,
-                filename:     `comprobante-laforesta-${idTransaccion}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 3, logging: false, useCORS: true },
-                jsPDF:        { unit: 'cm', format: 'letter', orientation: 'portrait' }
-            };
-            html2pdf().set(opciones).from(elemento).save();
-        }
-
         // PHRASES ROTATOR HERO
         (function() {
             const phrases = [
@@ -1533,86 +1519,40 @@
         })();
 
         // --- DETECTOR POST-PAGO & INICIALIZACIÓN ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const paymentResult = urlParams.get('payment_result');
-            const status = urlParams.get('status') || urlParams.get('collection_status');
-            
-            if (paymentResult === 'success' && status === 'approved') {
-                const textoGuardado = localStorage.getItem('pending_laforesta_order');
-                if (textoGuardado) {
-                    localStorage.removeItem('pending_laforesta_order');
-                    localStorage.removeItem('laforesta_cart');            
-                    localStorage.removeItem('laforesta_checkout_inputs');  
-                    localStorage.removeItem('laforesta_checkout_abierto'); 
-                            
-                    const paymentId = urlParams.get('payment_id') || urlParams.get('collection_id');
-                    const NUMERO_WHATSAPP = "56994783520";
-                    
-                    let textoFinal = textoGuardado + `\n\n*COMPROBANTE DE PAGO APROBADO*\n• *ID TRANSACCIÓN MP:* ${paymentId}`;
-                    const wpUrl = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(textoFinal)}`;
+        // Reemplaza todo el bloque "DETECTOR POST-PAGO & INICIALIZACIÓN" por este. 
+// Elimina la inyección HTML del comprobante, limpia el carrito, arroja una alerta simple y borra los parámetros de la URL para evitar que se repita al recargar.
 
-                    const checkoutFlow = document.getElementById('checkout-flow');
-                    if (checkoutFlow) {
-                        checkoutFlow.classList.add('open');
-                        checkoutFlow.innerHTML = `
-                            <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
-                                <h2 class="font-serif text-xl tracking-widest uppercase text-gold-leaf">La Foresta | Panel de Confirmación</h2>
-                                <button onclick="closeCheckout(); window.location.href=window.location.origin;" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
-                            </div>
-                            <div class="flex-grow flex flex-col justify-center items-center p-6 text-center max-w-md mx-auto space-y-6">
-                                <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-leaf bg-gold-leaf/10 px-4 py-1.5 border border-gold-leaf/20">Pago Exitoso</span>
-                                <h3 class="font-serif text-4xl italic">Transacción Verificada</h3>
-                                
-                                <div id="recibo-pdf" class="w-full bg-white border border-zinc-200 p-6 text-left space-y-3 text-xs text-zinc-700 shadow-sm rounded-sm">
-                                    <div class="border-b pb-3 flex justify-between items-center">
-                                        <div>
-                                            <p class="font-sans font-bold text-sm tracking-wider text-[#0a1f1c] uppercase">LA FORESTA</p>
-                                            <p class="text-[9px] opacity-50 uppercase tracking-widest">Flores & Jardín Reñaca</p>
-                                        </div>
-                                        <div class="text-right">
-                                            <p class="font-bold text-[10px] text-emerald-600 uppercase bg-emerald-50 px-2 py-0.5 rounded-sm">Acreditado</p>
-                                        </div>
-                                    </div>
-                                    <div class="space-y-1 font-mono text-[11px]">
-                                        <p><strong>ID Transacción:</strong> ${paymentId}</p>
-                                        <p><strong>Operador Financiero:</strong> Mercado Pago</p>
-                                        <p><strong>Fecha Emisión:</strong> ${new Date().toLocaleDateString('es-CL')}</p>
-                                        <p><strong>Hora:</strong> ${new Date().toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})} hrs</p>
-                                    </div>
-                                    <div class="border-t pt-2 text-[9px] opacity-40 uppercase tracking-widest text-center">
-                                        Documento no válido como boleta fiscal
-                                    </div>
-                                </div>
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentResult = urlParams.get('payment_result');
+    const status = urlParams.get('status') || urlParams.get('collection_status');
+    
+    if (paymentResult === 'success' && status === 'approved') {
+        localStorage.removeItem('pending_laforesta_order');
+        localStorage.removeItem('laforesta_cart');            
+        localStorage.removeItem('laforesta_checkout_inputs');  
+        localStorage.removeItem('laforesta_checkout_abierto'); 
+        
+        cart = [];
+        updateCartUI();
+        
+        alert("Pago acreditado exitosamente. Recibirá su comprobante y detalles de logística vía correo electrónico.");
+        window.history.replaceState({}, document.title, window.location.pathname);
+    } 
+    else if (paymentResult === 'failure' || paymentResult === 'pending' || status === 'rejected' || status === 'cancelled') {
+        localStorage.removeItem('pending_laforesta_order');
+        alert("El pago no fue acreditado o fue cancelado. Intente nuevamente.");
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 
-                                <div class="w-full space-y-3">
-                                    <a href="${wpUrl}" target="_blank" class="w-full btn-premium inline-block text-center pt-4 uppercase text-xs tracking-widest font-bold transition">
-                                        COORDINAR DESPACHO VÍA WHATSAPP
-                                    </a>
-                                    <button onclick="descargarPDF('${paymentId}')" class="w-full py-3 border border-zinc-300 text-zinc-700 bg-white text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-50 transition flex items-center justify-center space-x-2">
-                                        <span>DESCARGAR COMPROBANTE (PDF)</span>
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                    }
-                    return;
-                }
-            } 
-            else if (paymentResult === 'failure' || paymentResult === 'pending' || status === 'rejected' || status === 'cancelled') {
-                localStorage.removeItem('pending_laforesta_order');
-                alert("El pago no fue acreditado. Intente nuevamente.");
-                window.history.replaceState({}, document.title, window.location.origin);
-            }
+    const yearFooter = document.getElementById("year-footer");
+    if (yearFooter) { yearFooter.innerText = new Date().getFullYear(); }
+    const flow = document.getElementById('garden-flow');
+    if (flow) { flow.style.transform = 'translateY(100%)'; }
 
-            const yearFooter = document.getElementById("year-footer");
-            if (yearFooter) { yearFooter.innerText = new Date().getFullYear(); }
-            const flow = document.getElementById('garden-flow');
-            if (flow) { flow.style.transform = 'translateY(100%)'; }
-
-            updateCartUI(); 
-            restaurarProgresoCheckout();
-        });
+    updateCartUI(); 
+    restaurarProgresoCheckout();
+});
 
         // --- GARANTÍA LOGÍSTICA ---
         function updateCountdown() {
