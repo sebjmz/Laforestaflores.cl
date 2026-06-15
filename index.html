@@ -1,10 +1,48 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LA FORESTA | Flores & Jardín Reñaca</title>
+    <title>La Foresta Flores - Florería Premium en Reñaca, Viña del Mar</title>
+    <meta name="description" content="Atelier de diseño floral premium en Reñaca y Viña del Mar. Despacho express de ramos exclusivos y flores frescas a domicilio.">
+    <meta name="keywords" content="floreria viña del mar, floreria reñaca, flores a domicilio concon, arreglos florales premium concon">
+    <link rel="canonical" href="https://laforestaflores.cl">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FlowerShop",
+      "name": "La Foresta Flores",
+      "image": "https://laforestaflores.cl/img/RAMOS01.jpeg",
+      "@id": "https://laforestaflores.cl",
+      "url": "https://laforestaflores.cl",
+      "telephone": "+56994783520",
+      "priceRange": "CLP",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Av. Borgoño 14.580, Local 7",
+        "addressLocality": "Viña del Mar",
+        "addressRegion": "Valparaíso",
+        "postalCode": "2520000",
+        "addressCountry": "CL"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ],
+        "opens": "10:30",
+        "closes": "20:00"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "104"
+      }
+    }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
@@ -205,7 +243,7 @@
         </div>
     </nav>
 
-<div id="mobile-sticky-cart" class="fixed bottom-0 left-0 w-full bg-[#0a1f1c] text-[#c5a059] p-5 z-[90] flex justify-between items-center md:hidden transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.25)] border-t border-[#c5a059]/20" onclick="toggleCart()">
+    <div id="mobile-sticky-cart" class="fixed bottom-0 left-0 w-full bg-[#0a1f1c] text-[#c5a059] p-5 z-[90] flex justify-between items-center md:hidden transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.25)] border-t border-[#c5a059]/20" onclick="toggleCart()">
         <div class="flex items-center space-x-4">
             <span class="text-[10px] font-bold uppercase tracking-widest">Atelier Bag</span>
             <span id="sticky-cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2.5 py-1 rounded-full text-[10px] font-bold">0</span>
@@ -256,53 +294,43 @@
     </div>
 
     <section class="hero-video-container">
-    <div class="absolute inset-0 hero-overlay z-10"></div>
-    <div id="video-bg-layer" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-        <video autoplay muted loop playsinline poster="img/hero-poster.jpg" class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover scale-[1.02]">
-            <source src="img/hero-video.mp4" type="video/mp4">
-        </video>
-    </div>        
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div id="video-bg-layer" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+            <video autoplay muted loop playsinline poster="img/hero-poster.jpg" class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover scale-[1.02]">
+                <source src="img/hero-video.mp4" type="video/mp4">
+            </video>
+        </div>        
 
-    <div class="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
-        <h4 class="text-white md:text-sm font-bold uppercase tracking-[0.8em] mb-8 animate-pulse">No son solo flores</h4>
-        <h1 class="text-white text-6xl md:text-[120px] font-serif leading-none mb-12 italic">
-            <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
-        </h1>
-        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
-            <button onclick="openVault()" class="btn-premium">EXPLORAR COLECCIÓN</button>
-            <a href="#privilege" class="btn-gold-outline flex items-center justify-center uppercase text-xs font-bold tracking-widest">Portal Empresas</a>
+        <div class="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
+            <h4 class="text-white md:text-sm font-bold uppercase tracking-[0.8em] mb-8 animate-pulse">No son solo flores</h4>
+            <h1 class="text-white text-6xl md:text-[120px] font-serif leading-none mb-12 italic">
+                <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
+            </h1>
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
+                <button onclick="openVault()" class="btn-premium">EXPLORAR COLECCIÓN</button>
+                <a href="#privilege" class="btn-gold-outline flex items-center justify-center uppercase text-xs font-bold tracking-widest">Portal Empresas</a>
+            </div>
         </div>
-    </div>
 
-    <div class="absolute bottom-12 left-12 z-20 hidden lg:block">
-    <p class="text-white/40 text-[10px] uppercase tracking-[0.4em] leading-relaxed">
-        Liágora 14.580, Local 7 <br> Reñaca, Viña del Mar
-    </p>
-</div>
-
-<div class="md:col-span-3">
-    <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Ubicación</h4>
-    <p class="text-sm opacity-60 leading-relaxed mb-4">
-        Liágora 14.580, Local 7<br>
-        Reñaca, Viña del Mar<br>
-        Región de Valparaíso, Chile.
-    </p>
-    <a href="https://maps.google.com" target="_blank" class="text-gold-leaf text-[10px] font-bold uppercase tracking-widest border-b border-gold-leaf pb-1">Ver en Google Maps</a>
-</div>
-</section>
+        <div class="absolute bottom-12 left-12 z-20 hidden lg:block">
+            <p class="text-white/40 text-[10px] uppercase tracking-[0.4em] leading-relaxed">
+                Av. Borgoño 14.580, Local 7 <br> 2520000 Viña del Mar, Valparaíso
+            </p>
+        </div>
+    </section>
 
     <div class="bg-forest-green py-4 border-y border-gold-leaf/20 overflow-hidden flex">
         <div class="prestige-marquee flex whitespace-nowrap">
-    <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-        Atención Continua 7 Días a la Semana &nbsp; • &nbsp; Envíos Express y Urgentes &nbsp; • &nbsp; Atelier Floral Premium &nbsp; • &nbsp; Cobertura Viña del Mar, Concón y Reñaca &nbsp; • &nbsp;
-    </div>
-    <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-        Atención Continua 7 Días a la Semana &nbsp; • &nbsp; Envíos Express y Urgentes &nbsp; • &nbsp; Atelier Floral Premium &nbsp; • &nbsp; Cobertura Viña del Mar, Concón y Reñaca &nbsp; • &nbsp;
-    </div>
-    <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-        Atención Continua 7 Días a la Semana &nbsp; • &nbsp; Envíos Express y Urgentes &nbsp; • &nbsp; Atelier Floral Premium &nbsp; • &nbsp; Cobertura Viña del Mar, Concón y Reñaca &nbsp; • &nbsp;
-    </div>
-</div>
+            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
+                Atención Continua 7 Días a la Semana &nbsp; • &nbsp; Envíos Express y Urgentes &nbsp; • &nbsp; Atelier Floral Premium &nbsp; • &nbsp; Cobertura Viña del Mar, Concón y Reñaca &nbsp; • &nbsp;
+            </div>
+            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
+                Atención Continua 7 Días a la Semana &nbsp; • &nbsp; Envíos Express y Urgentes &nbsp; • &nbsp; Atelier Floral Premium &nbsp; • &nbsp; Cobertura Viña del Mar, Concón y Reñaca &nbsp; • &nbsp;
+            </div>
+            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
+                Atención Continua 7 Días a la Semana &nbsp; • &nbsp; Envíos Express y Urgentes &nbsp; • &nbsp; Atelier Floral Premium &nbsp; • &nbsp; Cobertura Viña del Mar, Concón y Reñaca &nbsp; • &nbsp;
+            </div>
+        </div>
     </div>
 
     <section class="py-32 px-6">
@@ -329,7 +357,7 @@
         </div>
     </section>
 
-<section class="py-24 bg-[#0a1f1c] text-[#fcfaf7] border-t border-[#c5a059]/20">
+    <section class="py-24 bg-[#0a1f1c] text-[#fcfaf7] border-t border-[#c5a059]/20">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
                 <span class="text-[#c5a059] text-2xl tracking-widest block mb-4">★★★★★</span>
@@ -351,12 +379,11 @@
                 </div>
             </div>
             <div class="pt-16 text-center">
-    <span class="text-[9px] font-bold uppercase tracking-[0.4em] opacity-40 block mb-10">SOCIOS EN LA EXCELENCIA</span>
-    <div class="flex flex-wrap justify-center items-center gap-16 opacity-50 grayscale">
-        <img src="img/carmine.png" class="h-8 object-contain" alt="Restaurant Carmine">
-        <img src="img/san-marinos.svg" class="h-8 object-contain" alt="San Marino">
-    </div>
-</div>
+                <span class="text-[9px] font-bold uppercase tracking-[0.4em] opacity-40 block mb-10">SOCIOS EN LA EXCELENCIA</span>
+                <div class="flex flex-wrap justify-center items-center gap-16 opacity-50 grayscale">
+                    <img src="img/carmine.png" class="h-8 object-contain" alt="Restaurant Carmine">
+                    <img src="img/san-marinos.svg" class="h-8 object-contain" alt="San Marino">
+                </div>
             </div>
         </div>
     </section>
@@ -538,9 +565,9 @@
             <div class="md:col-span-3">
                 <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Ubicación</h4>
                 <p class="text-sm opacity-60 leading-relaxed mb-4">
-                    Av. Borgoño 14.580, Loc. 4<br>
-                    Reñaca, Viña del Mar<br>
-                    Región de Valparaíso, Chile.
+                    Av. Borgoño 14.580, Local 7<br>
+                    2520000 Viña del Mar<br>
+                    Valparaíso, Chile.
                 </p>
                 <a href="https://maps.google.com" target="_blank" class="text-gold-leaf text-[10px] font-bold uppercase tracking-widest border-b border-gold-leaf pb-1">Ver en Google Maps</a>
             </div>
@@ -768,7 +795,7 @@
         function guardarProgresoCheckout() {
             const progresoInputs = {
                 senderName: document.getElementById('sender-name')?.value || '',
-                buyerEmail: document.getElementById('buyer-email')?.value || '', // <- Añadido
+                buyerEmail: document.getElementById('buyer-email')?.value || '',
                 receiverName: document.getElementById('receiver-name')?.value || '',
                 address: document.getElementById('address')?.value || '',
                 pickupName: document.getElementById('pickup-name')?.value || '',
@@ -811,7 +838,6 @@
             }
         }
 
-        // Nueva función de validación nativa
         function validarEmailYContinuar() {
             const email = document.getElementById('buyer-email').value.trim();
             const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -824,36 +850,36 @@
 
         // --- LOGICA DE FLUJO MULTI-PASO ---
         function openCheckout() {
-    if(cart.length === 0) {
-        alert("Su bolsa está vacía. Añada una ramo floral primero.");
-        return;
-    }
-    toggleCart();
-    localStorage.setItem('laforesta_checkout_abierto', 'true');
-    
-    const flow = document.getElementById('checkout-flow');
-    flow.classList.remove('hidden');
-    setTimeout(() => {
-        flow.classList.add('open');
-    }, 10);
-    
-    const progreso = JSON.parse(localStorage.getItem('laforesta_checkout_inputs'));
-    goToStep(progreso?.currentStep || 1);
-    
-    const currentStepId = progreso?.currentStep || 'step-1';
-    if (currentStepId === 'step-time') {
-        renderHorariosInteligentes();
-    }
-}
+            if(cart.length === 0) {
+                alert("Su bolsa está vacía. Añada una ramo floral primero.");
+                return;
+            }
+            toggleCart();
+            localStorage.setItem('laforesta_checkout_abierto', 'true');
+            
+            const flow = document.getElementById('checkout-flow');
+            flow.classList.remove('hidden');
+            setTimeout(() => {
+                flow.classList.add('open');
+            }, 10);
+            
+            const progreso = JSON.parse(localStorage.getItem('laforesta_checkout_inputs'));
+            goToStep(progreso?.currentStep || 1);
+            
+            const currentStepId = progreso?.currentStep || 'step-1';
+            if (currentStepId === 'step-time') {
+                renderHorariosInteligentes();
+            }
+        }
 
-function closeCheckout() {
-    localStorage.removeItem('laforesta_checkout_abierto');
-    const flow = document.getElementById('checkout-flow');
-    flow.classList.remove('open');
-    setTimeout(() => {
-        flow.classList.add('hidden');
-    }, 700); // 700ms coincide con la transición CSS
-}
+        function closeCheckout() {
+            localStorage.removeItem('laforesta_checkout_abierto');
+            const flow = document.getElementById('checkout-flow');
+            flow.classList.remove('open');
+            setTimeout(() => {
+                flow.classList.add('hidden');
+            }, 700);
+        }
 
         function goToStep(stepId) {
             const targetId = typeof stepId === 'number' ? `step-${stepId}` : stepId;
@@ -989,113 +1015,107 @@ function closeCheckout() {
 
         // --- FILTRADO HORARIO REACTIVO CHILE ---
         function renderHorariosInteligentes() {
-    const container = document.getElementById('time-slots-container');
-    container.innerHTML = "";
-    
-    const ahoraChile = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-    const hora = ahoraChile.getHours();
-    const minutos = ahoraChile.getMinutes();
-    const tiempoDecimal = hora + (minutos / 60);
+            const container = document.getElementById('time-slots-container');
+            container.innerHTML = "";
+            
+            const ahoraChile = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
+            const hora = ahoraChile.getHours();
+            const minutos = ahoraChile.getMinutes();
+            const tiempoDecimal = hora + (minutos / 60);
 
-    let html = "";
-    let htmlNormal = "";
-    let htmlExpress = "";
+            let html = "";
+            let htmlNormal = "";
+            let htmlExpress = "";
 
-    // Evalúa si la selección corresponde a la fecha de 'mañana' considerando la TZ chilena
-    const esManana = selectedDate === 'manana' || (selectedDate !== 'hoy' && selectedDate !== 'manana' && new Date(selectedDate + "T00:00:00-04:00").getDate() === (ahoraChile.getDate() + 1));
+            const esManana = selectedDate === 'manana' || (selectedDate !== 'hoy' && selectedDate !== 'manana' && new Date(selectedDate + "T00:00:00-04:00").getDate() === (ahoraChile.getDate() + 1));
 
-    if (selectedDate === 'hoy') {
-        const tieneRamosComplejos = cart.some(item => item.id > 3);
-        if(tieneRamosComplejos) {
-            container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños de la colección Vault requieren 24 horas de preparación. Seleccione mañana o una fecha futura.</p>`;
-            return;
+            if (selectedDate === 'hoy') {
+                const tieneRamosComplejos = cart.some(item => item.id > 3);
+                if(tieneRamosComplejos) {
+                    container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños de la colección Vault requieren 24 horas de preparación. Seleccione mañana o una fecha futura.</p>`;
+                    return;
+                }
+
+                if (tiempoDecimal < 9.0) {
+                    htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
+                }
+
+                if (tiempoDecimal < 13.0) {
+                    htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
+                }
+
+                if (selectedLogistics === 'envio' && tiempoDecimal < 17.0) {
+                    htmlExpress = generarHorasExpress(tiempoDecimal);
+                }
+
+                if (htmlNormal !== "") {
+                    html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
+                }
+
+                if (htmlExpress !== "") {
+                    html += `
+                    <div class="border-t border-[#c5a059]/30 pt-6 mt-2">
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-[#c5a059] block mb-3 text-left">Servicio Urgente (Menos de 2 hrs)</span>
+                        <div class="grid grid-cols-2 gap-2">${htmlExpress}</div>
+                    </div>`;
+                }
+
+                if (html === "") {
+                    html = `
+                        <p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p>
+                        <button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>
+                    `;
+                }
+            } else {
+                let bloque1Disponible = true;
+
+                if (esManana && tiempoDecimal >= 20.0) {
+                    bloque1Disponible = false;
+                }
+
+                if (bloque1Disponible) {
+                    htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`;
+                }
+                htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
+                htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
+
+                html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
+            }
+
+            container.innerHTML = html;
         }
-
-        // Envío Normal: Bloque 1 (11:00-13:00) permanece oculto para entregas en el mismo día.
-
-        // Envío Normal: Bloque 2 (14:00-17:00). Corte a las 09:00 hrs.
-        if (tiempoDecimal < 9.0) {
-            htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
-        }
-
-        // Envío Normal: Bloque 3 (18:00-20:00). Corte a las 13:00 hrs.
-        if (tiempoDecimal < 13.0) {
-            htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
-        }
-
-        // Envío Express: Dinámico (10:00 a 19:00 hrs). Corte de generación a las 17:00 hrs.
-        if (selectedLogistics === 'envio' && tiempoDecimal < 17.0) {
-            htmlExpress = generarHorasExpress(tiempoDecimal);
-        }
-
-        if (htmlNormal !== "") {
-            html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
-        }
-
-        if (htmlExpress !== "") {
-            html += `
-            <div class="border-t border-[#c5a059]/30 pt-6 mt-2">
-                <span class="text-[9px] font-bold uppercase tracking-widest text-[#c5a059] block mb-3 text-left">Servicio Urgente (Menos de 2 hrs)</span>
-                <div class="grid grid-cols-2 gap-2">${htmlExpress}</div>
-            </div>`;
-        }
-
-        if (html === "") {
-            html = `
-                <p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p>
-                <button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>
-            `;
-        }
-    } else {
-        let bloque1Disponible = true;
-
-        if (esManana && tiempoDecimal >= 20.0) {
-            bloque1Disponible = false;
-        }
-
-        if (bloque1Disponible) {
-            htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`;
-        }
-        htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
-        htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 20:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 20:00)</button>`;
-
-        html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
-    }
-
-    container.innerHTML = html;
-}
 
         function generarHorasExpress(tiempoDecimal) {
-    let opciones = "";
-    let horaInicio = Math.max(10.0, tiempoDecimal + 2.0);
-    
-    let horaBase = Math.floor(horaInicio);
-    let remanente = horaInicio - horaBase;
-    let minutoBase = 0;
-    
-    if (remanente > 0.001) {
-        if (remanente <= 0.5) {
-            minutoBase = 30;
-        } else {
-            minutoBase = 0;
-            horaBase += 1;
+            let opciones = "";
+            let horaInicio = Math.max(10.0, tiempoDecimal + 2.0);
+            
+            let horaBase = Math.floor(horaInicio);
+            let remanente = horaInicio - horaBase;
+            let minutoBase = 0;
+            
+            if (remanente > 0.001) {
+                if (remanente <= 0.5) {
+                    minutoBase = 30;
+                } else {
+                    minutoBase = 0;
+                    horaBase += 1;
+                }
+            }
+
+            let tiempoOpcion = horaBase + (minutoBase / 60);
+
+            while (tiempoOpcion <= 19.0) {
+                let hh = Math.floor(tiempoOpcion);
+                let mm = Math.round((tiempoOpcion - hh) * 60);
+                let horaFormat = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+                
+                opciones += `<button onclick="definirHorario('Express (${horaFormat} hrs)', true)" class="step-option text-[10px] uppercase tracking-widest font-bold py-4 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] transition">${horaFormat}</button>`;
+                
+                tiempoOpcion += 0.5;
+            }
+
+            return opciones;
         }
-    }
-
-    let tiempoOpcion = horaBase + (minutoBase / 60);
-
-    while (tiempoOpcion <= 19.0) {
-        let hh = Math.floor(tiempoOpcion);
-        let mm = Math.round((tiempoOpcion - hh) * 60);
-        let horaFormat = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
-        
-        opciones += `<button onclick="definirHorario('Express (${horaFormat} hrs)', true)" class="step-option text-[10px] uppercase tracking-widest font-bold py-4 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] transition">${horaFormat}</button>`;
-        
-        tiempoOpcion += 0.5;
-    }
-
-    return opciones;
-}
 
         function regresarDesdeTime() {
             if (selectedDate === 'hoy' || selectedDate === 'manana') {
@@ -1188,7 +1208,6 @@ function closeCheckout() {
                 totalEl.innerText = `$0`;
                 countNav.innerText = "0";
 
-                // Sincronización Sticky Cart Móvil (Vaciado)
                 const stickyCart = document.getElementById('mobile-sticky-cart');
                 if (stickyCart) {
                     document.getElementById('sticky-cart-count').innerText = "0";
@@ -1222,7 +1241,6 @@ function closeCheckout() {
             const itemsCount = cart.reduce((acc, item) => acc + item.qty, 0);
             countNav.innerText = itemsCount;
 
-            // Sincronización Sticky Cart Móvil (Activo)
             const stickyCart = document.getElementById('mobile-sticky-cart');
             if (stickyCart) {
                 document.getElementById('sticky-cart-count').innerText = itemsCount;
@@ -1353,7 +1371,7 @@ function closeCheckout() {
             if(cart.length === 0) return alert("El atelier está vacío.");
 
             const emisor = document.getElementById('sender-name').value;
-            const correoComprador = document.getElementById('buyer-email').value.trim(); // <- Captura dinámica
+            const correoComprador = document.getElementById('buyer-email').value.trim();
             const receptor = document.getElementById('receiver-name').value;
             const mensaje = document.getElementById('card-message').value;
             const fonoDestino = document.getElementById('receiver-phone').value;
@@ -1587,7 +1605,7 @@ function closeCheckout() {
             restaurarProgresoCheckout();
         });
 
-// --- NOVEDAD: GARANTÍA LOGÍSTICA (URGENCIA) ---
+        // --- GARANTÍA LOGÍSTICA ---
         function updateCountdown() {
             const timerEl = document.getElementById('countdown-timer');
             if (!timerEl) return;
@@ -1626,11 +1644,10 @@ function closeCheckout() {
         setInterval(updateCountdown, 60000);
         updateCountdown();
 
-        // --- NOVEDAD: SPINNER B2B PRIVILEGE ---
+        // --- SPINNER B2B PRIVILEGE ---
         function handleB2BSubmit(e) {
             e.preventDefault();
             
-            // Verificación Honeypot (Corta la ejecución si es un bot)
             if (document.getElementById('b2b-honey').value !== "") return;
             
             const btn = document.getElementById('b2b-submit-btn');
@@ -1651,7 +1668,7 @@ function closeCheckout() {
                 },
                 body: JSON.stringify({
                     _subject: "Postulación Comercial - El Salón Privado",
-                    _captcha: "false", // Desactiva el redireccionamiento CAPTCHA nativo de FormSubmit
+                    _captcha: "false",
                     Empresa: empresa,
                     Segmento: segmento,
                     Volumen_Mensual: volumen
