@@ -307,7 +307,7 @@
         </div>        
 
         <div class="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
-            <h4 class="text-white md:text-sm font-bold uppercase tracking-[0.8em] mb-8 animate-pulse">No son solo flores</h4>
+            <h4 class="text-white md:text-sm font-bold uppercase tracking-[0.8em] mb-8 animate-pulse">Envío gratis por inversión superior a $69.990</h4>
             <h1 class="text-white text-6xl md:text-[120px] font-serif leading-none mb-12 italic">
                 <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
             </h1>
@@ -969,47 +969,48 @@
 
         // --- SISTEMA DE CALENDARIO ---
         function renderCalendar() {
-            const grid = document.getElementById('calendar-grid');
-            const title = document.getElementById('cal-month-title');
-            const hoy = new Date();
-            
-            const year = currentCalendarDate.getFullYear();
-            const month = currentCalendarDate.getMonth();
-            
-            const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-            title.innerText = `${nombresMeses[month]} ${year}`;
-            
-            const minMonth = hoy.getMonth();
-            const minYear = hoy.getFullYear();
-            const maxDate = new Date(minYear, minMonth + 1, 1);
-            const maxMonth = maxDate.getMonth();
-            const maxYear = maxDate.getFullYear();
-            
-            document.getElementById('cal-prev').style.visibility = (year === minYear && month === minMonth) ? 'hidden' : 'visible';
-            document.getElementById('cal-next').style.visibility = (year === maxYear && month === maxMonth) ? 'hidden' : 'visible';
-            
-            grid.innerHTML = "";
-            
-            const primerDia = new Date(year, month, 1).getDay();
-            const totalDias = new Date(year, month + 1, 0).getDate();
-            
-            for (let i = 0; i < primerDia; i++) {
-                grid.innerHTML += `<div></div>`;
-            }
-            
-            for (let d = 1; d <= totalDias; d++) {
-                const compCelda = new Date(year, month, d).setHours(0,0,0,0);
-                const compHoy = new Date().setHours(0,0,0,0);
-                
-                if (compCelda < compHoy) {
-                    grid.innerHTML += `<div class="py-3 text-zinc-300 font-serif text-sm cursor-not-allowed">${d}</div>`;
-                } else {
-                    const fechaStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-                    grid.innerHTML += `<button onclick="seleccionarDiaCalendario('${fechaStr}')" class="py-3 font-serif text-sm hover:text-gold-leaf transition font-bold text-[#0a1f1c]">${d}</button>`;
-                }
-            }
+    const grid = document.getElementById('calendar-grid');
+    const title = document.getElementById('cal-month-title');
+    
+    const ahoraChile = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
+    
+    const year = currentCalendarDate.getFullYear();
+    const month = currentCalendarDate.getMonth();
+    
+    const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    title.innerText = `${nombresMeses[month]} ${year}`;
+    
+    const minMonth = ahoraChile.getMonth();
+    const minYear = ahoraChile.getFullYear();
+    const maxDate = new Date(minYear, minMonth + 1, 1);
+    const maxMonth = maxDate.getMonth();
+    const maxYear = maxDate.getFullYear();
+    
+    document.getElementById('cal-prev').style.visibility = (year === minYear && month === minMonth) ? 'hidden' : 'visible';
+    document.getElementById('cal-next').style.visibility = (year === maxYear && month === maxMonth) ? 'hidden' : 'visible';
+    
+    grid.innerHTML = "";
+    
+    const primerDia = new Date(year, month, 1).getDay();
+    const totalDias = new Date(year, month + 1, 0).getDate();
+    
+    for (let i = 0; i < primerDia; i++) {
+        grid.innerHTML += `<div></div>`;
+    }
+    
+    for (let d = 1; d <= totalDias; d++) {
+        const compCelda = new Date(year, month, d).setHours(0,0,0,0);
+        const compHoy = ahoraChile.setHours(0,0,0,0);
+        
+        // Bloqueo estricto del día actual y anteriores
+        if (compCelda <= compHoy) {
+            grid.innerHTML += `<div class="py-3 text-zinc-300 font-serif text-sm cursor-not-allowed">${d}</div>`;
+        } else {
+            const fechaStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            grid.innerHTML += `<button onclick="seleccionarDiaCalendario('${fechaStr}')" class="py-3 font-serif text-sm hover:text-gold-leaf transition font-bold text-[#0a1f1c]">${d}</button>`;
         }
-
+    }
+}
         function cambiarMesCalendario(delta) {
             currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
             renderCalendar();
@@ -1157,7 +1158,9 @@
         return acc + (precioItem * item.qty);
     }, 0);
     
-    const totalFinal = baseTotal + shippingCost;
+    let costoEnvioFinal = baseTotal > 69990 ? 0 : shippingCost;
+    
+    const totalFinal = baseTotal + costoEnvioFinal;
     
     document.getElementById('cart-total').innerText = `$${totalFinal.toLocaleString()}`;
     return totalFinal;
@@ -1425,7 +1428,12 @@
     texto += `*FONO DESTINO:* ${fonoDestino}\n\n`; 
     texto += `*TARJETA:* "${mensaje}"\n\n`;
     texto += `*PEDIDO:*\n${articulos}\n`;
-    if(shippingCost > 0) {
+            let baseTotalOrden = cart.reduce((acc, item) => acc + (isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price) * item.qty, 0);
+let costoEnvioReal = baseTotalOrden > 69990 ? 0 : shippingCost;
+
+if(costoEnvioReal > 0) {
+    texto += `*COSTO ENVÍO:* $${costoEnvioReal.toLocaleString()}\n`;
+}
         texto += `*COSTO ENVÍO:* $${shippingCost.toLocaleString()}\n`;
     }
     texto += `*TOTAL A PAGAR:* $${totalFinal.toLocaleString()}`;
@@ -1465,7 +1473,7 @@
             order_summary: articulos,
             total_price: totalFinal,
             fecha_entrega: fechaTexto,
-            valor_envio: shippingCost,
+            valor_envio: costoEnvioReal,
             comprador_email: correoComprador 
         }
     };
@@ -1568,14 +1576,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
     const cutoffExpress = new Date(now);
     cutoffExpress.setHours(19, 0, 0, 0); 
-    const cutoffEstandar = new Date(now);
-    // Corrección: Sincronizado a las 13:00 para alinear visualmente con el bloque 'Tarde (18:00 - 21:00)'
-    cutoffEstandar.setHours(13, 0, 0, 0);
 
     if (now >= cutoffExpress) {
-        timerEl.innerHTML = "Entregas para hoy cerradas. Seleccione piezas para <strong>MAÑANA</strong>.";
+        timerEl.innerHTML = "<span class='text-sm tracking-wide'>Entregas para hoy cerradas. Pide ahora y recibe <strong>MAÑANA</strong>.</span>";
         return;
     }
+
+    const diff = cutoffExpress - now;
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+    timerEl.innerHTML = `<span class="text-sm tracking-wide">Pide antes de las 19:00 y recibe tus flores <strong>HOY MISMO</strong></span> <span class="ml-2 font-mono bg-[#c5a059] text-[#0a1f1c] px-2 py-1 rounded text-sm font-bold shadow-sm">${timeString}</span>`;
+}
 
     let diff;
     let tipo;
