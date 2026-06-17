@@ -569,14 +569,14 @@
                 </div>
             </div>
             <div class="md:col-span-2">
-                <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Navegación</h4>
-                <ul class="space-y-4 text-sm opacity-60">
-                    <li><a href="#" class="hover:text-gold-leaf">Colecciones</a></li>
-                    <li><a href="#" class="hover:text-gold-leaf">Membresía B2B</a></li>
-                    <li><a href="#" class="hover:text-gold-leaf">Servicio Garden</a></li>
-                    <li><a href="#" class="hover:text-gold-leaf">Nuestro Atelier</a></li>
-                </ul>
-            </div>
+    <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Información Legal</h4>
+    <ul class="space-y-4 text-sm opacity-60">
+        <li><a href="/privacidad.html" class="hover:text-gold-leaf">Política de Privacidad</a></li>
+        <li><a href="/terminos.html" class="hover:text-gold-leaf">Términos de Servicio</a></li>
+        <li><a href="/devoluciones.html" class="hover:text-gold-leaf">Políticas de Devolución</a></li>
+        <li><a href="#vault" onclick="openVault()" class="hover:text-gold-leaf">Colecciones</a></li>
+    </ul>
+</div>
             <div class="md:col-span-3">
                 <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Ubicación</h4>
                 <p class="text-sm opacity-60 leading-relaxed mb-4">
@@ -1334,7 +1334,7 @@
             texto += `*TOTAL A PAGAR:* $${totalFinal.toLocaleString()}`;
             const preferenceData = {
                 items: [{ title: "Pedido La Foresta Flores", quantity: 1, unit_price: totalFinal, currency_id: "CLP" }],
-                payer: { name: emisor, email: correoComprador, identification: { type: "RUT", number: "66666666-6" } },
+                payer: { name: emisor, email: correoComprador },
                 back_urls: {
                     success: window.location.origin + "?payment_result=success",
                     failure: window.location.origin + "?payment_result=failure",
@@ -1472,6 +1472,7 @@
         updateCountdown();
 
         // --- SPINNER B2B PRIVILEGE ---
+        // --- SPINNER B2B PRIVILEGE ---
         function handleB2BSubmit(e) {
             e.preventDefault();
             if (document.getElementById('b2b-honey').value !== "") return;
@@ -1480,27 +1481,49 @@
             const empresa = document.getElementById('b2b-empresa').value.trim();
             const segmento = document.getElementById('b2b-segmento').value;
             const volumen = document.getElementById('b2b-volumen').value.trim();
-            btn.innerHTML = `<svg class="animate-spin h-5 w-5 mx-auto text-[#c5a059]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+            
+            btn.innerHTML = `<svg class="animate-spin h-5 w-5 mx-auto text-[#c5a059]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> `;
             btn.disabled = true;
-            fetch("https://formsubmit.co/ajax/laforestaflores@gmail.com", {
+
+            fetch("https://old-brook-bf01.sebjmz.workers.dev/b2b", {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify({ _subject: "Postulación Comercial - El Salón Privado", _captcha: "false", Empresa: empresa, Segmento: segmento, Volumen_Mensual: volumen })
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    form_type: "b2b_lead",
+                    subject: "Postulación Comercial - El Salón Privado", 
+                    empresa: empresa, 
+                    segmento: segmento, 
+                    volumen_mensual: volumen 
+                })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error("Error en respuesta de servidor");
+                return response.json();
+            })
             .then(data => {
                 btn.innerHTML = "SOLICITUD RECIBIDA ✓";
-                btn.style.borderColor = "#10b981"; btn.style.color = "#10b981"; btn.style.backgroundColor = "rgba(16, 185, 129, 0.05)";
+                btn.style.borderColor = "#10b981"; 
+                btn.style.color = "#10b981"; 
+                btn.style.backgroundColor = "rgba(16, 185, 129, 0.05)";
+                
                 setTimeout(() => {
-                    btn.innerHTML = originalText; btn.disabled = false;
-                    btn.style.borderColor = "#c5a059"; btn.style.color = "#c5a059"; btn.style.backgroundColor = "transparent";
+                    btn.innerHTML = originalText; 
+                    btn.disabled = false;
+                    btn.style.borderColor = "#c5a059"; 
+                    btn.style.color = "#c5a059"; 
+                    btn.style.backgroundColor = "transparent";
                     document.getElementById('b2b-form').reset();
                 }, 4000);
             })
             .catch(error => {
-                console.error("Error en el envío:", error);
+                console.error("Error en el envío seguro:", error);
                 btn.innerHTML = "ERROR AL ENVIAR";
-                setTimeout(() => { btn.innerHTML = originalText; btn.disabled = false; }, 3000);
+                setTimeout(() => { 
+                    btn.innerHTML = originalText; 
+                    btn.disabled = false; 
+                }, 3000);
             });
         }
     </script>
