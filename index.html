@@ -306,6 +306,58 @@
             border-color: var(--gold-leaf);
             background: rgba(197, 160, 89, 0.05);
         }
+
+#payment-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.payment-btn {
+    width: 100%;
+    max-width: 400px;
+    padding: 18px;
+    border: 1px solid #c5a059;
+    background: transparent;
+    color: #c5a059;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+}
+
+.payment-btn:hover { 
+    background: #c5a059; 
+    color: #0a1f1c; 
+}
+
+.payment-btn .btn-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.payment-btn .btn-desc {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+#paypal-container {
+    display: none; 
+    margin-top: 20px; 
+    width: 100%; 
+    max-width: 400px; 
+    margin-inline: auto;
+    min-height: 150px;
+}
       
       .payment-card{
 border:1px solid #ddd;
@@ -834,44 +886,39 @@ margin-top:25px;
 
             <div id="step-6" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Paso Final</span>
-                <h3 class="font-serif text-4xl italic mb-12">Confirmar y Pagar</h3>
+                <h3 class="font-serif text-4xl italic mb-6">Confirmar y Pagar</h3>
                 <p class="text-[10px] uppercase tracking-widest opacity-60 mb-8 leading-loose">
-                    Una vez acreditado el pago, se enviará de forma automática el comprobante y los detalles de logística a su correo electrónico.
+                    Seleccione su preferencia para finalizar la orden.
                 </p>
-                <div id="payment-selector">
+                
+                <div id="payment-selector" class="w-full flex flex-col space-y-4">
+                    <button class="payment-btn" onclick="iniciarMercadoPago()">
+                        <span class="btn-title">Pago en Chile</span>
+                        <span class="btn-desc">Débito, Crédito o Transferencia</span>
+                    </button>
+                    <button class="payment-btn" onclick="iniciarPayPal()">
+                        <span class="btn-title">Pago Internacional</span>
+                        <span class="btn-desc">Tarjetas Extranjeras y Saldo USD</span>
+                    </button>
+                </div>
 
-    <div class="payment-card" id="card-mp" onclick="seleccionarMetodoPago('mp')">
+                <div id="loading-payment" style="display: none; text-align: center; margin-top: 20px;">
+                    <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Procesando Pasarela...</p>
+                </div>
 
-        <h4>Pago en Chile</h4>
+                <div id="paypal-container" class="w-full mt-6 hidden"></div>
 
-        <p>Tarjetas nacionales.</p>
-
-    </div>
-
-    <div class="payment-card" id="card-pp" onclick="seleccionarMetodoPago('pp')">
-
-        <h4>Pago Internacional</h4>
-
-        <p>PayPal y tarjetas internacionales.</p>
-
-    </div>
-
-    <button id="btnFinalPago" style="display:none"></button>
-
-</div>
-
-<div id="paypal-container"></div>
                 <div class="mt-8 flex justify-center items-center mb-4 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
                     <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
                 </div>
                 <div class="flex justify-center items-center space-x-4 opacity-60 grayscale">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" alt="Mercado Pago" class="h-5 w-auto object-contain">
                     <span class="text-xs font-light text-zinc-300">|</span>
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" alt="PayPal" class="h-4 w-auto object-contain">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="Visa" class="h-4 w-auto object-contain">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" alt="Mastercard" class="h-4 w-auto object-contain">
-                    <span class="text-[8px] font-bold uppercase tracking-widest border border-zinc-400 px-1 rounded-sm">Débito</span>
                 </div>
-                <button onclick="goToStep(5)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+                <button onclick="goToStep(5)" id="btn-volver-pago" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
         </div>
     </div>
@@ -1425,140 +1472,8 @@ margin-top:25px;
             closeGardenFlow();
         }
 
-let metodoPago = null;
-
-function seleccionarMetodoPago(tipo){
-    metodoPago = tipo;
-
-    document.querySelectorAll(".payment-card").forEach(c=>c.classList.remove("selected"));
-
-    document.getElementById("card-"+tipo).classList.add("selected");
-
-    const btn=document.getElementById("btnFinalPago");
-
-    if(tipo==="mp"){
-        btn.innerHTML="Pagar con Mercado Pago";
-        btn.onclick=()=>finalizarYCoordinar();
-    }else{
-        btn.innerHTML="Pagar con PayPal";
-        btn.onclick=()=>finalizarConPayPal();
-    }
-
-    btn.style.display="block";
-}
-      
-        // --- INTEGRACIÓN BACKEND CLOUDFLARE WORKER ---
-        async function finalizarYCoordinar() {
-            if(cart.length === 0) return alert("El atelier está vacío.");
-            const emisor = document.getElementById('sender-name').value;
-            const correoComprador = document.getElementById('buyer-email').value.trim();
-            const receptor = document.getElementById('receiver-name').value;
-            const mensaje = document.getElementById('card-message').value;
-            const fonoDestino = document.getElementById('receiver-phone').value;
-            let destinoFinal = "";
-            if(selectedLogistics === 'envio') {
-                destinoFinal = `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById('address').value}`;
-            } else {
-                const quienRetira = document.getElementById('pickup-name') ? document.getElementById('pickup-name').value : '';
-                destinoFinal = `Retiro en Atelier Reñaca\n• *RETIRA:* ${quienRetira}`;
-            }
-            const horario = selectedTimeSlot || 'No especificado';
-            const totalFinal = actualizarTotalConDespacho();
-            let articulos = cart.map(item => {
-                let precioReal = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
-                return `- ${item.name} (Cant: ${item.qty}) [c/u: $${precioReal.toLocaleString()}]`;
-            }).join('\n');
-            let fechaTexto = selectedDate === 'hoy' ? 'Hoy' : (selectedDate === 'manana' ? 'Mañana' : selectedDate);
-            let texto = `*ORDEN GENERADA - LA FORESTA FLORES*\n\n`;
-            texto += `*PALETA DE COLOR:* ${selectedPalette}\n`;
-            texto += `*FECHA ENTREGA:* ${fechaTexto}\n`;
-            if(isExpressDelivery) { texto += `*SERVICIO:* Despacho express prioritario\n`; }
-            texto += `*DE:* ${emisor}\n`;
-            texto += `*PARA:* ${receptor}\n`;
-            texto += `*LOGÍSTICA:* ${destinoFinal}\n`;
-            texto += `*HORARIO:* ${horario}\n`;
-            texto += `*FONO DESTINO:* ${fonoDestino}\n\n`;
-            texto += `*TARJETA:* "${mensaje}"\n\n`;
-            texto += `*PEDIDO:*\n${articulos}\n`;
-            let baseTotalOrden = cart.reduce((acc, item) => acc + (isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price) * item.qty, 0);
-            let costoEnvioReal = baseTotalOrden > 69990 ? 0 : shippingCost;
-            if(costoEnvioReal > 0) { texto += `*COSTO ENVÍO:* $${costoEnvioReal.toLocaleString()}\n`; }
-            texto += `*TOTAL A PAGAR:* $${totalFinal.toLocaleString()}`;
-            const orderId = 'LF-' + Date.now();
-
-            const emisorParts = emisor.trim().split(' ');
-            const payerName = emisorParts[0] || 'Cliente';
-            const payerSurname = emisorParts.slice(1).join(' ') || 'La Foresta';
-
-            let mpItems = cart.map(item => {
-                let precioReal = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
-                return {
-                    id: String(item.id),
-                    title: item.name,
-                    description: item.name,
-                    quantity: item.qty,
-                    unit_price: precioReal,
-                    currency_id: "CLP"
-                };
-            });
-
-            if(costoEnvioReal > 0) {
-                mpItems.push({
-                    id: "ENVIO",
-                    title: `Envío a Domicilio - ${selectedZoneName}`,
-                    description: "Servicio de logística",
-                    quantity: 1,
-                    unit_price: costoEnvioReal,
-                    currency_id: "CLP"
-                });
-            }
-
-            const preferenceData = {
-                external_reference: orderId,
-                items: mpItems,
-                payer: { 
-                    name: payerName,
-                    surname: payerSurname,
-                    email: correoComprador 
-                },
-                back_urls: {
-                    success: window.location.origin + "?payment_result=success",
-                    failure: window.location.origin + "?payment_result=failure",
-                    pending: window.location.origin + "?payment_result=pending"
-                },
-                auto_return: "approved",
-                notification_url: "https://old-brook-bf01.sebjmz.workers.dev/webhook",
-                metadata: { 
-                    sender_name: emisor, receiver_name: receptor, palette: selectedPalette,
-                    logistics_detail: destinoFinal, time_slot: horario, destination_phone: fonoDestino,
-                    card_text: mensaje, order_summary: articulos, total_price: totalFinal,
-                    fecha_entrega: fechaTexto, valor_envio: costoEnvioReal, comprador_email: correoComprador 
-                }
-            };
-            
-            try {
-                const response = await fetch('https://old-brook-bf01.sebjmz.workers.dev', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(preferenceData)
-                });
-                const preference = await response.json();
-                if (preference.init_point) {
-                    localStorage.setItem('pending_laforesta_order', texto);
-                    window.location.href = preference.init_point;
-                } else {
-                    throw new Error("No se obtuvo la pasarela desde el servidor seguro.");
-                }
-            } catch (error) {
-                console.error("Error en la conexión segura:", error);
-                alert("No se pudo procesar el pago de forma segura. Intente nuevamente.");
-            }
-          }
-
-          async function finalizarConPayPal() {
-            if(cart.length === 0) return alert("El atelier está vacío.");
-            
-            // Recopilación de estado idéntica a MercadoPago
+// --- INTEGRACIÓN BACKEND CLOUDFLARE WORKER ---
+        function obtenerPayloadOrden() {
             const emisor = document.getElementById('sender-name').value;
             const correoComprador = document.getElementById('buyer-email').value.trim();
             const receptor = document.getElementById('receiver-name').value;
@@ -1572,52 +1487,138 @@ function seleccionarMetodoPago(tipo){
             const horario = selectedTimeSlot || 'No especificado';
             let fechaTexto = selectedDate === 'hoy' ? 'Hoy' : (selectedDate === 'manana' ? 'Mañana' : selectedDate);
             
-            // Cálculo del base CLP (sin comisiones)
             let baseTotalOrden = cart.reduce((acc, item) => acc + (isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price) * item.qty, 0);
             let costoEnvioReal = baseTotalOrden > 69990 ? 0 : shippingCost;
             let totalCLPFinal = baseTotalOrden + costoEnvioReal;
 
-            const payloadPayPal = {
+            let articulos = cart.map(item => {
+                let precioReal = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
+                return `- ${item.name} (Cant: ${item.qty}) [c/u: $${precioReal.toLocaleString()}]`;
+            }).join('\n');
+
+            return {
                 totalCLP: totalCLPFinal,
                 metadata: {
                     sender_name: emisor, receiver_name: receptor, palette: selectedPalette,
                     logistics_detail: destinoFinal, time_slot: horario, destination_phone: fonoDestino,
-                    card_text: mensaje, total_price_clp: totalCLPFinal,
+                    card_text: mensaje, total_price: totalCLPFinal, order_summary: articulos,
                     fecha_entrega: fechaTexto, valor_envio: costoEnvioReal, comprador_email: correoComprador 
                 }
             };
+        }
 
-            // Ocultar botones y mostrar loader o el contenedor
+        async function iniciarMercadoPago() {
+            if(cart.length === 0) return alert("El atelier está vacío.");
+            
             document.getElementById('payment-selector').style.display = 'none';
+            document.getElementById('btn-volver-pago').style.display = 'none';
+            document.getElementById('loading-payment').style.display = 'block';
+
+            const payload = obtenerPayloadOrden();
+            const orderId = 'LF-' + Date.now();
+
+            const emisorParts = payload.metadata.sender_name.trim().split(' ');
+            const payerName = emisorParts[0] || 'Cliente';
+            const payerSurname = emisorParts.slice(1).join(' ') || 'La Foresta';
+
+            const mpItems = cart.map(item => ({
+                id: String(item.id),
+                title: item.name,
+                description: item.name,
+                quantity: item.qty,
+                unit_price: isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price,
+                currency_id: "CLP"
+            }));
+
+            if (payload.metadata.valor_envio > 0) {
+                mpItems.push({
+                    id: "ENVIO",
+                    title: `Envío a Domicilio - ${selectedZoneName}`,
+                    description: "Servicio de logística",
+                    quantity: 1,
+                    unit_price: payload.metadata.valor_envio,
+                    currency_id: "CLP"
+                });
+            }
+
+            const preferenceData = {
+                external_reference: orderId,
+                items: mpItems,
+                payer: { name: payerName, surname: payerSurname, email: payload.metadata.comprador_email },
+                back_urls: {
+                    success: window.location.origin + "?payment_result=success",
+                    failure: window.location.origin + "?payment_result=failure",
+                    pending: window.location.origin + "?payment_result=pending"
+                },
+                auto_return: "approved",
+                notification_url: "https://old-brook-bf01.sebjmz.workers.dev/webhook",
+                metadata: payload.metadata
+            };
+
+            try {
+                const response = await fetch("https://old-brook-bf01.sebjmz.workers.dev/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(preferenceData)
+                });
+                const data = await response.json();
+                if (data.init_point) {
+                    window.location.href = data.init_point;
+                } else {
+                    throw new Error("No se pudo generar el link de pago.");
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Error al conectar con MercadoPago. Intente nuevamente.");
+                window.location.reload();
+            }
+        }
+
+        function iniciarPayPal() {
+            if(cart.length === 0) return alert("El atelier está vacío.");
+
+            document.getElementById('payment-selector').style.display = 'none';
+            document.getElementById('btn-volver-pago').style.display = 'none';
+            
+            const paypalContainer = document.getElementById('paypal-container');
+            paypalContainer.classList.remove('hidden');
+            paypalContainer.style.display = 'block';
+            paypalContainer.innerHTML = '';
+
+            const payload = obtenerPayloadOrden();
 
             paypal.Buttons({
+                style: { color: 'gold', shape: 'rect', label: 'pay', height: 45 },
                 createOrder: async function() {
                     const response = await fetch("https://old-brook-bf01.sebjmz.workers.dev/paypal/create-order", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(payloadPayPal)
+                        body: JSON.stringify({ totalCLP: payload.totalCLP, metadata: payload.metadata })
                     });
                     const orderData = await response.json();
+                    
                     if (orderData.id) {
                         return orderData.id;
                     } else {
-                        const errorDetail = orderData?.details?.[0];
-                        const errorMessage = errorDetail ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})` : JSON.stringify(orderData);
-                        throw new Error(errorMessage);
+                        throw new Error("Error generando orden de PayPal");
                     }
                 },
                 onApprove: async function(data, actions) {
+                    document.getElementById('paypal-container').style.display = 'none';
+                    const loader = document.getElementById('loading-payment');
+                    loader.innerHTML = '<p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Acreditando pago internacional...</p>';
+                    loader.style.display = 'block';
+
                     try {
-                        const response = await fetch(`https://old-brook-bf01.sebjmz.workers.dev/paypal/capture-order`, {
+                        const response = await fetch("https://old-brook-bf01.sebjmz.workers.dev/paypal/capture-order", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ orderID: data.orderID, metadata: payloadPayPal.metadata })
+                            body: JSON.stringify({ orderID: data.orderID, metadata: payload.metadata })
                         });
                         
                         const captureData = await response.json();
                         
                         if (captureData.status === "COMPLETED") {
-                            // Flujo de éxito, equivalente a MercadoPago
                             trackGA4('purchase', {
                                 transaction_id: captureData.id,
                                 currency: 'USD',
@@ -1631,18 +1632,24 @@ function seleccionarMetodoPago(tipo){
                                 }))
                             });
 
-                            localStorage.clear();
-                            alert("Pago internacional acreditado exitosamente. Recibirá su comprobante vía correo electrónico.");
+                            window.location.href = window.location.origin + "?payment_result=success&status=approved";
+                        } else {
+                            alert("El pago no pudo completarse. Por favor, intente de nuevo.");
                             window.location.reload();
                         }
                     } catch (error) {
                         console.error(error);
-                        alert("Hubo un problema al procesar el pago internacional. Intente de nuevo.");
+                        alert("Hubo un problema de conexión. Revise su comprobante o intente nuevamente.");
+                        window.location.reload();
                     }
+                },
+                onError: function(err) {
+                    console.error(err);
+                    alert("La ventana de PayPal se cerró o falló la conexión.");
+                    window.location.reload();
                 }
             }).render("#paypal-container");
-        }
-          
+        } 
         // --- TITULOS DINAMICOS (PHRASES ROTATOR) ---
         (function() {
             const phrases = [
