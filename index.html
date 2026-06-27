@@ -306,6 +306,41 @@
             border-color: var(--gold-leaf);
             background: rgba(197, 160, 89, 0.05);
         }
+      
+      .payment-card{
+border:1px solid #ddd;
+
+padding:24px;
+
+margin-bottom:16px;
+
+cursor:pointer;
+
+transition:.25s;
+
+background:#fff;
+
+}
+
+.payment-card:hover{
+
+border-color:#b89b63;
+
+}
+
+.payment-card.selected{
+
+border:1px solid #b89b63;
+
+}
+
+#btnFinalPago{
+
+width:100%;
+
+margin-top:25px;
+
+}
     </style>
 </head>
 <body>
@@ -803,7 +838,29 @@
                 <p class="text-[10px] uppercase tracking-widest opacity-60 mb-8 leading-loose">
                     Una vez acreditado el pago, se enviará de forma automática el comprobante y los detalles de logística a su correo electrónico.
                 </p>
-                <button onclick="finalizarYCoordinar()" class="w-full btn-premium">PAGAR CON MERCADO PAGO</button>
+                <div id="payment-selector">
+
+    <div class="payment-card" id="card-mp" onclick="seleccionarMetodoPago('mp')">
+
+        <h4>Pago en Chile</h4>
+
+        <p>Tarjetas nacionales.</p>
+
+    </div>
+
+    <div class="payment-card" id="card-pp" onclick="seleccionarMetodoPago('pp')">
+
+        <h4>Pago Internacional</h4>
+
+        <p>PayPal y tarjetas internacionales.</p>
+
+    </div>
+
+    <button id="btnFinalPago" style="display:none"></button>
+
+</div>
+
+<div id="paypal-container"></div>
                 <div class="mt-8 flex justify-center items-center mb-4 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
                     <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
                 </div>
@@ -1048,7 +1105,7 @@
                 goToStep('step-time');
             }
         }
-
+      
         // --- SISTEMA DE CALENDARIO ---
         function renderCalendar() {
             const grid = document.getElementById('calendar-grid');
@@ -1368,6 +1425,28 @@
             closeGardenFlow();
         }
 
+let metodoPago = null;
+
+function seleccionarMetodoPago(tipo){
+    metodoPago = tipo;
+
+    document.querySelectorAll(".payment-card").forEach(c=>c.classList.remove("selected"));
+
+    document.getElementById("card-"+tipo).classList.add("selected");
+
+    const btn=document.getElementById("btnFinalPago");
+
+    if(tipo==="mp"){
+        btn.innerHTML="Pagar con Mercado Pago";
+        btn.onclick=()=>finalizarYCoordinar();
+    }else{
+        btn.innerHTML="Pagar con PayPal";
+        btn.onclick=()=>finalizarConPayPal();
+    }
+
+    btn.style.display="block";
+}
+      
         // --- INTEGRACIÓN BACKEND CLOUDFLARE WORKER ---
         async function finalizarYCoordinar() {
             if(cart.length === 0) return alert("El atelier está vacío.");
@@ -1405,9 +1484,43 @@
             let costoEnvioReal = baseTotalOrden > 69990 ? 0 : shippingCost;
             if(costoEnvioReal > 0) { texto += `*COSTO ENVÍO:* $${costoEnvioReal.toLocaleString()}\n`; }
             texto += `*TOTAL A PAGAR:* $${totalFinal.toLocaleString()}`;
+            const orderId = 'LF-' + Date.now();
+
+            const emisorParts = emisor.trim().split(' ');
+            const payerName = emisorParts[0] || 'Cliente';
+            const payerSurname = emisorParts.slice(1).join(' ') || 'La Foresta';
+
+            let mpItems = cart.map(item => {
+                let precioReal = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
+                return {
+                    id: String(item.id),
+                    title: item.name,
+                    description: item.name,
+                    quantity: item.qty,
+                    unit_price: precioReal,
+                    currency_id: "CLP"
+                };
+            });
+
+            if(costoEnvioReal > 0) {
+                mpItems.push({
+                    id: "ENVIO",
+                    title: `Envío a Domicilio - ${selectedZoneName}`,
+                    description: "Servicio de logística",
+                    quantity: 1,
+                    unit_price: costoEnvioReal,
+                    currency_id: "CLP"
+                });
+            }
+
             const preferenceData = {
-                items: [{ title: "Pedido La Foresta Flores", quantity: 1, unit_price: totalFinal, currency_id: "CLP" }],
-                payer: { name: emisor, email: correoComprador },
+                external_reference: orderId,
+                items: mpItems,
+                payer: { 
+                    name: payerName,
+                    surname: payerSurname,
+                    email: correoComprador 
+                },
                 back_urls: {
                     success: window.location.origin + "?payment_result=success",
                     failure: window.location.origin + "?payment_result=failure",
@@ -1422,6 +1535,7 @@
                     fecha_entrega: fechaTexto, valor_envio: costoEnvioReal, comprador_email: correoComprador 
                 }
             };
+            
             try {
                 const response = await fetch('https://old-brook-bf01.sebjmz.workers.dev', {
                     method: 'POST',
@@ -1439,8 +1553,54 @@
                 console.error("Error en la conexión segura:", error);
                 alert("No se pudo procesar el pago de forma segura. Intente nuevamente.");
             }
-        }
+          }
 
+          async function finalizarConPayPal(){
+
+   // reutilizar todos los datos del checkout
+
+   const response=await fetch("/paypal/create-order.php",{
+      method:"POST",
+      headers:{
+         "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+         carrito: carrito,
+         comprador: comprador,
+         entrega: entrega
+      })
+   });
+
+   const order=await response.json();
+
+   paypal.Buttons({
+
+      createOrder(){
+         return order.id;
+      },
+
+      onApprove(data){
+
+         return fetch("/paypal/capture-order.php",{
+            method:"POST",
+            headers:{
+               "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+               orderID:data.orderID
+            })
+         })
+         .then(r=>r.json())
+         .then(()=>{
+              finalizarCompra();
+         });
+
+      }
+
+   }).render("#paypal-container");
+
+}
+          
         // --- TITULOS DINAMICOS (PHRASES ROTATOR) ---
         (function() {
             const phrases = [
@@ -1600,5 +1760,6 @@
             });
         }
     </script>
+  <script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID&currency=USD"></script>
 </body>
 </html>
