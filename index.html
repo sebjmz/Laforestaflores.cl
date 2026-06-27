@@ -393,6 +393,22 @@ width:100%;
 margin-top:25px;
 
 }
+      .checkout-step {
+    max-height: 85vh;
+    overflow-y: auto;
+    padding-bottom: 30px;
+    scrollbar-width: none; /* Oculta barra en Firefox */
+}
+.checkout-step::-webkit-scrollbar {
+    display: none; /* Oculta barra en Chrome/Safari */
+}
+
+#time-slots-container {
+    max-height: 45vh;
+    overflow-y: auto;
+    padding-right: 5px;
+    width: 100%;
+}
     </style>
 </head>
 <body>
@@ -1206,31 +1222,57 @@ margin-top:25px;
             const hora = ahoraChile.getHours();
             const minutos = ahoraChile.getMinutes();
             const tiempoDecimal = hora + (minutos / 60);
+            
             const dateStringHoy = `${ahoraChile.getFullYear()}-${String(ahoraChile.getMonth() + 1).padStart(2, '0')}-${String(ahoraChile.getDate()).padStart(2, '0')}`;
             const mananaChile = new Date(ahoraChile);
             mananaChile.setDate(mananaChile.getDate() + 1);
             const dateStringManana = `${mananaChile.getFullYear()}-${String(mananaChile.getMonth() + 1).padStart(2, '0')}-${String(mananaChile.getDate()).padStart(2, '0')}`;
+            
             const esHoyReal = (selectedDate === 'hoy' || selectedDate === dateStringHoy);
             const esMananaReal = (selectedDate === 'manana' || selectedDate === dateStringManana);
+            
             let html = "", htmlNormal = "", htmlExpress = "";
+            
             if (esHoyReal) {
                 const tieneRamosComplejos = cart.some(item => item.id > 3);
                 if(tieneRamosComplejos) {
-                    container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños de la colección Vault requieren 24 horas de preparación. Seleccione mañana o una fecha futura.</p>`;
+                    container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños Vault requieren 24 horas. Seleccione mañana.</p>`;
                     return;
                 }
-                if (tiempoDecimal < 9.0) { htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`; }
-                if (tiempoDecimal < 13.0) { htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 21:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 21:00)</button>`; }
-                if (selectedLogistics === 'envio' && tiempoDecimal < 19.0) { htmlExpress = generarHorasExpress(tiempoDecimal); }
-                if (htmlNormal !== "") { html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`; }
-                if (htmlExpress !== "") { html += `<div class="border-t border-[#c5a059]/30 pt-6 mt-2"><span class="text-[9px] font-bold uppercase tracking-widest text-[#c5a059] block mb-3 text-left">Servicio Express (2 hrs)</span><div class="grid grid-cols-2 gap-2">${htmlExpress}</div></div>`; }
-                if (html === "") { html = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p><button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>`; }
+                
+                // Límite Normal: 11:00 para bloque 1, 14:00 para bloque 2.
+                if (tiempoDecimal <= 11.0) { 
+                    htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`; 
+                }
+                if (tiempoDecimal <= 14.0) { 
+                    htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 21:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Tarde (18:00 - 21:00)</button>`; 
+                }
+                
+                // Límite Express: 18:00
+                if (selectedLogistics === 'envio' && tiempoDecimal <= 18.0) { 
+                    htmlExpress = generarHorasExpress(tiempoDecimal); 
+                }
+                
+                if (htmlNormal !== "") { 
+                    html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`; 
+                }
+                if (htmlExpress !== "") { 
+                    html += `<div class="border-t border-[#c5a059]/30 pt-6 mt-2"><span class="text-[9px] font-bold uppercase tracking-widest text-[#c5a059] block mb-3 text-left">Servicio Express (1 hr)</span><div class="flex flex-col gap-2">${htmlExpress}</div></div>`; 
+                }
+                
+                if (html === "") { 
+                    html = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p><button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>`; 
+                }
             } else {
-                let bloque1Disponible = true;
-                if (esMananaReal && tiempoDecimal >= 20.0) { bloque1Disponible = false; }
-                if (bloque1Disponible) { htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`; }
+                let bloqueManana = true;
+                if (esMananaReal && tiempoDecimal >= 20.0) { bloqueManana = false; }
+                
+                if (bloqueManana) { 
+                    htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`; 
+                }
                 htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
-                htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 21:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold">Tarde (18:00 - 21:00)</button>`;
+                htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 21:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Tarde (18:00 - 21:00)</button>`;
+                
                 html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
             }
             container.innerHTML = html;
@@ -1238,20 +1280,27 @@ margin-top:25px;
 
         function generarHorasExpress(tiempoDecimal) {
             let opciones = "";
-            let horaInicio = Math.max(10.0, tiempoDecimal + 2.0);
+            let horaInicio = Math.max(10.0, tiempoDecimal + 1.0); // 1 hora de holgura
             let horaBase = Math.floor(horaInicio);
             let remanente = horaInicio - horaBase;
-            let minutoBase = 0;
-            if (remanente > 0.001) {
-                if (remanente <= 0.5) { minutoBase = 30; } else { minutoBase = 0; horaBase += 1; }
-            }
+            
+            // Redondear a la siguiente hora o media hora
+            let minutoBase = (remanente > 0 && remanente <= 0.5) ? 30 : (remanente > 0.5 ? 0 : 0);
+            if (remanente > 0.5) horaBase += 1;
+
             let tiempoOpcion = horaBase + (minutoBase / 60);
-            while (tiempoOpcion <= 21.0) {
+
+            // Bloques de 1 hora hasta las 20:00 (para finalizar a las 21:00)
+            while (tiempoOpcion <= 20.0) {
                 let hh = Math.floor(tiempoOpcion);
                 let mm = Math.round((tiempoOpcion - hh) * 60);
-                let horaFormat = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
-                opciones += `<button onclick="definirHorario('Express (${horaFormat} hrs)', true)" class="step-option text-[10px] uppercase tracking-widest font-bold py-4 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] transition">${horaFormat}</button>`;
-                tiempoOpcion += 0.5;
+                let endHH = hh + 1;
+                
+                let formatStart = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+                let formatEnd = `${String(endHH).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+                
+                opciones += `<button onclick="definirHorario('Express (${formatStart} - ${formatEnd})', true)" class="step-option text-[10px] uppercase tracking-widest font-bold py-4 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] transition w-full">${formatStart} - ${formatEnd}</button>`;
+                tiempoOpcion += 1.0; 
             }
             return opciones;
         }
@@ -1578,7 +1627,7 @@ margin-top:25px;
             if(cart.length === 0) return alert("El atelier está vacío.");
 
             document.getElementById('payment-selector').style.display = 'none';
-            document.getElementById('btn-volver-pago').style.display = 'none';
+            // Se elimina la línea que ocultaba el botón "volver"
             
             const paypalContainer = document.getElementById('paypal-container');
             paypalContainer.classList.remove('hidden');
@@ -1643,13 +1692,18 @@ margin-top:25px;
                         window.location.reload();
                     }
                 },
+                onCancel: function (data) {
+                    // Si el usuario cierra PayPal, regresan las opciones.
+                    document.getElementById('paypal-container').style.display = 'none';
+                    document.getElementById('payment-selector').style.display = 'flex';
+                },
                 onError: function(err) {
                     console.error(err);
-                    alert("La ventana de PayPal se cerró o falló la conexión.");
+                    alert("La ventana de PayPal falló o fue bloqueada por el navegador.");
                     window.location.reload();
                 }
             }).render("#paypal-container");
-        } 
+        }
         // --- TITULOS DINAMICOS (PHRASES ROTATOR) ---
         (function() {
             const phrases = [
