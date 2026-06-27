@@ -1694,7 +1694,11 @@ setInterval(actualizarContadores, 1000);
                 console.error(error);
                 alert("Error al conectar con MercadoPago. Intente nuevamente.");
                 window.location.reload();
-            }
+            } } catch (error) {
+    console.error("Error capturado:", error); // Esto te dirá qué falla
+    // window.location.reload(); // COMENTA ESTO PARA QUE EL ERROR SE QUEDE EN PANTALLA
+    alert("Error detallado en consola.");
+}
         }
 
         function iniciarPayPal() {
