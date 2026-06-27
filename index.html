@@ -409,40 +409,6 @@ margin-top:25px;
     padding-right: 5px;
     width: 100%;
 }
-      .btn-payment-selector {
-    background-color: #0a1f1c; /* Fondo oscuro corporativo */
-    border: 1px solid #c5a059; /* Borde dorado */
-    color: #c5a059; /* Texto dorado */
-    padding: 18px;
-    width: 100%;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 10px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 12px;
-}
-
-.btn-payment-selector:hover {
-    background-color: #c5a059;
-    color: #0a1f1c;
-}
-      .btn-volver {
-    margin-top: 25px;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid #c5a059;
-    color: #c5a059;
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: opacity 0.3s;
-}
-.btn-volver:hover { opacity: 1; }
     </style>
 </head>
 <body>
@@ -625,10 +591,15 @@ margin-top:25px;
 
             <div id="vault-content" class="expandable-section">     
                 
-                <div class="flex flex-col items-center justify-center text-[10px] uppercase tracking-widest text-[#c5a059] font-bold py-2 bg-transparent border-b border-[#c5a059]/20">
-    <div id="contador-normal" class="mb-1"></div>
-    <div id="contador-express"></div>
-</div>
+                <div class="bg-zinc-50 border border-zinc-200 p-4 text-center mb-12 flex flex-col items-center justify-center">
+                    <p class="text-[10px] uppercase tracking-widest font-bold text-[#0a1f1c] flex items-center justify-center gap-3">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                        </span>
+                        <span id="countdown-timer">Calculando garantía de entrega...</span>
+                    </p>
+                </div>
 
                 <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-20 pb-20"></div>
             </div>
@@ -936,10 +907,16 @@ margin-top:25px;
                     Seleccione su preferencia para finalizar la orden.
                 </p>
                 
-                <div id="payment-selector" class="flex flex-col w-full">
-    <button class="btn-payment-selector" onclick="iniciarMercadoPago()">Nacional (Débito/Crédito CLP)</button>
-    <button class="btn-payment-selector" onclick="iniciarPayPal()">Internacional (Tarjetas USD)</button>
-</div>
+                <div id="payment-selector" class="w-full flex flex-col space-y-4">
+                    <button class="payment-btn" onclick="iniciarMercadoPago()">
+                        <span class="btn-title">Pago en Chile</span>
+                        <span class="btn-desc">Débito, Crédito o Transferencia</span>
+                    </button>
+                    <button class="payment-btn" onclick="iniciarPayPal()">
+                        <span class="btn-title">Pago Internacional</span>
+                        <span class="btn-desc">Tarjetas Extranjeras y Saldo USD</span>
+                    </button>
+                </div>
 
                 <div id="loading-payment" style="display: none; text-align: center; margin-top: 20px;">
                     <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Procesando Pasarela...</p>
@@ -957,7 +934,7 @@ margin-top:25px;
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="Visa" class="h-4 w-auto object-contain">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" alt="Mastercard" class="h-4 w-auto object-contain">
                 </div>
-                <button type="button" class="btn-volver" onclick="gestionarVolverPago()">Volver</button>
+                <button onclick="goToStep(5)" id="btn-volver-pago" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
         </div>
     </div>
@@ -1054,21 +1031,6 @@ margin-top:25px;
             localStorage.setItem('laforesta_selectedPalette', selectedPalette);
         }
 
-function gestionarVolverPago() {
-    const paypalContainer = document.getElementById('paypal-container');
-    const paymentSelector = document.getElementById('payment-selector');
-    
-    // Si la ventana de PayPal está abierta, cerrar PayPal y volver a los botones de pago
-    if (paypalContainer && paypalContainer.style.display === 'block') {
-        paypalContainer.style.display = 'none';
-        paypalContainer.innerHTML = ''; // Limpia el iframe de PayPal
-        paymentSelector.style.display = 'flex'; // Muestra de nuevo los botones negro/dorado
-    } else {
-        // Si los botones ya están visibles, vuelve al paso 5 (Datos logísticos)
-        goToStep(5);
-    }
-}
-      
         function restaurarProgresoCheckout() {
             const progreso = JSON.parse(localStorage.getItem('laforesta_checkout_inputs'));
             if (!progreso) return;
@@ -1252,42 +1214,6 @@ function gestionarVolverPago() {
             goToStep('step-time');
         }
 
-function actualizarContadores() {
-    const ahora = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-    const horaActual = ahora.getHours() + (ahora.getMinutes() / 60);
-
-    const normalEl = document.getElementById('contador-normal');
-    const expressEl = document.getElementById('contador-express');
-
-    if (!normalEl || !expressEl) return;
-
-    function formatDiff(ms) {
-        const h = Math.floor((ms % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((ms % (1000 * 60)) / 1000);
-        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-    }
-
-    // Envío Normal (Cierre a las 14:00)
-    if (horaActual < 14) {
-        const limiteNormal = new Date(ahora);
-        limiteNormal.setHours(14, 0, 0, 0);
-        normalEl.innerText = `Cierre Envío Normal: ${formatDiff(limiteNormal - ahora)}`;
-    } else {
-        normalEl.innerText = `ENVÍO NORMAL CERRADO POR HOY`;
-    }
-
-    // Envío Express (Cierre a las 18:00)
-    if (horaActual < 18) {
-        const limiteExpress = new Date(ahora);
-        limiteExpress.setHours(18, 0, 0, 0);
-        expressEl.innerText = `Cierre Envío Express: ${formatDiff(limiteExpress - ahora)}`;
-    } else {
-        expressEl.innerText = `ENVÍO EXPRESS CERRADO POR HOY`;
-    }
-}
-setInterval(actualizarContadores, 1000);
-      
         // --- FILTRADO HORARIO ---
         function renderHorariosInteligentes() {
             const container = document.getElementById('time-slots-container');
@@ -1694,11 +1620,7 @@ setInterval(actualizarContadores, 1000);
                 console.error(error);
                 alert("Error al conectar con MercadoPago. Intente nuevamente.");
                 window.location.reload();
-            } } catch (error) {
-    console.error("Error capturado:", error); // Esto te dirá qué falla
-    // window.location.reload(); // COMENTA ESTO PARA QUE EL ERROR SE QUEDE EN PANTALLA
-    alert("Error detallado en consola.");
-}
+            }
         }
 
         function iniciarPayPal() {
@@ -1864,6 +1786,28 @@ setInterval(actualizarContadores, 1000);
             restaurarProgresoCheckout();
         });
 
+        // --- GARANTÍA LOGÍSTICA ---
+        function updateCountdown() {
+            const timerEl = document.getElementById('countdown-timer');
+            if (!timerEl) return;
+            const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
+            const cutoffExpress = new Date(now);
+            cutoffExpress.setHours(19, 0, 0, 0);
+            if (now >= cutoffExpress) {
+                timerEl.innerHTML = "<span class='text-sm tracking-wide'>Entregas por hoy cerradas. Pedidos para <strong>MAÑANA</strong>.</span>";
+                return;
+            }
+            const diff = cutoffExpress - now;
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            timerEl.innerHTML = `<span class="text-sm tracking-wide">Pedidos hasta las 19:00 para envíos <strong>HOY MISMO</strong></span> <span class="ml-2 font-mono bg-[#c5a059] text-[#0a1f1c] px-2 py-1 rounded text-sm font-bold shadow-sm">${timeString}</span>`;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // --- SPINNER B2B PRIVILEGE ---
         // --- SPINNER B2B PRIVILEGE ---
         function handleB2BSubmit(e) {
             e.preventDefault();
