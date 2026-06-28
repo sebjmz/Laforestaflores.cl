@@ -908,15 +908,9 @@ margin-top:25px;
                 </p>
                 
                 <div id="payment-selector" class="w-full flex flex-col space-y-4">
-                    <button class="payment-btn" onclick="iniciarMercadoPago()">
-                        <span class="btn-title">Pago en Chile</span>
-                        <span class="btn-desc">Débito, Crédito o Transferencia</span>
-                    </button>
-                    <button class="payment-btn" onclick="iniciarPayPal()">
-                        <span class="btn-title">Pago Internacional</span>
-                        <span class="btn-desc">Tarjetas Extranjeras y Saldo USD</span>
-                    </button>
-                </div>
+    <button class="btn-premium w-full !text-[10px]" onclick="iniciarMercadoPago()">Pago Nacional (Débito/Crédito)</button>
+    <button class="btn-premium w-full !text-[10px]" onclick="iniciarPayPal()">Pago Internacional (Tarjetas USD)</button>
+</div>
 
                 <div id="loading-payment" style="display: none; text-align: center; margin-top: 20px;">
                     <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Procesando Pasarela...</p>
