@@ -908,11 +908,11 @@ margin-top:25px;
                 </p>
                 
                 <div id="payment-selector" class="w-full flex flex-col space-y-4">
-                    <button class="payment-btn" onclick="iniciarMercadoPago()">
+                    <button class="btn-premium w-full !text-[10px]" onclick="iniciarMercadoPago()">
                         <span class="btn-title">Pago en Chile</span>
                         <span class="btn-desc">Débito, Crédito o Transferencia</span>
                     </button>
-                    <button class="payment-btn" onclick="iniciarPayPal()">
+                    <button class="btn-premium w-full !text-[10px]" onclick="iniciarPayPal()">
                         <span class="btn-title">Pago Internacional</span>
                         <span class="btn-desc">Tarjetas Extranjeras y Saldo USD</span>
                     </button>
@@ -934,8 +934,7 @@ margin-top:25px;
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="Visa" class="h-4 w-auto object-contain">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" alt="Mastercard" class="h-4 w-auto object-contain">
                 </div>
-                <button onclick="goToStep(5)" id="btn-volver-pago" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
+<button onclick="retrocederPasoPago()">Volver</button>            </div>
         </div>
     </div>
 
@@ -1213,7 +1212,25 @@ margin-top:25px;
             renderHorariosInteligentes();
             goToStep('step-time');
         }
+function retrocederPasoPago() {
+    const paymentSelector = document.getElementById('payment-selector');
+    const paypalContainer = document.getElementById('paypal-container');
+    const loadingPayment = document.getElementById('loading-payment');
 
+    if (paymentSelector && paymentSelector.style.display === 'none') {
+        if (paypalContainer) {
+            paypalContainer.style.display = 'none';
+            paypalContainer.innerHTML = '';
+        }
+        if (loadingPayment) {
+            loadingPayment.style.display = 'none';
+        }
+        paymentSelector.style.display = 'flex';
+    } else {
+        goToStep(5);
+    }
+}
+      
         // --- FILTRADO HORARIO ---
         function renderHorariosInteligentes() {
             const container = document.getElementById('time-slots-container');
@@ -1791,23 +1808,19 @@ margin-top:25px;
             const timerEl = document.getElementById('countdown-timer');
             if (!timerEl) return;
             const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-            const cutoffExpress = new Date(now);
-            cutoffExpress.setHours(19, 0, 0, 0);
-            if (now >= cutoffExpress) {
-                timerEl.innerHTML = "<span class='text-sm tracking-wide'>Entregas por hoy cerradas. Pedidos para <strong>MAÑANA</strong>.</span>";
-                return;
+            const horaActual = now.getHours() + (now.getMinutes() / 60);
+
+            if (horaActual < 14.0) {
+                timerEl.innerHTML = "ENVÍO NORMAL: HASTA 14:00 HRS &nbsp;|&nbsp; ENVÍO EXPRESS: HASTA 18:00 HRS";
+            } else if (horaActual >= 14.0 && horaActual < 18.0) {
+                timerEl.innerHTML = "ENVÍO NORMAL: CERRADO &nbsp;|&nbsp; ENVÍO EXPRESS: HASTA 18:00 HRS";
+            } else {
+                timerEl.innerHTML = "ENTREGAS POR HOY CERRADAS. PROGRAME SU ENVÍO PARA MAÑANA.";
             }
-            const diff = cutoffExpress - now;
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            timerEl.innerHTML = `<span class="text-sm tracking-wide">Pedidos hasta las 19:00 para envíos <strong>HOY MISMO</strong></span> <span class="ml-2 font-mono bg-[#c5a059] text-[#0a1f1c] px-2 py-1 rounded text-sm font-bold shadow-sm">${timeString}</span>`;
         }
-        setInterval(updateCountdown, 1000);
+        setInterval(updateCountdown, 60000); // Actualiza cada 1 minuto
         updateCountdown();
 
-        // --- SPINNER B2B PRIVILEGE ---
         // --- SPINNER B2B PRIVILEGE ---
         function handleB2BSubmit(e) {
             e.preventDefault();
