@@ -1645,7 +1645,7 @@ function resetearPasarela() {
             const cutoffExpress = new Date(now);
             cutoffExpress.setHours(19, 0, 0, 0);
             if (now >= cutoffExpress) {
-                timerEl.innerHTML = "<span class='text-sm tracking-wide'>Entregas por hoy cerradas. Pedidos a partir de <strong>MAÑANA</strong>.</span>";
+                timerEl.innerHTML = "<span class='text-sm tracking-wide'>Envíos a partir de <strong>MAÑANA</strong>.</span>";
                 return;
             }
             const diff = cutoffExpress - now;
