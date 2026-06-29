@@ -226,9 +226,14 @@
     }
 
     @keyframes marquee-infinite {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-25%); }
-    }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  /* Incrementar los segundos ralentiza el movimiento */
+  animation: marquee-infinite 60s linear infinite; 
+}
 
     .prestige-marquee:hover {
         animation-play-state: paused;
