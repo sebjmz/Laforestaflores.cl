@@ -316,6 +316,16 @@
         padding-right: 5px;
         width: 100%;
     }
+  @keyframes marquee-infinite {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  display: flex;
+  min-width: 100%;
+  animation: marquee-infinite 30s linear infinite;
+}
 </style>
 </head>
 <body>
@@ -418,27 +428,37 @@
         </div>
     </section>
 
-    <div class="bg-forest-green py-4 border-y border-gold-leaf/20 overflow-hidden flex">
-        <div class="prestige-marquee flex whitespace-nowrap">
-            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-                Atención Continua 7 Días de la Semana   •   Despacho mismo día hasta las 21:00 hrs   •   Retiro en Tienda   •   Flores frescas seleccionadas cada mañana   •   Cobertura Viña del Mar, Concón y Reñaca   •   Tarjeta personalizada incluida   •   
-            </div>
-            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-                Atención Continua 7 Días de la Semana   •   Despacho mismo día hasta las 21:00 hrs   •   Retiro en Tienda   •   Flores frescas seleccionadas cada mañana   •   Cobertura Viña del Mar, Concón y Reñaca   •   Tarjeta personalizada incluida   •
-            </div>
-            <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-                Atención Continua 7 Días de la Semana   •   Despacho mismo día hasta las 21:00 hrs   •   Retiro en Tienda   •   Flores frescas seleccionadas cada mañana   •   Cobertura Viña del Mar, Concón y Reñaca   •   Tarjeta personalizada incluida   •
-            </div>
+    <div class="bg-forest-green py-4 border-y border-gold-leaf/20 overflow-hidden flex flex-nowrap whitespace-nowrap">
+    <!-- Contenedor animado 1 -->
+    <div class="animate-marquee">
+        <div class="font-serif italic text-xl text-gold-leaf/40 flex shrink-0 items-center">
+            <span class="mx-6">7 días de la semana</span><span class="text-gold-leaf/60">•</span>
+            <span class="mx-6">Despachos hasta las 21:00 hrs</span><span class="text-gold-leaf/60">•</span>
+            <span class="mx-6">Retiro en atelier</span><span class="text-gold-leaf/60">•</span>
+            <span class="mx-6">Selección fresca cada día</span><span class="text-gold-leaf/60">•</span>
+            <span class="mx-6">Viña, Reñaca y Concón</span><span class="text-gold-leaf/60">•</span>
+            <span class="mx-6">Tarjeta Personalizada Incluida</span><span class="text-gold-leaf/60">•</span>
         </div>
     </div>
+    <!-- Contenedor animado 2 (Duplicado exacto para evitar el corte) -->
+    <div class="animate-marquee" aria-hidden="true">
+        <div class="font-serif italic text-xl text-gold-leaf/40 flex shrink-0 items-center">
+            <span class="mx-6">7 días de la semana</span><span class="text-gold-leaf/60">•</span>
+            <span class="mx-6">Despachos hasta las 21:00 hrs</span><span class="text-gold-leaf/60">•</span>
+            <span class="mx-6">Retiro en atelier</span><span class="text-gold-leaf/60">•</span>
+            <span class="mx-6">Selección fresca cada día</span><span class="text-gold-leaf/60">•</span>
+            <span class="mx-6">Viña, Reñaca y Concón</span><span class="text-gold-leaf/60">•</span>
+            <span class="mx-6">Tarjeta Personalizada Incluida</span><span class="text-gold-leaf/60">•</span>
+        </div>
+    </div>
+</div>
 
     <section class="py-32 px-6">
         <div class="max-w-4xl mx-auto text-center">
             <span class="text-gold-leaf text-xs font-bold uppercase tracking-widest mb-6 block">Nuestra Cultura</span>
             <h2 class="text-4xl md:text-6xl font-serif mb-12 leading-tight">La naturaleza es el estado más puro  del arte.</h2>
             <p class="text-lg md:text-xl text-zinc-600 font-light leading-relaxed mb-12">
-                En La Foresta Flores, entendemos que un arreglo floral correcto es fundamental en una firma, es el aroma de un negocio confiable y el alma de un hogar en paz y armonía. Fusionando la singularidad del arte floral con técnicas vanguardistas logramos crear experiencias que perduran en la memoria.
-            </p>
+                Las flores guardan un valor que va más allá de una cifra. Son el reflejo de un compromiso honesto, de una búsqueda constante de la belleza y la perfección, el refugio sagrado de un hogar en paz y armonía. Con arte y vanguardia, transformamos la naturaleza en una experiencia infinita.            </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 pt-12 border-t">
                 <div>
                     <h5 class="font-bold uppercase tracking-tighter mb-2 italic">Exclusividad</h5>
