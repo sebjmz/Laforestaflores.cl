@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9NDEELWEK"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -33,11 +31,10 @@
 <meta name="twitter:description" content="Florería Premium en Reñaca y Viña del Mar.">
 <meta name="twitter:image" content="https://laforestaflores.cl/img/social-share.jpg">
     
-    <script type="application/ld+json">
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
-
     {
       "@type": "Organization",
       "@id": "https://laforestaflores.cl/#organization",
@@ -58,7 +55,6 @@
         "https://www.instagram.com/laforestaflores"
       ]
     },
-
     {
       "@type": "WebSite",
       "@id": "https://laforestaflores.cl/#website",
@@ -69,7 +65,6 @@
       },
       "inLanguage": "es-CL"
     },
-
     {
       "@type": "Florist",
       "@id": "https://laforestaflores.cl/#florist",
@@ -78,7 +73,6 @@
       "image": "https://laforestaflores.cl/img/social-share.jpg",
       "telephone": "+56994783520",
       "priceRange": "$$",
-
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Av. Borgoño 14.580, Local 7",
@@ -87,329 +81,242 @@
         "postalCode": "2520000",
         "addressCountry": "CL"
       },
-
       "geo": {
         "@type": "GeoCoordinates",
         "latitude": "-32.964",
         "longitude": "-71.545"
       },
-
       "openingHoursSpecification": {
         "@type": "OpeningHoursSpecification",
         "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday"
+          "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
         ],
         "opens": "10:30",
         "closes": "19:00"
       },
-
       "areaServed": [
-        "Reñaca",
-        "Viña del Mar",
-        "Concón",
-        "Valparaíso"
+        "Reñaca", "Viña del Mar", "Concón", "Valparaíso"
       ],
-
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.9",
         "reviewCount": "103"
       },
-
       "parentOrganization": {
         "@id": "https://laforestaflores.cl/#organization"
       }
     }
-
   ]
 }
 </script>
 
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --forest-green: #0a1f1c;
-            --gold-leaf: #c5a059;
-            --soft-cream: #fcfaf7;
-            --deep-black: #050505;
-        }
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --forest-green: #0a1f1c;
+        --gold-leaf: #c5a059;
+        --soft-cream: #fcfaf7;
+        --deep-black: #050505;
+    }
 
-        body {
-            background-color: var(--soft-cream);
-            color: var(--forest-green);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            scroll-behavior: smooth;
-        }
+    body {
+        background-color: var(--soft-cream);
+        color: var(--forest-green);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        scroll-behavior: smooth;
+    }
 
-        .font-serif { font-family: 'Playfair Display', serif; }
+    .font-serif { font-family: 'Playfair Display', serif; }
 
-        .glass-nav {
-            background: rgba(252, 250, 247, 0.8);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(10, 31, 28, 0.05);
-        }
+    .glass-nav {
+        background: rgba(252, 250, 247, 0.8);
+        backdrop-filter: blur(15px);
+        border-bottom: 1px solid rgba(10, 31, 28, 0.05);
+    }
 
-        .hero-video-container {
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
-            background-color: var(--deep-black);
-        }
+    .hero-video-container {
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+        background-color: var(--deep-black);
+    }
 
-        .hero-overlay {
-            background: radial-gradient(
-                circle, 
-                rgba(5, 15, 13, 0.4) 0%, 
-                rgba(10, 31, 28, 0.7) 100%
-            );
-            z-index: 10;
-        }
+    .hero-overlay {
+        background: radial-gradient(circle, rgba(5, 15, 13, 0.4) 0%, rgba(10, 31, 28, 0.7) 100%);
+        z-index: 10;
+    }
 
-        .hero-video-container h1 {
-            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            letter-spacing: -0.02em;
-        }
+    .hero-video-container h1 {
+        text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        letter-spacing: -0.02em;
+    }
 
-        .hero-video-container h4 {
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
+    .hero-video-container h4 {
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
 
-        .expandable-section {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .expandable-section.active {
-            max-height: 20000px; 
-        }
+    .expandable-section {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .expandable-section.active {
+        max-height: 20000px; 
+    }
 
-        .btn-premium {
-            position: relative;
-            padding: 1rem 2.5rem;
-            background: var(--forest-green);
-            color: var(--gold-leaf);
-            font-weight: 700;
-            overflow: hidden;
-            transition: 0.4s;
-            border: 1px solid var(--forest-green);
-        }
-        .btn-premium:hover {
-            background: transparent;
-            color: var(--forest-green);
-        }
+    .btn-premium {
+        position: relative;
+        padding: 1rem 2.5rem;
+        background: var(--forest-green);
+        color: var(--gold-leaf);
+        font-weight: 700;
+        overflow: hidden;
+        transition: 0.4s;
+        border: 1px solid var(--forest-green);
+    }
+    .btn-premium:hover {
+        background: transparent;
+        color: var(--forest-green);
+    }
 
-        .btn-gold-outline {
-            border: 1px solid var(--gold-leaf);
-            color: var(--gold-leaf);
-            padding: 0.8rem 2rem;
-            transition: 0.3s;
-        }
-        .btn-gold-outline:hover {
-            background: var(--gold-leaf);
-            color: var(--forest-green);
-        }
+    .btn-gold-outline {
+        border: 1px solid var(--gold-leaf);
+        color: var(--gold-leaf);
+        padding: 0.8rem 2rem;
+        transition: 0.3s;
+    }
+    .btn-gold-outline:hover {
+        background: var(--gold-leaf);
+        color: var(--forest-green);
+    }
 
-        #atelier-bag {
-            transform: translateX(100%);
-            transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
-        }
-        #atelier-bag.open { transform: translateX(0); }
+    #atelier-bag {
+        transform: translateX(100%);
+        transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+    }
+    #atelier-bag.open { transform: translateX(0); }
 
-        .product-card {
-            transition: transform 0.6s ease;
-        }
-        .product-card:hover {
-            transform: translateY(-15px);
-        }
-        .img-zoom-container {
-            overflow: hidden;
-        }
-        .img-zoom-container img {
-            transition: transform 1.2s ease;
-        }
-        .product-card:hover .img-zoom-container img {
-            transform: scale(1.1);
-        }
+    .product-card {
+        transition: transform 0.6s ease;
+    }
+    .product-card:hover {
+        transform: translateY(-15px);
+    }
+    .img-zoom-container {
+        overflow: hidden;
+    }
+    .img-zoom-container img {
+        transition: transform 1.2s ease;
+    }
+    .product-card:hover .img-zoom-container img {
+        transform: scale(1.1);
+    }
 
-        .prestige-marquee {
-            display: flex;
-            width: max-content;
-            animation: marquee-infinite 40s linear infinite;
-        }
+    .prestige-marquee {
+        display: flex;
+        width: max-content;
+        animation: marquee-infinite 40s linear infinite;
+    }
 
-        .marquee-content {
-            display: inline-block;
-            padding-right: 2rem; 
-        }
+    .marquee-content {
+        display: inline-block;
+        padding-right: 2rem; 
+    }
 
-        @keyframes marquee-infinite {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-25%); }
-        }
+    @keyframes marquee-infinite {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-25%); }
+    }
 
-        .prestige-marquee:hover {
-            animation-play-state: paused;
-        }
+    .prestige-marquee:hover {
+        animation-play-state: paused;
+    }
 
-        .b2b-portal {
-            background-color: var(--forest-green);
-            color: var(--soft-cream);
-        }
+    .b2b-portal {
+        background-color: var(--forest-green);
+        color: var(--soft-cream);
+    }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--soft-cream); }
-        ::-webkit-scrollbar-thumb { background: var(--gold-leaf); }
-        
-        #video-bg-layer video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translate(-50%, -50%) scale(1.02);
-            object-fit: cover;
-            z-index: 1;
-        }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--soft-cream); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-leaf); }
+    
+    #video-bg-layer video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        transform: translate(-50%, -50%) scale(1.02);
+        object-fit: cover;
+        z-index: 1;
+    }
 
-        #checkout-flow, #garden-flow {
-            transform: translateY(100%);
-            transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease;
-        }
-        #checkout-flow.open, #garden-flow.open { transform: translateY(0); }
-        
-        .checkout-step, .garden-step {
-            display: none;
-            animation: fadeInStep 0.6s ease forwards;
-        }
-        .checkout-step.active, .garden-step.active { display: flex; }
-        
-        @keyframes fadeInStep {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    #checkout-flow, #garden-flow {
+        transform: translateY(100%);
+        transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease;
+    }
+    #checkout-flow.open, #garden-flow.open { transform: translateY(0); }
+    
+    .checkout-step, .garden-step {
+        display: none;
+        animation: fadeInStep 0.6s ease forwards;
+    }
+    .checkout-step.active, .garden-step.active { display: flex; }
+    
+    @keyframes fadeInStep {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
-        .step-option {
-            border: 1px solid rgba(10, 31, 28, 0.15);
-            transition: all 0.3s ease;
-        }
-        .step-option:hover, .step-option.selected {
-            border-color: var(--gold-leaf);
-            background: rgba(197, 160, 89, 0.05);
-        }
+    .step-option {
+        border: 1px solid rgba(10, 31, 28, 0.15);
+        transition: all 0.3s ease;
+    }
+    .step-option:hover, .step-option.selected {
+        border-color: var(--gold-leaf);
+        background: rgba(197, 160, 89, 0.05);
+    }
 
-#payment-selector {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-    margin-top: 20px;
-    width: 100%;
-}
+    #payment-selector {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+        margin-top: 20px;
+        width: 100%;
+    }
 
-.payment-btn {
-    width: 100%;
-    max-width: 400px;
-    padding: 18px;
-    border: 1px solid #c5a059;
-    background: transparent;
-    color: #c5a059;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    font-family: inherit;
-}
+    #paypal-container {
+        display: none; 
+        margin-top: 20px; 
+        width: 100%; 
+        max-width: 400px; 
+        margin-inline: auto;
+        min-height: 150px;
+    }
 
-.payment-btn:hover { 
-    background: #c5a059; 
-    color: #0a1f1c; 
-}
+    .checkout-step {
+        max-height: 85vh;
+        overflow-y: auto;
+        padding-bottom: 30px;
+        scrollbar-width: none;
+    }
+    .checkout-step::-webkit-scrollbar {
+        display: none;
+    }
 
-.payment-btn .btn-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.payment-btn .btn-desc {
-    font-size: 0.85rem;
-    opacity: 0.9;
-}
-
-#paypal-container {
-    display: none; 
-    margin-top: 20px; 
-    width: 100%; 
-    max-width: 400px; 
-    margin-inline: auto;
-    min-height: 150px;
-}
-      
-      .payment-card{
-border:1px solid #ddd;
-
-padding:24px;
-
-margin-bottom:16px;
-
-cursor:pointer;
-
-transition:.25s;
-
-background:#fff;
-
-}
-
-.payment-card:hover{
-
-border-color:#b89b63;
-
-}
-
-.payment-card.selected{
-
-border:1px solid #b89b63;
-
-}
-
-#btnFinalPago{
-
-width:100%;
-
-margin-top:25px;
-
-}
-      .checkout-step {
-    max-height: 85vh;
-    overflow-y: auto;
-    padding-bottom: 30px;
-    scrollbar-width: none; /* Oculta barra en Firefox */
-}
-.checkout-step::-webkit-scrollbar {
-    display: none; /* Oculta barra en Chrome/Safari */
-}
-
-#time-slots-container {
-    max-height: 45vh;
-    overflow-y: auto;
-    padding-right: 5px;
-    width: 100%;
-}
-    </style>
+    #time-slots-container {
+        max-height: 45vh;
+        overflow-y: auto;
+        padding-right: 5px;
+        width: 100%;
+    }
+</style>
 </head>
 <body>
 
@@ -519,7 +426,7 @@ margin-top:25px;
                 Atención Continua 7 Días de la Semana   •   Despacho mismo día hasta las 21:00 hrs   •   Retiro en Tienda   •   Flores frescas seleccionadas cada mañana   •   Cobertura Viña del Mar, Concón y Reñaca   •   Tarjeta personalizada incluida   •
             </div>
             <div class="marquee-content font-serif italic text-xl text-gold-leaf/40">
-                Atención Continua 7 Días de la Semana   •   Despacho mismo día hasta las 21:00 hrss   •   Retiro en Tienda   •   Flores frescas seleccionadas cada mañana   •   Cobertura Viña del Mar, Concón y Reñaca   •   Tarjeta personalizada incluida   •
+                Atención Continua 7 Días de la Semana   •   Despacho mismo día hasta las 21:00 hrs   •   Retiro en Tienda   •   Flores frescas seleccionadas cada mañana   •   Cobertura Viña del Mar, Concón y Reñaca   •   Tarjeta personalizada incluida   •
             </div>
         </div>
     </div>
@@ -745,14 +652,14 @@ margin-top:25px;
                 </div>
             </div>
             <div class="md:col-span-2">
-    <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Información Legal</h4>
-    <ul class="space-y-4 text-sm opacity-60">
-        <li><a href="/privacidad.html" class="hover:text-gold-leaf">Política de Privacidad</a></li>
-        <li><a href="/terminos.html" class="hover:text-gold-leaf">Términos de Servicio</a></li>
-        <li><a href="/devoluciones.html" class="hover:text-gold-leaf">Políticas de Devolución</a></li>
-        <li><a href="#vault" onclick="openVault()" class="hover:text-gold-leaf">Colecciones</a></li>
-    </ul>
-</div>
+                <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Información Legal</h4>
+                <ul class="space-y-4 text-sm opacity-60">
+                    <li><a href="/privacidad.html" class="hover:text-gold-leaf">Política de Privacidad</a></li>
+                    <li><a href="/terminos.html" class="hover:text-gold-leaf">Términos de Servicio</a></li>
+                    <li><a href="/devoluciones.html" class="hover:text-gold-leaf">Políticas de Devolución</a></li>
+                    <li><a href="#vault" onclick="openVault()" class="hover:text-gold-leaf">Colecciones</a></li>
+                </ul>
+            </div>
             <div class="md:col-span-3">
                 <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Ubicación</h4>
                 <p class="text-sm opacity-60 leading-relaxed mb-4">
@@ -760,7 +667,8 @@ margin-top:25px;
                     2520000 Viña del Mar<br>
                     Valparaíso, Chile.
                 </p>
-            <a href="https://www.google.com/maps/search/?api=1&query=La+Foresta+Flores+Av.+Borgo%C3%B1o+14580+Vi%C3%B1a+del+Mar" target="_blank" class="text-gold-leaf text-[10px] font-bold uppercase tracking-widest border-b border-gold-leaf pb-1">Ver en Google Maps</a>            </div>
+                <a href="https://www.google.com/maps/search/?api=1&query=La+Foresta+Flores+Av.+Borgo%C3%B1o+14580+Vi%C3%B1a+del+Mar" target="_blank" class="text-gold-leaf text-[10px] font-bold uppercase tracking-widest border-b border-gold-leaf pb-1">Ver en Google Maps</a>            
+            </div>
             <div class="md:col-span-3">
                 <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Atención VIP</h4>
                 <p class="text-sm opacity-60 mb-4">Lunes a Sábado: 10:00 - 20:00</p>
@@ -856,7 +764,6 @@ margin-top:25px;
                 <h3 class="font-serif text-3xl italic mb-12">Fecha de entrega</h3>
                 <div class="space-y-4 w-full">
                     <button onclick="seleccionarFecha('hoy')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Hoy</button>
-                    <button onclick="seleccionarFecha('manana')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Mañana</button>
                     <button onclick="seleccionarFecha('futuro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Fecha futura</button>
                 </div>
                 <button onclick="regresarDesdeFecha()" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
@@ -908,9 +815,9 @@ margin-top:25px;
                 </p>
                 
                 <div id="payment-selector" class="w-full flex flex-col space-y-2">
-    <button class="btn-premium w-full text-[14px]" onclick="iniciarMercadoPago()">Pago Nacional (Débito/Crédito)</button>
-    <button class="btn-premium w-full text-[14px]" onclick="iniciarPayPal()">Pago Internacional (Tarjetas USD)</button>
-</div>
+                    <button class="btn-premium w-full text-[14px]" onclick="iniciarMercadoPago()">Pago Nacional (Débito/Crédito)</button>
+                    <button class="btn-premium w-full text-[14px]" onclick="iniciarPayPal()">Pago Internacional (Tarjetas USD)</button>
+                </div>
 
                 <div id="loading-payment" style="display: none; text-align: center; margin-top: 20px;">
                     <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Procesando Pasarela...</p>
@@ -934,17 +841,12 @@ margin-top:25px;
     </div>
 
     <script>
-        // ============================================================
-        // FUNCIÓN AUXILIAR DE TRACKING — GA4
-        // Dispara eventos de conversión a Google Analytics 4
-        // ============================================================
         function trackGA4(eventName, params) {
             if (typeof gtag === 'function') {
                 gtag('event', eventName, params);
             }
         }
 
-        // --- ESTADO GLOBAL DE LA APLICACIÓN ---
         let cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
         let selectedGardenSpace = localStorage.getItem('laforesta_selectedGardenSpace') || '';
         let selectedPalette = localStorage.getItem('laforesta_selectedPalette') || '';
@@ -958,12 +860,10 @@ margin-top:25px;
         const RECARGO_EXPRESS_PRODUCTO = 1.25; 
         let currentCalendarDate = new Date();
 
-        // --- INSTANCIA MERCADO PAGO ---
         const mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', {
             locale: 'es-CL'
         });
 
-        // --- CATALOGO ---
         const catalog = [
             { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias." },
             { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.jpeg", desc: "Lilium majestuosos, rosas premium, nubes de gypso y maule aterciopelado." },
@@ -979,7 +879,6 @@ margin-top:25px;
             { id: 12, name: "Encanto Vivo", price: 37900, img: "img/RAMOS12.jpeg", desc: "Astromelias, lisianthus, gypso, gerberas, maules y el verde profundo del ruscus." }
         ];
 
-        // --- RENDER DE PRODUCTOS ---
         const grid = document.getElementById('product-grid');
         grid.innerHTML = catalog.map(product => `
             <div class="product-card group">
@@ -1003,7 +902,6 @@ margin-top:25px;
             </div>
         `).join('');
 
-        // --- SISTEMA DE GUARDADO DE PROGRESO LOCAL ---
         function guardarProgresoCheckout() {
             const progresoInputs = {
                 senderName: document.getElementById('sender-name')?.value || '',
@@ -1028,13 +926,11 @@ margin-top:25px;
         function restaurarProgresoCheckout() {
             const progreso = JSON.parse(localStorage.getItem('laforesta_checkout_inputs'));
             if (!progreso) return;
-            if (document.getElementById('sender-name')) document.getElementById('sender-name').value = progreso.senderName || '';
-            if (document.getElementById('buyer-email')) document.getElementById('buyer-email').value = progreso.buyerEmail || '';
-            if (document.getElementById('receiver-name')) document.getElementById('receiver-name').value = progreso.receiverName || '';
-            if (document.getElementById('address')) document.getElementById('address').value = progreso.address || '';
-            if (document.getElementById('pickup-name')) document.getElementById('pickup-name').value = progreso.pickupName || '';
-            if (document.getElementById('card-message')) document.getElementById('card-message').value = progreso.cardMessage || '';
-            if (document.getElementById('receiver-phone')) document.getElementById('receiver-phone').value = progreso.receiverPhone || '';
+            const fields = ['sender-name', 'buyer-email', 'receiver-name', 'address', 'pickup-name', 'card-message', 'receiver-phone'];
+            fields.forEach(field => {
+                const el = document.getElementById(field);
+                if (el) el.value = progreso[field.replace(/-([a-z])/g, (g) => g[1].toUpperCase())] || '';
+            });
             if (localStorage.getItem('laforesta_checkout_abierto') === 'true') {
                 const checkoutFlow = document.getElementById('checkout-flow');
                 if (checkoutFlow) {
@@ -1056,7 +952,6 @@ margin-top:25px;
             goToStep(2);
         }
 
-        // --- LOGICA DE FLUJO MULTI-PASO ---
         function openCheckout() {
             if(cart.length === 0) {
                 alert("Su bolsa está vacía. Añada una ramo floral primero.");
@@ -1072,7 +967,6 @@ margin-top:25px;
             const currentStepId = progreso?.currentStep || 'step-1';
             if (currentStepId === 'step-time') { renderHorariosInteligentes(); }
 
-            // ✅ GA4 — begin_checkout
             const totalCarrito = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
             trackGA4('begin_checkout', {
                 currency: 'CLP',
@@ -1162,8 +1056,7 @@ margin-top:25px;
                 goToStep('step-time');
             }
         }
-      
-        // --- SISTEMA DE CALENDARIO ---
+        
         function renderCalendar() {
             const grid = document.getElementById('calendar-grid');
             const title = document.getElementById('cal-month-title');
@@ -1172,16 +1065,20 @@ margin-top:25px;
             const month = currentCalendarDate.getMonth();
             const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
             title.innerText = `${nombresMeses[month]} ${year}`;
+            
             const minMonth = ahoraChile.getMonth();
             const minYear = ahoraChile.getFullYear();
             const maxDate = new Date(minYear, minMonth + 1, 1);
             const maxMonth = maxDate.getMonth();
             const maxYear = maxDate.getFullYear();
+            
             document.getElementById('cal-prev').style.visibility = (year === minYear && month === minMonth) ? 'hidden' : 'visible';
             document.getElementById('cal-next').style.visibility = (year === maxYear && month === maxMonth) ? 'hidden' : 'visible';
+            
             grid.innerHTML = "";
             const primerDia = new Date(year, month, 1).getDay();
             const totalDias = new Date(year, month + 1, 0).getDate();
+            
             for (let i = 0; i < primerDia; i++) { grid.innerHTML += `<div></div>`; }
             for (let d = 1; d <= totalDias; d++) {
                 const compCelda = new Date(year, month, d).setHours(0,0,0,0);
@@ -1208,7 +1105,6 @@ margin-top:25px;
             goToStep('step-time');
         }
 
-        // --- FILTRADO HORARIO ---
         function renderHorariosInteligentes() {
             const container = document.getElementById('time-slots-container');
             container.innerHTML = "";
@@ -1216,57 +1112,23 @@ margin-top:25px;
             const hora = ahoraChile.getHours();
             const minutos = ahoraChile.getMinutes();
             const tiempoDecimal = hora + (minutos / 60);
-            
             const dateStringHoy = `${ahoraChile.getFullYear()}-${String(ahoraChile.getMonth() + 1).padStart(2, '0')}-${String(ahoraChile.getDate()).padStart(2, '0')}`;
-            const mananaChile = new Date(ahoraChile);
-            mananaChile.setDate(mananaChile.getDate() + 1);
-            const dateStringManana = `${mananaChile.getFullYear()}-${String(mananaChile.getMonth() + 1).padStart(2, '0')}-${String(mananaChile.getDate()).padStart(2, '0')}`;
-            
             const esHoyReal = (selectedDate === 'hoy' || selectedDate === dateStringHoy);
-            const esMananaReal = (selectedDate === 'manana' || selectedDate === dateStringManana);
             
             let html = "", htmlNormal = "", htmlExpress = "";
-            
             if (esHoyReal) {
-                const tieneRamosComplejos = cart.some(item => item.id > 3);
-                if(tieneRamosComplejos) {
-                    container.innerHTML = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4 border">Los diseños Vault requieren 24 horas. Seleccione mañana.</p>`;
-                    return;
-                }
+                if (tiempoDecimal < 7.0) { htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`; }
+                if (tiempoDecimal < 11.0) { htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`; }
+                if (tiempoDecimal < 14.0) { htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 21:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Tarde (18:00 - 21:00)</button>`; }
+                if (selectedLogistics === 'envio' && tiempoDecimal < 19.0) { htmlExpress = generarHorasExpress(tiempoDecimal); }
                 
-                // Límite Normal: 11:00 para bloque 1, 14:00 para bloque 2.
-                if (tiempoDecimal <= 11.0) { 
-                    htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`; 
-                }
-                if (tiempoDecimal <= 14.0) { 
-                    htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 21:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Tarde (18:00 - 21:00)</button>`; 
-                }
-                
-                // Límite Express: 18:00
-                if (selectedLogistics === 'envio' && tiempoDecimal <= 18.0) { 
-                    htmlExpress = generarHorasExpress(tiempoDecimal); 
-                }
-                
-                if (htmlNormal !== "") { 
-                    html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`; 
-                }
-                if (htmlExpress !== "") { 
-                    html += `<div class="border-t border-[#c5a059]/30 pt-6 mt-2"><span class="text-[9px] font-bold uppercase tracking-widest text-[#c5a059] block mb-3 text-left">Servicio Express (1 hr)</span><div class="flex flex-col gap-2">${htmlExpress}</div></div>`; 
-                }
-                
-                if (html === "") { 
-                    html = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p><button onclick="seleccionarFecha('manana')" class="w-full btn-premium">Programar para mañana</button>`; 
-                }
+                if (htmlNormal !== "") { html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`; }
+                if (htmlExpress !== "") { html += `<div class="border-t border-[#c5a059]/30 pt-6 mt-2"><span class="text-[9px] font-bold uppercase tracking-widest text-[#c5a059] block mb-3 text-left">Servicio Express (1 hr)</span><div class="flex flex-col gap-2">${htmlExpress}</div></div>`; }
+                if (html === "") { html = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p><button onclick="seleccionarFecha('futuro')" class="w-full btn-premium mt-4">Ver fechas disponibles</button>`; }
             } else {
-                let bloqueManana = true;
-                if (esMananaReal && tiempoDecimal >= 20.0) { bloqueManana = false; }
-                
-                if (bloqueManana) { 
-                    htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`; 
-                }
+                htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`;
                 htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
                 htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 21:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Tarde (18:00 - 21:00)</button>`;
-                
                 html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
             }
             container.innerHTML = html;
@@ -1274,22 +1136,17 @@ margin-top:25px;
 
         function generarHorasExpress(tiempoDecimal) {
             let opciones = "";
-            let horaInicio = Math.max(10.0, tiempoDecimal + 1.0); // 1 hora de holgura
+            let horaInicio = Math.max(10.0, tiempoDecimal + 1.0);
             let horaBase = Math.floor(horaInicio);
             let remanente = horaInicio - horaBase;
-            
-            // Redondear a la siguiente hora o media hora
             let minutoBase = (remanente > 0 && remanente <= 0.5) ? 30 : (remanente > 0.5 ? 0 : 0);
             if (remanente > 0.5) horaBase += 1;
 
             let tiempoOpcion = horaBase + (minutoBase / 60);
-
-            // Bloques de 1 hora hasta las 20:00 (para finalizar a las 21:00)
             while (tiempoOpcion <= 20.0) {
                 let hh = Math.floor(tiempoOpcion);
                 let mm = Math.round((tiempoOpcion - hh) * 60);
                 let endHH = hh + 1;
-                
                 let formatStart = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
                 let formatEnd = `${String(endHH).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
                 
@@ -1300,7 +1157,7 @@ margin-top:25px;
         }
 
         function regresarDesdeTime() {
-            if (selectedDate === 'hoy' || selectedDate === 'manana') { goToStep('step-fecha'); }
+            if (selectedDate === 'hoy') { goToStep('step-fecha'); }
             else { goToStep('step-calendario'); }
         }
 
@@ -1322,7 +1179,6 @@ margin-top:25px;
             return totalFinal;
         }
 
-        // --- MANEJO DEL CARRITO INTERACTIVO ---
         function toggleCart() {
             const drawer = document.getElementById('atelier-bag');
             const overlay = document.getElementById('cart-overlay');
@@ -1346,7 +1202,6 @@ margin-top:25px;
             setTimeout(() => badge.classList.remove('scale-150'), 300);
             if(!document.getElementById('atelier-bag').classList.contains('open')) { toggleCart(); }
 
-            // ✅ GA4 — add_to_cart
             trackGA4('add_to_cart', {
                 currency: 'CLP',
                 value: price,
@@ -1416,13 +1271,12 @@ margin-top:25px;
             const stickyCart = document.getElementById('mobile-sticky-cart');
             if (stickyCart) {
                 document.getElementById('sticky-cart-count').innerText = itemsCount;
-                document.getElementById('sticky-cart-total').innerText = document.getElementById('cart-total').innerText;
+                document.getElementById('sticky-cart-total').innerText = totalEl.innerText;
                 if (cart.length > 0) { stickyCart.classList.remove('translate-y-full'); }
                 else { stickyCart.classList.add('translate-y-full'); }
             }
         }
 
-        // --- EFECTOS VISUALES HOME ---
         function openVault() {
             const content = document.getElementById('vault-content');
             const plus = document.getElementById('vault-plus');
@@ -1432,7 +1286,6 @@ margin-top:25px;
                 plus.style.transform = 'rotate(180deg)';
                 setTimeout(() => { document.getElementById('vault').scrollIntoView({ behavior: 'smooth' }); }, 100);
 
-                // ✅ GA4 — view_item_list
                 trackGA4('view_item_list', {
                     item_list_name: 'Colección Principal',
                     item_list_id: 'main_vault',
@@ -1469,7 +1322,6 @@ margin-top:25px;
             }
         }
 
-        // --- LÓGICA INTERACTIVA PAISAJISMO GARDEN ---
         function openGardenFlow() {
             const flow = document.getElementById('garden-flow');
             flow.classList.remove('hidden');
@@ -1515,7 +1367,6 @@ margin-top:25px;
             closeGardenFlow();
         }
 
-// --- INTEGRACIÓN BACKEND CLOUDFLARE WORKER ---
         function obtenerPayloadOrden() {
             const emisor = document.getElementById('sender-name').value;
             const correoComprador = document.getElementById('buyer-email').value.trim();
@@ -1528,7 +1379,7 @@ margin-top:25px;
                 : `Retiro en Atelier Reñaca\n• *RETIRA:* ${document.getElementById('pickup-name') ? document.getElementById('pickup-name').value : ''}`;
             
             const horario = selectedTimeSlot || 'No especificado';
-            let fechaTexto = selectedDate === 'hoy' ? 'Hoy' : (selectedDate === 'manana' ? 'Mañana' : selectedDate);
+            let fechaTexto = selectedDate === 'hoy' ? 'Hoy' : selectedDate;
             
             let baseTotalOrden = cart.reduce((acc, item) => acc + (isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price) * item.qty, 0);
             let costoEnvioReal = baseTotalOrden > 69990 ? 0 : shippingCost;
@@ -1621,7 +1472,6 @@ margin-top:25px;
             if(cart.length === 0) return alert("El atelier está vacío.");
 
             document.getElementById('payment-selector').style.display = 'none';
-            // Se elimina la línea que ocultaba el botón "volver"
             
             const paypalContainer = document.getElementById('paypal-container');
             paypalContainer.classList.remove('hidden');
@@ -1687,7 +1537,6 @@ margin-top:25px;
                     }
                 },
                 onCancel: function (data) {
-                    // Si el usuario cierra PayPal, regresan las opciones.
                     document.getElementById('paypal-container').style.display = 'none';
                     document.getElementById('payment-selector').style.display = 'flex';
                 },
@@ -1698,7 +1547,7 @@ margin-top:25px;
                 }
             }).render("#paypal-container");
         }
-        // --- TITULOS DINAMICOS (PHRASES ROTATOR) ---
+
         (function() {
             const phrases = [
                 "Luz<br><span class='not-italic text-white/90'>Orgánica</span>",
@@ -1723,15 +1572,12 @@ margin-top:25px;
             else { injectPhrase(); }
         })();
 
-        // --- DETECTOR POST-PAGO & INICIALIZACIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const paymentResult = urlParams.get('payment_result');
             const status = urlParams.get('status') || urlParams.get('collection_status');
             
             if (paymentResult === 'success' && status === 'approved') {
-
-                // ✅ GA4 — purchase (se dispara al volver desde MercadoPago con pago aprobado)
                 const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
                 const totalPagado = parseInt(localStorage.getItem('laforesta_shippingCost') || '0') +
                     cartData.reduce((a, i) => a + i.price * i.qty, 0);
@@ -1765,7 +1611,6 @@ margin-top:25px;
                 updateCartUI();
                 alert("Pago acreditado exitosamente. Recibirá su comprobante y detalles de logística vía correo electrónico.");
                 window.history.replaceState({}, document.title, window.location.pathname);
-
             } else if (paymentResult === 'failure' || paymentResult === 'pending' || status === 'rejected' || status === 'cancelled') {
                 localStorage.removeItem('pending_laforesta_order');
                 alert("El pago no fue acreditado o fue cancelado. Intente nuevamente.");
@@ -1780,7 +1625,6 @@ margin-top:25px;
             restaurarProgresoCheckout();
         });
 
-        // --- GARANTÍA LOGÍSTICA ---
         function updateCountdown() {
             const timerEl = document.getElementById('countdown-timer');
             if (!timerEl) return;
@@ -1788,7 +1632,7 @@ margin-top:25px;
             const cutoffExpress = new Date(now);
             cutoffExpress.setHours(19, 0, 0, 0);
             if (now >= cutoffExpress) {
-                timerEl.innerHTML = "<span class='text-sm tracking-wide'>Entregas por hoy cerradas. Pedidos para <strong>MAÑANA</strong>.</span>";
+                timerEl.innerHTML = "<span class='text-sm tracking-wide'>Entregas por hoy cerradas. Pedidos a partir de <strong>MAÑANA</strong>.</span>";
                 return;
             }
             const diff = cutoffExpress - now;
@@ -1801,8 +1645,6 @@ margin-top:25px;
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- SPINNER B2B PRIVILEGE ---
-        // --- SPINNER B2B PRIVILEGE ---
         function handleB2BSubmit(e) {
             e.preventDefault();
             if (document.getElementById('b2b-honey').value !== "") return;
@@ -1817,9 +1659,7 @@ margin-top:25px;
 
             fetch("https://old-brook-bf01.sebjmz.workers.dev/b2b", {
                 method: "POST",
-                headers: { 
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
                     form_type: "b2b_lead",
                     subject: "Postulación Comercial - El Salón Privado", 
