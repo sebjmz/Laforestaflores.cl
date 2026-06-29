@@ -1638,41 +1638,24 @@ function resetearPasarela() {
         });
 
         function updateCountdown() {
-    const timerEl = document.getElementById('countdown-timer');
-    if (!timerEl) return;
-
-    const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-    const h = now.getHours();
-    
-    // Configuración de cortes
-    const corteNormal = new Date(now).setHours(14, 0, 0, 0);
-    const corteExpress = new Date(now).setHours(19, 0, 0, 0);
-
-    let mensaje = "";
-    let tiempoRestante = 0;
-
-    if (now < corteNormal) {
-        // Ventana: Mañana -> Envío Normal disponible
-        tiempoRestante = corteNormal - now;
-        mensaje = "Envío Estándar disponible hasta las 14:00";
-    } else if (now < corteExpress) {
-        // Ventana: Tarde -> Solo Express disponible
-        tiempoRestante = corteExpress - now;
-        mensaje = "Envío Estándar cerrado. Solo Express (1-2hrs) hasta las 19:00";
-    } else {
-        // Ventana: Noche -> Todo cerrado
-        timerEl.innerHTML = "<span class='text-xs uppercase tracking-widest'>Atelier cerrado. Pedidos disponibles desde las 10:30 AM.</span>";
-        return;
-    }
-
-    const hrs = Math.floor((tiempoRestante / (1000 * 60 * 60)) % 24);
-    const mins = Math.floor((tiempoRestante / (1000 * 60)) % 60);
-    const secs = Math.floor((tiempoRestante / 1000) % 60);
-    const timeString = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
-    timerEl.innerHTML = `<span class="text-[9px] uppercase tracking-[0.2em] font-bold block mb-1 opacity-70">${mensaje}</span> 
-                         <span class="font-mono bg-[#c5a059] text-[#0a1f1c] px-3 py-1 rounded text-sm font-bold shadow-sm">${timeString}</span>`;
-}
+            const timerEl = document.getElementById('countdown-timer');
+            if (!timerEl) return;
+            const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
+            const cutoffExpress = new Date(now);
+            cutoffExpress.setHours(19, 0, 0, 0);
+            if (now >= cutoffExpress) {
+                timerEl.innerHTML = "<span class='text-sm tracking-wide'>Entregas por hoy cerradas. Pedidos a partir de <strong>MAÑANA</strong>.</span>";
+                return;
+            }
+            const diff = cutoffExpress - now;
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            timerEl.innerHTML = `<span class="text-sm tracking-wide">Pedidos hasta las 19:00 para envíos <strong>HOY MISMO</strong></span> <span class="ml-2 font-mono bg-[#c5a059] text-[#0a1f1c] px-2 py-1 rounded text-sm font-bold shadow-sm">${timeString}</span>`;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
 
         function handleB2BSubmit(e) {
             e.preventDefault();
