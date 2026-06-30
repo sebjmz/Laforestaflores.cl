@@ -1091,7 +1091,18 @@
         function seleccionarFecha(dia) {
             if(dia === 'futuro') {
                 const ahora = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-                currentCalendarDate = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
+                
+                // Si es el último día del mes y ya pasaron las 19:00, el mes actual no tiene días útiles.
+                // Saltamos automáticamente al mes siguiente como punto de partida.
+                const manana = new Date(ahora);
+                manana.setDate(manana.getDate() + 1);
+                
+                if (manana.getMonth() !== ahora.getMonth()) {
+                    currentCalendarDate = new Date(manana.getFullYear(), manana.getMonth(), 1);
+                } else {
+                    currentCalendarDate = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
+                }
+                
                 renderCalendar();
                 goToStep('step-calendario');
             } else {
