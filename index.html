@@ -1123,15 +1123,25 @@
             const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
             title.innerText = `${nombresMeses[month]} ${year}`;
             
-            // Límites automáticos: Mes actual y Mes siguiente
+            // LÍMITE MÍNIMO: Siempre el mes actual real del servidor
             const minMonth = ahoraChile.getMonth();
             const minYear = ahoraChile.getFullYear();
             
-            const maxDate = new Date(minYear, minMonth + 1, 1);
+            // LÍMITE MÁXIMO AUTOMÁTICO: Un mes más adelante de la vista inicial calculada
+            // Si la vista inicial saltó a Julio, el tope máximo avanzará de forma matemática a Agosto
+            const vistaInicial = new Date(ahoraChile);
+            const mananaCheck = new Date(ahoraChile);
+            mananaCheck.setDate(mananaCheck.getDate() + 1);
+            
+            if (mananaCheck.getMonth() !== ahoraChile.getMonth()) {
+                vistaInicial.setMonth(vistaInicial.getMonth() + 1);
+            }
+            
+            const maxDate = new Date(vistaInicial.getFullYear(), vistaInicial.getMonth() + 1, 1);
             const maxMonth = maxDate.getMonth();
             const maxYear = maxDate.getFullYear();
             
-            // Ocultar o mostrar botones según el límite dinámico
+            // Control dinámico de visibilidad de botones de navegación
             document.getElementById('cal-prev').style.visibility = (year === minYear && month === minMonth) ? 'hidden' : 'visible';
             document.getElementById('cal-next').style.visibility = (year === maxYear && month === maxMonth) ? 'hidden' : 'visible';
             
@@ -1147,7 +1157,6 @@
                 const hoyComparar = new Date(ahoraChile.getFullYear(), ahoraChile.getMonth(), ahoraChile.getDate());
                 hoyComparar.setHours(0,0,0,0);
                 
-                // Bloquea días pasados del mes actual
                 if (celdaFecha.getTime() <= hoyComparar.getTime()) {
                     grid.innerHTML += `<div class="py-3 text-zinc-300 font-serif text-sm cursor-not-allowed">${d}</div>`;
                 } else {
