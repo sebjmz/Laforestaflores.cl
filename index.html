@@ -392,7 +392,10 @@
                 <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="Visa" class="h-5 w-auto object-contain">
                 <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" alt="Mastercard" class="h-4 w-auto object-contain">
             </div>
-            <p class="text-[8px] text-center uppercase tracking-widest opacity-40 pb-2">Pago seguro</p>
+            <p class="text-[8px] flex items-center justify-center gap-1.5 uppercase tracking-widest opacity-40 pb-2">
+                <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+                Pago seguro
+            </p>
         </div>
     </div>
 
@@ -863,19 +866,19 @@
                     <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Procesando Pasarela...</p>
                 </div>
 
-                <div id="paypal-container" class="w-full mt-6 hidden min-h-[150px]"></div>
-
                 <div class="mt-8 flex justify-center items-center mb-4 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
                     <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
                 </div>
                 
-                <div class="flex justify-center items-center space-x-4 opacity-60 grayscale mb-12">
+                <div class="flex justify-center items-center space-x-4 opacity-60 grayscale mb-8">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" alt="Mercado Pago" class="h-5 w-auto object-contain">
                     <span class="text-xs font-light text-zinc-300">|</span>
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" alt="PayPal" class="h-4 w-auto object-contain">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="Visa" class="h-4 w-auto object-contain">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" alt="Mastercard" class="h-4 w-auto object-contain">
                 </div>
+
+                <div id="paypal-container" class="w-full mb-4 hidden min-h-[150px]"></div>
 
                 <button onclick="goToStep(5)" id="btn-volver-pago" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
@@ -1087,7 +1090,11 @@
 
         function seleccionarFecha(dia) {
             if(dia === 'futuro') {
-                currentCalendarDate = new Date();
+                const ahora = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
+                const manana = new Date(ahora);
+                manana.setDate(manana.getDate() + 1);
+                
+                currentCalendarDate = new Date(manana.getFullYear(), manana.getMonth(), 1);
                 renderCalendar();
                 goToStep('step-calendario');
             } else {
@@ -1692,7 +1699,7 @@
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            timerEl.innerHTML = `<span class="text-sm tracking-wide">Envíos Express hasta las 19:00 <strong>(1-2hrs)</strong></span> <span class="ml-2 font-mono bg-[#c5a059] text-[#0a1f1c] px-2 py-1 rounded text-sm font-bold shadow-sm">${timeString}</span>`;
+            timerEl.innerHTML = `<span class="text-sm tracking-wide">Envíos express <strong>(1-2hrs)</strong> se cierra en:</span> <span class="ml-2 font-mono bg-[#c5a059] text-[#0a1f1c] px-2 py-1 rounded text-sm font-bold shadow-sm">${timeString}</span>`;
         }
         setInterval(updateCountdown, 1000);
         updateCountdown();
