@@ -844,13 +844,28 @@
                     Seleccione su preferencia para finalizar la orden.
                 </p>
                 
-                <div id="payment-selector" class="w-full flex flex-col space-y-4">
-    <button class="btn-premium w-full text-[12px] uppercase tracking-[0.2em]" onclick="iniciarMercadoPago()">
-        Pago Nacional — Crédito / Débito
+                <div id="payment-selector" class="w-full flex flex-col items-center p-6 border border-gold-leaf/20 gap-6">
+    
+    <!-- Opción Principal -->
+    <div class="w-full flex flex-col items-center gap-2">
+        <button class="btn-premium w-full max-w-md py-4 text-[14px] sm:text-[16px] uppercase tracking-[0.2em]" onclick="iniciarMercadoPago()">
+            Pago Nacional
+        </button>
+        <span class="text-[10px] text-gold-leaf/70 tracking-[0.15em] uppercase">Tarjetas de Crédito y Débito</span>
+    </div>
+
+    <!-- Separador Visual -->
+    <div class="w-full max-w-sm flex items-center opacity-40">
+        <div class="flex-1 border-t border-gold-leaf"></div>
+        <span class="px-4 text-[9px] uppercase tracking-[0.2em] font-serif text-gold-leaf">Exterior</span>
+        <div class="flex-1 border-t border-gold-leaf"></div>
+    </div>
+
+    <!-- Opción Secundaria -->
+    <button class="text-[11px] text-gold-leaf/60 hover:text-gold-leaf uppercase tracking-[0.15em] transition-colors underline underline-offset-4" onclick="iniciarPayPal()">
+        Pago Internacional (PayPal / USD)
     </button>
-    <button class="btn-premium w-full text-[12px] uppercase tracking-[0.2em]" onclick="iniciarPayPal()">
-        Pago Internacional — PayPal / USD
-    </button>
+    
 </div>
 
                 <div id="loading-payment" style="display: none; text-align: center; margin-top: 20px;">
