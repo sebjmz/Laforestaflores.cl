@@ -1091,10 +1091,7 @@
         function seleccionarFecha(dia) {
             if(dia === 'futuro') {
                 const ahora = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-                const manana = new Date(ahora);
-                manana.setDate(manana.getDate() + 1);
-                
-                currentCalendarDate = new Date(manana.getFullYear(), manana.getMonth(), 1);
+                currentCalendarDate = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
                 renderCalendar();
                 goToStep('step-calendario');
             } else {
@@ -1115,12 +1112,15 @@
             const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
             title.innerText = `${nombresMeses[month]} ${year}`;
             
+            // Límites automáticos: Mes actual y Mes siguiente
             const minMonth = ahoraChile.getMonth();
             const minYear = ahoraChile.getFullYear();
+            
             const maxDate = new Date(minYear, minMonth + 1, 1);
             const maxMonth = maxDate.getMonth();
             const maxYear = maxDate.getFullYear();
             
+            // Ocultar o mostrar botones según el límite dinámico
             document.getElementById('cal-prev').style.visibility = (year === minYear && month === minMonth) ? 'hidden' : 'visible';
             document.getElementById('cal-next').style.visibility = (year === maxYear && month === maxMonth) ? 'hidden' : 'visible';
             
@@ -1130,9 +1130,14 @@
             
             for (let i = 0; i < primerDia; i++) { grid.innerHTML += `<div></div>`; }
             for (let d = 1; d <= totalDias; d++) {
-                const compCelda = new Date(year, month, d).setHours(0,0,0,0);
-                const compHoy = ahoraChile.setHours(0,0,0,0);
-                if (compCelda <= compHoy) {
+                const celdaFecha = new Date(year, month, d);
+                celdaFecha.setHours(0,0,0,0);
+                
+                const hoyComparar = new Date(ahoraChile.getFullYear(), ahoraChile.getMonth(), ahoraChile.getDate());
+                hoyComparar.setHours(0,0,0,0);
+                
+                // Bloquea días pasados del mes actual
+                if (celdaFecha.getTime() <= hoyComparar.getTime()) {
                     grid.innerHTML += `<div class="py-3 text-zinc-300 font-serif text-sm cursor-not-allowed">${d}</div>`;
                 } else {
                     const fechaStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
