@@ -330,7 +330,7 @@
                 <img src="img/logo-menu.png" alt="La Foresta Flores" class="h-6 md:h-8 w-auto object-contain">
             </div>
             <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap">
-                <a href="#vault" onclick="openVault()" class="hover:text-gold-leaf transition">Colección</a>
+                <a href="#vault" onclick="scrollToVault()" class="hover:text-gold-leaf transition">Colección</a>
                 <a href="#privilege" class="hover:text-gold-leaf transition">Colaboración B2B</a>
                 <a href="#garden" class="hover:text-gold-leaf transition">Garden</a>
             </div>
@@ -412,7 +412,7 @@
                 <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
             </h1>
             <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
-                <button onclick="openVault()" class="btn-premium">EXPLORAR COLECCIÓN</button>
+                <button onclick="scrollToVault()" class="btn-premium">EXPLORAR COLECCIÓN</button>
                 <a href="#privilege" class="btn-gold-outline flex items-center justify-center uppercase text-xs font-bold tracking-widest">Portal Empresas</a>
             </div>
         </div>
@@ -516,25 +516,22 @@
     
     <section id="vault" class="bg-white py-12 border-t border-zinc-100">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end py-10 gap-6 group">
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end py-10 gap-6">
                 <div>
-                    <h2 class="text-6xl md:text-8xl font-serif italic group-hover:text-gold-leaf transition-colors">Colección</h2>
+                    <h2 class="text-6xl md:text-8xl font-serif italic text-[#0a1f1c]">Colección</h2>
                     
-                    <!-- ==========================================
-                         FILTROS TIPOGRÁFICOS DE NAVEGACIÓN INTENCIONAL
-                         ========================================== -->
                     <nav aria-label="Filtros de colección" class="flex flex-wrap gap-x-6 gap-y-2 text-[11px] font-bold uppercase tracking-[0.25em] mt-6 text-zinc-400">
-                        <a href="#vault" onclick="openVault();" class="text-[#0a1f1c] border-b border-[#0a1f1c] pb-1 transition-all">Todos</a>
+                        <a href="#vault" class="text-[#0a1f1c] border-b border-[#0a1f1c] pb-1 transition-all">Todos</a>
                         <a href="/romance-aniversario.html" class="hover:text-[#c5a059] hover:border-b hover:border-[#c5a059] pb-1 transition-all">Romance</a>
                         <a href="/condolencias.html" class="hover:text-[#c5a059] hover:border-b hover:border-[#c5a059] pb-1 transition-all">Condolencias</a>
                         <a href="/celebraciones.html" class="hover:text-[#c5a059] hover:border-b hover:border-[#c5a059] pb-1 transition-all">Celebraciones</a>
                         <a href="/corporativo.html" class="hover:text-[#c5a059] hover:border-b hover:border-[#c5a059] pb-1 transition-all">Corporativo</a>
                     </nav>
                 </div>
-                <div id="vault-plus" onclick="openVault()" class="text-4xl font-light transition-transform duration-700 cursor-pointer hidden md:block">+</div>
             </div>
 
-            <div id="vault-content" class="expandable-section">     
+            <div id="vault-content" class="pt-6">     
                 
                 <div class="bg-zinc-50 border border-zinc-200 p-4 text-center mb-12 flex flex-col items-center justify-center">
                     <p class="text-[10px] uppercase tracking-widest font-bold text-[#0a1f1c] flex items-center justify-center gap-3">
@@ -695,7 +692,7 @@
                     <li><a href="/privacidad.html" class="hover:text-gold-leaf">Política de Privacidad</a></li>
                     <li><a href="/terminos.html" class="hover:text-gold-leaf">Términos de Servicio</a></li>
                     <li><a href="/devoluciones.html" class="hover:text-gold-leaf">Políticas de Devolución</a></li>
-                    <li><a href="#vault" onclick="openVault()" class="hover:text-gold-leaf">Colecciones</a></li>
+                    <li><a href="#vault" onclick="scrollToVault()" class="hover:text-gold-leaf">Colecciones</a></li>
                 </ul>
             </div>
             <div class="md:col-span-3">
@@ -1389,40 +1386,17 @@ grid.innerHTML = catalog.map(product => `
             }
         }
 
-        function openVault() {
-    const vaultContent = document.getElementById('vault-content');
-    const plus = document.getElementById('vault-plus');
-    
-    if (vaultContent) {
-        const isActive = vaultContent.classList.contains('active');
+        function scrollToVault() {
+    const vaultSection = document.getElementById('vault');
+    if (vaultSection) {
+        const headerOffset = window.innerWidth >= 1024 ? 90 : 70; // Descuento del menú superior fijo
+        const elementPosition = vaultSection.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - headerOffset;
         
-        if (!isActive) {
-            // Abrimos la sección al instante
-            vaultContent.classList.add('active');
-            if (plus) {
-                plus.innerText = '-';
-                plus.style.transform = 'rotate(180deg)';
-            }
-            
-            // Teletransportación inmediata al inicio de la colección
-            const vaultSection = document.getElementById('vault');
-            if (vaultSection) {
-                const headerOffset = window.innerWidth >= 1024 ? 90 : 70; // Descuento del menú fijo
-                const elementPosition = vaultSection.getBoundingClientRect().top + window.scrollY;
-                const offsetPosition = elementPosition - headerOffset;
-                
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'auto' // 'auto' elimina la animación. Salta de golpe.
-                });
-            }
-        } else {
-            vaultContent.classList.remove('active');
-            if (plus) {
-                plus.innerText = '+';
-                plus.style.transform = 'rotate(0deg)';
-            }
-        }
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'auto' // Teletransportación seca e instantánea
+        });
     }
 }
 
@@ -1811,28 +1785,19 @@ grid.innerHTML = catalog.map(product => `
             });
         }
     </script>
-   <script>
-// Teletransportación Fricción Cero al retornar de productos
+  <script>
+// Teletransportación Balística Fricción Cero (Grilla Fija Estructurada)
 window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
-    const vaultContent = document.getElementById('vault-content');
-    const plus = document.getElementById('vault-plus');
     
+    // 1. Abre el carrito lateral si viene de agregar un producto
     if (params.get('action') === 'open_cart') {
         if (typeof toggleCart === 'function') { toggleCart(); }
         window.history.replaceState({}, document.title, window.location.pathname);
     }
     
+    // 2. Clava la pantalla en la grilla al volver desde un ramo
     if (params.get('action') === 'open_vault' || window.location.hash === '#vault') {
-        if (vaultContent) {
-            vaultContent.classList.add('active');
-            if (plus) {
-                plus.innerText = '-';
-                plus.style.transform = 'rotate(180deg)';
-            }
-        }
-        
-        // Posicionamiento balístico: el usuario no ve movimiento, la página ya aparece ahí.
         const vaultSection = document.getElementById('vault');
         if (vaultSection) {
             const headerOffset = window.innerWidth >= 1024 ? 90 : 70;
