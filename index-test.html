@@ -512,36 +512,42 @@
     <section id="vault" class="bg-white py-12 border-t border-zinc-100">
         <div class="max-w-7xl mx-auto px-6">
             
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end py-10 gap-6">
-                <div>
-                    <h2 class="text-6xl md:text-8xl font-serif italic text-[#0a1f1c]">Colección</h2>
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-10 pb-8 border-b border-[#0a1f1c]/5 mb-10">
+                
+                <div class="w-full md:w-auto overflow-hidden">
+                    <h2 class="text-6xl md:text-8xl font-serif italic text-[#0a1f1c] mb-6">Colección</h2>
                     
-                    <nav aria-label="Filtros de colección" class="flex flex-nowrap md:flex-wrap overflow-x-auto gap-x-4 md:gap-x-6 gap-y-2 text-[9px] md:text-[11px] font-bold uppercase tracking-[0.15em] md:tracking-[0.25em] mt-6 text-zinc-400 pb-2 hide-scroll">
-    <a href="#vault" class="text-[#0a1f1c] border-b border-[#0a1f1c] pb-1 transition-all whitespace-nowrap">Todos</a>
-    <a href="/romance-aniversario.html" class="hover:text-[#c5a059] hover:border-b hover:border-[#c5a059] pb-1 transition-all whitespace-nowrap">Romance</a>
-    <a href="/condolencias.html" class="hover:text-[#c5a059] hover:border-b hover:border-[#c5a059] pb-1 transition-all whitespace-nowrap">Condolencias</a>
-    <a href="/celebraciones.html" class="hover:text-[#c5a059] hover:border-b hover:border-[#c5a059] pb-1 transition-all whitespace-nowrap">Celebraciones</a>
-    <a href="/corporativo.html" class="hover:text-[#c5a059] hover:border-b hover:border-[#c5a059] pb-1 transition-all whitespace-nowrap">Corporativo</a>
-</nav>
+                    <style>
+                        .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+                        .hide-scroll::-webkit-scrollbar { display: none; }
+                    </style>
+                    <div class="w-full overflow-x-auto pb-2 hide-scroll">
+                        <nav aria-label="Filtros de colección" class="flex items-center space-x-6 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 whitespace-nowrap min-w-max">
+                            <a href="#vault" class="text-[#0a1f1c] border-b-2 border-[#0a1f1c] pb-1 transition-all">Todos</a>
+                            <a href="/romance-aniversario.html" class="hover:text-[#c5a059] transition-all pb-1">Romance</a>
+                            <a href="/condolencias.html" class="hover:text-[#c5a059] transition-all pb-1">Condolencias</a>
+                            <a href="/celebraciones.html" class="hover:text-[#c5a059] transition-all pb-1">Celebraciones</a>
+                            <a href="/corporativo.html" class="hover:text-[#c5a059] transition-all pb-1">Corporativo</a>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="bg-[#fcfaf7] border border-[#0a1f1c]/10 px-4 py-2.5 rounded-full inline-flex items-center gap-3 shadow-sm self-start md:self-auto shrink-0 mt-2 md:mt-0">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span id="countdown-timer" class="text-[9px] uppercase tracking-widest font-bold text-[#0a1f1c] flex items-center gap-1.5">
+                        Calculando garantía...
+                    </span>
                 </div>
             </div>
 
-           <div id="vault-content" class="pt-6">     
-    <div class="bg-zinc-50 border border-zinc-200 py-2 px-4 text-center mb-6 flex flex-col items-center justify-center">
-        <p class="text-[10px] md:text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c] flex items-center justify-center gap-3">
-            <span class="relative flex h-2 w-2 md:h-2.5 md:w-2.5">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 md:h-2.5 md:w-2.5 bg-emerald-500"></span>
-            </span>
-            <span id="countdown-timer">Calculando garantía de entrega...</span>
-        </p>
-    </div>
-
-    <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 gap-x-3 md:gap-x-8 gap-y-10 md:gap-y-20 pb-20"></div>
-</div>
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-12 md:gap-y-16 pb-20">
+                </div>
+            
         </div>
     </section>
-
     <section id="privilege" class="b2b-portal py-32 min-h-screen flex items-center border-b border-[#c5a059]/20">
         <div class="max-w-7xl mx-auto px-6 w-full">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
@@ -972,28 +978,32 @@
                 : '';
 
             return `
-<div class="product-card group">
-    <a href="${product.url || '#'}" class="block">
-        <div class="img-zoom-container aspect-square mb-3 md:mb-6 relative bg-zinc-100">
-            <img src="${product.img}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" alt="${product.name}" loading="lazy">
-            ${badgeHTML}
-        </div>
-    </a>
-    <div class="flex flex-col md:flex-row justify-between items-start mb-3 md:mb-4 gap-1 md:gap-0">
-        <div class="pr-0 md:pr-2">
-            <a href="${product.url || '#'}" class="hover:text-[#c5a059] transition-colors">
-                <h3 class="font-serif text-base md:text-2xl italic leading-tight">${product.name}</h3>
-            </a>
-            <p class="text-[8px] md:text-[10px] uppercase tracking-widest opacity-50 mt-1 line-clamp-2 md:line-clamp-none"><span class="text-[#c5a059] mr-1">★</span><span class="hidden md:inline text-[#c5a059] mr-1">★★★★</span> ${product.desc}</p>
-        </div>
-        <span class="font-serif text-sm md:text-xl text-[#0a1f1c] mt-0.5 md:mt-0">$${product.price.toLocaleString()}</span>
-    </div>
-    <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
-            class="w-full py-3 md:py-4 border border-[#0a1f1c] text-[#0a1f1c] text-[8px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors duration-300">
-        Añadir al Atelier
-    </button>
-</div>
-`;
+            <div class="product-card group flex flex-col h-full">
+                
+                <a href="${product.url || '#'}" class="block">
+                    <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center">
+                        <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
+                        <img src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" loading="lazy">
+                        ${badgeHTML}
+                    </div>
+                </a>
+
+                <div class="flex flex-col flex-grow mb-3 md:mb-4">
+                    <a href="${product.url || '#'}" class="hover:text-[#c5a059] transition-colors">
+                        <h3 class="font-serif text-sm md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${product.name}</h3>
+                    </a>
+                    <p class="text-[8px] md:text-[10px] uppercase tracking-widest opacity-50 mt-1 line-clamp-2"><span class="text-[#c5a059] mr-1">★★★★★</span> ${product.desc}</p>
+                </div>
+                
+                <div class="mt-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                    <span class="font-serif text-base md:text-xl text-[#0a1f1c]">$${product.price.toLocaleString()}</span>
+                    <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
+                            class="w-full md:w-auto px-4 py-3 border border-[#0a1f1c] text-[#0a1f1c] text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors duration-300 text-center">
+                        Añadir
+                    </button>
+                </div>
+            </div>
+            `;
         }).join('');
 
         function guardarProgresoCheckout() {
@@ -1815,8 +1825,7 @@ function updateCartUI() {
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            timerEl.innerHTML = `<span class="text-sm tracking-wide">Envíos express <strong>(1-2hrs)</strong> se cierran en:</span> <span class="ml-2 font-mono bg-[#c5a059] text-[#0a1f1c] px-2 py-1 rounded text-sm font-bold shadow-sm">${timeString}</span>`;
-        }
+            timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Express (1-2hrs) cierra en:</span><span class="opacity-60 md:hidden">Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;        }
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
