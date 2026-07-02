@@ -1391,49 +1391,43 @@ grid.innerHTML = catalog.map(product => `
         }
 
         function openVault() {
-            const content = document.getElementById('vault-content');
-            const plus = document.getElementById('vault-plus');
-            content.classList.toggle('active');
-            if(content.classList.contains('active')) {
+    const vaultContent = document.getElementById('vault-content');
+    const plus = document.getElementById('vault-plus');
+    const headerOffset = window.innerWidth >= 768 ? 96 : 72; // Calcula la altura exacta del menú fijo en PC vs Móvil
+    
+    if (vaultContent) {
+        const isActive = vaultContent.classList.contains('active');
+        
+        if (!isActive) {
+            vaultContent.classList.add('active');
+            if (plus) {
                 plus.innerText = '-';
                 plus.style.transform = 'rotate(180deg)';
-                setTimeout(() => { document.getElementById('vault').scrollIntoView({ behavior: 'smooth' }); }, 100);
-
-                trackGA4('view_item_list', {
-                    item_list_name: 'Colección Principal',
-                    item_list_id: 'main_vault',
-                    items: catalog.map(p => ({
-                        item_id: String(p.id),
-                        item_name: p.name,
-                        price: p.price,
-                        item_category: 'Ramos Florales'
-                    }))
-                });
-            } else {
+            }
+            
+            // Retraso controlado de 150ms: permite que comience la transición de altura
+            // para que el cálculo de posición en PC sea matemáticamente perfecto
+            setTimeout(() => {
+                const vaultElement = document.getElementById('vault');
+                if (vaultElement) {
+                    const elementPosition = vaultElement.getBoundingClientRect().top + window.scrollY;
+                    const offsetPosition = elementPosition - headerOffset;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 150);
+        } else {
+            vaultContent.classList.remove('active');
+            if (plus) {
                 plus.innerText = '+';
                 plus.style.transform = 'rotate(0deg)';
             }
         }
-
-        window.onscroll = function() {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 100) { nav.classList.add('py-3'); nav.classList.remove('py-5'); }
-            else { nav.classList.add('py-5'); nav.classList.remove('py-3'); }
-        };
-
-        function toggleGardenImage() {
-            const img1 = document.getElementById('garden-img-1');
-            const img2 = document.getElementById('garden-img-2');
-            if (img1 && img2) {
-                if (img1.classList.contains('opacity-100')) {
-                    img1.classList.remove('opacity-100'); img1.classList.add('opacity-0');
-                    img2.classList.remove('opacity-0'); img2.classList.add('opacity-100');
-                } else {
-                    img2.classList.remove('opacity-100'); img2.classList.add('opacity-0');
-                    img1.classList.remove('opacity-0'); img1.classList.add('opacity-100');
-                }
-            }
-        }
+    }
+}
 
         function openGardenFlow() {
             const flow = document.getElementById('garden-flow');
