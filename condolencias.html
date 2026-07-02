@@ -70,10 +70,9 @@
             overflow: hidden;
             background-color: #f4f4f5;
         }
-        /* Esta línea mata el gris para siempre */
+        /* Zoom limpio sin tocar los colores */
         .img-zoom-container img {
             transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-            filter: grayscale(0%) !important; 
         }
         .product-card:hover .img-zoom-container img {
             transform: scale(1.05);
@@ -101,9 +100,9 @@
         </p>
     </header>
 
-    <!-- Grilla Curada (Solo productos de Condolencias) -->
+    <!-- Grilla Curada Alta Densidad (2 celular, 3 tablet, 4 pc) -->
     <main class="pb-32 px-6 md:px-12 max-w-7xl mx-auto">
-        <div id="category-grid" class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-20">
+        <div id="category-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-12 md:gap-y-16">
             <!-- Los ramos se inyectarán aquí mediante JS -->
         </div>
     </main>
@@ -114,36 +113,45 @@
     </footer>
 
     <script>
-        // Catálogo filtrado solo para Condolencias (Ramos 1 y 8)
+        // Catálogo filtrado solo para Condolencias (Ramos 1 y 8 + El espacio para los clones de la competencia)
         const categoryCatalog = [
             { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias.", url: "amor-delicado.html" },
             { id: 8, name: "Suave Amanecer", price: 37900, img: "img/RAMOS08.jpeg", desc: "Lisianthus de colección, rosas finas, maules y una suave neblina de gypso.", url: "suave-amanecer.html" }
+            // AQUÍ AGREGARÁS LOS 15 CLONES DE ENCACTUS, EJ:
+            // { id: 201, name: "Corona Memorial Premium", price: 95000, img: "img/LF-condolencias-corona.jpg", desc: "Corona tejida en rosas blancas.", url: "corona-memorial.html" }
         ];
 
         const grid = document.getElementById('category-grid');
         grid.innerHTML = categoryCatalog.map(product => `
-            <div class="product-card group">
+            <div class="product-card group flex flex-col">
                 <a href="${product.url}" class="block">
-                    <div class="overflow-hidden aspect-square mb-6 relative bg-zinc-100">
-                        <img src="${product.img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-transform duration-1000 group-hover:scale-105" alt="${product.name}" loading="lazy">
-                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest">
-                            Colección Sobria
+                    <!-- img-zoom-container maneja el zoom limpio -->
+                    <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-[#fcfaf7] border border-zinc-200 flex items-center justify-center">
+                        <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
+                        
+                        <!-- SE BORRÓ EL GRAYSCALE DE TAILWIND (Color al 100%) -->
+                        <img src="${product.img}" onerror="this.style.opacity='0'" class="w-full h-full object-cover relative z-10" alt="${product.name}" loading="lazy">
+                        
+                        <div class="absolute top-2 right-2 md:top-4 md:right-4 bg-white/90 backdrop-blur-md px-2 py-1 text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm z-20">
+                            Condolencias
                         </div>
                     </div>
                 </a>
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <a href="${product.url}" class="hover:text-[#c5a059] transition-colors">
-                            <h3 class="font-serif text-2xl italic text-[#0a1f1c]">${product.name}</h3>
-                        </a>
-                        <p class="text-[10px] uppercase tracking-widest opacity-60 mt-2 leading-relaxed max-w-[200px]">${product.desc}</p>
-                    </div>
-                    <span class="font-serif text-xl text-[#0a1f1c]">$${product.price.toLocaleString()}</span>
+                
+                <div class="flex flex-col flex-grow mb-4">
+                    <a href="${product.url}" class="hover:text-[#c5a059] transition-colors">
+                        <h3 class="font-serif text-sm md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${product.name}</h3>
+                    </a>
+                    <p class="text-[8px] md:text-[10px] uppercase tracking-widest opacity-60 mt-1 line-clamp-2">${product.desc}</p>
                 </div>
-                <button onclick="agregarYVolver(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
-                        class="w-full py-4 border border-[#0a1f1c] text-[#0a1f1c] text-[10px] font-bold uppercase tracking-widest hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors duration-300">
-                    Añadir al Atelier
-                </button>
+                
+                <div class="mt-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                    <span class="font-serif text-base md:text-xl text-[#0a1f1c]">$${product.price.toLocaleString()}</span>
+                    <button onclick="agregarYVolver(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
+                            class="w-full md:w-auto px-4 py-3 border border-[#0a1f1c] text-[#0a1f1c] text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors duration-300 text-center">
+                        Añadir
+                    </button>
+                </div>
             </div>
         `).join('');
 
