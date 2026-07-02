@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- ==========================================
-         SEO DE DOMINACIÓN (Categoría Específica)
-         ========================================== -->
+    <!-- SEO DE DOMINACIÓN (Categoría Específica) -->
     <title>Flores de Condolencia y Arreglos Fúnebres en Viña del Mar | La Foresta</title>
     <meta name="description" content="Arreglos florales de condolencia, coronas y pedestales fúnebres con despacho urgente en Viña del Mar, Reñaca y Concón. Diseños sobrios y respetuosos.">
     <meta name="keywords" content="flores de condolencia, arreglos fúnebres, coronas de flores, despacho urgente, viña del mar, reñaca, concón, florería fúnebre">
@@ -70,9 +68,9 @@
             overflow: hidden;
             background-color: #f4f4f5;
         }
-        /* Zoom limpio sin tocar los colores */
         .img-zoom-container img {
             transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: grayscale(0%) !important;
         }
         .product-card:hover .img-zoom-container img {
             transform: scale(1.05);
@@ -91,16 +89,30 @@
         </div>
     </nav>
 
-    <!-- Encabezado de Categoría -->
-    <header class="pt-40 pb-16 px-6 max-w-4xl mx-auto text-center">
-        <span class="text-[#c5a059] text-[10px] font-bold uppercase tracking-[0.4em] mb-6 block">Memorial & Respeto</span>
-        <h1 class="text-5xl md:text-7xl font-serif italic mb-8 leading-tight text-[#0a1f1c]">Acompañamos <br>con respeto y paz.</h1>
-        <p class="text-lg text-zinc-600 font-light leading-relaxed max-w-2xl mx-auto">
-            Diseños florales sobrios y etéreos, curados en tonos blancos y pasteles para transmitir calma. Logística prioritaria para llegar a tiempo donde más se necesita.
-        </p>
+    <!-- Encabezado de Categoría Ultra Compacto -->
+    <header class="pt-32 pb-4 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-[#0a1f1c]/5 pb-6 mb-8">
+            <div class="max-w-2xl">
+                <span class="text-[#c5a059] text-[9px] font-bold uppercase tracking-[0.4em] mb-2 block">Memorial & Respeto</span>
+                <h1 class="text-3xl md:text-5xl font-serif italic text-[#0a1f1c] leading-tight mb-3">Acompañamos con respeto y paz.</h1>
+                <p class="text-xs md:text-sm text-zinc-500 font-light leading-relaxed">
+                    Diseños florales sobrios y etéreos en tonos blancos y pasteles. Logística prioritaria inmediata para asegurar entrega oportuna en momentos complejos.
+                </p>
+            </div>
+            
+            <!-- Barra de Garantías VIP -->
+            <div class="flex flex-wrap gap-2 text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] lg:pb-1">
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-200/60 px-3 py-1.5 rounded-full shadow-sm">
+                    <span class="text-[#c5a059]">✓</span> Despacho Prioritario Express
+                </div>
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-200/60 px-3 py-1.5 rounded-full shadow-sm">
+                    <span class="text-[#c5a059]">✓</span> Confirmación de Entrega
+                </div>
+            </div>
+        </div>
     </header>
 
-    <!-- Grilla Curada Alta Densidad (2 celular, 3 tablet, 4 pc) -->
+    <!-- Grilla Curada Alta Densidad -->
     <main class="pb-32 px-6 md:px-12 max-w-7xl mx-auto">
         <div id="category-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-12 md:gap-y-16">
             <!-- Los ramos se inyectarán aquí mediante JS -->
@@ -113,24 +125,18 @@
     </footer>
 
     <script>
-        // Catálogo filtrado solo para Condolencias (Ramos 1 y 8 + El espacio para los clones de la competencia)
         const categoryCatalog = [
             { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias.", url: "amor-delicado.html" },
             { id: 8, name: "Suave Amanecer", price: 37900, img: "img/RAMOS08.jpeg", desc: "Lisianthus de colección, rosas finas, maules y una suave neblina de gypso.", url: "suave-amanecer.html" }
-            // AQUÍ AGREGARÁS LOS 15 CLONES DE ENCACTUS, EJ:
-            // { id: 201, name: "Corona Memorial Premium", price: 95000, img: "img/LF-condolencias-corona.jpg", desc: "Corona tejida en rosas blancas.", url: "corona-memorial.html" }
         ];
 
         const grid = document.getElementById('category-grid');
         grid.innerHTML = categoryCatalog.map(product => `
-            <div class="product-card group flex flex-col">
+            <div class="product-card group flex flex-col h-full">
                 <a href="${product.url}" class="block">
-                    <!-- img-zoom-container maneja el zoom limpio -->
-                    <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-[#fcfaf7] border border-zinc-200 flex items-center justify-center">
+                    <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center">
                         <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
-                        
-                        <!-- SE BORRÓ EL GRAYSCALE DE TAILWIND (Color al 100%) -->
-                        <img src="${product.img}" onerror="this.style.opacity='0'" class="w-full h-full object-cover relative z-10" alt="${product.name}" loading="lazy">
+                        <img src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" loading="lazy">
                         
                         <div class="absolute top-2 right-2 md:top-4 md:right-4 bg-white/90 backdrop-blur-md px-2 py-1 text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm z-20">
                             Condolencias
@@ -138,7 +144,7 @@
                     </div>
                 </a>
                 
-                <div class="flex flex-col flex-grow mb-4">
+                <div class="flex flex-col flex-grow mb-3 md:mb-4">
                     <a href="${product.url}" class="hover:text-[#c5a059] transition-colors">
                         <h3 class="font-serif text-sm md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${product.name}</h3>
                     </a>
@@ -166,8 +172,6 @@
             }
             
             localStorage.setItem('laforesta_cart', JSON.stringify(cart));
-            
-            // Retorno directo al laboratorio de pruebas abriendo la bolsa
             window.location.href = '/index-test.html?action=open_cart';
         }
     </script>
