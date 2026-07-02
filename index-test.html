@@ -1392,7 +1392,7 @@ function updateCartUI() {
                 </div>
             `).join('');
 
-            // 2. Inyectamos el Slider de Upsells
+            // 2. Inyectamos el Slider de Upsells (Corregido para Fricción Cero)
             const inCartIds = cart.map(item => item.id);
             const availableUpsells = upsellsCatalog.filter(u => !inCartIds.includes(u.id));
 
@@ -1404,17 +1404,19 @@ function updateCartUI() {
                             .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
                             .hide-scroll::-webkit-scrollbar { display: none; }
                         </style>
-                        <div id="upsell-slider" class="flex overflow-x-auto space-x-4 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
+                        <div id="upsell-slider" class="flex overflow-x-auto space-x-5 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
                             ${availableUpsells.map(u => `
-                                <div class="min-w-[110px] max-w-[110px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
-                                    <div class="w-full aspect-square bg-[#fcfaf7] border border-[#0a1f1c]/5 mb-3 flex items-center justify-center relative overflow-hidden transition-colors group-hover:bg-[#c5a059]/10">
-                                        <span class="font-serif italic text-[#c5a059] text-3xl opacity-50 group-hover:scale-110 transition-transform">+</span>
-                                        <img src="${u.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply relative z-10 transition-transform duration-700 group-hover:scale-110" alt="${u.name}">
+                                <div class="w-[125px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
+                                    <div class="w-full aspect-square bg-[#fcfaf7] border border-[#0a1f1c]/5 mb-3 flex items-center justify-center relative overflow-hidden transition-colors group-hover:bg-[#c5a059]/10 p-3">
+                                        <span class="font-serif italic text-[#c5a059] text-3xl opacity-50 group-hover:scale-110 transition-transform absolute">+</span>
+                                        <img src="${u.img}" onerror="this.style.opacity='0'" class="w-full h-full object-contain mix-blend-multiply relative z-10 transition-transform duration-700 group-hover:scale-110" alt="${u.name}">
                                     </div>
-                                    <h6 class="text-[9px] uppercase tracking-widest font-bold leading-tight mb-1 truncate">${u.name}</h6>
+                                    <h6 class="text-[9px] uppercase tracking-widest font-bold leading-relaxed mb-1">${u.name}</h6>
                                     <p class="text-[#c5a059] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
                                 </div>
                             `).join('')}
+                            <!-- Espaciador final para que el último elemento no choque con el borde derecho -->
+                            <div class="w-2 flex-shrink-0"></div>
                         </div>
                     </div>
                 `;
@@ -1422,13 +1424,13 @@ function updateCartUI() {
 
             container.innerHTML = html;
 
-            // --- MAGIA PARA EL MOUSE EN COMPUTADOR (Fricción Cero) ---
+            // --- MAGIA PARA EL MOUSE EN COMPUTADOR ---
             const upsellSlider = document.getElementById('upsell-slider');
             if (upsellSlider) {
                 upsellSlider.addEventListener('wheel', (evt) => {
                     if (evt.deltaY !== 0) {
-                        evt.preventDefault(); // Evita que la página baje
-                        upsellSlider.scrollLeft += evt.deltaY; // Mueve el listado hacia los lados
+                        evt.preventDefault();
+                        upsellSlider.scrollLeft += evt.deltaY;
                     }
                 });
             }
