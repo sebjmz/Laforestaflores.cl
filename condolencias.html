@@ -60,6 +60,24 @@
             -moz-osx-font-smoothing: grayscale;
         }
         .font-serif { font-family: 'Playfair Display', serif; }
+        .product-card {
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+        }
+        .img-zoom-container {
+            overflow: hidden;
+            background-color: #f4f4f5;
+        }
+        /* Esta línea mata el gris para siempre */
+        .img-zoom-container img {
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: grayscale(0%) !important; 
+        }
+        .product-card:hover .img-zoom-container img {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
