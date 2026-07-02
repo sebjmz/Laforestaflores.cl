@@ -1811,12 +1811,43 @@ grid.innerHTML = catalog.map(product => `
         }
     </script>
     <script>
-// Abrir carrito automático si el cliente viene de la URL de un producto
+// Manejador inteligente y blindado para aperturas desde páginas de producto
 window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
+    const vaultContent = document.getElementById('vault-content');
+    const plus = document.getElementById('vault-plus');
+    
+    // 1. Si el cliente viene de comprar y quiere el carrito abierto
     if (params.get('action') === 'open_cart') {
-        toggleCart();
+        if (typeof toggleCart === 'function') {
+            toggleCart();
+        }
         window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
+    // 2. Si el cliente presionó "Volver a Colección" (Forzar apertura limpia)
+    if (params.get('action') === 'open_vault' || window.location.hash === '#vault') {
+        
+        if (vaultContent && !vaultContent.classList.contains('active')) {
+            // En vez de usar openVault() que hace toggle, la forzamos a abrirse directamente
+            vaultContent.classList.add('active');
+            if (plus) {
+                plus.innerText = '-';
+                plus.style.transform = 'rotate(180deg)';
+            }
+        }
+        
+        // Hacemos un pequeño delay de milisegundos para que el scroll ocurra 
+        // DESPUÉS de que la página se haya renderizado, asegurando que caiga en el lugar exacto
+        setTimeout(() => {
+            const vaultSection = document.getElementById('vault');
+            if (vaultSection) {
+                vaultSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 150);
+
+        // Limpiamos la URL de forma elegante
+        window.history.replaceState({}, document.title, window.location.pathname + '#vault');
     }
 });
 </script>
