@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- SEO NIVEL DIOS -->
     <title>Amor Delicado | Ramo de Lisianthus y Lilium en Reñaca | La Foresta Flores</title>
     <meta name="description" content="Arreglo floral Amor Delicado. Lisianthus de seda, lilium aromáticos, limonium y astromelias. Despacho express el mismo día en Viña del Mar y Concón.">
     <meta name="keywords" content="flores a domicilio, reñaca, viña del mar, concón, lisianthus, lilium, arreglo floral premium, florería exclusiva, despacho de flores express">
     <link rel="canonical" href="https://laforestaflores.cl/amor-delicado.html">
     <link rel="icon" type="image/png" href="/img/favicon.png">
 
+    <!-- OPTIMIZACIÓN SAFARI / IOS -->
     <meta name="theme-color" content="#fcfaf7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Amor Delicado">
 
+    <!-- OPEN GRAPH -->
     <meta property="og:site_name" content="La Foresta Flores">
     <meta property="og:title" content="Amor Delicado | La Foresta Flores">
     <meta property="og:description" content="Lisianthus de seda, lilium aromáticos, limonium y astromelias. Despacho el mismo día en Viña del Mar y Concón.">
@@ -24,11 +27,13 @@
     <meta property="product:price:amount" content="28900">
     <meta property="product:price:currency" content="CLP">
 
+    <!-- TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Amor Delicado | La Foresta Flores">
     <meta name="twitter:description" content="Diseño floral premium con despacho express en la V Región.">
     <meta name="twitter:image" content="https://laforestaflores.cl/img/RAMOS01.jpeg">
 
+    <!-- DATOS ESTRUCTURADOS MULTI-CAPA -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -87,6 +92,7 @@
     }
     </script>
 
+    <!-- Tailwind y Fuentes -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
     
@@ -118,22 +124,27 @@
 </head>
 <body>
 
+    <!-- Navegación Simplificada -->
     <nav class="fixed w-full z-50 bg-[#fcfaf7]/95 backdrop-blur-lg px-6 md:px-12 py-5 flex justify-between items-center border-b border-[#0a1f1c]/5 transition-all duration-300">
         <a href="/index-test.html" class="cursor-pointer" aria-label="Volver al inicio">
             <img src="img/logo-menu.png" alt="La Foresta Flores Logo" class="h-6 md:h-8 w-auto object-contain">
         </a>
         <div class="flex items-center space-x-8">
-            <a href="/index-test.html" class="text-[10px] font-bold uppercase tracking-widest hover:text-[#c5a059] transition-colors">Volver a Colección</a>
+            <!-- AQUÍ ESTÁ LA NUEVA RUTA PARA ABRIR LA COLECCIÓN -->
+            <a href="/index-test.html?action=open_vault#vault" class="text-[10px] font-bold uppercase tracking-widest hover:text-[#c5a059] transition-colors">Volver a Colección</a>
         </div>
     </nav>
 
+    <!-- Contenido Principal -->
     <main class="pt-32 pb-24 px-6 md:px-12 max-w-7xl mx-auto min-h-screen flex items-center">
         
+        <!-- Breadcrumbs Visuales -->
         <nav aria-label="Breadcrumb" class="absolute top-24 left-6 md:left-12 text-[9px] uppercase tracking-widest opacity-60 mb-8 z-10">
             <ol class="flex space-x-2">
                 <li><a href="/index-test.html" class="hover:text-[#c5a059] transition-colors">Inicio</a></li>
                 <li><span class="mx-1">/</span></li>
-                <li><a href="/index-test.html#vault" class="hover:text-[#c5a059] transition-colors">Colección</a></li>
+                <!-- AQUÍ ESTÁ LA OTRA RUTA HACIA LA COLECCIÓN ABIERTA -->
+                <li><a href="/index-test.html?action=open_vault#vault" class="hover:text-[#c5a059] transition-colors">Colección</a></li>
                 <li><span class="mx-1">/</span></li>
                 <li class="text-[#0a1f1c] font-bold" aria-current="page">Amor Delicado</li>
             </ol>
@@ -205,7 +216,7 @@
             
             localStorage.setItem('laforesta_cart', JSON.stringify(cart));
             
-            // REDIRECCIÓN HACIA TU INDEX DE PRUEBA
+            // REDIRECCIÓN PARA ABRIR CARRITO
             window.location.href = '/index-test.html?action=open_cart';
         }
     </script>
