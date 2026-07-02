@@ -70,10 +70,9 @@
             overflow: hidden;
             background-color: #f4f4f5;
         }
-        /* Garantizamos que el color se mantenga radiante */
         .img-zoom-container img {
             transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-            filter: grayscale(0%) !important;
+            filter: grayscale(0%) !important; 
         }
         .product-card:hover .img-zoom-container img {
             transform: scale(1.05);
@@ -92,13 +91,27 @@
         </div>
     </nav>
 
-    <!-- Encabezado de Categoría -->
-    <header class="pt-40 pb-16 px-6 max-w-4xl mx-auto text-center">
-        <span class="text-[#c5a059] text-[10px] font-bold uppercase tracking-[0.4em] mb-6 block">Amor & Alta Costura Botánica</span>
-        <h1 class="text-5xl md:text-7xl font-serif italic mb-8 leading-tight text-[#0a1f1c]">Declaraciones <br>absolutas de afecto.</h1>
-        <p class="text-lg text-zinc-600 font-light leading-relaxed max-w-2xl mx-auto">
-            Rosas de exportación seleccionadas a mano y tulipanes de líneas arquitectónicas puras. Piezas esculturales creadas para conmover, celebrar legados afectivos y marcar la diferencia.
-        </p>
+    <!-- Encabezado de Categoría Ultra Compactado y Enfocado en Producto -->
+    <header class="pt-32 pb-4 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-[#0a1f1c]/5 pb-6 mb-8">
+            <div class="max-w-2xl">
+                <span class="text-[#c5a059] text-[9px] font-bold uppercase tracking-[0.4em] mb-2 block">Amor & Alta Costura Botánica</span>
+                <h1 class="text-3xl md:text-5xl font-serif italic text-[#0a1f1c] leading-tight mb-3">Declaraciones absolutas de afecto.</h1>
+                <p class="text-xs md:text-sm text-zinc-500 font-light leading-relaxed">
+                    Rosas de exportación seleccionadas a mano y tulipanes de líneas arquitectónicas puras. Diseños esculturales de alta gama creados para conmover y marcar la diferencia en la V Región.
+                </p>
+            </div>
+            
+            <!-- Barra de Garantías de Impacto y Confianza Inmediata (Aporte Corporativo Alto Valor) -->
+            <div class="flex flex-wrap gap-2 text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] lg:pb-1">
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-200/60 px-3 py-1.5 rounded-full shadow-sm">
+                    <span class="text-[#c5a059]">✓</span> Control Fotográfico Pre-Envío
+                </div>
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-200/60 px-3 py-1.5 rounded-full shadow-sm">
+                    <span class="text-[#c5a059]">✓</span> Despacho Express 1-2 Horas
+                </div>
+            </div>
+        </div>
     </header>
 
     <!-- Grilla Curada de Alta Densidad (2 celular, 3 tablet, 4 pc) -->
@@ -123,12 +136,10 @@
 
         const grid = document.getElementById('category-grid');
         grid.innerHTML = categoryCatalog.map(product => `
-            <div class="product-card group flex flex-col">
+            <div class="product-card group flex flex-col h-full">
                 <a href="${product.url}" class="block">
                     <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center">
                         <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
-                        
-                        <!-- SE ELIMINÓ EL GRAYSCALE (Color real e inmediato) -->
                         <img src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" loading="lazy">
                         
                         <div class="absolute top-2 right-2 md:top-4 md:right-4 bg-white/90 backdrop-blur-md px-2 py-1 text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm z-20">
@@ -137,7 +148,7 @@
                     </div>
                 </a>
                 
-                <div class="flex flex-col flex-grow mb-4">
+                <div class="flex flex-col flex-grow mb-3 md:mb-4">
                     <a href="${product.url}" class="hover:text-[#c5a059] transition-colors">
                         <h3 class="font-serif text-sm md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${product.name}</h3>
                     </a>
