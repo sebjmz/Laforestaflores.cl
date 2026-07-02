@@ -1821,13 +1821,13 @@ grid.innerHTML = catalog.map(product => `
         }
     </script>
     <script>
-// Manejador inteligente y blindado para aperturas desde páginas de producto
+// Manejador inteligente y definitivo desde páginas de producto
 window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const vaultContent = document.getElementById('vault-content');
     const plus = document.getElementById('vault-plus');
     
-    // 1. Si el cliente viene de comprar y quiere el carrito abierto
+    // 1. Si viene de añadir un ramo y quiere ver su Atelier Bag abierto
     if (params.get('action') === 'open_cart') {
         if (typeof toggleCart === 'function') {
             toggleCart();
@@ -1835,28 +1835,29 @@ window.addEventListener('DOMContentLoaded', () => {
         window.history.replaceState({}, document.title, window.location.pathname);
     }
     
-    // 2. Si el cliente presionó "Volver a Colección" (Forzar apertura limpia)
+    // 2. Si presionó "Volver a Colección" (Sincronización total de la Bóveda)
     if (params.get('action') === 'open_vault' || window.location.hash === '#vault') {
         
         if (vaultContent && !vaultContent.classList.contains('active')) {
-            // En vez de usar openVault() que hace toggle, la forzamos a abrirse directamente
+            // Forzamos la apertura de la grilla de ramos
             vaultContent.classList.add('active');
+            
+            // Transformamos el '+' en '-' para que la interfaz sea coherente
             if (plus) {
                 plus.innerText = '-';
                 plus.style.transform = 'rotate(180deg)';
             }
         }
         
-        // Hacemos un pequeño delay de milisegundos para que el scroll ocurra 
-        // DESPUÉS de que la página se haya renderizado, asegurando que caiga en el lugar exacto
+        // Hacemos el scroll inmediato o suave directo a la vitrina abierta
         setTimeout(() => {
             const vaultSection = document.getElementById('vault');
             if (vaultSection) {
                 vaultSection.scrollIntoView({ behavior: 'auto' });
             }
-        }, 150);
+        }, 100);
 
-        // Limpiamos la URL de forma elegante
+        // Limpiamos la barra del navegador de forma elegante
         window.history.replaceState({}, document.title, window.location.pathname + '#vault');
     }
 });
