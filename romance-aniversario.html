@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ==========================================
+         SEO DE DOMINACIÓN (Categoría Romance)
+         ========================================== -->
+    <title>Flores de Aniversario y Ramos de Rosas en Viña del Mar | La Foresta</title>
+    <meta name="description" content="Arreglos florales de aniversario, ramos de rosas exclusivas y diseños románticos de alta costura. Despacho express el mismo día en Viña del Mar, Reñaca y Concón.">
+    <meta name="keywords" content="flores de aniversario, ramos de rosas, enviar rosas viña del mar, regalo romántico, florería reñaca, concón, flores premium amor">
+    <link rel="canonical" href="https://laforestaflores.cl/romance-aniversario.html">
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+
+    <!-- OPTIMIZACIÓN SAFARI / IOS -->
+    <meta name="theme-color" content="#fcfaf7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Romance">
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:site_name" content="La Foresta Flores">
+    <meta property="og:title" content="Flores de Aniversario y Romance | La Foresta Flores">
+    <meta property="og:description" content="Diseños florales apasionados y exclusivos de alta costura. Despacho express el mismo día en Viña del Mar, Reñaca y Concón.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://laforestaflores.cl/romance-aniversario.html">
+    <meta property="og:image" content="https://laforestaflores.cl/img/social-share.jpg">
+
+    <!-- DATOS ESTRUCTURADOS DE CATEGORÍA -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Flores de Aniversario, Rosas y Diseños Románticos",
+      "url": "https://laforestaflores.cl/romance-aniversario.html",
+      "description": "Ramos de rosas premium y arreglos de aniversario con despacho el mismo día.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "La Foresta Flores"
+      }
+    }
+    </script>
+
+    <!-- Tailwind y Fuentes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --forest-green: #0a1f1c;
+            --gold-leaf: #c5a059;
+            --soft-cream: #fcfaf7;
+        }
+        body {
+            background-color: var(--soft-cream);
+            color: var(--forest-green);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body>
+
+    <!-- Navegación -->
+    <nav class="fixed w-full z-50 bg-[#fcfaf7]/95 backdrop-blur-lg px-6 md:px-12 py-5 flex justify-between items-center border-b border-[#0a1f1c]/5">
+        <a href="/index-test.html" class="cursor-pointer">
+            <img src="img/logo-menu.png" alt="La Foresta Flores Logo" class="h-6 md:h-8 w-auto object-contain">
+        </a>
+        <div class="flex items-center space-x-8">
+            <a href="/index-test.html?action=open_vault#vault" class="text-[10px] font-bold uppercase tracking-widest hover:text-[#c5a059] transition-colors">Volver a Colección</a>
+        </div>
+    </nav>
+
+    <!-- Encabezado de Categoría -->
+    <header class="pt-40 pb-16 px-6 max-w-4xl mx-auto text-center">
+        <span class="text-[#c5a059] text-[10px] font-bold uppercase tracking-[0.4em] mb-6 block">Amor & Alta Costura Botánica</span>
+        <h1 class="text-5xl md:text-7xl font-serif italic mb-8 leading-tight text-[#0a1f1c]">Declaraciones <br>absolutas de afecto.</h1>
+        <p class="text-lg text-zinc-600 font-light leading-relaxed max-w-2xl mx-auto">
+            Rosas de exportación seleccionadas a mano y tulipanes de líneas arquitectónicas puras. Piezas esculturales creadas para conmover, celebrar legados afectivos y marcar la diferencia.
+        </p>
+    </header>
+
+    <!-- Grilla Curada (Solo productos de Romance) -->
+    <main class="pb-32 px-6 md:px-12 max-w-7xl mx-auto">
+        <div id="category-grid" class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-20">
+            <!-- Los ramos se inyectarán aquí mediante JS -->
+        </div>
+    </main>
+
+    <!-- Footer Simple -->
+    <footer class="bg-forest-green text-soft-cream py-12 px-6 border-t border-gold-leaf/20 text-center">
+        <p class="text-[9px] uppercase tracking-widest opacity-40">La Foresta Flores & Garden. Despacho Premium V Región.</p>
+    </footer>
+
+    <script>
+        // Catálogo filtrado solo para Romance (Ramos 2, 3 y 10)
+        const categoryCatalog = [
+            { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.jpeg", desc: "Lilium majestuosos, rosas premium, nubes de gypso y maule aterciopelado.", url: "susurro-de-amor.html" },
+            { id: 3, name: "Amor Eterno", price: 230900, img: "img/RAMOS03.jpeg", desc: "Una declaración absoluta: imponente pieza maestra de 70 rosas seleccionadas.", url: "amor-eterno.html" },
+            { id: 10, name: "Susurro Rosé", price: 48900, img: "img/RAMOS10.jpeg", desc: "Tulipanes de corte limpio y siluetas dramáticas de limonium.", url: "susurro-rose.html" }
+        ];
+
+        const grid = document.getElementById('category-grid');
+        grid.innerHTML = categoryCatalog.map(product => `
+            <div class="product-card group">
+                <a href="${product.url}" class="block">
+                    <div class="overflow-hidden aspect-square mb-6 relative bg-zinc-100">
+                        <img src="${product.img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-transform duration-1000 group-hover:scale-105" alt="${product.name}" loading="lazy">
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest">
+                            ${product.id === 3 ? 'Bestseller Premium' : 'Colección Amor'}
+                        </div>
+                    </div>
+                </a>
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <a href="${product.url}" class="hover:text-[#c5a059] transition-colors">
+                            <h3 class="font-serif text-2xl italic text-[#0a1f1c]">${product.name}</h3>
+                        </a>
+                        <p class="text-[10px] uppercase tracking-widest opacity-60 mt-2 leading-relaxed max-w-[200px]">${product.desc}</p>
+                    </div>
+                    <span class="font-serif text-xl text-[#0a1f1c]">$${product.price.toLocaleString()}</span>
+                </div>
+                <button onclick="agregarYVolver(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
+                        class="w-full py-4 border border-[#0a1f1c] text-[#0a1f1c] text-[10px] font-bold uppercase tracking-widest hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors duration-300">
+                    Añadir al Atelier
+                </button>
+            </div>
+        `).join('');
+
+        function agregarYVolver(id, name, price, img) {
+            let cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
+            const existing = cart.find(item => item.id === id);
+            
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ id, name, price, img, qty: 1 });
+            }
+            
+            localStorage.setItem('laforesta_cart', JSON.stringify(cart));
+            
+            // Retorno directo al laboratorio de pruebas abriendo la bolsa
+            window.location.href = '/index-test.html?action=open_cart';
+        }
+    </script>
+</body>
+</html>
