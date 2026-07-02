@@ -912,7 +912,7 @@
         });
 
         const catalog = [
-            { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias." },
+            { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias.", url: "amor-delicado.html" },
             { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.jpeg", desc: "Lilium majestuosos, rosas premium, nubes de gypso y maule aterciopelado." },
             { id: 3, name: "Amor Eterno", price: 230900, img: "img/RAMOS03.jpeg", desc: "Una declaración absoluta: imponente pieza maestra de 70 rosas seleccionadas." },
             { id: 4, name: "Pasión de Sol", price: 45900, img: "img/RAMOS04.jpeg", desc: "Girasoles esculturales y rosas finas, entrelazados con gypso y maule silvestre." },
@@ -927,27 +927,34 @@
         ];
 
         const grid = document.getElementById('product-grid');
-        grid.innerHTML = catalog.map(product => `
-            <div class="product-card group">
-                <div class="img-zoom-container aspect-square mb-6 relative bg-zinc-100">
-                    <img src="${product.img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="${product.name}" loading="lazy">
-                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest">
-                        ${product.id <= 3 ? 'Bestseller' : 'Vault'}
-                    </div>
+grid.innerHTML = catalog.map(product => `
+    <div class="product-card group">
+        
+        <a href="${product.url || '#'}" class="block">
+            <div class="img-zoom-container aspect-square mb-6 relative bg-zinc-100">
+                <img src="${product.img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="${product.name}" loading="lazy">
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest">
+                    ${product.id <= 3 ? 'Bestseller' : 'Vault'}
                 </div>
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <h3 class="font-serif text-2xl italic">${product.name}</h3>
-                        <p class="text-[10px] uppercase tracking-widest opacity-50 mt-1"><span class="text-[#c5a059] mr-1">★★★★★</span> ${product.desc}</p>
-                    </div>
-                    <span class="font-serif text-xl">$${product.price.toLocaleString()}</span>
-                </div>
-                <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
-                        class="w-full py-4 border border-forest-green text-[10px] font-bold uppercase tracking-widest hover:bg-forest-green hover:text-gold-leaf transition">
-                    Añadir al Atelier
-                </button>
             </div>
-        `).join('');
+        </a>
+
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <a href="${product.url || '#'}" class="hover:text-[#c5a059] transition-colors">
+                    <h3 class="font-serif text-2xl italic">${product.name}</h3>
+                </a>
+                <p class="text-[10px] uppercase tracking-widest opacity-50 mt-1"><span class="text-[#c5a059] mr-1">★★★★★</span> ${product.desc}</p>
+            </div>
+            <span class="font-serif text-xl">$${product.price.toLocaleString()}</span>
+        </div>
+        
+        <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
+                class="w-full py-4 border border-forest-green text-[10px] font-bold uppercase tracking-widest hover:bg-forest-green hover:text-gold-leaf transition">
+            Añadir al Atelier
+        </button>
+    </div>
+`).join('');
 
         function guardarProgresoCheckout() {
             const progresoInputs = {
@@ -1803,6 +1810,15 @@
             });
         }
     </script>
-  <script src="https://www.paypal.com/sdk/js?client-id=AbfBLeAuXrylWnzDIOQcvpfJwrzBAy0N8281_ip4dFmH1k6H8kW70tPOE_IH6sc05OafIHHfe1PE1Mv1&currency=USD"></script>
+    <script>
+// Abrir carrito automático si el cliente viene de la URL de un producto
+window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('action') === 'open_cart') {
+        toggleCart();
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+});
+</script>
 </body>
 </html>
