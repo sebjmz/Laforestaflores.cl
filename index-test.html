@@ -190,21 +190,22 @@
         #atelier-bag.open { transform: translateX(0); }
 
         .product-card {
-            transition: transform 0.6s ease;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
         .product-card:hover {
-            transform: translateY(-15px);
+            transform: translateY(-8px);
         }
         .img-zoom-container {
             overflow: hidden;
+            background-color: #f4f4f5;
         }
         .img-zoom-container img {
-            transition: transform 1.2s ease;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: none !important; /* Forzamos color absoluto desde el milisegundo uno */
         }
         .product-card:hover .img-zoom-container img {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
-
         .prestige-marquee {
             display: flex;
             width: max-content;
@@ -359,22 +360,22 @@
                 <p class="uppercase tracking-widest text-xs">Su bolsa está vacía</p>
             </div>
         </div>
-        <div class="p-8 bg-zinc-50 border-t">
-            <div class="mb-6 bg-[#c5a059]/5 p-4 border border-[#c5a059]/30 shadow-sm">
-                <p class="text-[9px] uppercase tracking-widest leading-relaxed text-[#0a1f1c]/80 text-center">
-                    <strong class="text-[#c5a059] block mb-1">Garantía de Atelier</strong>
-                    El arreglo floral entregado será idéntico en volumen y frescura a nuestro registro fotográfico.
+       <div class="p-8 bg-zinc-50 border-t">
+            <div class="mb-6 text-center">
+                <p class="text-[10px] uppercase tracking-widest text-zinc-500">
+                    ✓ <span class="text-[#0a1f1c] font-semibold">Garantía de Atelier:</span> Frescura absoluta y diseño idéntico al registro.
                 </p>
             </div>
 
             <div class="flex justify-between items-center mb-6">
-                <span class="text-xs uppercase tracking-widest font-bold">Total Estimado</span>
-                <span id="cart-total" class="text-2xl font-serif">$0</span>
+                <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Total Estimado</span>
+                <span id="cart-total" class="text-2xl font-serif text-[#0a1f1c]">$0</span>
             </div>
+            
             <button onclick="openCheckout()" class="w-full btn-premium uppercase text-xs tracking-[0.2em] mb-6">Proceder al Checkout</button>
             
             <div class="flex justify-center items-center mb-6 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
-                <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
+                <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada V Región
             </div>
             
             <div class="flex justify-center items-center space-x-5 opacity-60 grayscale mb-4">
@@ -383,9 +384,9 @@
                 <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="Visa" class="h-5 w-auto object-contain">
                 <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" alt="Mastercard" class="h-4 w-auto object-contain">
             </div>
-            <p class="text-[8px] flex items-center justify-center gap-1.5 uppercase tracking-widest opacity-40 pb-2">
+            <p class="text-[8px] flex items-center justify-center gap-1.5 uppercase tracking-widest opacity-40 pb-2 text-zinc-500">
                 <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
-                Pago seguro
+                Transacciones protegidas con encriptación bancaria
             </p>
         </div>
     </div>
@@ -925,14 +926,15 @@
         ];
 
         // ==========================================
-        // CATÁLOGO DE UPSELLS (COMPRA POR IMPULSO)
+        // CATÁLOGO DE UPSELLS CURADO (EMOCIÓN Y LUJO)
         // ==========================================
         const upsellsCatalog = [
-            { id: 101, name: "Bombones de Autor", price: 12900, img: "img/upsell-choco.jpg" },
-            { id: 102, name: "Oso Peluche (M)", price: 14900, img: "img/upsell-oso.jpg" },
-            { id: 103, name: "Oso Gigante (XL)", price: 29900, img: "img/upsell-oso-xl.jpg" },
-            { id: 104, name: "Globo Metálico", price: 6900, img: "img/upsell-globo.jpg" },
-            { id: 105, name: "Cheesecake Premium", price: 18900, img: "img/upsell-torta.jpg" }
+            { id: 101, name: "Chocolates de Autor (Caja Fina)", price: 12900, img: "img/upsell-choco.jpg" },
+            { id: 102, name: "Oso de Felpa Clásico", price: 14900, img: "img/upsell-oso.jpg" },
+            { id: 103, name: "Oso de Felpa Gigante XL", price: 29900, img: "img/upsell-oso-xl.jpg" },
+            { id: 104, name: "Globo Metálico 'Te Amo'", price: 6900, img: "img/upsell-globo-amor.jpg" },
+            { id: 105, name: "Globo Metálico 'Feliz Día'", price: 6900, img: "img/upsell-globo-dia.jpg" },
+            { id: 106, name: "Espumante Riccadonna Premium", price: 19900, img: "img/upsell-espumante.jpg" }
         ];
 
         // Función inteligente para asignar etiquetas de lujo (Fricción Cero)
@@ -961,8 +963,8 @@
                 
                 <a href="${product.url || '#'}" class="block">
                     <div class="img-zoom-container aspect-square mb-6 relative bg-zinc-100">
-                        <img src="${product.img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="${product.name}" loading="lazy">
-                        ${badgeHTML}
+<img src="${product.img}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" alt="${product.name}" loading="lazy">
+${badgeHTML}
                     </div>
                 </a>
 
@@ -1358,7 +1360,11 @@ function updateCartUI() {
             const countNav = document.getElementById('cart-count');
             
             if (cart.length === 0) {
-                container.innerHTML = `<div class="text-center py-20 opacity-40"><p class="uppercase tracking-widest text-[10px]">Su bolsa está vacía</p><button onclick="toggleCart(); scrollToVault();" class="mt-4 text-gold-leaf border-b border-gold-leaf text-[10px] font-bold uppercase tracking-widest">Ir a la Colección</button></div>`;
+                container.innerHTML = `
+                    <div class="text-center py-20 opacity-40">
+                        <p class="uppercase tracking-widest text-[10px]">Su bolsa está vacía</p>
+                        <button onclick="toggleCart(); scrollToVault();" class="mt-4 text-gold-leaf border-b border-gold-leaf text-[10px] font-bold uppercase tracking-widest">Ir a la Colección</button>
+                    </div>`;
                 totalEl.innerText = `$0`;
                 countNav.innerText = "0";
                 const stickyCart = document.getElementById('mobile-sticky-cart');
@@ -1370,35 +1376,34 @@ function updateCartUI() {
                 return;
             }
 
-            // 1. Renderizamos los productos que ya están en el carrito
+            // 1. Render de productos en bolsa (A todo color de inmediato)
             let html = cart.map(item => `
                 <div class="flex space-x-6 items-start">
-                    <div class="w-24 h-32 bg-zinc-100 overflow-hidden relative flex items-center justify-center">
-                        <span class="text-zinc-300 font-serif italic text-2xl absolute">+</span>
-                        <img src="${item.img}" onerror="this.style.opacity='0'" class="w-full h-full object-cover grayscale relative z-10" alt="${item.name}">
+                    <div class="w-24 h-32 bg-zinc-50 overflow-hidden relative flex items-center justify-center border border-zinc-100">
+                        <img src="${item.img}" onerror="this.style.opacity='0'" class="w-full h-full object-cover relative z-10" alt="${item.name}">
                     </div>
                     <div class="flex-grow">
-                        <h4 class="font-serif text-lg italic mb-1">${item.name}</h4>
+                        <h4 class="font-serif text-lg italic mb-1 text-[#0a1f1c]">${item.name}</h4>
                         <p class="text-gold-leaf text-sm font-bold">$${(item.price).toLocaleString()}</p>
                         <div class="flex items-center space-x-6 mt-4">
-                            <div class="flex items-center space-x-3 border px-2 py-1">
-                                <button onclick="updateQty(${item.id}, -1)" class="hover:text-gold-leaf">-</button>
-                                <span class="text-xs font-bold">${item.qty}</span>
-                                <button onclick="updateQty(${item.id}, 1)" class="hover:text-gold-leaf">+</button>
+                            <div class="flex items-center space-x-3 border border-zinc-200 px-2 py-1 bg-white">
+                                <button onclick="updateQty(${item.id}, -1)" class="hover:text-gold-leaf transition-colors">-</button>
+                                <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
+                                <button onclick="updateQty(${item.id}, 1)" class="hover:text-gold-leaf transition-colors">+</button>
                             </div>
-                            <button onclick="removeFromCart(${item.id})" class="text-[9px] uppercase tracking-widest opacity-40 hover:opacity-100">Eliminar</button>
+                            <button onclick="removeFromCart(${item.id})" class="text-[9px] uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity">Eliminar</button>
                         </div>
                     </div>
                 </div>
             `).join('');
 
-            // 2. Inyectamos el Slider de Upsells (Corregido para Fricción Cero)
+            // 2. Inyección del Slider de Upsells Pro (Sin opciones, clics directos)
             const inCartIds = cart.map(item => item.id);
             const availableUpsells = upsellsCatalog.filter(u => !inCartIds.includes(u.id));
 
             if (availableUpsells.length > 0) {
                 html += `
-                    <div class="mt-12 border-t border-[#0a1f1c]/5 pt-8">
+                    <div class="mt-12 border-t border-zinc-100 pt-8">
                         <h5 class="font-serif text-lg italic mb-6 text-[#0a1f1c]">Acompañe su regalo</h5>
                         <style>
                             .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
@@ -1406,25 +1411,36 @@ function updateCartUI() {
                         </style>
                         <div id="upsell-slider" class="flex overflow-x-auto space-x-5 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
                             ${availableUpsells.map(u => `
-                                <div class="w-[125px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
-                                    <div class="w-full aspect-square bg-[#fcfaf7] border border-[#0a1f1c]/5 mb-3 flex items-center justify-center relative overflow-hidden transition-colors group-hover:bg-[#c5a059]/10 p-3">
-                                        <span class="font-serif italic text-[#c5a059] text-3xl opacity-50 group-hover:scale-110 transition-transform absolute">+</span>
-                                        <img src="${u.img}" onerror="this.style.opacity='0'" class="w-full h-full object-contain mix-blend-multiply relative z-10 transition-transform duration-700 group-hover:scale-110" alt="${u.name}">
+                                <div class="w-[130px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
+                                    <div class="w-full aspect-square bg-[#fcfaf7] border border-zinc-200/60 mb-3 flex items-center justify-center relative overflow-hidden transition-all group-hover:bg-[#c5a059]/10 p-3 shadow-sm group-hover:border-[#c5a059]/30">
+                                        <span class="font-serif italic text-[#c5a059] text-3xl opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all absolute z-0">+</span>
+                                        <img src="${u.img}" onerror="this.style.opacity='0'" class="w-full h-full object-contain relative z-10 transition-transform duration-700 group-hover:scale-105" alt="${u.name}">
                                     </div>
-                                    <h6 class="text-[9px] uppercase tracking-widest font-bold leading-relaxed mb-1">${u.name}</h6>
+                                    <h6 class="text-[9px] uppercase tracking-widest font-bold leading-normal text-[#0a1f1c] mb-1 min-h-[24px]">${u.name}</h6>
                                     <p class="text-[#c5a059] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
                                 </div>
                             `).join('')}
-                            <!-- Espaciador final para que el último elemento no choque con el borde derecho -->
-                            <div class="w-2 flex-shrink-0"></div>
+                            <div class="w-4 flex-shrink-0"></div>
                         </div>
                     </div>
                 `;
             }
 
+            // 4. El Sello de Confianza Internacional (Gatillo psicológico para romper el miedo al fraude)
+            html += `
+                <div class="mt-8 border-t border-dashed border-zinc-200 pt-6">
+                    <div class="flex items-start space-x-3 opacity-80">
+                        <span class="text-[#c5a059] text-xs mt-0.5">✓</span>
+                        <p class="text-[10px] uppercase tracking-widest leading-loose text-[#0a1f1c]">
+                            <strong>Control Fotográfico VIP:</strong> Le enviaremos una fotografía en alta resolución de su diseño terminado vía WhatsApp antes del despacho.
+                        </p>
+                    </div>
+                </div>
+            `;
+
             container.innerHTML = html;
 
-            // --- MAGIA PARA EL MOUSE EN COMPUTADOR ---
+            // Micro-script para mouse horizontal en PC
             const upsellSlider = document.getElementById('upsell-slider');
             if (upsellSlider) {
                 upsellSlider.addEventListener('wheel', (evt) => {
@@ -1435,7 +1451,6 @@ function updateCartUI() {
                 });
             }
 
-            // 3. Actualizamos los totales y badges
             actualizarTotalConDespacho();
             const itemsCount = cart.reduce((acc, item) => acc + item.qty, 0);
             countNav.innerText = itemsCount;
