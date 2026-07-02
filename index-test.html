@@ -126,6 +126,8 @@
             background-color: var(--soft-cream);
             color: var(--forest-green);
             font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .font-serif { font-family: 'Playfair Display', serif; }
@@ -199,9 +201,10 @@
             overflow: hidden;
             background-color: #f4f4f5;
         }
+        /* Color radiante siempre */
         .img-zoom-container img {
             transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-            filter: none !important; /* Forzamos color absoluto desde el milisegundo uno */
+            filter: grayscale(0%) !important;
         }
         .product-card:hover .img-zoom-container img {
             transform: scale(1.05);
@@ -314,7 +317,7 @@
             animation: marquee-infinite 30s linear infinite;
         }
         .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
-.hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
@@ -517,10 +520,6 @@
                 <div class="w-full md:w-auto overflow-hidden">
                     <h2 class="text-6xl md:text-8xl font-serif italic text-[#0a1f1c] mb-6">Colección</h2>
                     
-                    <style>
-                        .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
-                        .hide-scroll::-webkit-scrollbar { display: none; }
-                    </style>
                     <div class="w-full overflow-x-auto pb-2 hide-scroll">
                         <nav aria-label="Filtros de colección" class="flex items-center space-x-6 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 whitespace-nowrap min-w-max">
                             <a href="#vault" class="text-[#0a1f1c] border-b-2 border-[#0a1f1c] pb-1 transition-all">Todos</a>
@@ -548,6 +547,7 @@
             
         </div>
     </section>
+
     <section id="privilege" class="b2b-portal py-32 min-h-screen flex items-center border-b border-[#c5a059]/20">
         <div class="max-w-7xl mx-auto px-6 w-full">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
@@ -1825,7 +1825,10 @@ function updateCartUI() {
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Express (1-2hrs) cierra en:</span><span class="opacity-60 md:hidden">Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;        }
+            
+            // Texto adaptativo: Más corto en celular, más explicativo en PC
+            timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Express (1-2hrs) cierra en:</span><span class="opacity-60 md:hidden">Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
+        }
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
