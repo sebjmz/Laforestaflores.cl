@@ -3,10 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- ==========================================
-         SEO DE DOMINACIÓN (Categoría Corporativo)
-         ========================================== -->
     <title>Arreglos Florales Corporativos y para Empresas | La Foresta V Región</title>
     <meta name="description" content="Diseño floral de alta gama para espacios corporativos, oficinas, inmobiliarias y eventos institucionales. Suscripciones semanales en Viña del Mar, Reñaca y Concón.">
     <meta name="keywords" content="flores corporativas, arreglos para oficinas concon, suscripción floral viña del mar, flores empresas reñaca, florería corporativa, ambientación de espacios">
@@ -27,7 +23,7 @@
     <meta property="og:url" content="https://laforestaflores.cl/corporativo.html">
     <meta property="og:image" content="https://laforestaflores.cl/img/social-share.jpg">
 
-    <!-- DATOS ESTRUCTURADOS DE CATEGORÍA -->
+    <!-- DATOS ESTRUCTURADOS -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -70,7 +66,6 @@
             overflow: hidden;
             background-color: #f4f4f5;
         }
-        /* Forzamos color absoluto desde el milisegundo uno */
         .img-zoom-container img {
             transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
             filter: grayscale(0%) !important;
@@ -92,16 +87,30 @@
         </div>
     </nav>
 
-    <!-- Encabezado de Categoría -->
-    <header class="pt-40 pb-16 px-6 max-w-4xl mx-auto text-center">
-        <span class="text-[#c5a059] text-[10px] font-bold uppercase tracking-[0.4em] mb-6 block">Sello Institucional & Distinción</span>
-        <h1 class="text-5xl md:text-7xl font-serif italic mb-8 leading-tight text-[#0a1f1c]">Estética y líneas <br>arquitectónicas puras.</h1>
-        <p class="text-lg text-zinc-600 font-light leading-relaxed max-w-2xl mx-auto">
-            Diseños esculturales de gran simetría y sofisticación botánica. Curados milimétricamente para transformar salas de ventas, oficinas corporativas, recepciones y entornos laborales exigentes que respiran excelencia.
-        </p>
+    <!-- Encabezado de Categoría Ultra Compacto -->
+    <header class="pt-32 pb-4 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-[#0a1f1c]/5 pb-6 mb-8">
+            <div class="max-w-2xl">
+                <span class="text-[#c5a059] text-[9px] font-bold uppercase tracking-[0.4em] mb-2 block">Sello Institucional & Distinción</span>
+                <h1 class="text-3xl md:text-5xl font-serif italic text-[#0a1f1c] leading-tight mb-3">Estética y líneas puras.</h1>
+                <p class="text-xs md:text-sm text-zinc-500 font-light leading-relaxed">
+                    Diseños esculturales de gran simetría y sofisticación botánica. Curados milimétricamente para transformar oficinas corporativas, inmobiliarias y recepciones exigentes.
+                </p>
+            </div>
+            
+            <!-- Barra de Garantías VIP -->
+            <div class="flex flex-wrap gap-2 text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] lg:pb-1">
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-200/60 px-3 py-1.5 rounded-full shadow-sm">
+                    <span class="text-[#c5a059]">✓</span> Facturación Electrónica Inmediata
+                </div>
+                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-200/60 px-3 py-1.5 rounded-full shadow-sm">
+                    <span class="text-[#c5a059]">✓</span> Convenios y Suscripciones B2B
+                </div>
+            </div>
+        </div>
     </header>
 
-    <!-- Grilla Curada Alta Densidad (2 celular, 3 tablet, 4 pc) -->
+    <!-- Grilla Curada Alta Densidad -->
     <main class="pb-32 px-6 md:px-12 max-w-7xl mx-auto">
         <div id="category-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-12 md:gap-y-16">
             <!-- Los ramos se inyectarán aquí mediante JS -->
@@ -114,7 +123,6 @@
     </footer>
 
     <script>
-        // Catálogo filtrado solo para Corporativo (Ramos 5, 6 y 11)
         const categoryCatalog = [
             { id: 5, name: "Monte Mar Signature", price: 28900, img: "img/RAMOS05.jpeg", desc: "Gerberas vibrantes y rosas de autor, balanceadas con maules y gypso etéreo.", url: "monte-mar-signature.html" },
             { id: 6, name: "Brisa de Primavera", price: 36900, img: "img/RAMOS06.jpeg", desc: "Una armoniosa sinfonía de gerberas, astromelias, lisianthus y follaje de ruscus.", url: "brisa-de-primavera.html" },
@@ -123,12 +131,10 @@
 
         const grid = document.getElementById('category-grid');
         grid.innerHTML = categoryCatalog.map(product => `
-            <div class="product-card group group flex flex-col">
+            <div class="product-card group flex flex-col h-full">
                 <a href="${product.url}" class="block">
                     <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center">
                         <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
-                        
-                        <!-- SE BORRÓ EL GRAYSCALE DE TAILWIND (Color vivo total) -->
                         <img src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" loading="lazy">
                         
                         <div class="absolute top-2 right-2 md:top-4 md:right-4 bg-white/90 backdrop-blur-md px-2 py-1 text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm z-20">
@@ -137,7 +143,7 @@
                     </div>
                 </a>
                 
-                <div class="flex flex-col flex-grow mb-4">
+                <div class="flex flex-col flex-grow mb-3 md:mb-4">
                     <a href="${product.url}" class="hover:text-[#c5a059] transition-colors">
                         <h3 class="font-serif text-sm md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${product.name}</h3>
                     </a>
