@@ -823,8 +823,20 @@
 
             <div id="step-4" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 7</span>
-                <h3 class="font-serif text-4xl italic mb-12">Mensaje en la tarjeta</h3>
-                <textarea id="card-message" oninput="guardarProgresoCheckout()" placeholder="Escriba su mensaje aquí..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-32"></textarea>
+                <h3 class="font-serif text-4xl italic mb-6">Mensaje en la tarjeta</h3>
+                
+                <textarea id="card-message" oninput="guardarProgresoCheckout()" placeholder="Escriba su dedicatoria aquí..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-32 mb-4"></textarea>
+                
+                <div class="w-full">
+                    <p class="text-[9px] uppercase tracking-widest opacity-40 mb-3 text-left">¿Necesita inspiración?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="escribirMensaje('romance')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Romance</button>
+                        <button onclick="escribirMensaje('condolencias')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Condolencias</button>
+                        <button onclick="escribirMensaje('agradecimiento')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Agradecimiento</button>
+                        <button onclick="escribirMensaje('cumpleanos')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Cumpleaños</button>
+                    </div>
+                </div>
+
                 <button onclick="goToStep(5)" class="mt-12 btn-premium w-full">Siguiente</button>
                 <button onclick="goToStep('step-time')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
@@ -1886,6 +1898,43 @@ function updateCartUI() {
                 window.history.replaceState({}, document.title, window.location.pathname + '#vault');
             }
         });
+        // Función del Asistente de Emociones
+        function escribirMensaje(tipo) {
+            const textarea = document.getElementById('card-message');
+            let mensaje = "";
+            
+            if (tipo === 'romance') {
+                const opciones = [
+                    "Que estas flores te recuerden la belleza de lo que estamos construyendo juntos. Te amo más de lo que las palabras pueden expresar.",
+                    "No hay diseño en la naturaleza que se compare contigo. Eres mi instante favorito del día.",
+                    "Para la persona que ilumina mi vida, incluso en la distancia. Con todo mi amor."
+                ];
+                mensaje = opciones[Math.floor(Math.random() * opciones.length)];
+            } else if (tipo === 'condolencias') {
+                const opciones = [
+                    "Acompañándolos en este difícil momento. Que estas flores transmitan el abrazo y la paz que faltan en las palabras.",
+                    "Con profundo respeto y cariño. Mantendremos su recuerdo siempre vivo en nuestros corazones.",
+                    "Nuestras más sinceras condolencias. Que el tiempo traiga consuelo y serenidad a la familia."
+                ];
+                mensaje = opciones[Math.floor(Math.random() * opciones.length)];
+            } else if (tipo === 'agradecimiento') {
+                mensaje = "Las palabras a veces quedan cortas para expresar la gratitud. Espero que este detalle transmita lo mucho que valoro tu apoyo.";
+            } else if (tipo === 'cumpleanos') {
+                mensaje = "Que este nuevo año de vida florezca con la misma fuerza y alegría que transmite este arreglo. ¡Feliz Cumpleaños!";
+            }
+            
+            // Efecto de máquina de escribir súper rápido y elegante
+            textarea.value = "";
+            let i = 0;
+            const intervalo = setInterval(() => {
+                textarea.value += mensaje.charAt(i);
+                i++;
+                if (i >= mensaje.length) {
+                    clearInterval(intervalo);
+                    guardarProgresoCheckout(); // Guarda el estado automáticamente
+                }
+            }, 15);
+        }
     </script>
 </body>
 </html>
