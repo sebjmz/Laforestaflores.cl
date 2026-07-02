@@ -924,6 +924,17 @@
             { id: 12, name: "Encanto Vivo", price: 37900, img: "img/RAMOS12.jpeg", desc: "Astromelias, lisianthus, gypso, gerberas, maules y el verde profundo del ruscus.", url: "encanto-vivo.html" }
         ];
 
+        // ==========================================
+        // CATÁLOGO DE UPSELLS (COMPRA POR IMPULSO)
+        // ==========================================
+        const upsellsCatalog = [
+            { id: 101, name: "Bombones de Autor", price: 12900, img: "img/upsell-choco.jpg" },
+            { id: 102, name: "Oso Peluche (M)", price: 14900, img: "img/upsell-oso.jpg" },
+            { id: 103, name: "Oso Gigante (XL)", price: 29900, img: "img/upsell-oso-xl.jpg" },
+            { id: 104, name: "Globo Metálico", price: 6900, img: "img/upsell-globo.jpg" },
+            { id: 105, name: "Cheesecake Premium", price: 18900, img: "img/upsell-torta.jpg" }
+        ];
+
         // Función inteligente para asignar etiquetas de lujo (Fricción Cero)
         function getLuxuryBadge(id) {
             switch(id) {
@@ -1345,8 +1356,8 @@
             const container = document.getElementById('cart-items-container');
             const totalEl = document.getElementById('cart-total');
             const countNav = document.getElementById('cart-count');
+            
             if (cart.length === 0) {
-                // Aquí el arreglo a la función fantasma:
                 container.innerHTML = `<div class="text-center py-20 opacity-40"><p class="uppercase tracking-widest text-[10px]">Su bolsa está vacía</p><button onclick="toggleCart(); scrollToVault();" class="mt-4 text-gold-leaf border-b border-gold-leaf text-[10px] font-bold uppercase tracking-widest">Ir a la Colección</button></div>`;
                 totalEl.innerText = `$0`;
                 countNav.innerText = "0";
@@ -1358,10 +1369,13 @@
                 }
                 return;
             }
-            container.innerHTML = cart.map(item => `
+
+            // 1. Renderizamos los productos que ya están en el carrito
+            let html = cart.map(item => `
                 <div class="flex space-x-6 items-start">
-                    <div class="w-24 h-32 bg-zinc-100 overflow-hidden">
-                        <img src="${item.img}" class="w-full h-full object-cover grayscale" alt="${item.name}">
+                    <div class="w-24 h-32 bg-zinc-100 overflow-hidden relative flex items-center justify-center">
+                        <span class="text-zinc-300 font-serif italic text-2xl absolute">+</span>
+                        <img src="${item.img}" onerror="this.style.opacity='0'" class="w-full h-full object-cover grayscale relative z-10" alt="${item.name}">
                     </div>
                     <div class="flex-grow">
                         <h4 class="font-serif text-lg italic mb-1">${item.name}</h4>
@@ -1377,9 +1391,41 @@
                     </div>
                 </div>
             `).join('');
+
+            // 2. Inyectamos el Slider de Upsells
+            const inCartIds = cart.map(item => item.id);
+            const availableUpsells = upsellsCatalog.filter(u => !inCartIds.includes(u.id));
+
+            if (availableUpsells.length > 0) {
+                html += `
+                    <div class="mt-12 border-t border-[#0a1f1c]/5 pt-8">
+                        <h5 class="font-serif text-lg italic mb-6 text-[#0a1f1c]">Acompañe su regalo</h5>
+                        <div class="flex overflow-x-auto space-x-4 pb-4" style="scrollbar-width: none; -ms-overflow-style: none;">
+                            <style>.hide-scroll::-webkit-scrollbar { display: none; }</style>
+                            <div class="flex space-x-4 hide-scroll w-full">
+                                ${availableUpsells.map(u => `
+                                    <div class="min-w-[110px] max-w-[110px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
+                                        <div class="w-full aspect-square bg-[#fcfaf7] border border-[#0a1f1c]/5 mb-3 flex items-center justify-center relative overflow-hidden transition-colors group-hover:bg-[#c5a059]/10">
+                                            <span class="font-serif italic text-[#c5a059] text-3xl opacity-50 group-hover:scale-110 transition-transform">+</span>
+                                            <img src="${u.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply relative z-10 transition-transform duration-700 group-hover:scale-110" alt="${u.name}">
+                                        </div>
+                                        <h6 class="text-[9px] uppercase tracking-widest font-bold leading-tight mb-1 truncate">${u.name}</h6>
+                                        <p class="text-[#c5a059] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+
+            // 3. Actualizamos los totales y badges
             actualizarTotalConDespacho();
             const itemsCount = cart.reduce((acc, item) => acc + item.qty, 0);
             countNav.innerText = itemsCount;
+            
             const stickyCart = document.getElementById('mobile-sticky-cart');
             if (stickyCart) {
                 document.getElementById('sticky-cart-count').innerText = itemsCount;
