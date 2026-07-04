@@ -132,7 +132,7 @@
             <img src="img/logo-menu.png" alt="La Foresta Flores Logo" class="h-6 md:h-8 w-auto object-contain">
         </a>
         <div class="flex items-center space-x-8">
-            <a href="/index-test.html?action=open_vault#vault" class="text-[10px] font-bold uppercase tracking-widest hover:text-[#c5a059] transition-colors">Volver a Colección</a>
+            <a href="javascript:void(0)" onclick="volverInteligente()" class="text-[10px] font-bold uppercase tracking-widest hover:text-[#c5a059] transition-colors">Volver Atrás</a>
         </div>
     </nav>
 
@@ -221,6 +221,18 @@
             
             // Regresa al index de pruebas y abre el checkout de inmediato
             window.location.href = '/index-test.html?action=open_cart';
+        }
+    </script>
+    <script>
+        function volverInteligente() {
+            // Si el usuario viene navegando desde tu propia web (ej: Condolencias, Romance, etc)
+            if (document.referrer && document.referrer.includes(window.location.hostname)) {
+                window.history.back(); // Lo devuelve exactamente a la pestaña de donde vino, manteniendo su scroll
+            } else {
+                // Si el usuario entró directo desde un link de Instagram o Google, no hay historial atrás. 
+                // En ese caso, lo salvamos enviándolo a la colección principal.
+                window.location.href = '/index-test.html?action=open_vault#vault';
+            }
         }
     </script>
 </body>
