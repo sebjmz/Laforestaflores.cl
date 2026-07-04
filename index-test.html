@@ -1888,6 +1888,12 @@ function updateCartUI() {
         window.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
             
+            // Si el usuario presionó "Volver" y venía de una categoría, lo regresamos allá automáticamente
+            if (params.get('action') === 'open_vault' && document.referrer && !document.referrer.includes('index-test.html')) {
+                window.history.back();
+                return;
+            }
+            
             if (params.get('action') === 'open_cart') {
                 if (typeof toggleCart === 'function') { toggleCart(); }
                 window.history.replaceState({}, document.title, window.location.pathname);
@@ -1899,11 +1905,7 @@ function updateCartUI() {
                     const headerOffset = window.innerWidth >= 1024 ? 90 : 70;
                     const elementPosition = vaultSection.getBoundingClientRect().top + window.scrollY;
                     const offsetPosition = elementPosition - headerOffset;
-                    
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'auto'
-                    });
+                    window.scrollTo({ top: offsetPosition, behavior: 'auto' });
                 }
                 window.history.replaceState({}, document.title, window.location.pathname + '#vault');
             }
