@@ -1885,14 +1885,9 @@ function updateCartUI() {
         }
 
         // Script final unificado para el scroll directo Fricción Cero
+        // Script original unificado para el scroll directo Fricción Cero
         window.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
-            
-            // Si el usuario presionó "Volver" y venía de una categoría, lo regresamos allá automáticamente
-            if (params.get('action') === 'open_vault' && document.referrer && !document.referrer.includes('index-test.html')) {
-                window.history.back();
-                return;
-            }
             
             if (params.get('action') === 'open_cart') {
                 if (typeof toggleCart === 'function') { toggleCart(); }
@@ -1905,10 +1900,21 @@ function updateCartUI() {
                     const headerOffset = window.innerWidth >= 1024 ? 90 : 70;
                     const elementPosition = vaultSection.getBoundingClientRect().top + window.scrollY;
                     const offsetPosition = elementPosition - headerOffset;
-                    window.scrollTo({ top: offsetPosition, behavior: 'auto' });
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'auto'
+                    });
                 }
                 window.history.replaceState({}, document.title, window.location.pathname + '#vault');
             }
+            
+            const yearFooter = document.getElementById("year-footer");
+            if (yearFooter) { yearFooter.innerText = new Date().getFullYear(); }
+            const flow = document.getElementById('garden-flow');
+            if (flow) { flow.style.transform = 'translateY(100%)'; }
+            updateCartUI();
+            restaurarProgresoCheckout();
         });
         // Función del Asistente de Emociones
         function escribirMensaje(tipo) {
