@@ -999,13 +999,13 @@
         // CATÁLOGO DE UPSELLS CURADO (EMOCIÓN Y LUJO)
         // ==========================================
         const upsellsCatalog = [
-            { id: 101, name: "Chocolates de Autor (Caja Fina)", price: 12900, img: "img/upsell-choco.jpg" },
-            { id: 102, name: "Oso de Felpa Clásico", price: 14900, img: "img/upsell-oso.jpg" },
-            { id: 103, name: "Oso de Felpa Gigante XL", price: 29900, img: "img/upsell-oso-xl.jpg" },
-            { id: 104, name: "Globo Metálico 'Te Amo'", price: 6900, img: "img/upsell-globo-amor.jpg" },
-            { id: 105, name: "Globo Metálico 'Feliz Día'", price: 6900, img: "img/upsell-globo-dia.jpg" },
-            { id: 106, name: "Espumante Riccadonna Premium", price: 19900, img: "img/upsell-espumante.jpg" }
-        ];
+    { id: 101, name: "Chocolates de Autor (Caja Fina)", price: 12900, img: "img/upsell-choco.jpg" },
+    { id: 102, name: "Oso de Felpa Clásico", price: 14900, img: "img/upsell-oso.jpg" },
+    { id: 103, name: "Oso de Felpa Gigante XL", price: 29900, img: "img/upsell-oso-xl.jpg" },
+    { id: 104, name: "Globo Metálico Te Amo", price: 6900, img: "img/upsell-globo-amor.jpg" },
+    { id: 105, name: "Globo Metálico Feliz Día", price: 6900, img: "img/upsell-globo-dia.jpg" },
+    { id: 106, name: "Espumante Riccadonna Premium", price: 19900, img: "img/upsell-espumante.jpg" }
+];
 
         // Función inteligente para asignar etiquetas de lujo (Fricción Cero)
         function getLuxuryBadge(id) {
@@ -1425,9 +1425,15 @@
         }
 
 function updateCartUI() {
-            localStorage.setItem('laforesta_cart', JSON.stringify(cart));
-            const container = document.getElementById('cart-items-container');
-            const totalEl = document.getElementById('cart-total');
+    // NUEVA LÓGICA: Si no hay ramos (IDs menores a 100), vaciar los extras
+    const tieneRamos = cart.some(item => item.id < 100);
+    if (!tieneRamos) { cart = []; }
+
+    localStorage.setItem('laforesta_cart', JSON.stringify(cart));
+    const container = document.getElementById('cart-items-container');
+    const totalEl = document.getElementById('cart-total');
+    
+    // ... (el resto de tu código se mantiene igual)
             const countNav = document.getElementById('cart-count');
             
             if (cart.length === 0) {
@@ -1472,7 +1478,15 @@ function updateCartUI() {
             const inCartIds = cart.map(item => item.id);
             const availableUpsells = upsellsCatalog.filter(u => !inCartIds.includes(u.id));
 
-            if (availableUpsells.length > 0) {
+            // NUEVA LÓGICA DE RESPETO (Condolencias)
+            // Identificamos los IDs de los ramos que pertenecen a condolencias (1 y 8 según tu código)
+            const condolenceIds = [1, 8]; 
+            
+            // Verificamos si en el carrito actual hay algún producto que coincida con esos IDs
+            const tieneCondolencias = cart.some(item => condolenceIds.includes(item.id));
+
+            // Solo mostramos los chocolates/peluches si hay stock Y NO hay ramos de condolencias
+            if (availableUpsells.length > 0 && !tieneCondolencias) {
                 html += `
                     <div class="mt-12 border-t border-zinc-100 pt-8">
                         <h5 class="font-serif text-lg italic mb-6 text-[#0a1f1c]">Acompañe su regalo</h5>
