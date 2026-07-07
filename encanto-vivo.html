@@ -128,7 +128,7 @@
 
     <!-- Navegación Simplificada -->
     <nav class="fixed w-full z-50 bg-[#fcfaf7]/95 backdrop-blur-lg px-6 md:px-12 py-5 flex justify-between items-center border-b border-[#0a1f1c]/5 transition-all duration-300">
-        <a href="/index-test.html" class="cursor-pointer" aria-label="Volver al inicio">
+        <a href="/index.html" class="cursor-pointer" aria-label="Volver al inicio">
             <img src="img/logo-menu.png" alt="La Foresta Flores Logo" class="h-6 md:h-8 w-auto object-contain">
         </a>
         <div class="flex items-center space-x-8">
@@ -142,9 +142,9 @@
         <!-- Breadcrumbs Visuales -->
         <nav aria-label="Breadcrumb" class="absolute top-24 left-6 md:left-12 text-[9px] uppercase tracking-widest opacity-60 mb-8 z-10">
             <ol class="flex space-x-2">
-                <li><a href="/index-test.html" class="hover:text-[#c5a059] transition-colors">Inicio</a></li>
+                <li><a href="/index.html" class="hover:text-[#c5a059] transition-colors">Inicio</a></li>
                 <li><span class="mx-1">/</span></li>
-                <li><a href="/index-test.html?action=open_vault#vault" class="hover:text-[#c5a059] transition-colors">Colección</a></li>
+                <li><a href="/index.html?action=open_vault#vault" class="hover:text-[#c5a059] transition-colors">Colección</a></li>
                 <li><span class="mx-1">/</span></li>
                 <li class="text-[#0a1f1c] font-bold" aria-current="page">Encanto Vivo</li>
             </ol>
@@ -220,7 +220,7 @@
             localStorage.setItem('laforesta_cart', JSON.stringify(cart));
             
             // Retorno directo al laboratorio de pruebas abriendo la bolsa
-            window.location.href = '/index-test.html?action=open_cart';
+            window.location.href = '/index.html?action=open_cart';
         }
     </script>
     <script>
@@ -231,7 +231,7 @@
             } else {
                 // Si el usuario entró directo desde un link de Instagram o Google, no hay historial atrás. 
                 // En ese caso, lo salvamos enviándolo a la colección principal.
-                window.location.href = '/index-test.html?action=open_vault#vault';
+                window.location.href = '/index.html?action=open_vault#vault';
             }
         }
     </script>
