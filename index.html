@@ -1490,42 +1490,42 @@ function updateCartUI() {
 
             // 2. Inyección del Slider de Upsells Pro (Sin opciones, clics directos)
             const inCartIds = cart.map(item => item.id);
-            const availableUpsells = upsellsCatalog.filter(u => !inCartIds.includes(u.id));
+            const availableUpsells = upsellsCat.filter(u => !inCartIds.includes(u.id));
 
             // NUEVA LÓGICA DE RESPETO (Condolencias)
             // Identificamos los IDs de los ramos que pertenecen a condolencias (1 y 8 según tu código)
-            const condolenceIds = [1, 8]; 
+            const condolenceIds = [1, 8, 13, 14, 15, 16, 17]; 
             
             // Verificamos si en el carrito actual hay algún producto que coincida con esos IDs
             const tieneCondolencias = cart.some(item => condolenceIds.includes(item.id));
 
             // Solo mostramos los chocolates/peluches si hay stock Y NO hay ramos de condolencias
             if (availableUpsells.length > 0 && !tieneCondolencias) {
-                html += `
-                    <div class="mt-12 border-t border-zinc-100 pt-8">
-                        <h5 class="font-serif text-lg italic mb-6 text-[#0a1f1c]">Acompañe su regalo</h5>
-                        <style>
-                            .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
-                            .hide-scroll::-webkit-scrollbar { display: none; }
-                        </style>
-                        <div id="upsell-slider" class="flex overflow-x-auto space-x-5 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
-                            ${availableUpsells.map(u => `
-                                <div class="w-[130px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
-                                    <div class="w-full aspect-square bg-[#fcfaf7] border border-zinc-200/60 mb-3 flex items-center justify-center relative overflow-hidden transition-all group-hover:bg-[#c5a059]/10 p-3 shadow-sm group-hover:border-[#c5a059]/30">
-                                        <span class="font-serif italic text-[#c5a059] text-3xl opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all absolute z-0">+</span>
-                                        <img src="${u.img}" onerror="this.style.opacity='0'" class="w-full h-full object-contain relative z-10 transition-transform duration-700 group-hover:scale-105" alt="${u.name}">
-                                    </div>
-                                    <h6 class="text-[9px] uppercase tracking-widest font-bold leading-normal text-[#0a1f1c] mb-1 min-h-[24px]">${u.name}</h6>
-                                    <p class="text-[#c5a059] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
-                                </div>
-                            `).join('')}
-                            <div class="w-4 flex-shrink-0"></div>
+    html += `
+        <div class="mt-12 border-t border-zinc-100 pt-8">
+            <h5 class="font-serif text-lg italic mb-6 text-[#0a1f1c]">Acompañe su regalo</h5>
+            <style>
+                .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+                .hide-scroll::-webkit-scrollbar { display: none; }
+            </style>
+            <div id="upsell-slider" class="flex overflow-x-auto space-x-5 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
+                ${availableUpsells.map(u => `
+                    <div class="w-[130px] flex-shrink-0 group cursor-pointer" onclick="addToCartLocal(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
+                        <div class="w-full aspect-square bg-[#fcfaf7] border border-zinc-200/60 mb-3 flex items-center justify-center relative overflow-hidden transition-all group-hover:bg-[#c5a059]/10 p-3 shadow-sm group-hover:border-[#c5a059]/30">
+                            <span class="font-serif italic text-[#c5a059] text-3xl opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all absolute z-0">+</span>
+                            <img src="${u.img}" onerror="this.style.opacity='0'" class="w-full h-full object-contain relative z-10 transition-transform duration-700 group-hover:scale-105" alt="${u.name}">
                         </div>
+                        <h6 class="text-[9px] uppercase tracking-widest font-bold leading-normal text-[#0a1f1c] mb-1 min-h-[24px]">${u.name}</h6>
+                        <p class="text-[#c5a059] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
                     </div>
-                `;
-            }
+                `).join('')}
+                <div class="w-4 flex-shrink-0"></div>
+            </div>
+        </div>
+    `;
+}
 
-           container.innerHTML = html;
+container.innerHTML = html;
 
             // Micro-script para mouse horizontal en PC
             const upsellSlider = document.getElementById('upsell-slider');
