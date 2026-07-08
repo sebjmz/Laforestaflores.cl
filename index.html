@@ -970,7 +970,7 @@ Recomendado 100%"</p>
                         <span class="text-[10px] uppercase tracking-widest text-zinc-500">Subtotal</span>
                         <span id="checkout-subtotal" class="font-serif text-sm text-[#0a1f1c]">$0</span>
                     </div>
-                    <div class="flex justify-between items-center mb-4 border-b border-[#0a1f1c]/10 pb-4">
+                    <div class="flex justify-between items-start mb-4 border-b border-[#0a1f1c]/10 pb-4">
     <span id="checkout-shipping-label" class="text-[10px] uppercase tracking-widest text-zinc-500">Logística</span>
     <div class="text-right">
                             <span id="checkout-shipping" class="font-serif text-sm text-[#0a1f1c]">$0</span>
@@ -1488,7 +1488,14 @@ const upsellsCatalog = [
     // NUEVA LÓGICA: Mostrar distintivo elegante si es Express
     if (checkoutShippingLabel) {
         if (isExpressDelivery && selectedLogistics === 'envio') {
-            checkoutShippingLabel.innerHTML = `Logística <span class="bg-[#c5a059]/10 text-[#c5a059] border border-[#c5a059]/30 px-1.5 py-0.5 ml-2 rounded-sm text-[8px] font-bold uppercase tracking-widest">Express (+50%)</span>`;
+            checkoutShippingLabel.innerHTML = `
+                <span class="inline-flex items-center gap-1.5">
+                    Logística 
+                    <span class="bg-[#c5a059]/10 text-[#c5a059] border border-[#c5a059]/30 px-1.5 py-[2px] rounded-sm text-[7px] md:text-[8px] font-bold uppercase tracking-widest whitespace-nowrap leading-none mt-0.5">
+                        Express (+50%)
+                    </span>
+                </span>
+            `;
         } else {
             checkoutShippingLabel.innerText = `Logística`;
         }
