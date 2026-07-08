@@ -366,10 +366,13 @@
             </div>
         </div>
        <div class="p-8 bg-zinc-50 border-t">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Total Estimado</span>
-                <span id="cart-total" class="text-2xl font-serif text-[#0a1f1c]">$0</span>
-            </div>
+    <div class="flex justify-between items-start mb-6">
+        <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c] mt-1">Total Estimado</span>
+        <div class="text-right">
+            <span id="cart-total" class="text-2xl font-serif text-[#0a1f1c] block">$0</span>
+            <span id="cart-shipping-notice" class="text-[9px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 opacity-0 transition-all duration-300 transform translate-y-1">Envío Gratis</span>
+        </div>
+    </div>
             
             <button onclick="openCheckout()" class="w-full btn-premium uppercase text-xs tracking-[0.2em] mb-6">Proceder al Checkout</button>
             
@@ -1378,15 +1381,29 @@ const upsellsCatalog = [
         }
 
         function actualizarTotalConDespacho() {
-            let baseTotal = cart.reduce((acc, item) => {
-                let precioItem = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
-                return acc + (precioItem * item.qty);
-            }, 0);
-            let costoEnvioFinal = baseTotal > 69990 ? 0 : shippingCost;
-            const totalFinal = baseTotal + costoEnvioFinal;
-            document.getElementById('cart-total').innerText = `$${totalFinal.toLocaleString()}`;
-            return totalFinal;
+    let baseTotal = cart.reduce((acc, item) => {
+        let precioItem = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
+        return acc + (precioItem * item.qty);
+    }, 0);
+    let costoEnvioFinal = baseTotal > 69990 ? 0 : shippingCost;
+    const totalFinal = baseTotal + costoEnvioFinal;
+    
+    document.getElementById('cart-total').innerText = `$${totalFinal.toLocaleString()}`;
+    
+    // Control del indicador de envío gratis
+    const shippingNotice = document.getElementById('cart-shipping-notice');
+    if (shippingNotice) {
+        if (baseTotal > 69990) {
+            shippingNotice.classList.remove('opacity-0', 'translate-y-1');
+            shippingNotice.classList.add('opacity-100', 'translate-y-0');
+        } else {
+            shippingNotice.classList.remove('opacity-100', 'translate-y-0');
+            shippingNotice.classList.add('opacity-0', 'translate-y-1');
         }
+    }
+    
+    return totalFinal;
+}
 
         function toggleCart() {
             const drawer = document.getElementById('atelier-bag');
