@@ -971,8 +971,8 @@ Recomendado 100%"</p>
                         <span id="checkout-subtotal" class="font-serif text-sm text-[#0a1f1c]">$0</span>
                     </div>
                     <div class="flex justify-between items-center mb-4 border-b border-[#0a1f1c]/10 pb-4">
-                        <span class="text-[10px] uppercase tracking-widest text-zinc-500">Logística</span>
-                        <div class="text-right">
+    <span id="checkout-shipping-label" class="text-[10px] uppercase tracking-widest text-zinc-500">Logística</span>
+    <div class="text-right">
                             <span id="checkout-shipping" class="font-serif text-sm text-[#0a1f1c]">$0</span>
                             <span id="checkout-shipping-notice" class="text-[8px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 hidden"></span>
                         </div>
@@ -1480,6 +1480,22 @@ const upsellsCatalog = [
     const checkoutShipping = document.getElementById('checkout-shipping');
     const checkoutFinalTotal = document.getElementById('checkout-final-total');
     const checkoutShippingNotice = document.getElementById('checkout-shipping-notice');
+    const checkoutShippingLabel = document.getElementById('checkout-shipping-label'); // Capturamos el nuevo label
+
+    if (checkoutSubtotal) checkoutSubtotal.innerText = `$${baseTotal.toLocaleString('es-CL')}`;
+    if (checkoutFinalTotal) checkoutFinalTotal.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
+    
+    // NUEVA LÓGICA: Mostrar distintivo elegante si es Express
+    if (checkoutShippingLabel) {
+        if (isExpressDelivery && selectedLogistics === 'envio') {
+            checkoutShippingLabel.innerHTML = `Logística <span class="bg-[#c5a059]/10 text-[#c5a059] border border-[#c5a059]/30 px-1.5 py-0.5 ml-2 rounded-sm text-[8px] font-bold uppercase tracking-widest">Express (+50%)</span>`;
+        } else {
+            checkoutShippingLabel.innerText = `Logística`;
+        }
+    }
+
+    if (checkoutShipping && checkoutShippingNotice) {
+        // ... (El resto de tu código sigue exactamente igual hacia abajo)
 
     if (checkoutSubtotal) checkoutSubtotal.innerText = `$${baseTotal.toLocaleString('es-CL')}`;
     if (checkoutFinalTotal) checkoutFinalTotal.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
