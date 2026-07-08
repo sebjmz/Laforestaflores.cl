@@ -1490,7 +1490,7 @@ function updateCartUI() {
 
             // 2. Inyección del Slider de Upsells Pro (Sin opciones, clics directos)
             const inCartIds = cart.map(item => item.id);
-            const availableUpsells = upsellsCat.filter(u => !inCartIds.includes(u.id));
+            const availableUpsells = upsellsCatalog.filter(u => !inCartIds.includes(u.id));
 
             // NUEVA LÓGICA DE RESPETO (Condolencias)
             // Identificamos los IDs de los ramos que pertenecen a condolencias (1 y 8 según tu código)
