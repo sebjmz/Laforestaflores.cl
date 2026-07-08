@@ -370,7 +370,7 @@
         <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c] mt-1">Total Estimado</span>
         <div class="text-right">
             <span id="cart-total" class="text-2xl font-serif text-[#0a1f1c] block">$0</span>
-            <span id="cart-shipping-notice" class="text-[9px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 opacity-0 transition-all duration-300 transform translate-y-1">Envío Gratis</span>
+            <span id="cart-shipping-notice" class="text-[9px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 transition-all duration-300" style="opacity: 0; transform: translateY(4px);">Envío Gratis</span>
         </div>
     </div>
             
@@ -1421,20 +1421,24 @@ const upsellsCatalog = [
         let precioItem = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
         return acc + (precioItem * item.qty);
     }, 0);
-    let costoEnvioFinal = baseTotal > 69990 ? 0 : shippingCost;
+    
+    let costoEnvioFinal = baseTotal >= 69990 ? 0 : parseInt(shippingCost || 0);
     const totalFinal = baseTotal + costoEnvioFinal;
     
-    document.getElementById('cart-total').innerText = `$${totalFinal.toLocaleString()}`;
+    const totalEl = document.getElementById('cart-total');
+    if (totalEl) totalEl.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
     
-    // Control del indicador de envío gratis
+    const stickyTotal = document.getElementById('sticky-cart-total');
+    if (stickyTotal) stickyTotal.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
+    
     const shippingNotice = document.getElementById('cart-shipping-notice');
     if (shippingNotice) {
-        if (baseTotal > 69990) {
-            shippingNotice.classList.remove('opacity-0', 'translate-y-1');
-            shippingNotice.classList.add('opacity-100', 'translate-y-0');
+        if (baseTotal >= 69990) {
+            shippingNotice.style.opacity = '1';
+            shippingNotice.style.transform = 'translateY(0)';
         } else {
-            shippingNotice.classList.remove('opacity-100', 'translate-y-0');
-            shippingNotice.classList.add('opacity-0', 'translate-y-1');
+            shippingNotice.style.opacity = '0';
+            shippingNotice.style.transform = 'translateY(4px)';
         }
     }
     
@@ -1663,38 +1667,39 @@ container.innerHTML = html;
         }
 
         function obtenerPayloadOrden() {
-            const emisor = document.getElementById('sender-name').value;
-            const correoComprador = document.getElementById('buyer-email').value.trim();
-            const receptor = document.getElementById('receiver-name').value;
-            const mensaje = document.getElementById('card-message').value;
-            const fonoDestino = document.getElementById('receiver-phone').value;
-            
-            let destinoFinal = selectedLogistics === 'envio' 
-                ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById('address').value}`
-                : `Retiro en Atelier Reñaca\n• *RETIRA:* ${document.getElementById('pickup-name') ? document.getElementById('pickup-name').value : ''}`;
-            
-            const horario = selectedTimeSlot || 'No especificado';
-            let fechaTexto = selectedDate === 'hoy' ? 'Hoy' : selectedDate;
-            
-            let baseTotalOrden = cart.reduce((acc, item) => acc + (isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price) * item.qty, 0);
-            let costoEnvioReal = baseTotalOrden > 69990 ? 0 : shippingCost;
-            let totalCLPFinal = baseTotalOrden + costoEnvioReal;
+    const emisor = document.getElementById('sender-name').value;
+    const correoComprador = document.getElementById('buyer-email').value.trim();
+    const receptor = document.getElementById('receiver-name').value;
+    const mensaje = document.getElementById('card-message').value;
+    const fonoDestino = document.getElementById('receiver-phone').value;
+    
+    let destinoFinal = selectedLogistics === 'envio' 
+        ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById('address').value}`
+        : `Retiro en Atelier Reñaca\n• *RETIRA:* ${document.getElementById('pickup-name') ? document.getElementById('pickup-name').value : ''}`;
+    
+    const horario = selectedTimeSlot || 'No especificado';
+    let fechaTexto = selectedDate === 'hoy' ? 'Hoy' : selectedDate;
+    
+    let baseTotalOrden = cart.reduce((acc, item) => acc + (isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price) * item.qty, 0);
+    
+    let costoEnvioReal = baseTotalOrden >= 69990 ? 0 : parseInt(shippingCost || 0);
+    let totalCLPFinal = baseTotalOrden + costoEnvioReal;
 
-            let articulos = cart.map(item => {
-                let precioReal = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
-                return `- ${item.name} (Cant: ${item.qty}) [c/u: $${precioReal.toLocaleString()}]`;
-            }).join('\n');
+    let articulos = cart.map(item => {
+        let precioReal = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
+        return `- ${item.name} (Cant: ${item.qty}) [c/u: $${precioReal.toLocaleString('es-CL')}]`;
+    }).join('\n');
 
-            return {
-                totalCLP: totalCLPFinal,
-                metadata: {
-                    sender_name: emisor, receiver_name: receptor, palette: selectedPalette,
-                    logistics_detail: destinoFinal, time_slot: horario, destination_phone: fonoDestino,
-                    card_text: mensaje, total_price: totalCLPFinal, order_summary: articulos,
-                    fecha_entrega: fechaTexto, valor_envio: costoEnvioReal, comprador_email: correoComprador 
-                }
-            };
+    return {
+        totalCLP: totalCLPFinal,
+        metadata: {
+            sender_name: emisor, receiver_name: receptor, palette: selectedPalette,
+            logistics_detail: destinoFinal, time_slot: horario, destination_phone: fonoDestino,
+            card_text: mensaje, total_price: totalCLPFinal, order_summary: articulos,
+            fecha_entrega: fechaTexto, valor_envio: costoEnvioReal, comprador_email: correoComprador 
         }
+    };
+}
 
         async function iniciarMercadoPago() {
             if(cart.length === 0) return alert("El atelier está vacío.");
