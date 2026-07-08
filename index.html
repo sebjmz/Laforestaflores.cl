@@ -954,19 +954,34 @@ Recomendado 100%"</p>
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Paso Final</span>
                 <h3 class="font-serif text-4xl italic mb-4">Confirmar y Pagar</h3>
                 
-                <!-- MENSAJE PREPARATORIO RESTAURADO + AVISO SPAM -->
                 <p class="text-[9px] uppercase tracking-widest opacity-60 mb-6 leading-loose">
                     Una vez acreditado el pago, recibirá automáticamente un correo con la confirmación y detalles logísticos (le sugerimos revisar su bandeja de spam o correo no deseado).
                 </p>
                 
-                <!-- CAJA DE CONFIANZA UNIFICADA MINIMALISTA -->
-                <div class="w-full bg-white border border-[#c5a059]/40 p-4 mb-8 text-left flex items-start gap-3 shadow-sm">
+                <div class="w-full bg-white border border-[#c5a059]/40 p-4 mb-6 text-left flex items-start gap-3 shadow-sm">
                     <span class="text-[#c5a059] text-[10px] mt-0.5">✓</span>
                     <p class="text-[9px] uppercase tracking-widest leading-relaxed text-[#0a1f1c] opacity-80">
                         <strong>Garantía de Atelier:</strong> Diseño idéntico al catálogo, verificado mediante fotografía de su pedido enviada por correo electrónico.
                     </p>
                 </div>
-                            
+
+                <div id="checkout-summary" class="w-full bg-zinc-50 border border-[#0a1f1c]/10 p-5 mb-8 text-left shadow-sm">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[10px] uppercase tracking-widest text-zinc-500">Subtotal</span>
+                        <span id="checkout-subtotal" class="font-serif text-sm text-[#0a1f1c]">$0</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-4 border-b border-[#0a1f1c]/10 pb-4">
+                        <span class="text-[10px] uppercase tracking-widest text-zinc-500">Logística</span>
+                        <div class="text-right">
+                            <span id="checkout-shipping" class="font-serif text-sm text-[#0a1f1c]">$0</span>
+                            <span id="checkout-shipping-notice" class="text-[8px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 hidden"></span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-end mt-2">
+                        <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Total a Pagar</span>
+                        <span id="checkout-final-total" class="font-serif text-2xl text-[#0a1f1c]">$0</span>
+                    </div>
+                </div>
                 <div id="payment-selector" class="w-full flex flex-col items-center gap-6">
                     <div class="w-full flex flex-col items-center gap-2">
                         <button class="btn-premium w-full max-w-md py-4 text-[14px] sm:text-[16px] uppercase tracking-[0.2em]" onclick="iniciarMercadoPago()">
@@ -1429,7 +1444,6 @@ const upsellsCatalog = [
         return acc + (precioItem * item.qty);
     }, 0);
     
-    // Calcula el descuento asegurando que nunca sea mayor al costo de envío real ni supere los 7250
     let descuentoEnvio = 0;
     if (baseTotal >= 69990) {
         descuentoEnvio = Math.min(parseInt(shippingCost || 0), 7250);
@@ -1438,6 +1452,7 @@ const upsellsCatalog = [
     let costoEnvioFinal = Math.max(0, parseInt(shippingCost || 0) - descuentoEnvio);
     const totalFinal = baseTotal + costoEnvioFinal;
     
+    // Actualización Atelier Bag y Sticky Mobile
     const totalEl = document.getElementById('cart-total');
     if (totalEl) totalEl.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
     
@@ -1449,16 +1464,45 @@ const upsellsCatalog = [
         if (baseTotal >= 69990) {
             shippingNotice.style.opacity = '1';
             shippingNotice.style.transform = 'translateY(0)';
-            
-            // Textos optimizados para el estilo de la página
             if (costoEnvioFinal === 0) {
                 shippingNotice.innerText = 'Envío Gratis';
             } else {
-                shippingNotice.innerText = 'Bono Logística Aplicado (-$7.250)';
+                shippingNotice.innerText = 'Bono Logística (-$7.250)';
             }
         } else {
             shippingNotice.style.opacity = '0';
             shippingNotice.style.transform = 'translateY(4px)';
+        }
+    }
+
+    // Actualización Resumen Final Checkout (Paso 6)
+    const checkoutSubtotal = document.getElementById('checkout-subtotal');
+    const checkoutShipping = document.getElementById('checkout-shipping');
+    const checkoutFinalTotal = document.getElementById('checkout-final-total');
+    const checkoutShippingNotice = document.getElementById('checkout-shipping-notice');
+
+    if (checkoutSubtotal) checkoutSubtotal.innerText = `$${baseTotal.toLocaleString('es-CL')}`;
+    if (checkoutFinalTotal) checkoutFinalTotal.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
+    
+    if (checkoutShipping && checkoutShippingNotice) {
+        if (selectedLogistics === 'retiro') {
+            checkoutShipping.innerText = 'Retiro en tienda ($0)';
+            checkoutShippingNotice.classList.add('hidden');
+        } else {
+            if (baseTotal >= 69990) {
+                if (costoEnvioFinal === 0) {
+                    checkoutShipping.innerText = '$0';
+                    checkoutShippingNotice.innerText = 'Envío de Cortesía';
+                    checkoutShippingNotice.classList.remove('hidden');
+                } else {
+                    checkoutShipping.innerText = `$${costoEnvioFinal.toLocaleString('es-CL')}`;
+                    checkoutShippingNotice.innerText = 'Bono Logística Aplicado (-$7.250)';
+                    checkoutShippingNotice.classList.remove('hidden');
+                }
+            } else {
+                checkoutShipping.innerText = `$${parseInt(shippingCost || 0).toLocaleString('es-CL')}`;
+                checkoutShippingNotice.classList.add('hidden');
+            }
         }
     }
     
