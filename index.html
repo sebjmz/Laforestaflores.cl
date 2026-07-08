@@ -1629,8 +1629,8 @@ function updateCartUI() {
             const availableUpsells = upsellsCatalog.filter(u => !inCartIds.includes(u.id));
 
             // NUEVA LÓGICA DE RESPETO (Condolencias)
-            // Identificamos los IDs de los ramos que pertenecen a condolencias (1 y 8 según tu código)
-            const condolenceIds = [1, 8, 13, 14, 15, 16, 17]; 
+            // Identificamos los IDs de los ramos que pertenecen a condolencias (13, 14, 15, 16, 17 según tu código)
+            const condolenceIds = [13, 14, 15, 16, 17]; 
             
             // Verificamos si en el carrito actual hay algún producto que coincida con esos IDs
             const tieneCondolencias = cart.some(item => condolenceIds.includes(item.id));
