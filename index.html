@@ -1510,7 +1510,7 @@ function updateCartUI() {
             </style>
             <div id="upsell-slider" class="flex overflow-x-auto space-x-5 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
                 ${availableUpsells.map(u => `
-                    <div class="w-[130px] flex-shrink-0 group cursor-pointer" onclick="addToCartLocal(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
+                    <div class="w-[130px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
                         <div class="w-full aspect-square bg-[#fcfaf7] border border-zinc-200/60 mb-3 flex items-center justify-center relative overflow-hidden transition-all group-hover:bg-[#c5a059]/10 p-3 shadow-sm group-hover:border-[#c5a059]/30">
                             <span class="font-serif italic text-[#c5a059] text-3xl opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all absolute z-0">+</span>
                             <img src="${u.img}" onerror="this.style.opacity='0'" class="w-full h-full object-contain relative z-10 transition-transform duration-700 group-hover:scale-105" alt="${u.name}">
