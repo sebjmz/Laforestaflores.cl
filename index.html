@@ -1429,7 +1429,13 @@ const upsellsCatalog = [
         return acc + (precioItem * item.qty);
     }, 0);
     
-    let costoEnvioFinal = baseTotal >= 69990 ? 0 : parseInt(shippingCost || 0);
+    // Calcula el descuento asegurando que nunca sea mayor al costo de envío real ni supere los 7250
+    let descuentoEnvio = 0;
+    if (baseTotal >= 69990) {
+        descuentoEnvio = Math.min(parseInt(shippingCost || 0), 7250);
+    }
+    
+    let costoEnvioFinal = Math.max(0, parseInt(shippingCost || 0) - descuentoEnvio);
     const totalFinal = baseTotal + costoEnvioFinal;
     
     const totalEl = document.getElementById('cart-total');
@@ -1443,6 +1449,12 @@ const upsellsCatalog = [
         if (baseTotal >= 69990) {
             shippingNotice.style.opacity = '1';
             shippingNotice.style.transform = 'translateY(0)';
+            
+            if (costoEnvioFinal === 0) {
+                shippingNotice.innerText = 'Envío Gratis';
+            } else {
+                shippingNotice.innerText = 'Bono Envío Aplicado (-$7.250)';
+            }
         } else {
             shippingNotice.style.opacity = '0';
             shippingNotice.style.transform = 'translateY(4px)';
@@ -1688,7 +1700,9 @@ container.innerHTML = html;
     
     let baseTotalOrden = cart.reduce((acc, item) => acc + (isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price) * item.qty, 0);
     
-    let costoEnvioReal = baseTotalOrden >= 69990 ? 0 : parseInt(shippingCost || 0);
+    // Misma regla de tope para enviar a pasarela de pago y Make.com
+    let descuentoEnvio = baseTotalOrden >= 69990 ? Math.min(parseInt(shippingCost || 0), 7250) : 0;
+    let costoEnvioReal = Math.max(0, parseInt(shippingCost || 0) - descuentoEnvio);
     let totalCLPFinal = baseTotalOrden + costoEnvioReal;
 
     let articulos = cart.map(item => {
