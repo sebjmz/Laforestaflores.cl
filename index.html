@@ -817,15 +817,53 @@ Recomendado 100%"</p>
             </div>
 
             <div id="step-zona" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-                <h3 class="font-serif text-3xl italic mb-12">Zona de entrega</h3>
-                <div class="space-y-4 w-full">
-                    <button onclick="seleccionarZona(3, 'Reñaca Centro / Jardín del Mar')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Reñaca Centro / Jardín del Mar (+$3.500)</button>
-                    <button onclick="seleccionarZona(9, 'Viña del Mar Centro / Poniente')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Viña del Mar Centro / Poniente (+$8.100)</button>
-                    <button onclick="seleccionarZona(8, 'Concón / Costa de Montemar')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Concón / Costa de Montemar (+$7.200)</button>
-                </div>
-                <button onclick="goToStep(3)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Logística</span>
+    <h3 class="font-serif text-3xl italic mb-8">Zona de entrega</h3>
+    
+    <div class="space-y-3 w-full text-left">
+        <button onclick="seleccionarZona(3500, 'Zona 1: Ultra Local (Reñaca/Jardín del Mar)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+            <div class="flex justify-between items-center w-full">
+                <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">1. Zona Ultra Local</span>
+                <span class="text-[11px] font-bold text-[#c5a059]">+$3.500</span>
             </div>
+            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Reñaca Bajo/Centro, Jardín del Mar, Los Pinos, Gómez Carreño bajo.</span>
+        </button>
+
+        <button onclick="seleccionarZona(4750, 'Zona 2: Local Media (Viña/Concón/Reñaca Norte)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+            <div class="flex justify-between items-center w-full">
+                <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">2. Zona Local Media</span>
+                <span class="text-[11px] font-bold text-[#c5a059]">+$4.750</span>
+            </div>
+            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Reñaca Norte, Montemar, Higuerillas, Glorias Navales, Viña Centro/Poniente.</span>
+        </button>
+
+        <button onclick="seleccionarZona(7250, 'Zona 3: Intermedia (Valparaíso Plan/Concón Alto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+            <div class="flex justify-between items-center w-full">
+                <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">3. Zona Intermedia</span>
+                <span class="text-[11px] font-bold text-[#c5a059]">+$7.250</span>
+            </div>
+            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Concón Alto, Mantagua Bajo, Chorrillos, Cerros de Viña, Valparaíso Plan.</span>
+        </button>
+
+        <button onclick="seleccionarZona(11000, 'Zona 4: Extendida (Quilpué/Valparaíso Alto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+            <div class="flex justify-between items-center w-full">
+                <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">4. Zona Extendida</span>
+                <span class="text-[11px] font-bold text-[#c5a059]">+$11.000</span>
+            </div>
+            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Mantagua Alto, Valparaíso Cerros Periféricos, Quilpué Centro, Los Pinos.</span>
+        </button>
+
+        <button onclick="seleccionarZona(16750, 'Zona 5: Periférica Larga (Quintero/Curauma/Belloto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+            <div class="flex justify-between items-center w-full">
+                <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">5. Zona Periférica</span>
+                <span class="text-[11px] font-bold text-[#c5a059]">+$16.750</span>
+            </div>
+            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Quintero, Curauma, Placilla de Peñuelas, El Belloto.</span>
+        </button>
+    </div>
+    
+    <button onclick="goToStep(3)" class="mt-10 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+</div>
 
             <div id="step-direccion" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
@@ -1195,14 +1233,12 @@ const upsellsCatalog = [
             }
         }
 
-        function seleccionarZona(km, zoneName) {
-            let costo = km * 900;
-            if (costo < 3500) costo = 3500;
-            shippingCost = costo;
-            selectedZoneName = zoneName;
-            actualizarTotalConDespacho();
-            goToStep('step-direccion');
-        }
+        function seleccionarZona(costo, zoneName) {
+    shippingCost = costo;
+    selectedZoneName = zoneName;
+    actualizarTotalConDespacho();
+    goToStep('step-direccion');
+}
 
         function confirmarDireccion() {
             const dir = document.getElementById('address').value.trim();
