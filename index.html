@@ -2043,7 +2043,7 @@ container.innerHTML = html;
             const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             
             // Texto adaptativo: Más corto en celular, más explicativo en PC
-            timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Express (1-2hrs) cierra en:</span><span class="opacity-60 md:hidden">Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
+            timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Express (1-2h) cierra en:</span><span class="opacity-60 md:hidden">Envío Express (1-2h) Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
         }
         setInterval(updateCountdown, 1000);
         updateCountdown();
