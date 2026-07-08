@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>La Foresta | Panel de Distribución Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0a1f1c; color: #fcfaf7; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <div class="p-6 text-center border-b border-[#c5a059]/20 bg-black/10">
+        <h1 class="font-serif italic text-3xl text-[#c5a059]">Atelier Logística</h1>
+        <p class="text-[9px] uppercase tracking-[0.3em] opacity-50 mt-1">Verificación y Despacho Express</p>
+    </div>
+
+    <div class="flex-grow p-6 max-w-md mx-auto w-full space-y-6">
+        
+        <div class="space-y-3">
+            <label class="text-[10px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block">Paso 1: Identificación del Pedido</label>
+            <div class="flex gap-2">
+                <input type="text" id="order-id" placeholder="Ej: LF-17045..." class="flex-grow bg-white/5 border border-white/10 p-4 text-center text-lg focus:outline-none focus:border-[#c5a059] rounded-none font-mono">
+                <button onclick="buscarOrden(event)" id="search-btn" class="bg-[#c5a059] text-[#0a1f1c] px-6 font-bold text-xs uppercase tracking-widest hover:bg-white transition-all">Buscar</button>
+            </div>
+        </div>
+
+        <div id="info-panel" class="hidden border border-[#c5a059]/30 bg-white/[0.02] p-5 space-y-4 animate-fade-in">
+            <div class="border-b border-white/5 pb-2">
+                <span class="text-[8px] uppercase tracking-widest text-[#c5a059] block">Destinatario</span>
+                <p id="info-nombre" class="font-serif italic text-xl text-white"></p>
+            </div>
+            <div class="border-b border-white/5 pb-2">
+                <span class="text-[8px] uppercase tracking-widest text-[#c5a059] block">Dirección de Entrega</span>
+                <p id="info-direccion" class="text-sm text-white/90 leading-relaxed font-light whitespace-pre-wrap"></p>
+            </div>
+            <div>
+                <span class="text-[8px] uppercase tracking-widest text-[#c5a059] block">Teléfono de Contacto</span>
+                <p id="info-telefono" class="text-sm text-white/80 font-mono"></p>
+            </div>
+        </div>
+
+        <form id="delivery-form" class="space-y-6 hidden" onsubmit="enviarEntrega(event)">
+            <label class="text-[10px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block">Paso 2: Registro Fotográfico de Atelier</label>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <span class="text-[9px] uppercase tracking-wider opacity-60 block text-center">1. El Arreglo</span>
+                    <div class="relative h-32 bg-white/5 border border-dashed border-white/20 flex items-center justify-center overflow-hidden">
+                        <input type="file" id="foto-1" accept="image/*" capture="camera" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="previewImg(this, 'p-1', 'icon-1')">
+                        <span id="icon-1" class="text-2xl text-[#c5a059]">+</span>
+                        <img id="p-1" class="absolute inset-0 w-full h-full object-cover hidden pointer-events-none">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <span class="text-[9px] uppercase tracking-wider opacity-60 block text-center">2. Fachada / Entrega</span>
+                    <div class="relative h-32 bg-white/5 border border-dashed border-white/20 flex items-center justify-center overflow-hidden">
+                        <input type="file" id="foto-2" accept="image/*" capture="camera" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="previewImg(this, 'p-2', 'icon-2')">
+                        <span id="icon-2" class="text-2xl text-[#c5a059]">+</span>
+                        <img id="p-2" class="absolute inset-0 w-full h-full object-cover hidden pointer-events-none">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="submit-btn" class="w-full py-5 bg-[#c5a059] text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] transition-colors duration-300">
+                Acreditar y Notificar Cliente
+            </button>
+        </form>
+
+    </div>
+
+    <div class="p-4 text-center opacity-30 text-[8px] uppercase tracking-widest border-t border-white/5 bg-black/20">
+        La Foresta Flores Premium · Sistema de Trazabilidad Costera
+    </div>
+
+    <script>
+        // URLs DE TUS WEBHOOKS EN MAKE.COM
+        const URL_BUSQUEDA = "https://hook.us2.make.com/TU_WEBHOOK_BUSQUEDA_AQUI";
+        const URL_DESPACHO = "https://hook.us2.make.com/TU_WEBHOOK_DESPACHO_AQUI";
+
+        async function buscarOrden(e) {
+            e.preventDefault();
+            const id = document.getElementById('order-id').value.trim();
+            const btn = document.getElementById('search-btn');
+            if(!id) return alert("Por favor ingresa un ID de orden.");
+
+            btn.innerText = "...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(URL_BUSQUEDA, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ order_id: id })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Rellenar datos devueltos por Google Sheets
+                    document.getElementById('info-nombre').innerText = data.receptor;
+                    document.getElementById('info-direccion').innerText = data.direccion;
+                    document.getElementById('info-telefono').innerText = data.telefono;
+
+                    // Mostrar paneles
+                    document.getElementById('info-panel').classList.remove('hidden');
+                    document.getElementById('delivery-form').classList.remove('hidden');
+                } else {
+                    alert("Orden no encontrada. Verifica el ID.");
+                }
+            } catch (err) {
+                alert("Error de conexión al consultar la orden.");
+            } finally {
+                btn.innerText = "Buscar";
+                btn.disabled = false;
+            }
+        }
+
+        function previewImg(input, previewId, iconId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(previewId).src = e.target.result;
+                    document.getElementById(previewId).classList.remove('hidden');
+                    document.getElementById(iconId).classList.add('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function enviarEntrega(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            btn.innerHTML = "PROCESANDO CERTIFICACIÓN...";
+            btn.disabled = true;
+
+            const orderId = document.getElementById('order-id').value.trim();
+            const f1 = document.getElementById('foto-1').files[0];
+            const f2 = document.getElementById('foto-2').files[0];
+
+            const formData = new FormData();
+            formData.append('order_id', orderId);
+            formData.append('foto_arreglo', f1);
+            formData.append('foto_entrega', f2);
+            formData.append('hora_entrega', new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' }));
+
+            try {
+                const response = await fetch(URL_DESPACHO, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if(response.ok) {
+                    btn.innerHTML = "NOTIFICACIÓN ENVIADA ✓";
+                    btn.style.backgroundColor = "#10b981";
+                    btn.style.color = "#ffffff";
+                    setTimeout(() => { window.location.reload(); }, 2500);
+                } else {
+                    throw new Error();
+                }
+            } catch (err) {
+                alert("Error al enviar evidencias.");
+                btn.innerHTML = "Acreditar y Notificar Cliente";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
