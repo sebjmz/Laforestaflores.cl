@@ -1041,7 +1041,7 @@ Recomendado 100%"</p>
         let selectedTimeSlot = localStorage.getItem('laforesta_selectedTimeSlot') || '';
         let isExpressDelivery = localStorage.getItem('laforesta_isExpressDelivery') === 'true';
 
-        const RECARGO_EXPRESS_PRODUCTO = 1.25; 
+        const RECARGO_EXPRESS_ENVIO = 1.50; 
         let currentCalendarDate = new Date();
 
         const mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', {
@@ -1439,20 +1439,21 @@ const upsellsCatalog = [
         }
 
         function actualizarTotalConDespacho() {
-    let baseTotal = cart.reduce((acc, item) => {
-        let precioItem = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
-        return acc + (precioItem * item.qty);
-    }, 0);
+    // Cálculo base de productos sin recargo
+    let baseTotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+    
+    // Cálculo de logística con recargo de 50% si es express
+    let tarifaEnvioBase = parseInt(shippingCost || 0);
+    let tarifaEnvioFinal = isExpressDelivery ? Math.round(tarifaEnvioBase * RECARGO_EXPRESS_ENVIO) : tarifaEnvioBase;
     
     let descuentoEnvio = 0;
     if (baseTotal >= 69990) {
-        descuentoEnvio = Math.min(parseInt(shippingCost || 0), 7250);
+        descuentoEnvio = Math.min(tarifaEnvioFinal, 7250);
     }
     
-    let costoEnvioFinal = Math.max(0, parseInt(shippingCost || 0) - descuentoEnvio);
+    let costoEnvioFinal = Math.max(0, tarifaEnvioFinal - descuentoEnvio);
     const totalFinal = baseTotal + costoEnvioFinal;
     
-    // Actualización Atelier Bag y Sticky Mobile
     const totalEl = document.getElementById('cart-total');
     if (totalEl) totalEl.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
     
@@ -1475,7 +1476,6 @@ const upsellsCatalog = [
         }
     }
 
-    // Actualización Resumen Final Checkout (Paso 6)
     const checkoutSubtotal = document.getElementById('checkout-subtotal');
     const checkoutShipping = document.getElementById('checkout-shipping');
     const checkoutFinalTotal = document.getElementById('checkout-final-total');
@@ -1500,7 +1500,7 @@ const upsellsCatalog = [
                     checkoutShippingNotice.classList.remove('hidden');
                 }
             } else {
-                checkoutShipping.innerText = `$${parseInt(shippingCost || 0).toLocaleString('es-CL')}`;
+                checkoutShipping.innerText = `$${tarifaEnvioFinal.toLocaleString('es-CL')}`;
                 checkoutShippingNotice.classList.add('hidden');
             }
         }
@@ -1740,19 +1740,24 @@ container.innerHTML = html;
         ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById('address').value}`
         : `Retiro en Atelier Reñaca\n• *RETIRA:* ${document.getElementById('pickup-name') ? document.getElementById('pickup-name').value : ''}`;
     
+    if (isExpressDelivery && selectedLogistics === 'envio') {
+        destinoFinal = "[SERVICIO EXPRESS] " + destinoFinal;
+    }
+
     const horario = selectedTimeSlot || 'No especificado';
     let fechaTexto = selectedDate === 'hoy' ? 'Hoy' : selectedDate;
     
-    let baseTotalOrden = cart.reduce((acc, item) => acc + (isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price) * item.qty, 0);
+    let baseTotalOrden = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
     
-    // Misma regla de tope para enviar a pasarela de pago y Make.com
-    let descuentoEnvio = baseTotalOrden >= 69990 ? Math.min(parseInt(shippingCost || 0), 7250) : 0;
-    let costoEnvioReal = Math.max(0, parseInt(shippingCost || 0) - descuentoEnvio);
+    let tarifaEnvioBase = parseInt(shippingCost || 0);
+    let tarifaEnvioFinal = isExpressDelivery ? Math.round(tarifaEnvioBase * RECARGO_EXPRESS_ENVIO) : tarifaEnvioBase;
+
+    let descuentoEnvio = baseTotalOrden >= 69990 ? Math.min(tarifaEnvioFinal, 7250) : 0;
+    let costoEnvioReal = Math.max(0, tarifaEnvioFinal - descuentoEnvio);
     let totalCLPFinal = baseTotalOrden + costoEnvioReal;
 
     let articulos = cart.map(item => {
-        let precioReal = isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price;
-        return `- ${item.name} (Cant: ${item.qty}) [c/u: $${precioReal.toLocaleString('es-CL')}]`;
+        return `- ${item.name} (Cant: ${item.qty}) [c/u: $${item.price.toLocaleString('es-CL')}]`;
     }).join('\n');
 
     return {
@@ -1785,7 +1790,7 @@ container.innerHTML = html;
                 title: item.name,
                 description: item.name,
                 quantity: item.qty,
-                unit_price: isExpressDelivery ? Math.round(item.price * RECARGO_EXPRESS_PRODUCTO) : item.price,
+                unit_price: item.price,
                 currency_id: "CLP"
             }));
 
