@@ -402,7 +402,7 @@
         </div>        
 
         <div class="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
-                <h4 class="text-white text-[10px] md:text-sm font-bold uppercase tracking-[0.2em] md:tracking-[0.8em] mb-8 animate-pulse text-center px-4">Envío gratis sobre $69.990</h4>            
+                <h4 class="text-white text-[10px] md:text-sm font-bold uppercase tracking-[0.2em] md:tracking-[0.8em] mb-8 animate-pulse text-center px-4">Envío gratis sobre $69.990*</h4>            
             <h1 class="text-white text-6xl md:text-[120px] font-serif leading-none mb-12 italic">
                 <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
             </h1>
@@ -1450,10 +1450,11 @@ const upsellsCatalog = [
             shippingNotice.style.opacity = '1';
             shippingNotice.style.transform = 'translateY(0)';
             
+            // Textos optimizados para el estilo de la página
             if (costoEnvioFinal === 0) {
                 shippingNotice.innerText = 'Envío Gratis';
             } else {
-                shippingNotice.innerText = 'Bono Envío Aplicado (-$7.250)';
+                shippingNotice.innerText = 'Bono Logística Aplicado (-$7.250)';
             }
         } else {
             shippingNotice.style.opacity = '0';
