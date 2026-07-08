@@ -1443,7 +1443,7 @@ const upsellsCatalog = [
     let baseTotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
     
     // Cálculo de logística con recargo de 50% si es express
-    let tarifaEnvioBase = parseInt(shippingCost || 0);
+    let tarifaEnvioBase = parseInt(shippingCost || 0, 10);
     let tarifaEnvioFinal = isExpressDelivery ? Math.round(tarifaEnvioBase * RECARGO_EXPRESS_ENVIO) : tarifaEnvioBase;
     
     let descuentoEnvio = 0;
@@ -1480,7 +1480,7 @@ const upsellsCatalog = [
     const checkoutShipping = document.getElementById('checkout-shipping');
     const checkoutFinalTotal = document.getElementById('checkout-final-total');
     const checkoutShippingNotice = document.getElementById('checkout-shipping-notice');
-    const checkoutShippingLabel = document.getElementById('checkout-shipping-label'); // Capturamos el nuevo label
+    const checkoutShippingLabel = document.getElementById('checkout-shipping-label');
 
     if (checkoutSubtotal) checkoutSubtotal.innerText = `$${baseTotal.toLocaleString('es-CL')}`;
     if (checkoutFinalTotal) checkoutFinalTotal.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
@@ -1494,12 +1494,6 @@ const upsellsCatalog = [
         }
     }
 
-    if (checkoutShipping && checkoutShippingNotice) {
-        // ... (El resto de tu código sigue exactamente igual hacia abajo)
-
-    if (checkoutSubtotal) checkoutSubtotal.innerText = `$${baseTotal.toLocaleString('es-CL')}`;
-    if (checkoutFinalTotal) checkoutFinalTotal.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
-    
     if (checkoutShipping && checkoutShippingNotice) {
         if (selectedLogistics === 'retiro') {
             checkoutShipping.innerText = 'Retiro en tienda ($0)';
@@ -1524,7 +1518,6 @@ const upsellsCatalog = [
     
     return totalFinal;
 }
-
         function toggleCart() {
             const drawer = document.getElementById('atelier-bag');
             const overlay = document.getElementById('cart-overlay');
