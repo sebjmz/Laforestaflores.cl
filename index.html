@@ -818,7 +818,14 @@ Recomendado 100%"</p>
 
             <div id="step-zona" class="checkout-step flex-col items-center w-full max-w-md text-center">
     <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Logística</span>
-    <h3 class="font-serif text-3xl italic mb-8">Zona de entrega</h3>
+    <h3 class="font-serif text-3xl italic mb-4">Zona de entrega</h3>
+    
+    <div class="w-full bg-[#c5a059]/10 border border-[#c5a059]/30 p-3 mb-6 text-left flex items-start gap-2 shadow-sm">
+        <span class="text-[#c5a059] text-[10px] mt-0.5">⚠</span>
+        <p class="text-[8px] uppercase tracking-widest leading-relaxed text-[#0a1f1c] opacity-80">
+            <strong>Importante:</strong> La elección correcta del sector evitará errores de cobro y retrasos en la ruta de despacho.
+        </p>
+    </div>
     
     <div class="space-y-3 w-full text-left">
         <button onclick="seleccionarZona(3500, 'Zona 1: Ultra Local (Reñaca/Jardín del Mar)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
@@ -826,7 +833,7 @@ Recomendado 100%"</p>
                 <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">1. Zona Ultra Local</span>
                 <span class="text-[11px] font-bold text-[#c5a059]">+$3.500</span>
             </div>
-            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Reñaca Bajo/Centro, Jardín del Mar, Los Pinos, Gómez Carreño bajo.</span>
+            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Reñaca Centro, Clínica Reñaca, Jardín del Mar, Los Pinos (Reñaca), Gómez Carreño bajo.</span>
         </button>
 
         <button onclick="seleccionarZona(4750, 'Zona 2: Local Media (Viña/Concón/Reñaca Norte)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
@@ -834,35 +841,35 @@ Recomendado 100%"</p>
                 <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">2. Zona Local Media</span>
                 <span class="text-[11px] font-bold text-[#c5a059]">+$4.750</span>
             </div>
-            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Reñaca Norte, Montemar, Higuerillas, Glorias Navales.</span>
+            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Reñaca Norte, Montemar, Higuerillas, Hospital Naval, Glorias Navales, Santa Julia, Achupallas.</span>
         </button>
 
-        <button onclick="seleccionarZona(7250, 'Zona 3: Intermedia (Valparaíso Plan/Concón Alto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+        <button onclick="seleccionarZona(7250, 'Zona 3: Intermedia (Viña Centro/Concón Alto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
             <div class="flex justify-between items-center w-full">
                 <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">3. Zona Intermedia</span>
                 <span class="text-[11px] font-bold text-[#c5a059]">+$7.250</span>
             </div>
-            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Viña Centro/Poniente, Cerros de Viña, Chorrillos, Concón Los Romeros, Costa de Montemar, Lomas de Montemar.</span>
+            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Viña Centro/Poniente, Clínica Ciudad del Mar, Hospital Gustavo Fricke, Cerros de Viña, Chorrillos, Miraflores, Cementerio Parque del Mar, Concón Los Romeros.</span>
         </button>
 
-        <button onclick="seleccionarZona(11000, 'Zona 4: Extendida (Quilpué/Valparaíso Alto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+        <button onclick="seleccionarZona(11000, 'Zona 4: Extendida (Quilpué/Valparaíso)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
             <div class="flex justify-between items-center w-full">
                 <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">4. Zona Extendida</span>
                 <span class="text-[11px] font-bold text-[#c5a059]">+$11.000</span>
             </div>
-            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Mantagua Sector Las Gaviotas, Fuerte Aguayo, Valparaíso Plan, Valparaíso Cerros, Quilpué Centro, Los Pinos.</span>
+            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Mantagua (Las Gaviotas), Valparaíso Plan y Cerros, Hospital Carlos Van Buren, Quilpué Centro, Paso Hondo, Los Pinos.</span>
         </button>
 
-        <button onclick="seleccionarZona(16750, 'Zona 5: Extendida Limítrofe (Quintero/Curauma/Belloto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+        <button onclick="seleccionarZona(16750, 'Zona 5: Limítrofe (Quintero/Curauma/Belloto/Villa Alemana)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
             <div class="flex justify-between items-center w-full">
                 <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">5. Zona Limítrofe</span>
                 <span class="text-[11px] font-bold text-[#c5a059]">+$16.750</span>
             </div>
-            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Quintero, Curauma, Placilla de Peñuelas, El Belloto.</span>
+            <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Quintero, Curauma, Cementerio Parque del Sendero, Placilla de Peñuelas, El Belloto, Villa Alemana.</span>
         </button>
     </div>
     
-    <button onclick="goToStep(3)" class="mt-10 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+    <button onclick="goToStep(3)" class="mt-10 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black transition-opacity">Volver</button>
 </div>
 
             <div id="step-direccion" class="checkout-step flex-col items-center w-full max-w-md text-center">
