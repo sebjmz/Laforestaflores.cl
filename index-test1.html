@@ -228,9 +228,13 @@
             color: var(--soft-cream);
         }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--soft-cream); }
-        ::-webkit-scrollbar-thumb { background: var(--gold-leaf); }
+        ::-webkit-scrollbar { 
+            display: none; 
+        }
+        body { 
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
         
         #video-bg-layer video {
             position: absolute;
@@ -2259,6 +2263,34 @@ container.innerHTML = html;
                 }
             }, 15);
         }
+
+// Control de Audio Inmersivo Atelier
+        const audioBtn = document.getElementById('audio-toggle-btn');
+        const atelierAudio = document.getElementById('atelier-audio');
+        const iconPlay = document.getElementById('audio-icon-play');
+        const iconPause = document.getElementById('audio-icon-pause');
+
+        if (audioBtn && atelierAudio) {
+            // Ajustar volumen para que sea tenue (0.3 = 30%)
+            atelierAudio.volume = 0.3; 
+
+            audioBtn.addEventListener('click', () => {
+                if (atelierAudio.paused) {
+                    atelierAudio.play().catch(error => console.log("La reproducción automática fue bloqueada:", error));
+                    iconPlay.classList.add('hidden');
+                    iconPause.classList.remove('hidden');
+                    audioBtn.classList.replace('opacity-60', 'opacity-100');
+                    audioBtn.classList.replace('bg-[#0a1f1c]/40', 'bg-[#0a1f1c]/80');
+                } else {
+                    atelierAudio.pause();
+                    iconPause.classList.add('hidden');
+                    iconPlay.classList.remove('hidden');
+                    audioBtn.classList.replace('opacity-100', 'opacity-60');
+                    audioBtn.classList.replace('bg-[#0a1f1c]/80', 'bg-[#0a1f1c]/40');
+                }
+            });
+        }
+        
     </script>
     <script>
     // --- Lógica de Interfaz del Modal B2B ---
@@ -2504,5 +2536,18 @@ container.innerHTML = html;
         }
     }, 6000); 
 </script>
+    <audio id="atelier-audio" loop preload="none">
+        <source src="audio/atelier-bg.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="audio-toggle-btn" class="fixed bottom-24 right-6 md:right-12 z-[90] bg-[#0a1f1c]/40 backdrop-blur-md border border-[#c5a059]/30 text-[#c5a059] p-3 rounded-full opacity-60 hover:opacity-100 hover:scale-105 transition-all duration-500 shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex items-center justify-center group" aria-label="Audio del Atelier">
+        <svg id="audio-icon-play" class="w-5 h-5 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <svg id="audio-icon-pause" class="w-5 h-5 font-light hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+    </button>
 </body>
 </html>
