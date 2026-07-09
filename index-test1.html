@@ -397,6 +397,7 @@
     
     <div id="slider-wrapper" class="relative w-full h-full overflow-hidden">
 
+        <!-- SLIDE 1: Excelencia -->
         <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
             <div class="absolute inset-0 bg-gradient-to-r from-[#0a1f1c]/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
             <img src="img/slide1-pc.jpg" alt="Familia La Foresta" class="absolute inset-0 w-full h-full object-cover object-center z-0">
@@ -410,10 +411,13 @@
                         Excelencia<br>Familiar.
                     </h2>
                     
-                    <div class="flex items-center gap-4 mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300">
-                        <span class="text-[#c5a059] text-xl md:text-2xl tracking-wider drop-shadow-md">★★★★★</span> 
-                        <p class="text-white/90 font-light text-base md:text-lg leading-snug m-0">
-                            4.9/5 en Google.<br>Bono de envío sobre $69.990.
+                    <div class="mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300">
+                        <div class="flex items-center gap-3 mb-1">
+                            <span class="text-[#c5a059] text-xl md:text-2xl tracking-wider drop-shadow-md">★★★★★</span> 
+                            <span class="text-white font-medium text-base md:text-xl drop-shadow-md">4.9/5 en Google.</span>
+                        </div>
+                        <p class="text-white/80 font-light text-sm md:text-lg leading-snug m-0">
+                            Bono de envío sobre $69.990.
                         </p>
                     </div>
 
@@ -424,34 +428,36 @@
             </div>
         </div>
 
+        <!-- SLIDE 2: Logística Fusionada -->
         <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
             <div class="absolute inset-0 bg-gradient-to-l from-black/90 via-black/40 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
-            <img src="img/slide2-pc.jpg" alt="Servicio Express" class="absolute inset-0 w-full h-full object-cover object-right z-0">
+            <img src="img/slide2-pc.jpg" alt="Logística y Servicio Express" class="absolute inset-0 w-full h-full object-cover object-right z-0">
             
             <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
                 <div class="md:w-1/2 lg:w-[42%] ml-auto text-left md:text-right">
                     <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
-                        Pedidos 24/7
+                        Logística Integral
                     </h4>
                     <h2 class="text-white text-6xl md:text-[7rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
-                        Tiempo<br>Perfecto.
+                        Cobertura<br>Express.
                     </h2>
                     <p class="text-white/90 font-light text-base md:text-xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 leading-relaxed md:ml-auto">
-                        Servicio Express (1 a 2 hrs) disponible para transformar urgencias en legados visuales.
+                        Entregas en 1 a 2 hrs. Llegamos con precisión impecable desde Reñaca hasta Quintero y Curauma.
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="scrollToVault()" class="btn-gold-outline inline-block px-8 py-3 md:px-10 md:py-4 text-base md:text-lg uppercase tracking-wider backdrop-blur-sm">Pedir Ahora</button>
+                        <button onclick="scrollToVault()" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Programar Envío</button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- SLIDE 3: Tulipanes -->
         <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
             <div class="absolute inset-0 bg-black/10 z-10"></div>
             <img src="img/slide3-pc.jpg" alt="Colección Tulipanes" class="absolute inset-0 w-full h-full object-cover object-center z-0">
             
             <div class="relative z-20 h-full flex flex-col justify-center items-center text-center w-full px-4">
-                <h2 class="text-white text-[22vw] md:text-[14vw] font-serif leading-none tracking-tighter mb-6 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 drop-shadow-2xl">
+                <h2 class="text-white text-[11vw] sm:text-[10vw] md:text-[9vw] lg:text-[130px] font-serif leading-none tracking-tighter mb-6 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 drop-shadow-2xl">
                     TULIPANES
                 </h2>
                 <p class="text-white font-medium text-base md:text-2xl max-w-2xl mb-12 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-200 drop-shadow-md">
@@ -463,45 +469,47 @@
             </div>
         </div>
 
+        <!-- SLIDE 4: Invierno (Reemplazo) -->
         <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
             <div class="absolute inset-0 bg-gradient-to-l from-[#0a1f1c]/90 via-[#0a1f1c]/50 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
-            <img src="img/slide4-pc.jpg" alt="Cobertura Logística" class="absolute inset-0 w-full h-full object-cover object-center z-0">
+            <img src="img/slide4-pc.jpg" alt="Colección Invierno" class="absolute inset-0 w-full h-full object-cover object-center z-0">
             
             <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
                 <div class="md:w-1/2 lg:w-[40%] ml-auto text-left md:text-right">
                     <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
-                        Logística Premium
+                        Nuevos Ingresos
                     </h4>
                     <h2 class="text-white text-6xl md:text-[7rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
-                        Cobertura<br>Absoluta.
+                        Temporada<br>Invierno.
                     </h2>
                     <p class="text-white/90 font-light text-base md:text-xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 md:ml-auto leading-relaxed">
-                        Llegamos con precisión impecable. Desde el corazón de Reñaca hasta Quintero y Curauma.
+                        Descubre diseños exclusivos y flores de estación seleccionadas para abrigar tus espacios.
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="scrollToVault()" class="btn-gold-outline inline-block px-8 py-3 md:px-10 md:py-4 text-base md:text-lg uppercase tracking-wider backdrop-blur-sm">Programar Envío</button>
+                        <button onclick="window.location.href='#temporada'" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Ver Temporada</button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- SLIDE 5: Suscripciones -->
         <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
             <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
-            <img src="img/slide5-pc.jpg" alt="Portal Corporativo B2B" class="absolute inset-0 w-full h-full object-cover object-center z-0">
+            <img src="img/slide5-pc.jpg" alt="Suscripciones" class="absolute inset-0 w-full h-full object-cover object-center z-0">
             
             <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
                 <div class="md:w-1/2 lg:w-[42%] mr-auto text-left">
                     <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
-                        Suscripciones & B2B
+                        Membresías & B2B
                     </h4>
-                    <h2 class="text-white text-6xl md:text-[6.5rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
-                        Espacios<br>Vivos.
+                    <h2 class="text-white text-5xl md:text-[6.5rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
+                        Suscripciones.
                     </h2>
                     <p class="text-white/90 font-light text-base md:text-xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 leading-relaxed">
-                        Membresías de renovación floral para personas, oficinas y eventos corporativos.
+                        Un ramo único en cada envío. Elige el plan perfecto para ti o tu empresa.
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="openB2BFlow()" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Acceso Portal</button>
+                        <button onclick="openB2BFlow()" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Elige el plan para ti</button>
                     </div>
                 </div>
             </div>
