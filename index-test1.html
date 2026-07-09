@@ -393,15 +393,12 @@
         </div>
     </div>
 
-    <!-- === INICIO SLIDER DE LUJO (INFINITO, RÁPIDO Y STOP MANUAL) === -->
-<section class="relative w-full h-screen overflow-hidden bg-[#0a1f1c]" id="hero-slider">
+    <section class="relative w-full h-screen overflow-hidden bg-[#0a1f1c]" id="hero-slider">
     
-    <!-- Contenedor principal (Ya no es flex, ahora superpone las capas) -->
-    <div id="slider-wrapper" class="relative w-full h-full overflow-hidden">
+    <div id="slider-wrapper" class="flex w-full h-full transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
 
-        <!-- SLIDE 1 -->
-        <div class="absolute inset-0 w-full h-full slide-item">
-            <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10 w-full md:w-2/3"></div>
+        <div class="w-full h-full flex-shrink-0 relative slide-item">
+            <div class="absolute inset-0 bg-gradient-to-r from-[#0a1f1c]/95 via-black/60 to-transparent z-10 w-full md:w-3/4"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide1-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide1-tablet.jpg">
@@ -409,25 +406,25 @@
             </picture>
             
             <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
-                <div class="md:w-1/2 lg:w-[38%] mr-auto text-left">
+                <div class="md:w-1/2 lg:w-[40%] mr-auto text-left">
                     <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
                         Tradición desde 2020
                     </h4>
-                    <h2 class="text-white text-6xl md:text-[7rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
+                    <h2 class="text-white text-6xl md:text-[6.5rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
                         Excelencia<br>Familiar.
                     </h2>
-                    <p class="text-white/90 font-light text-lg md:text-2xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 leading-relaxed">
-                        <span class="text-[#c5a059] text-base mr-1">★★★★★</span> 4.9/5 Puntuación Google.<br>Bono de envío sobre $69.990.
+                    <p class="text-white/90 font-light text-lg md:text-2xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 leading-relaxed flex items-center flex-wrap">
+                        <span class="text-[#c5a059] text-3xl md:text-4xl mr-3 tracking-widest drop-shadow-md">★★★★★</span> 
+                        <span class="mt-2 md:mt-0">4.9/5 en Google.<br>Bono de envío sobre $69.990.</span>
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="scrollToVault()" class="btn-premium px-12 py-5 text-xs md:text-sm shadow-xl">Explorar Colección</button>
+                        <button onclick="scrollToVault()" class="btn-premium px-14 py-6 md:px-16 md:py-7 text-lg md:text-xl shadow-xl">Explorar Colección</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 2 -->
-        <div class="absolute inset-0 w-full h-full slide-item">
+        <div class="w-full h-full flex-shrink-0 relative slide-item">
             <div class="absolute inset-0 bg-gradient-to-l from-black/90 via-black/50 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide2-pc.jpg">
@@ -447,14 +444,13 @@
                         Servicio Express (1 a 2 hrs) disponible para transformar urgencias en legados visuales.
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="scrollToVault()" class="btn-gold-outline inline-block px-12 py-5 text-xs md:text-sm uppercase tracking-widest backdrop-blur-sm">Pedir Ahora</button>
+                        <button onclick="scrollToVault()" class="btn-gold-outline inline-block px-12 py-5 text-sm md:text-base uppercase tracking-widest backdrop-blur-sm">Pedir Ahora</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 3 -->
-        <div class="absolute inset-0 w-full h-full slide-item">
+        <div class="w-full h-full flex-shrink-0 relative slide-item">
             <div class="absolute inset-0 bg-black/20 z-10"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide3-pc.jpg">
@@ -470,13 +466,12 @@
                     Nuestra colección más vibrante del año.
                 </p>
                 <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-400">
-                    <button onclick="scrollToVault()" class="btn-premium px-16 py-6 text-sm md:text-base shadow-[0_10px_30px_rgba(0,0,0,0.5)]">Adquirir Colección</button>
+                    <button onclick="scrollToVault()" class="btn-premium px-16 py-7 md:px-20 md:py-8 text-xl md:text-2xl shadow-[0_10px_30px_rgba(0,0,0,0.5)]">Adquirir Colección</button>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 4 -->
-        <div class="absolute inset-0 w-full h-full slide-item">
+        <div class="w-full h-full flex-shrink-0 relative slide-item">
             <div class="absolute inset-0 bg-gradient-to-l from-[#0a1f1c]/95 via-[#0a1f1c]/60 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide4-pc.jpg">
@@ -496,14 +491,13 @@
                         Llegamos con precisión impecable. Desde el corazón de Reñaca hasta Quintero y Curauma.
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="scrollToVault()" class="btn-gold-outline inline-block px-12 py-5 text-xs md:text-sm uppercase tracking-widest backdrop-blur-sm">Programar Envío</button>
+                        <button onclick="scrollToVault()" class="btn-gold-outline inline-block px-12 py-5 text-sm md:text-base uppercase tracking-widest backdrop-blur-sm">Programar Envío</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 5 -->
-        <div class="absolute inset-0 w-full h-full slide-item">
+        <div class="w-full h-full flex-shrink-0 relative slide-item">
             <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent z-10 w-full md:w-3/4"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide5-pc.jpg">
@@ -523,35 +517,28 @@
                         Membresías de renovación floral para personas, oficinas y eventos corporativos.
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="openB2BFlow()" class="btn-premium px-12 py-5 text-xs md:text-sm shadow-xl">Acceso Portal Empresas</button>
+                        <button onclick="openB2BFlow()" class="btn-premium px-14 py-6 md:px-16 md:py-7 text-lg md:text-xl shadow-xl">Acceso Portal Empresas</button>
                     </div>
                 </div>
             </div>
         </div>
 
-    </div> <!-- Fin slider-wrapper -->
-
-    <!-- Flechas Laterales (Con z-index alto) -->
-    <button onclick="prevHeroSlide(true)" class="absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-50 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+    </div> <button onclick="prevHeroSlide()" class="absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-40 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
         <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
     </button>
-    <button onclick="nextHeroSlide(true)" class="absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+    <button onclick="nextHeroSlide()" class="absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-40 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
         <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
     </button>
 
-    <!-- Burbujas (Posicionadas abajo a la extrema derecha) -->
     <div class="absolute bottom-10 right-10 md:bottom-12 md:right-16 z-50 flex space-x-3 items-center" id="hero-dots">
-        <!-- JS genera los puntos -->
-    </div>
+        </div>
 
-    <!-- Dirección fija abajo a la izquierda -->
-    <div class="absolute bottom-12 left-12 z-40 hidden lg:block">
+    <div class="absolute bottom-12 left-12 z-30 hidden lg:block">
         <p class="text-white/60 text-[10px] uppercase tracking-[0.4em] leading-relaxed drop-shadow-md">
             Av. Borgoño 14.580, Local 7 <br> 2520000 Viña del Mar
         </p>
     </div>
 </section>
-<!-- === FIN SLIDER DE LUJO === -->
 
     <div class="bg-forest-green py-4 border-y border-gold-leaf/20 overflow-hidden flex flex-nowrap whitespace-nowrap">
         <div class="animate-marquee flex shrink-0 min-w-full">
