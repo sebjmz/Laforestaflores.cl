@@ -393,31 +393,87 @@
         </div>
     </div>
 
-    <section class="hero-video-container">
-        <div class="absolute inset-0 hero-overlay z-10"></div>
-        <div id="video-bg-layer" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-            <video autoplay muted loop playsinline poster="img/hero-poster.jpg" class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover scale-[1.02]">
-                <source src="img/hero-video.mp4" type="video/mp4">
-            </video>
-        </div>        
+    <section class="relative w-full h-screen overflow-hidden bg-[#0a1f1c]" id="hero-slider">
+    
+    <div id="slider-wrapper" class="flex w-full h-full transition-transform duration-[1200ms] ease-[cubic-bezier(0.645,0.045,0.355,1)]">
 
-        <div class="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
-                <h4 class="text-white text-[10px] md:text-sm font-bold uppercase tracking-[0.2em] md:tracking-[0.8em] mb-8 animate-pulse text-center px-4">Envío gratis sobre $69.990*</h4>            
-            <h1 class="text-white text-6xl md:text-[120px] font-serif leading-none mb-12 italic">
-                <span id="hero-dynamic-text" style="opacity: 0;">Cargando...</span>
-            </h1>
-            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
-                <button onclick="scrollToVault()" class="btn-premium">EXPLORAR COLECCIÓN</button>
-                <a href="#privilege" class="btn-gold-outline flex items-center justify-center uppercase text-xs font-bold tracking-widest">Portal Empresas</a>
+        <div class="w-full h-full flex-shrink-0 relative slide-item">
+            <div class="absolute inset-0 bg-black/30 z-10"></div>
+            
+            <picture class="absolute inset-0 w-full h-full z-0">
+                <source media="(min-width: 1024px)" srcset="img/slide1-pc.jpg">
+                <source media="(min-width: 768px)" srcset="img/slide1-tablet.jpg">
+                <img src="img/slide1-mobile.jpg" alt="Colección La Foresta" class="w-full h-full object-cover">
+            </picture>
+
+            <div class="relative z-20 h-full flex flex-col justify-center items-center text-center px-6 max-w-4xl mx-auto">
+                <h4 class="text-white text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
+                    Nueva Temporada
+                </h4>
+                <h2 class="text-white text-5xl md:text-8xl font-serif leading-tight mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
+                    El Arte de<br>Regalar.
+                </h2>
+                <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
+                    <button onclick="scrollToVault()" class="btn-premium">Explorar Colección</button>
+                </div>
             </div>
         </div>
 
-        <div class="absolute bottom-12 left-12 z-20 hidden lg:block">
-            <p class="text-white/40 text-[10px] uppercase tracking-[0.4em] leading-relaxed">
-                Av. Borgoño 14.580, Local 7 <br> 2520000 Viña del Mar, Valparaíso
-            </p>
+        <div class="w-full h-full flex-shrink-0 relative slide-item">
+            <div class="absolute inset-0 bg-black/40 z-10"></div>
+            <picture class="absolute inset-0 w-full h-full z-0">
+                <source media="(min-width: 1024px)" srcset="img/slide2-pc.jpg">
+                <source media="(min-width: 768px)" srcset="img/slide2-tablet.jpg">
+                <img src="img/slide2-mobile.jpg" alt="Atelier Bag" class="w-full h-full object-cover">
+            </picture>
+
+            <div class="relative z-20 h-full flex flex-col justify-center items-start text-left px-12 md:px-32 max-w-7xl mx-auto">
+                <h4 class="text-[#c5a059] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
+                    Suscripción Floral
+                </h4>
+                <h2 class="text-white text-5xl md:text-7xl font-serif leading-tight mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
+                    Diseño que respira<br>en sus espacios.
+                </h2>
+                <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
+                    <a href="#privilege" class="btn-gold-outline text-xs inline-block px-8 py-4 uppercase tracking-widest">Portal B2B</a>
+                </div>
+            </div>
         </div>
-    </section>
+
+        <div class="w-full h-full flex-shrink-0 relative slide-item">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0a1f1c]/80 via-transparent to-transparent z-10"></div>
+            <picture class="absolute inset-0 w-full h-full z-0">
+                <source media="(min-width: 1024px)" srcset="img/slide3-pc.jpg">
+                <source media="(min-width: 768px)" srcset="img/slide3-tablet.jpg">
+                <img src="img/slide3-mobile.jpg" alt="Despacho Express" class="w-full h-full object-cover">
+            </picture>
+
+            <div class="relative z-20 h-full flex flex-col justify-end pb-32 items-center text-center px-6 max-w-4xl mx-auto">
+                <h2 class="text-white text-4xl md:text-6xl font-serif leading-tight mb-6 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000">
+                    Logística Inmaculada.
+                </h2>
+                <p class="text-white/80 font-light max-w-lg mb-8 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-200">
+                    Entregas el mismo día en Viña del Mar, Reñaca y Concón.
+                </p>
+            </div>
+        </div>
+
+    </div> <button onclick="prevHeroSlide()" class="absolute top-1/2 left-4 md:left-10 -translate-y-1/2 z-30 text-white/40 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 mix-blend-difference">
+        <svg class="w-8 h-8 md:w-12 md:h-12 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 19l-7-7 7-7"></path></svg>
+    </button>
+    <button onclick="nextHeroSlide()" class="absolute top-1/2 right-4 md:right-10 -translate-y-1/2 z-30 text-white/40 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 mix-blend-difference">
+        <svg class="w-8 h-8 md:w-12 md:h-12 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5l7 7-7 7"></path></svg>
+    </button>
+
+    <div class="absolute bottom-12 right-8 md:right-16 z-30 flex space-x-4 items-center" id="hero-dots">
+        </div>
+
+    <div class="absolute bottom-12 left-12 z-30 hidden lg:block">
+        <p class="text-white/50 text-[9px] uppercase tracking-[0.4em] leading-relaxed mix-blend-difference">
+            Av. Borgoño 14.580, Local 7 <br> 2520000 Viña del Mar
+        </p>
+    </div>
+</section>
 
     <div class="bg-forest-green py-4 border-y border-gold-leaf/20 overflow-hidden flex flex-nowrap whitespace-nowrap">
         <div class="animate-marquee flex shrink-0 min-w-full">
@@ -1949,30 +2005,6 @@ container.innerHTML = html;
             paypalContainer.innerHTML = ''; 
         }
 
-        (function() {
-            const phrases = [
-                "Luz<br><span class='not-italic text-white/90'>Orgánica</span>",
-                "La Estética<br><span class='not-italic text-white/90'>del Silencio</span>",
-                "Naturaleza<br><span class='not-italic text-white/90'>Irreverente</span>",
-                "La Pureza<br><span class='not-italic text-white/90'>de lo Bello</span>",
-                "Diseño<br><span class='not-italic text-white/90'>Sin Límites</span>",
-                "Elegancia<br><span class='not-italic text-white/90'>de lo Simple</span>",
-                "Poder<br><span class='not-italic text-white/90'>Visual</span>",
-                "Simplicidad<br><span class='not-italic text-white/90'>Absoluta</span>"
-            ];
-            function injectPhrase() {
-                const textElement = document.getElementById('hero-dynamic-text');
-                if (textElement) {
-                    const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-                    textElement.innerHTML = randomPhrase;
-                    textElement.style.transition = "opacity 1.5s ease-in-out";
-                    textElement.style.opacity = "1";
-                }
-            }
-            if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', injectPhrase); }
-            else { injectPhrase(); }
-        })();
-
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const paymentResult = urlParams.get('payment_result');
@@ -2277,6 +2309,89 @@ container.innerHTML = html;
             btn.disabled = false;
         }
     }
+</script>
+    <script>
+    // --- LÓGICA DEL SLIDER DE LUJO ---
+    let currentHeroSlide = 0;
+    const heroSlides = document.querySelectorAll('.slide-item');
+    const heroTotalSlides = heroSlides.length;
+    const heroWrapper = document.getElementById('slider-wrapper');
+    const heroDotsContainer = document.getElementById('hero-dots');
+    let heroAutoPlay;
+
+    // Crear los círculos de paginación automáticamente
+    heroSlides.forEach((_, index) => {
+        const dot = document.createElement('button');
+        // Estilos del punto (círculo transparente con borde que se rellena de oro al estar activo)
+        dot.className = `w-2.5 h-2.5 rounded-full transition-all duration-500 border border-[#c5a059] ${index === 0 ? 'bg-[#c5a059] scale-125' : 'bg-transparent hover:bg-[#c5a059]/50'}`;
+        dot.onclick = () => goToHeroSlide(index);
+        heroDotsContainer.appendChild(dot);
+    });
+
+    function updateHeroSlider() {
+        // Mover las imágenes
+        heroWrapper.style.transform = `translateX(-${currentHeroSlide * 100}%)`;
+
+        // Actualizar visualmente los puntos
+        Array.from(heroDotsContainer.children).forEach((dot, index) => {
+            if(index === currentHeroSlide) {
+                dot.classList.replace('bg-transparent', 'bg-[#c5a059]');
+                dot.classList.add('scale-125');
+            } else {
+                dot.classList.replace('bg-[#c5a059]', 'bg-transparent');
+                dot.classList.remove('scale-125');
+            }
+        });
+
+        // Animar los textos del slide actual
+        heroSlides.forEach((slide, index) => {
+            const elementsToAnimate = slide.querySelectorAll('.slide-anim');
+            
+            if(index === currentHeroSlide) {
+                // Al entrar al slide, esperamos 400ms (mientras la foto desliza) y mostramos los textos
+                setTimeout(() => {
+                    elementsToAnimate.forEach(el => {
+                        el.classList.remove('opacity-0', 'translate-y-4', 'translate-y-8');
+                        el.classList.add('opacity-100', 'translate-y-0');
+                    });
+                }, 400);
+            } else {
+                // Si el slide no está activo, ocultamos sus textos preparándolos para la próxima vez
+                elementsToAnimate.forEach(el => {
+                    el.classList.remove('opacity-100', 'translate-y-0');
+                    if(el.tagName === 'H2') el.classList.add('opacity-0', 'translate-y-8');
+                    else el.classList.add('opacity-0', 'translate-y-4');
+                });
+            }
+        });
+    }
+
+    function nextHeroSlide() {
+        currentHeroSlide = (currentHeroSlide + 1) % heroTotalSlides;
+        updateHeroSlider();
+        resetHeroInterval();
+    }
+
+    function prevHeroSlide() {
+        currentHeroSlide = (currentHeroSlide - 1 + heroTotalSlides) % heroTotalSlides;
+        updateHeroSlider();
+        resetHeroInterval();
+    }
+
+    function goToHeroSlide(index) {
+        currentHeroSlide = index;
+        updateHeroSlider();
+        resetHeroInterval();
+    }
+
+    function resetHeroInterval() {
+        clearInterval(heroAutoPlay);
+        heroAutoPlay = setInterval(nextHeroSlide, 6500); // Cambia automáticamente cada 6.5 segundos
+    }
+
+    // Inicializar el primer slide al cargar la página
+    setTimeout(updateHeroSlider, 100);
+    resetHeroInterval();
 </script>
 </body>
 </html>
