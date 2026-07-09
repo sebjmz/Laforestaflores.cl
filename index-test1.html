@@ -133,9 +133,10 @@
         .font-serif { font-family: 'Playfair Display', serif; }
 
         .glass-nav {
-            background: rgba(252, 250, 247, 0.8);
+            background: rgba(10, 31, 28, 0.92);
             backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(10, 31, 28, 0.05);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            color: var(--gold-leaf);
         }
 
         .hero-video-container {
@@ -329,20 +330,20 @@
     <nav class="fixed w-full z-[100] glass-nav px-6 md:px-12 py-5 flex justify-between items-center">
         <div class="flex items-center space-x-12 min-w-0">
             <div class="cursor-pointer flex-shrink-0 flex items-center" onclick="window.scrollTo(0,0)">
-                <img src="img/logo-menu.png" alt="La Foresta Flores" class="h-6 md:h-8 w-auto object-contain">
+                <img src="img/logo-menu.png" alt="La Foresta Flores" class="h-6 md:h-8 w-auto object-contain brightness-0 invert">
             </div>
             <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap">
-                <a href="#vault" onclick="scrollToVault()" class="hover:text-gold-leaf transition">Colección</a>
-                <a href="#privilege" class="hover:text-gold-leaf transition">Colaboración B2B</a>
-                <a href="#garden" class="hover:text-gold-leaf transition">Garden</a>
+                <a href="#vault" onclick="scrollToVault()" class="hover:text-white transition-colors duration-300">Colección</a>
+                <a href="#privilege" class="hover:text-white transition-colors duration-300">Colaboración B2B</a>
+                <a href="#garden" class="hover:text-white transition-colors duration-300">Garden</a>
             </div>
         </div>
         
         <div class="flex items-center space-x-8 flex-shrink-0">
-            <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest text-gold-leaf whitespace-nowrap">Reñaca, Chile</div>
-            <button onclick="toggleCart()" class="relative group flex items-center whitespace-nowrap">
+            <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Reñaca, Chile</div>
+            <button onclick="toggleCart()" class="relative group flex items-center whitespace-nowrap hover:text-white transition-colors duration-300">
                 <span class="text-[10px] font-bold uppercase tracking-widest mr-2">Atelier Bag</span>
-                <span id="cart-count" class="bg-gold-leaf text-forest-green px-2 py-0.5 rounded-full text-[10px] font-bold">0</span>
+                <span id="cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2 py-0.5 rounded-full text-[10px] font-bold transition-transform">0</span>
             </button>
         </div>
     </nav>
