@@ -528,10 +528,10 @@
 
         </div> 
         
-        <button onclick="prevHeroSlide(true)" class="absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+        <button onclick="prevHeroSlide(true)" class="hidden lg:block absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
             <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
         </button>
-        <button onclick="nextHeroSlide(true)" class="absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+        <button onclick="nextHeroSlide(true)" class="hidden lg:block absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
             <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
         </button>
 
@@ -2418,6 +2418,30 @@
             }
         }, 6000); 
 
+        // --- SOPORTE TÁCTIL (SWIPE) PARA MÓVILES Y TABLETS ---
+        const sliderWrapperElement = document.getElementById('slider-wrapper');
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        sliderWrapperElement.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        sliderWrapperElement.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 50; 
+            if (touchEndX < touchStartX - swipeThreshold) {
+                nextHeroSlide(true); // Deslizó a la izquierda
+            }
+            if (touchEndX > touchStartX + swipeThreshold) {
+                prevHeroSlide(true); // Deslizó a la derecha
+            }
+        }
+        
         function toggleAtelierAudio() {
             const audio = document.getElementById('atelier-audio');
             const btn = document.getElementById('audio-toggle-btn');
