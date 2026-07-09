@@ -334,6 +334,25 @@
         
         .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
         .hide-scroll::-webkit-scrollbar { display: none; }
+
+        /* Protección para celulares en modo horizontal */
+        @media (max-height: 500px) and (orientation: landscape) {
+            #hero-slider h2 { 
+                font-size: 2.5rem !important; 
+                margin-bottom: 0.5rem !important; 
+            }
+            #hero-slider h4 {
+                margin-bottom: 0.5rem !important;
+            }
+            #hero-slider p { 
+                font-size: 0.9rem !important; 
+                margin-bottom: 1rem !important; 
+            }
+            #hero-slider .btn-premium {
+                padding: 0.6rem 1.5rem !important;
+                font-size: 0.8rem !important;
+            }
+        }
     </style>
 </head>
 <body>
