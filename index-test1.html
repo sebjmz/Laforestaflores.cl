@@ -395,10 +395,10 @@
 
     <section class="relative w-full h-screen overflow-hidden bg-[#0a1f1c]" id="hero-slider">
     
-    <div id="slider-wrapper" class="flex w-full h-full transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
+    <div id="slider-wrapper" class="relative w-full h-full overflow-hidden">
 
-        <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <div class="absolute inset-0 bg-gradient-to-r from-[#0a1f1c]/95 via-black/60 to-transparent z-10 w-full md:w-3/4"></div>
+        <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
+            <div class="absolute inset-0 bg-gradient-to-r from-[#0a1f1c]/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide1-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide1-tablet.jpg">
@@ -424,8 +424,8 @@
             </div>
         </div>
 
-        <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <div class="absolute inset-0 bg-gradient-to-l from-black/90 via-black/50 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
+        <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
+            <div class="absolute inset-0 bg-gradient-to-l from-black/90 via-black/40 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide2-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide2-tablet.jpg">
@@ -444,14 +444,14 @@
                         Servicio Express (1 a 2 hrs) disponible para transformar urgencias en legados visuales.
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="scrollToVault()" class="btn-gold-outline inline-block px-12 py-5 text-sm md:text-base uppercase tracking-widest backdrop-blur-sm">Pedir Ahora</button>
+                        <button onclick="scrollToVault()" class="btn-gold-outline inline-block px-14 py-6 md:px-16 md:py-7 text-lg md:text-xl uppercase tracking-widest backdrop-blur-sm">Pedir Ahora</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <div class="absolute inset-0 bg-black/20 z-10"></div>
+        <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
+            <div class="absolute inset-0 bg-black/10 z-10"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide3-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide3-tablet.jpg">
@@ -471,8 +471,8 @@
             </div>
         </div>
 
-        <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <div class="absolute inset-0 bg-gradient-to-l from-[#0a1f1c]/95 via-[#0a1f1c]/60 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
+        <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
+            <div class="absolute inset-0 bg-gradient-to-l from-[#0a1f1c]/90 via-[#0a1f1c]/50 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide4-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide4-tablet.jpg">
@@ -491,14 +491,14 @@
                         Llegamos con precisión impecable. Desde el corazón de Reñaca hasta Quintero y Curauma.
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="scrollToVault()" class="btn-gold-outline inline-block px-12 py-5 text-sm md:text-base uppercase tracking-widest backdrop-blur-sm">Programar Envío</button>
+                        <button onclick="scrollToVault()" class="btn-gold-outline inline-block px-14 py-6 md:px-16 md:py-7 text-lg md:text-xl uppercase tracking-widest backdrop-blur-sm">Programar Envío</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent z-10 w-full md:w-3/4"></div>
+        <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide5-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide5-tablet.jpg">
@@ -517,23 +517,22 @@
                         Membresías de renovación floral para personas, oficinas y eventos corporativos.
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="openB2BFlow()" class="btn-premium px-14 py-6 md:px-16 md:py-7 text-lg md:text-xl shadow-xl">Acceso Portal Empresas</button>
+                        <button onclick="openB2BFlow()" class="btn-premium px-14 py-6 md:px-16 md:py-7 text-lg md:text-xl shadow-xl">Acceso Portal</button>
                     </div>
                 </div>
             </div>
         </div>
 
-    </div> <button onclick="prevHeroSlide()" class="absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-40 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+    </div> <button onclick="prevHeroSlide(true)" class="absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
         <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
     </button>
-    <button onclick="nextHeroSlide()" class="absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-40 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+    <button onclick="nextHeroSlide(true)" class="absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
         <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
     </button>
 
-    <div class="absolute bottom-10 right-10 md:bottom-12 md:right-16 z-50 flex space-x-3 items-center" id="hero-dots">
-        </div>
+    <div class="absolute bottom-10 right-10 md:bottom-12 md:right-16 z-50 flex space-x-3 items-center" id="hero-dots"></div>
 
-    <div class="absolute bottom-12 left-12 z-30 hidden lg:block">
+    <div class="absolute bottom-12 left-12 z-40 hidden lg:block">
         <p class="text-white/60 text-[10px] uppercase tracking-[0.4em] leading-relaxed drop-shadow-md">
             Av. Borgoño 14.580, Local 7 <br> 2520000 Viña del Mar
         </p>
@@ -2376,39 +2375,37 @@ container.innerHTML = html;
     }
 </script>
     <script>
-    // --- NUEVO MOTOR SLIDER INFINITO, RÁPIDO Y MANUAL ---
+    // --- MOTOR SLIDER INFINITO CON FRENADA ELEGANTE ---
     let currentHeroSlide = 0;
     const heroSlides = document.querySelectorAll('.slide-item');
     const heroTotalSlides = heroSlides.length;
     const heroDotsContainer = document.getElementById('hero-dots');
     
     let heroAutoPlay;
-    let userInteracted = false; // Detiene el autoplay si el usuario toca algo
-    let isAnimating = false;    // Evita que hagan click rápido y rompan la animación
+    let userInteracted = false; 
+    let isAnimating = false;    
 
     // Preparar estado inicial
     heroSlides.forEach((slide, index) => {
         if (index === 0) {
-            slide.style.transform = 'translateX(0%)';
+            slide.style.transform = 'translate3d(0%, 0, 0)';
             slide.style.zIndex = '20';
         } else {
-            slide.style.transform = 'translateX(100%)'; // Ocultos listos para entrar
+            slide.style.transform = 'translate3d(100%, 0, 0)'; 
             slide.style.zIndex = '10';
         }
 
-        // Crear los puntos indicadores
         const dot = document.createElement('button');
         dot.className = `w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-300 border border-[#c5a059] ${index === 0 ? 'bg-[#c5a059] scale-125' : 'bg-transparent hover:bg-[#c5a059]/50'}`;
         dot.onclick = () => {
             if(isAnimating || currentHeroSlide === index) return;
-            stopAutoPlay(); // El usuario tomó el control
+            stopAutoPlay();
             const direction = index > currentHeroSlide ? 'next' : 'prev';
             transitionToSlide(index, direction);
         };
         heroDotsContainer.appendChild(dot);
     });
 
-    // Función que apaga el piloto automático
     function stopAutoPlay() {
         userInteracted = true;
         clearInterval(heroAutoPlay);
@@ -2421,55 +2418,53 @@ container.innerHTML = html;
         const current = heroSlides[currentHeroSlide];
         const next = heroSlides[targetIndex];
 
-        // 1. Acomodar la foto que va a entrar (sin animar todavía)
         next.style.transition = 'none';
         next.style.zIndex = '20';
         current.style.zIndex = '10';
         
         if (direction === 'next') {
-            next.style.transform = 'translateX(100%)';
+            next.style.transform = 'translate3d(100%, 0, 0)';
         } else {
-            next.style.transform = 'translateX(-100%)';
+            next.style.transform = 'translate3d(-100%, 0, 0)';
         }
 
-        // Forzar al navegador a aplicar los cambios antes de animar (Reflow)
-        void next.offsetWidth;
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                // Aquí está la magia: un poco más de tiempo (0.6s) y el bezier súper elegante
+                const duration = '0.6s';
+                const timing = 'cubic-bezier(0.16, 1, 0.3, 1)';
+                
+                next.style.transition = `transform ${duration} ${timing}`;
+                current.style.transition = `transform ${duration} ${timing}`;
 
-        // 2. Aplicar transición súper rápida (400ms = 0.4s)
-        const duration = '0.4s';
-        const timing = 'cubic-bezier(0.25, 1, 0.5, 1)'; // Curva de aceleración suave pero muy veloz
-        
-        next.style.transition = `transform ${duration} ${timing}`;
-        current.style.transition = `transform ${duration} ${timing}`;
+                next.style.transform = 'translate3d(0%, 0, 0)';
+                
+                if (direction === 'next') {
+                    current.style.transform = 'translate3d(-100%, 0, 0)';
+                } else {
+                    current.style.transform = 'translate3d(100%, 0, 0)';
+                }
 
-        // 3. Ejecutar el movimiento
-        next.style.transform = 'translateX(0%)';
-        if (direction === 'next') {
-            current.style.transform = 'translateX(-100%)';
-        } else {
-            current.style.transform = 'translateX(100%)';
-        }
+                currentHeroSlide = targetIndex;
+                updateDots();
+                animateTexts();
 
-        // Actualizar variables y Burbujas
-        currentHeroSlide = targetIndex;
-        updateDots();
-        animateTexts();
-
-        // Liberar el candado de animación cuando termina la transición
-        setTimeout(() => {
-            isAnimating = false;
-        }, 400); 
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 600); // Candado ajustado al tiempo de la animación
+            });
+        });
     }
 
     function nextHeroSlide(manual = false) {
-        if (manual) stopAutoPlay(); // Si el click lo hace un humano, paramos el auto-play
+        if (manual) stopAutoPlay(); 
         if (isAnimating) return;
         const nextIndex = (currentHeroSlide + 1) % heroTotalSlides;
         transitionToSlide(nextIndex, 'next');
     }
 
     function prevHeroSlide(manual = false) {
-        if (manual) stopAutoPlay(); // Si el click lo hace un humano, paramos el auto-play
+        if (manual) stopAutoPlay(); 
         if (isAnimating) return;
         const prevIndex = (currentHeroSlide - 1 + heroTotalSlides) % heroTotalSlides;
         transitionToSlide(prevIndex, 'prev');
@@ -2491,13 +2486,12 @@ container.innerHTML = html;
         heroSlides.forEach((slide, index) => {
             const elementsToAnimate = slide.querySelectorAll('.slide-anim');
             if(index === currentHeroSlide) {
-                // Al entrar el slide, esperamos solo 200ms para mostrar texto (súper veloz)
                 setTimeout(() => {
                     elementsToAnimate.forEach(el => {
                         el.classList.remove('opacity-0', 'translate-y-4', 'translate-y-8');
                         el.classList.add('opacity-100', 'translate-y-0');
                     });
-                }, 200); 
+                }, 300); 
             } else {
                 elementsToAnimate.forEach(el => {
                     el.classList.remove('opacity-100', 'translate-y-0');
@@ -2508,13 +2502,13 @@ container.innerHTML = html;
         });
     }
 
-    // Inicializar todo
+    // Inicializar
     animateTexts();
     heroAutoPlay = setInterval(() => {
         if (!userInteracted) {
-            nextHeroSlide(false); // Sigue automático, no ha sido tocado por el usuario
+            nextHeroSlide(false); 
         }
-    }, 6000); // 6 segundos por foto (Suficiente para leer textos grandes)
+    }, 6000); 
 </script>
 </body>
 </html>
