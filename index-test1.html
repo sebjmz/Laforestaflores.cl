@@ -393,117 +393,118 @@
         </div>
     </div>
 
-    <!-- === INICIO SLIDER DE LUJO (5 SLIDES ORILLADOS CON MARGEN EDITORIAL) === -->
+    <!-- === INICIO SLIDER DE LUJO (INFINITO, RÁPIDO Y STOP MANUAL) === -->
 <section class="relative w-full h-screen overflow-hidden bg-[#0a1f1c]" id="hero-slider">
     
-    <!-- Contenedor principal que se desliza -->
-    <div id="slider-wrapper" class="flex w-full h-full transition-transform duration-[1200ms] ease-[cubic-bezier(0.645,0.045,0.355,1)]">
+    <!-- Contenedor principal (Ya no es flex, ahora superpone las capas) -->
+    <div id="slider-wrapper" class="relative w-full h-full overflow-hidden">
 
-        <!-- SLIDE 1: Al 33% Izquierdo (Con margen interior) -->
-        <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <!-- Sombra focalizada a la izquierda para contraste -->
+        <!-- SLIDE 1 -->
+        <div class="absolute inset-0 w-full h-full slide-item">
             <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10 w-full md:w-2/3"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide1-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide1-tablet.jpg">
-                <img src="img/slide1-mobile.jpg" alt="Nueva Temporada" class="w-full h-full object-cover">
+                <img src="img/slide1-mobile.jpg" alt="Familia La Foresta" class="w-full h-full object-cover">
             </picture>
             
-            <!-- lg:px-[12%] empuja el contenido un 5% más hacia el centro respecto al borde -->
             <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
-                <div class="md:w-1/2 lg:w-[35%] mr-auto text-left">
-                    <h4 class="text-white text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
-                        Nueva Temporada
+                <div class="md:w-1/2 lg:w-[38%] mr-auto text-left">
+                    <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
+                        Tradición desde 2020
                     </h4>
-                    <h2 class="text-white text-5xl md:text-8xl font-serif leading-tight mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
-                        El Arte de<br>Regalar.
+                    <h2 class="text-white text-6xl md:text-[7rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
+                        Excelencia<br>Familiar.
                     </h2>
+                    <p class="text-white/90 font-light text-lg md:text-2xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 leading-relaxed">
+                        <span class="text-[#c5a059] text-base mr-1">★★★★★</span> 4.9/5 Puntuación Google.<br>Bono de envío sobre $69.990.
+                    </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="scrollToVault()" class="btn-premium">Explorar Colección</button>
+                        <button onclick="scrollToVault()" class="btn-premium px-12 py-5 text-xs md:text-sm shadow-xl">Explorar Colección</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 2: Al 33% Derecho (Con margen interior) -->
-        <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <!-- Sombra focalizada a la derecha -->
-            <div class="absolute inset-0 bg-gradient-to-l from-black/80 via-black/40 to-transparent z-10 w-full md:w-2/3 ml-auto"></div>
+        <!-- SLIDE 2 -->
+        <div class="absolute inset-0 w-full h-full slide-item">
+            <div class="absolute inset-0 bg-gradient-to-l from-black/90 via-black/50 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide2-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide2-tablet.jpg">
-                <img src="img/slide2-mobile.jpg" alt="Suscripción Floral" class="w-full h-full object-cover">
+                <img src="img/slide2-mobile.jpg" alt="Servicio Express" class="w-full h-full object-cover object-right">
             </picture>
             
             <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
-                <div class="md:w-1/2 lg:w-[35%] ml-auto text-left md:text-right">
-                    <h4 class="text-[#c5a059] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
-                        Suscripción Floral
+                <div class="md:w-1/2 lg:w-[42%] ml-auto text-left md:text-right">
+                    <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
+                        Pedidos 24/7
                     </h4>
-                    <h2 class="text-white text-5xl md:text-7xl font-serif leading-tight mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
-                        Diseño que respira en sus espacios.
+                    <h2 class="text-white text-6xl md:text-[7rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
+                        Tiempo<br>Perfecto.
                     </h2>
+                    <p class="text-white/90 font-light text-lg md:text-2xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 leading-relaxed md:ml-auto">
+                        Servicio Express (1 a 2 hrs) disponible para transformar urgencias en legados visuales.
+                    </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <a href="#privilege" class="btn-gold-outline text-xs inline-block px-8 py-4 uppercase tracking-widest">Ver Membresías</a>
+                        <button onclick="scrollToVault()" class="btn-gold-outline inline-block px-12 py-5 text-xs md:text-sm uppercase tracking-widest backdrop-blur-sm">Pedir Ahora</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 3: Centro, Enorme (TULIPANES) - SE MANTIENE INTACTO -->
-        <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <div class="absolute inset-0 bg-black/30 z-10"></div>
+        <!-- SLIDE 3 -->
+        <div class="absolute inset-0 w-full h-full slide-item">
+            <div class="absolute inset-0 bg-black/20 z-10"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide3-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide3-tablet.jpg">
-                <img src="img/slide3-mobile.jpg" alt="Tulipanes" class="w-full h-full object-cover">
+                <img src="img/slide3-mobile.jpg" alt="Colección Tulipanes" class="w-full h-full object-cover">
             </picture>
             
             <div class="relative z-20 h-full flex flex-col justify-center items-center text-center w-full px-4">
-                <h2 class="text-white text-[22vw] md:text-[14vw] font-serif leading-none tracking-tighter mb-4 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000">
+                <h2 class="text-white text-[22vw] md:text-[14vw] font-serif leading-none tracking-tighter mb-6 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 drop-shadow-2xl">
                     TULIPANES
                 </h2>
-                <p class="text-white font-light text-sm md:text-xl max-w-lg mb-8 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-200">
-                    Nuestra colección más exclusiva y esperada del año.
+                <p class="text-white font-medium text-lg md:text-3xl max-w-2xl mb-12 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-200 drop-shadow-md">
+                    Nuestra colección más vibrante del año.
                 </p>
                 <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-400">
-                    <button onclick="scrollToVault()" class="btn-premium px-12">Adquirir</button>
+                    <button onclick="scrollToVault()" class="btn-premium px-16 py-6 text-sm md:text-base shadow-[0_10px_30px_rgba(0,0,0,0.5)]">Adquirir Colección</button>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 4: Al 33% Derecho (Con margen interior) -->
-        <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <!-- Sombra focalizada a la derecha -->
-            <div class="absolute inset-0 bg-gradient-to-l from-[#0a1f1c]/90 via-black/40 to-transparent z-10 w-full md:w-2/3 ml-auto"></div>
+        <!-- SLIDE 4 -->
+        <div class="absolute inset-0 w-full h-full slide-item">
+            <div class="absolute inset-0 bg-gradient-to-l from-[#0a1f1c]/95 via-[#0a1f1c]/60 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide4-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide4-tablet.jpg">
-                <img src="img/slide4-mobile.jpg" alt="Empaque de Lujo" class="w-full h-full object-cover">
+                <img src="img/slide4-mobile.jpg" alt="Cobertura Logística" class="w-full h-full object-cover">
             </picture>
             
             <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
-                <div class="md:w-1/2 lg:w-[35%] ml-auto text-left md:text-right">
-                    <h4 class="text-[#c5a059] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
-                        Detalles de Autor
+                <div class="md:w-1/2 lg:w-[40%] ml-auto text-left md:text-right">
+                    <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
+                        Logística Premium
                     </h4>
-                    <h2 class="text-white text-5xl md:text-6xl font-serif leading-tight mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
-                        El Gifting<br>Elevado.
+                    <h2 class="text-white text-6xl md:text-[7rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
+                        Cobertura<br>Absoluta.
                     </h2>
-                    <p class="text-white/80 font-light text-sm mb-8 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 md:ml-auto">
-                        Tarjetas selladas, caligrafía fina y empaque premium en cada entrega.
+                    <p class="text-white/90 font-light text-lg md:text-2xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 md:ml-auto leading-relaxed">
+                        Llegamos con precisión impecable. Desde el corazón de Reñaca hasta Quintero y Curauma.
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="scrollToVault()" class="btn-premium">Ver Catálogo</button>
+                        <button onclick="scrollToVault()" class="btn-gold-outline inline-block px-12 py-5 text-xs md:text-sm uppercase tracking-widest backdrop-blur-sm">Programar Envío</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 5: Al 33% Izquierdo (Con margen interior) -->
-        <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <!-- Sombra focalizada a la izquierda -->
-            <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent z-10 w-full md:w-2/3"></div>
+        <!-- SLIDE 5 -->
+        <div class="absolute inset-0 w-full h-full slide-item">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent z-10 w-full md:w-3/4"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide5-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide5-tablet.jpg">
@@ -511,18 +512,18 @@
             </picture>
             
             <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
-                <div class="md:w-1/2 lg:w-[35%] mr-auto text-left">
-                    <h4 class="text-[#c5a059] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
-                        Exclusivo Empresas
+                <div class="md:w-1/2 lg:w-[42%] mr-auto text-left">
+                    <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
+                        Suscripciones & B2B
                     </h4>
-                    <h2 class="text-white text-4xl md:text-7xl font-serif leading-tight mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
-                        La Firma Visual<br>de su Marca.
+                    <h2 class="text-white text-6xl md:text-[6.5rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
+                        Espacios<br>Vivos.
                     </h2>
-                    <p class="text-white/80 font-light text-sm mb-8 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300">
-                        Soluciones escenográficas para eventos y espacios corporativos.
+                    <p class="text-white/90 font-light text-lg md:text-2xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 leading-relaxed">
+                        Membresías de renovación floral para personas, oficinas y eventos corporativos.
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                        <button onclick="openB2BFlow()" class="btn-gold-outline text-xs inline-block px-8 py-4 uppercase tracking-widest">Acceso Salón Privado</button>
+                        <button onclick="openB2BFlow()" class="btn-premium px-12 py-5 text-xs md:text-sm shadow-xl">Acceso Portal Empresas</button>
                     </div>
                 </div>
             </div>
@@ -530,22 +531,22 @@
 
     </div> <!-- Fin slider-wrapper -->
 
-    <!-- Flechas Laterales -->
-    <button onclick="prevHeroSlide()" class="absolute top-1/2 left-2 md:left-8 -translate-y-1/2 z-40 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
-        <svg class="w-8 h-8 md:w-12 md:h-12 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 19l-7-7 7-7"></path></svg>
+    <!-- Flechas Laterales (Con z-index alto) -->
+    <button onclick="prevHeroSlide(true)" class="absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-50 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+        <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
     </button>
-    <button onclick="nextHeroSlide()" class="absolute top-1/2 right-2 md:right-8 -translate-y-1/2 z-40 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
-        <svg class="w-8 h-8 md:w-12 md:h-12 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5l7 7-7 7"></path></svg>
+    <button onclick="nextHeroSlide(true)" class="absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+        <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
     </button>
 
-    <!-- Paginación (Círculos flotantes) centrados abajo -->
-    <div class="absolute bottom-8 right-0 left-0 flex justify-center space-x-3 items-center z-30" id="hero-dots">
-        <!-- El JS genera los puntos automáticamente -->
+    <!-- Burbujas (Posicionadas abajo a la extrema derecha) -->
+    <div class="absolute bottom-10 right-10 md:bottom-12 md:right-16 z-50 flex space-x-3 items-center" id="hero-dots">
+        <!-- JS genera los puntos -->
     </div>
 
     <!-- Dirección fija abajo a la izquierda -->
-    <div class="absolute bottom-12 left-12 z-30 hidden lg:block">
-        <p class="text-white/60 text-[9px] uppercase tracking-[0.4em] leading-relaxed drop-shadow-md">
+    <div class="absolute bottom-12 left-12 z-40 hidden lg:block">
+        <p class="text-white/60 text-[10px] uppercase tracking-[0.4em] leading-relaxed drop-shadow-md">
             Av. Borgoño 14.580, Local 7 <br> 2520000 Viña del Mar
         </p>
     </div>
