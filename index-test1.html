@@ -393,20 +393,26 @@
         </div>
     </div>
 
-    <section class="relative w-full h-screen overflow-hidden bg-[#0a1f1c]" id="hero-slider">
+    <!-- === INICIO SLIDER DE LUJO (5 SLIDES ORILLADOS AL 33%) === -->
+<section class="relative w-full h-screen overflow-hidden bg-[#0a1f1c]" id="hero-slider">
     
+    <!-- Contenedor principal que se desliza -->
     <div id="slider-wrapper" class="flex w-full h-full transition-transform duration-[1200ms] ease-[cubic-bezier(0.645,0.045,0.355,1)]">
 
+        <!-- SLIDE 1: Al 33% Izquierdo -->
         <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <div class="absolute inset-0 bg-black/40 z-10"></div>
+            <!-- Sombra focalizada a la izquierda para contraste -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10 w-full md:w-2/3"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide1-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide1-tablet.jpg">
                 <img src="img/slide1-mobile.jpg" alt="Nueva Temporada" class="w-full h-full object-cover">
             </picture>
             
-            <div class="relative z-20 h-full flex flex-col justify-center max-w-7xl mx-auto px-6 w-full">
-                <div class="md:ml-[33%] text-center md:text-left">
+            <!-- Contenedor Full Width con safe-zone para las flechas (px-24/32) -->
+            <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-24 lg:px-32">
+                <!-- Limitado al 33% y anclado a la izquierda (mr-auto) -->
+                <div class="md:w-1/2 lg:w-1/3 mr-auto text-left">
                     <h4 class="text-white text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
                         Nueva Temporada
                     </h4>
@@ -420,21 +426,24 @@
             </div>
         </div>
 
+        <!-- SLIDE 2: Al 33% Derecho -->
         <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <div class="absolute inset-0 bg-gradient-to-l from-black/80 via-black/40 to-transparent z-10"></div>
+            <!-- Sombra focalizada a la derecha -->
+            <div class="absolute inset-0 bg-gradient-to-l from-black/80 via-black/40 to-transparent z-10 w-full md:w-2/3 ml-auto"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide2-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide2-tablet.jpg">
                 <img src="img/slide2-mobile.jpg" alt="Suscripción Floral" class="w-full h-full object-cover">
             </picture>
             
-            <div class="relative z-20 h-full flex flex-col justify-center max-w-7xl mx-auto px-6 w-full">
-                <div class="md:w-1/2 ml-auto text-center md:text-left md:pl-12">
+            <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-24 lg:px-32">
+                <!-- Limitado al 33% y anclado a la derecha (ml-auto) -->
+                <div class="md:w-1/2 lg:w-1/3 ml-auto text-left md:text-right">
                     <h4 class="text-[#c5a059] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
                         Suscripción Floral
                     </h4>
                     <h2 class="text-white text-5xl md:text-7xl font-serif leading-tight mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
-                        Diseño que respira<br>en sus espacios.
+                        Diseño que respira en sus espacios.
                     </h2>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
                         <a href="#privilege" class="btn-gold-outline text-xs inline-block px-8 py-4 uppercase tracking-widest">Ver Membresías</a>
@@ -443,6 +452,7 @@
             </div>
         </div>
 
+        <!-- SLIDE 3: Centro, Enorme (TULIPANES) -->
         <div class="w-full h-full flex-shrink-0 relative slide-item">
             <div class="absolute inset-0 bg-black/30 z-10"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
@@ -451,7 +461,7 @@
                 <img src="img/slide3-mobile.jpg" alt="Tulipanes" class="w-full h-full object-cover">
             </picture>
             
-            <div class="relative z-20 h-full flex flex-col justify-center items-center text-center w-[95%] md:w-[90%] mx-auto px-2">
+            <div class="relative z-20 h-full flex flex-col justify-center items-center text-center w-full px-4">
                 <h2 class="text-white text-[22vw] md:text-[14vw] font-serif leading-none tracking-tighter mb-4 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000">
                     TULIPANES
                 </h2>
@@ -464,16 +474,19 @@
             </div>
         </div>
 
+        <!-- SLIDE 4: Al 33% Derecho -->
         <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <div class="absolute inset-0 bg-gradient-to-l from-[#0a1f1c]/90 via-black/40 to-transparent z-10 md:w-1/2 md:ml-auto"></div>
+            <!-- Sombra focalizada a la derecha -->
+            <div class="absolute inset-0 bg-gradient-to-l from-[#0a1f1c]/90 via-black/40 to-transparent z-10 w-full md:w-2/3 ml-auto"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide4-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide4-tablet.jpg">
                 <img src="img/slide4-mobile.jpg" alt="Empaque de Lujo" class="w-full h-full object-cover">
             </picture>
             
-            <div class="relative z-20 h-full flex flex-col justify-center max-w-7xl mx-auto px-6 w-full">
-                <div class="md:w-[35%] ml-auto text-center md:text-right">
+            <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-24 lg:px-32">
+                <!-- Limitado al 33% y anclado a la derecha -->
+                <div class="md:w-1/2 lg:w-1/3 ml-auto text-left md:text-right">
                     <h4 class="text-[#c5a059] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
                         Detalles de Autor
                     </h4>
@@ -490,23 +503,26 @@
             </div>
         </div>
 
+        <!-- SLIDE 5: Al 33% Izquierdo -->
         <div class="w-full h-full flex-shrink-0 relative slide-item">
-            <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10"></div>
+            <!-- Sombra focalizada a la izquierda -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent z-10 w-full md:w-2/3"></div>
             <picture class="absolute inset-0 w-full h-full z-0">
                 <source media="(min-width: 1024px)" srcset="img/slide5-pc.jpg">
                 <source media="(min-width: 768px)" srcset="img/slide5-tablet.jpg">
                 <img src="img/slide5-mobile.jpg" alt="Portal Corporativo B2B" class="w-full h-full object-cover">
             </picture>
             
-            <div class="relative z-20 h-full flex flex-col justify-center max-w-7xl mx-auto px-6 w-full">
-                <div class="md:w-1/2 mr-auto text-center md:text-left md:pr-12">
+            <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-24 lg:px-32">
+                <!-- Limitado al 33% y anclado a la izquierda -->
+                <div class="md:w-1/2 lg:w-1/3 mr-auto text-left">
                     <h4 class="text-[#c5a059] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
                         Exclusivo Empresas
                     </h4>
                     <h2 class="text-white text-4xl md:text-7xl font-serif leading-tight mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
                         La Firma Visual<br>de su Marca.
                     </h2>
-                    <p class="text-white/80 font-light text-sm max-w-md mb-8 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 mx-auto md:mx-0">
+                    <p class="text-white/80 font-light text-sm mb-8 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300">
                         Soluciones escenográficas para eventos y espacios corporativos.
                     </p>
                     <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
@@ -516,22 +532,29 @@
             </div>
         </div>
 
-    </div> <button onclick="prevHeroSlide()" class="absolute top-1/2 left-2 md:left-8 -translate-y-1/2 z-30 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+    </div> <!-- Fin slider-wrapper -->
+
+    <!-- Flechas Laterales (Z-Index alto para siempre ser clickeables) -->
+    <button onclick="prevHeroSlide()" class="absolute top-1/2 left-2 md:left-8 -translate-y-1/2 z-40 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
         <svg class="w-8 h-8 md:w-12 md:h-12 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 19l-7-7 7-7"></path></svg>
     </button>
-    <button onclick="nextHeroSlide()" class="absolute top-1/2 right-2 md:right-8 -translate-y-1/2 z-30 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+    <button onclick="nextHeroSlide()" class="absolute top-1/2 right-2 md:right-8 -translate-y-1/2 z-40 text-white/50 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
         <svg class="w-8 h-8 md:w-12 md:h-12 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5l7 7-7 7"></path></svg>
     </button>
 
+    <!-- Paginación (Círculos flotantes) centrados abajo -->
     <div class="absolute bottom-8 right-0 left-0 flex justify-center space-x-3 items-center z-30" id="hero-dots">
-        </div>
+        <!-- El JS genera los puntos automáticamente -->
+    </div>
 
+    <!-- Dirección fija abajo a la izquierda -->
     <div class="absolute bottom-12 left-12 z-30 hidden lg:block">
         <p class="text-white/60 text-[9px] uppercase tracking-[0.4em] leading-relaxed drop-shadow-md">
             Av. Borgoño 14.580, Local 7 <br> 2520000 Viña del Mar
         </p>
     </div>
 </section>
+<!-- === FIN SLIDER DE LUJO === -->
 
     <div class="bg-forest-green py-4 border-y border-gold-leaf/20 overflow-hidden flex flex-nowrap whitespace-nowrap">
         <div class="animate-marquee flex shrink-0 min-w-full">
