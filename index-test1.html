@@ -2271,8 +2271,8 @@ container.innerHTML = html;
         const iconPause = document.getElementById('audio-icon-pause');
 
         if (audioBtn && atelierAudio) {
-            // Ajustar volumen para que sea tenue (0.3 = 30%)
-            atelierAudio.volume = 0.3; 
+            // Ajustar volumen para que sea tenue (1.0 = 100%)
+            atelierAudio.volume = 1.0; 
 
             audioBtn.addEventListener('click', () => {
                 if (atelierAudio.paused) {
