@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9NDEELWEK"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -115,6 +117,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Tooltip custom para el mapa */
+        .leaflet-tooltip.atelier-tooltip {
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            color: #c5a059;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 0px 2px 5px rgba(0,0,0,0.8);
+        }
         :root {
             --forest-green: #0a1f1c;
             --gold-leaf: #c5a059;
@@ -353,6 +367,7 @@
                 font-size: 0.8rem !important;
             }
         }
+    
     </style>
 </head>
 <body>
@@ -478,8 +493,7 @@
                             Entregas en 1 a 2 hrs. Llegamos con precisión impecable desde Reñaca hasta Quintero y Curauma.
                         </p>
                         <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <button onclick="scrollToVault()" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Programar Envío</button>
-                        </div>
+                            <button onclick="openCoverageModal()" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver Zonas de Cobertura</button>                        </div>
                     </div>
                 </div>
             </div>
@@ -835,6 +849,71 @@
         </div>
     </div>
 
+    <div id="coverage-modal" class="fixed inset-0 bg-[#0a1f1c]/95 backdrop-blur-xl z-[200] hidden opacity-0 transition-opacity duration-500 flex flex-col justify-center items-center p-4 sm:p-6 md:p-12">
+        <div class="w-full max-w-6xl bg-transparent flex flex-col lg:flex-row gap-8 lg:gap-12 relative text-[#fcfaf7] h-full lg:h-auto max-h-full">
+            
+            <button onclick="closeCoverageModal()" class="absolute -top-10 lg:-top-12 right-0 text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors z-20">×</button>
+            
+            <div class="w-full lg:w-1/2 flex items-center justify-center relative h-[40vh] lg:h-[600px] bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+                <div id="coverage-map" class="w-full h-full z-10"></div>
+            </div>
+
+            <div class="w-full lg:w-1/2 flex flex-col justify-center py-4 overflow-y-auto hide-scroll pb-20 lg:pb-0">
+                <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-[#c5a059] mb-4 block">Logística Integral</span>
+                <h3 class="font-serif text-4xl md:text-5xl italic mb-8">Zonas de Despacho</h3>
+                
+                <div class="space-y-4">
+                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(1)" onmouseleave="resetZone(1)">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">1. Ultra Local</h4>
+                            <span class="text-xs text-[#c5a059] font-serif">+$3.500</span>
+                        </div>
+                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Reñaca Centro, Los Almendros, Clínica Reñaca, Jardín del Mar, Los Pinos.</p>
+                    </div>
+
+                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(2)" onmouseleave="resetZone(2)">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">2. Local Media</h4>
+                            <span class="text-xs text-[#c5a059] font-serif">+$4.750</span>
+                        </div>
+                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Reñaca Norte, Montemar, Higuerillas, Gómez Carreño, Hospital Naval, Glorias Navales.</p>
+                    </div>
+
+                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(3)" onmouseleave="resetZone(3)">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">3. Intermedia</h4>
+                            <span class="text-xs text-[#c5a059] font-serif">+$7.250</span>
+                        </div>
+                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Viña Centro, Clínica Ciudad del Mar, Cerros de Viña, Chorrillos, Concón Los Romeros.</p>
+                    </div>
+
+                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(4)" onmouseleave="resetZone(4)">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">4. Extendida</h4>
+                            <span class="text-xs text-[#c5a059] font-serif">+$11.000</span>
+                        </div>
+                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Mantagua (Las Gaviotas), Valparaíso Plan y Cerros, Quilpué Centro, Paso Hondo.</p>
+                    </div>
+
+                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(5)" onmouseleave="resetZone(5)">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">5. Limítrofe</h4>
+                            <span class="text-xs text-[#c5a059] font-serif">+$16.750</span>
+                        </div>
+                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Quintero, Curauma, Placilla de Peñuelas, El Belloto.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-[#c5a059]/10 border border-[#c5a059]/30 p-4 text-left flex items-start gap-3 rounded-lg">
+                    <span class="text-[#c5a059] text-xs">⚠</span>
+                    <p class="text-[9px] uppercase tracking-widest leading-relaxed text-white/80">
+                        <strong>Beneficio Exclusivo:</strong> Envíos gratis o bonificados sobre $69.990. Pase el cursor sobre cada zona para visualizar el área en el mapa.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <footer class="bg-forest-green text-soft-cream py-24 px-6 border-t border-gold-leaf/20">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
             <div class="md:col-span-4">
@@ -1137,6 +1216,101 @@
     </div>
 
     <script>
+        // ----------------------------------------------------
+        // LÓGICA DEL MAPA LEAFLET (INTERACTIVO)
+        // ----------------------------------------------------
+        let mapInitialized = false;
+        let coverageMap;
+        let circleLayers = {};
+
+        // Definimos las 5 zonas con el radio en metros desde Reñaca
+        const zoneData = [
+            { id: 1, radius: 2500, color: '#c5a059', fillOpacity: 0.5, name: "Ultra Local" },
+            { id: 2, radius: 5500, color: '#c5a059', fillOpacity: 0.35, name: "Local Media" },
+            { id: 3, radius: 9500, color: '#c5a059', fillOpacity: 0.20, name: "Intermedia" },
+            { id: 4, radius: 15500, color: '#c5a059', fillOpacity: 0.10, name: "Extendida" },
+            { id: 5, radius: 26000, color: '#c5a059', fillOpacity: 0.04, name: "Limítrofe" }
+        ];
+
+        function initCoverageMap() {
+            if (mapInitialized) return;
+            
+            // Centramos entre Reñaca y Valparaíso
+            coverageMap = L.map('coverage-map', { 
+                zoomControl: true,
+                scrollWheelZoom: false 
+            }).setView([-33.020, -71.530], 10);
+            
+            // Tiles Oscuros (CartoDB Dark Matter)
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap',
+                subdomains: 'abcd',
+                maxZoom: 18
+            }).addTo(coverageMap);
+
+            // Coordenadas del Atelier (Reñaca)
+            const center = [-32.974, -71.543];
+
+            // Dibujamos los círculos en orden inverso para que los chicos queden arriba
+            [...zoneData].reverse().forEach(z => {
+                let circle = L.circle(center, {
+                    color: z.color,
+                    weight: 1,
+                    fillColor: z.color,
+                    fillOpacity: z.fillOpacity,
+                    interactive: false 
+                }).addTo(coverageMap);
+                circleLayers[z.id] = circle;
+            });
+
+            // Marcador del Atelier
+            const icon = L.divIcon({ 
+                html: '<div class="w-3 h-3 bg-[#c5a059] rounded-full border border-[#0a1f1c] shadow-[0_0_15px_rgba(197,160,89,1)]"></div>', 
+                className: '' 
+            });
+            L.marker(center, {icon: icon})
+             .addTo(coverageMap)
+             .bindTooltip("Atelier", {
+                 permanent: true, 
+                 direction: "right", 
+                 className: "atelier-tooltip"
+             }).openTooltip();
+
+            mapInitialized = true;
+        }
+
+        function highlightZone(id) {
+            if(!circleLayers[id]) return;
+            circleLayers[id].setStyle({ fillOpacity: 0.7, weight: 2 });
+        }
+
+        function resetZone(id) {
+            if(!circleLayers[id]) return;
+            const original = zoneData.find(z => z.id === id);
+            circleLayers[id].setStyle({ fillOpacity: original.fillOpacity, weight: 1 });
+        }
+
+        function openCoverageModal() {
+            const modal = document.getElementById('coverage-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                initCoverageMap();
+                coverageMap.invalidateSize(); // Fix crítico para que el mapa cargue bien estando oculto
+            }, 10);
+            document.body.style.overflow = 'hidden';
+            if (typeof stopAutoPlay === 'function') stopAutoPlay(); // Frena el slider
+        }
+
+        function closeCoverageModal() {
+            const modal = document.getElementById('coverage-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 500);
+        }
+        
         function trackGA4(eventName, params) {
             if (typeof gtag === 'function') {
                 gtag('event', eventName, params);
