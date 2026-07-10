@@ -367,7 +367,6 @@
                 font-size: 0.8rem !important;
             }
         }
-    
     </style>
 </head>
 <body>
@@ -493,7 +492,8 @@
                             Entregas en 1 a 2 hrs. Llegamos con precisión impecable desde Reñaca hasta Quintero y Curauma.
                         </p>
                         <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <button onclick="openCoverageModal()" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver Zonas de Cobertura</button>                        </div>
+                            <button onclick="openCoverageModal()" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver Zonas de Cobertura</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -647,10 +647,8 @@
         <div class="w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-16">
             
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-4 pb-4 border-b border-[#0a1f1c]/5 mb-6">
-                
                 <div class="w-full md:w-auto overflow-hidden">
                     <h2 class="text-4xl md:text-7xl font-serif italic text-[#0a1f1c] mb-3 mt-2 md:mt-0">Colección</h2>
-                    
                     <div class="w-full overflow-x-auto pb-1 hide-scroll">
                         <nav aria-label="Filtros de colección" class="flex items-center space-x-6 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 whitespace-nowrap min-w-max">
                             <a href="#vault" class="text-[#0a1f1c] border-b-2 border-[#0a1f1c] pb-1 transition-all">Todos</a>
@@ -676,6 +674,30 @@
             <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-10 md:gap-y-12 pb-20">
             </div>
             
+        </div>
+    </section>
+
+    <section class="py-32 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="text-gold-leaf text-xs font-bold uppercase tracking-widest mb-6 block">Nuestra Cultura</span>
+            <h2 class="text-4xl md:text-6xl font-serif mb-12 leading-tight">La naturaleza es el estado más puro del arte.</h2>
+            <p class="text-lg md:text-xl text-zinc-600 font-light leading-relaxed mb-12">
+                Las flores guardan un valor que va más allá de una cifra. Son el reflejo de un compromiso honesto, de una búsqueda incesante de la belleza y perfección, y el refugio sagrado de un hogar en paz y armonía. Con arte y vanguardia, transformamos la naturaleza en una experiencia infinita.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 pt-12 border-t">
+                <div>
+                    <h5 class="font-bold uppercase tracking-tighter mb-2 italic">Exclusividad</h5>
+                    <p class="text-xs opacity-60">Especies seleccionadas a mano, difíciles de encontrar en el comercio masivo.</p>
+                </div>
+                <div>
+                    <h5 class="font-bold uppercase tracking-tighter mb-2 italic">Puntualidad</h5>
+                    <p class="text-xs opacity-60">Nuestra logística garantiza frescura en cada rincón de Viña del Mar y Concón.</p>
+                </div>
+                <div>
+                    <h5 class="font-bold uppercase tracking-tighter mb-2 italic">Diseño</h5>
+                    <p class="text-xs opacity-60">Cada ramo es una pieza de arte única, diseñada para llenar de vida a su entorno.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -728,14 +750,12 @@
     </section>
 
     <div id="b2b-flow" class="fixed inset-0 bg-[#0a1f1c] text-[#fcfaf7] z-[200] flex flex-col hidden opacity-0 transition-opacity duration-500 backdrop-blur-xl">
-        
         <div class="px-8 py-6 flex justify-between items-center border-b border-[#c5a059]/10">
             <h2 class="font-serif text-xl tracking-widest uppercase text-[#c5a059]">Portal B2B</h2>
             <button onclick="closeB2BFlow()" class="text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors">×</button>
         </div>
 
         <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
-            
             <div id="b2b-step-1" class="b2b-step active flex-col items-center w-full max-w-lg text-center transition-all duration-500 transform">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block">Paso 1 de 2</span>
                 <h3 class="font-serif text-4xl md:text-5xl italic mb-12">¿Cuál es su segmento corporativo?</h3>
@@ -754,30 +774,18 @@
                 
                 <form id="b2b-final-form" class="w-full space-y-6" onsubmit="sendB2BConsultation(event)">
                     <input type="hidden" id="b2b-selected-segment" name="Segmento">
-                    
-                    <div>
-                        <input type="text" id="b2b-empresa" name="Empresa" required placeholder="Nombre de la Empresa" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
-                    </div>
-                    
-                    <div>
-                        <input type="text" id="b2b-nombre" name="Contacto" required placeholder="Su Nombre y Cargo" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
-                    </div>
-
+                    <div><input type="text" id="b2b-empresa" name="Empresa" required placeholder="Nombre de la Empresa" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors"></div>
+                    <div><input type="text" id="b2b-nombre" name="Contacto" required placeholder="Su Nombre y Cargo" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors"></div>
                     <div class="grid grid-cols-2 gap-4">
                         <input type="email" id="b2b-email" name="Email" required placeholder="Correo Corporativo" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
                         <input type="tel" id="b2b-whatsapp" name="WhatsApp" required placeholder="WhatsApp" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
                     </div>
-
                     <div class="pt-8">
-                        <button type="submit" id="b2b-submit-btn" class="w-full py-5 bg-[#c5a059] text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors">
-                            Solicitar Membresía
-                        </button>
+                        <button type="submit" id="b2b-submit-btn" class="w-full py-5 bg-[#c5a059] text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors">Solicitar Membresía</button>
                     </div>
                 </form>
                 
-                <button onclick="backToB2BStep1()" class="mt-8 text-[9px] uppercase tracking-[0.3em] text-white/40 hover:text-[#c5a059] transition-colors border-b border-transparent hover:border-[#c5a059] pb-1">
-                    ← Cambiar Segmento
-                </button>
+                <button onclick="backToB2BStep1()" class="mt-8 text-[9px] uppercase tracking-[0.3em] text-white/40 hover:text-[#c5a059] transition-colors border-b border-transparent hover:border-[#c5a059] pb-1">← Cambiar Segmento</button>
             </div>
 
             <div id="b2b-success" class="hidden flex-col items-center w-full max-w-md text-center">
@@ -785,14 +793,9 @@
                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path></svg>
                 </div>
                 <h3 class="font-serif text-4xl italic mb-4">Solicitud Recibida.</h3>
-                <p class="text-white/60 font-light leading-relaxed">
-                    Nuestra dirección ejecutiva evaluará su perfil y nos pondremos en contacto a la brevedad para agendar una reunión privada.
-                </p>
-                <button onclick="closeB2BFlow()" class="mt-12 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] hover:text-white border-b border-[#c5a059] pb-1 transition-colors">
-                    Volver a La Foresta
-                </button>
+                <p class="text-white/60 font-light leading-relaxed">Nuestra dirección ejecutiva evaluará su perfil y nos pondremos en contacto a la brevedad para agendar una reunión privada.</p>
+                <button onclick="closeB2BFlow()" class="mt-12 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] hover:text-white border-b border-[#c5a059] pb-1 transition-colors">Volver a La Foresta</button>
             </div>
-
         </div>
     </div>
     
@@ -907,13 +910,14 @@
                 <div class="mt-8 bg-[#c5a059]/10 border border-[#c5a059]/30 p-4 text-left flex items-start gap-3 rounded-lg">
                     <span class="text-[#c5a059] text-xs">⚠</span>
                     <p class="text-[9px] uppercase tracking-widest leading-relaxed text-white/80">
-                        <strong>Beneficio Exclusivo:</strong> Envíos gratis o bonificados sobre $69.990. Pase el cursor sobre cada zona para visualizar el área en el mapa.
+                        <strong>Beneficio Exclusivo:</strong> Envíos gratis o bonificados sobre $69.990. Pase el cursor sobre cada zona para visualizar el área de alcance en el mapa interactivo.
                     </p>
                 </div>
             </div>
+
         </div>
     </div>
-    
+
     <footer class="bg-forest-green text-soft-cream py-24 px-6 border-t border-gold-leaf/20">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
             <div class="md:col-span-4">
@@ -1216,6 +1220,29 @@
     </div>
 
     <script>
+        function trackGA4(eventName, params) {
+            if (typeof gtag === 'function') {
+                gtag('event', eventName, params);
+            }
+        }
+
+        let cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
+        let selectedGardenSpace = localStorage.getItem('laforesta_selectedGardenSpace') || '';
+        let selectedPalette = localStorage.getItem('laforesta_selectedPalette') || '';
+        let shippingCost = parseInt(localStorage.getItem('laforesta_shippingCost')) || 0;
+        let selectedZoneName = localStorage.getItem('laforesta_selectedZoneName') || '';
+        let selectedLogistics = localStorage.getItem('laforesta_selectedLogistics') || '';
+        let selectedDate = localStorage.getItem('laforesta_selectedDate') || '';
+        let selectedTimeSlot = localStorage.getItem('laforesta_selectedTimeSlot') || '';
+        let isExpressDelivery = localStorage.getItem('laforesta_isExpressDelivery') === 'true';
+
+        const RECARGO_EXPRESS_ENVIO = 1.50; 
+        let currentCalendarDate = new Date();
+
+        const mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', {
+            locale: 'es-CL'
+        });
+
         // ----------------------------------------------------
         // LÓGICA DEL MAPA LEAFLET (INTERACTIVO)
         // ----------------------------------------------------
@@ -1241,7 +1268,7 @@
                 scrollWheelZoom: false 
             }).setView([-33.020, -71.530], 10);
             
-            // Tiles Oscuros (CartoDB Dark Matter)
+            // Tiles Oscuros (CartoDB Dark Matter) - Perfectos para la marca
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
                 attribution: '© OpenStreetMap',
                 subdomains: 'abcd',
@@ -1258,7 +1285,7 @@
                     weight: 1,
                     fillColor: z.color,
                     fillOpacity: z.fillOpacity,
-                    interactive: false 
+                    interactive: false // Evita que bloqueen el mapa, la interaccion viene de la lista
                 }).addTo(coverageMap);
                 circleLayers[z.id] = circle;
             });
@@ -1296,10 +1323,10 @@
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
                 initCoverageMap();
-                coverageMap.invalidateSize(); // Fix crítico para que el mapa cargue bien estando oculto
+                coverageMap.invalidateSize(); // Fix crítico para mapas Leaflet ocultos
             }, 10);
             document.body.style.overflow = 'hidden';
-            if (typeof stopAutoPlay === 'function') stopAutoPlay(); // Frena el slider
+            stopAutoPlay(); // Pausa el carrusel de fondo
         }
 
         function closeCoverageModal() {
@@ -1310,29 +1337,8 @@
                 document.body.style.overflow = 'auto';
             }, 500);
         }
-        
-        function trackGA4(eventName, params) {
-            if (typeof gtag === 'function') {
-                gtag('event', eventName, params);
-            }
-        }
+        // ----------------------------------------------------
 
-        let cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
-        let selectedGardenSpace = localStorage.getItem('laforesta_selectedGardenSpace') || '';
-        let selectedPalette = localStorage.getItem('laforesta_selectedPalette') || '';
-        let shippingCost = parseInt(localStorage.getItem('laforesta_shippingCost')) || 0;
-        let selectedZoneName = localStorage.getItem('laforesta_selectedZoneName') || '';
-        let selectedLogistics = localStorage.getItem('laforesta_selectedLogistics') || '';
-        let selectedDate = localStorage.getItem('laforesta_selectedDate') || '';
-        let selectedTimeSlot = localStorage.getItem('laforesta_selectedTimeSlot') || '';
-        let isExpressDelivery = localStorage.getItem('laforesta_isExpressDelivery') === 'true';
-
-        const RECARGO_EXPRESS_ENVIO = 1.50; 
-        let currentCalendarDate = new Date();
-
-        const mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', {
-            locale: 'es-CL'
-        });
 
         const catalog = [
             { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias.", url: "amor-delicado.html" },
@@ -2289,135 +2295,6 @@
         }
         setInterval(updateCountdown, 1000);
         updateCountdown();
-
-        // --- Lógica de Interfaz del Modal B2B ---
-        function openB2BFlow() {
-            const flow = document.getElementById('b2b-flow');
-            flow.classList.remove('hidden');
-            setTimeout(() => flow.classList.remove('opacity-0'), 10);
-            document.body.style.overflow = 'hidden'; 
-        }
-
-        function closeB2BFlow() {
-            const flow = document.getElementById('b2b-flow');
-            flow.classList.add('opacity-0');
-            setTimeout(() => {
-                flow.classList.add('hidden');
-                document.body.style.overflow = 'auto'; 
-                resetB2BFlow(); 
-            }, 500);
-        }
-
-        function selectB2BSegment(segment) {
-            document.getElementById('b2b-selected-segment').value = segment;
-            
-            const step1 = document.getElementById('b2b-step-1');
-            const step2 = document.getElementById('b2b-step-2');
-            
-            step1.classList.add('opacity-0', '-translate-x-8');
-            setTimeout(() => {
-                step1.classList.add('hidden');
-                step1.classList.remove('flex');
-                
-                step2.classList.remove('hidden');
-                step2.classList.add('flex');
-                setTimeout(() => step2.classList.remove('opacity-0', 'translate-x-8'), 50);
-            }, 300);
-        }
-
-        function backToB2BStep1() {
-            const step1 = document.getElementById('b2b-step-1');
-            const step2 = document.getElementById('b2b-step-2');
-            
-            step2.classList.add('opacity-0', 'translate-x-8');
-            setTimeout(() => {
-                step2.classList.add('hidden');
-                step2.classList.remove('flex');
-                
-                step1.classList.remove('hidden');
-                step1.classList.add('flex');
-                setTimeout(() => step1.classList.remove('opacity-0', '-translate-x-8'), 50);
-            }, 300);
-        }
-
-        function resetB2BFlow() {
-            document.getElementById('b2b-final-form').reset();
-            document.getElementById('b2b-step-1').className = "b2b-step flex flex-col items-center w-full max-w-lg text-center transition-all duration-500 transform opacity-100 translate-x-0";
-            document.getElementById('b2b-step-2').className = "b2b-step hidden flex-col items-center w-full max-w-md text-center transition-all duration-500 transform translate-x-8 opacity-0";
-            document.getElementById('b2b-success').classList.add('hidden');
-            document.getElementById('b2b-success').classList.remove('flex');
-        }
-
-        async function sendB2BConsultation(event) {
-            event.preventDefault(); 
-            
-            const btn = document.getElementById('b2b-submit-btn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = 'PROCESANDO...';
-            btn.disabled = true;
-
-            const formData = new FormData(event.target);
-            formData.append('_subject', 'Nueva Solicitud de Membresía B2B - La Foresta Flores');
-            formData.append('_captcha', 'false');
-
-            try {
-                const response = await fetch("https://formsubmit.co/ajax/contacto@laforestaflores.cl", {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    document.getElementById('b2b-step-2').classList.add('hidden');
-                    document.getElementById('b2b-step-2').classList.remove('flex');
-                    
-                    const successScreen = document.getElementById('b2b-success');
-                    successScreen.classList.remove('hidden');
-                    successScreen.classList.add('flex');
-                } else {
-                    alert("Hubo un problema al procesar la solicitud. Por favor, intente vía WhatsApp.");
-                }
-            } catch (error) {
-                console.error("Error al enviar:", error);
-                alert("Error de conexión. Verifique su internet.");
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            
-            if (params.get('action') === 'open_cart') {
-                if (typeof toggleCart === 'function') { toggleCart(); }
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-            
-            if (params.get('action') === 'open_vault' || window.location.hash === '#vault') {
-                const vaultSection = document.getElementById('vault');
-                if (vaultSection) {
-                    const headerOffset = window.innerWidth >= 1024 ? 90 : 70;
-                    const elementPosition = vaultSection.getBoundingClientRect().top + window.scrollY;
-                    const offsetPosition = elementPosition - headerOffset;
-                    
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'auto'
-                    });
-                }
-                window.history.replaceState({}, document.title, window.location.pathname + '#vault');
-            }
-            
-            const yearFooter = document.getElementById("year-footer");
-            if (yearFooter) { yearFooter.innerText = new Date().getFullYear(); }
-            const flow = document.getElementById('garden-flow');
-            if (flow) { flow.style.transform = 'translateY(100%)'; }
-            updateCartUI();
-            restaurarProgresoCheckout();
-        });
 
         function escribirMensaje(tipo) {
             const textarea = document.getElementById('card-message');
