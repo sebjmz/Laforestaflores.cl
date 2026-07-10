@@ -1252,40 +1252,40 @@
 
         // Definimos las 5 zonas con el radio en metros desde Reñaca
         const zoneData = [
-            { id: 1, radius: 2500, color: '#c5a059', fillOpacity: 0.5, name: "Ultra Local" },
-            { id: 2, radius: 5500, color: '#c5a059', fillOpacity: 0.35, name: "Local Media" },
-            { id: 3, radius: 9500, color: '#c5a059', fillOpacity: 0.20, name: "Intermedia" },
-            { id: 4, radius: 15500, color: '#c5a059', fillOpacity: 0.10, name: "Extendida" },
-            { id: 5, radius: 26000, color: '#c5a059', fillOpacity: 0.04, name: "Limítrofe" }
+            { id: 1, radius: 2500, color: '#c5a059', fillOpacity: 0.4, name: "Ultra Local" },
+            { id: 2, radius: 5500, color: '#c5a059', fillOpacity: 0.25, name: "Local Media" },
+            { id: 3, radius: 9500, color: '#c5a059', fillOpacity: 0.15, name: "Intermedia" },
+            { id: 4, radius: 15500, color: '#c5a059', fillOpacity: 0.08, name: "Extendida" },
+            { id: 5, radius: 26000, color: '#c5a059', fillOpacity: 0.03, name: "Limítrofe" }
         ];
+
+        // Tus coordenadas exactas
+        const atelierCenter = [-32.97074205954955, -71.5431332198481];
 
         function initCoverageMap() {
             if (mapInitialized) return;
             
-            // Centramos entre Reñaca y Valparaíso
+            // Centramos el mapa
             coverageMap = L.map('coverage-map', { 
                 zoomControl: true,
                 scrollWheelZoom: false 
-            }).setView([-33.020, -71.530], 10);
+            }).setView(atelierCenter, 10);
             
-            // Tiles Oscuros (CartoDB Dark Matter) - Perfectos para la marca
+            // Tiles Oscuros (CartoDB Dark Matter)
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
                 attribution: '© OpenStreetMap',
                 subdomains: 'abcd',
                 maxZoom: 18
             }).addTo(coverageMap);
 
-            // Coordenadas del Atelier (Reñaca)
-            const center = [-32.974, -71.543];
-
-            // Dibujamos los círculos en orden inverso para que los chicos queden arriba
+            // Dibujamos los círculos en orden inverso para que los grandes no tapen a los chicos
             [...zoneData].reverse().forEach(z => {
-                let circle = L.circle(center, {
+                let circle = L.circle(atelierCenter, {
                     color: z.color,
                     weight: 1,
                     fillColor: z.color,
                     fillOpacity: z.fillOpacity,
-                    interactive: false // Evita que bloqueen el mapa, la interaccion viene de la lista
+                    interactive: false 
                 }).addTo(coverageMap);
                 circleLayers[z.id] = circle;
             });
@@ -1295,7 +1295,7 @@
                 html: '<div class="w-3 h-3 bg-[#c5a059] rounded-full border border-[#0a1f1c] shadow-[0_0_15px_rgba(197,160,89,1)]"></div>', 
                 className: '' 
             });
-            L.marker(center, {icon: icon})
+            L.marker(atelierCenter, {icon: icon})
              .addTo(coverageMap)
              .bindTooltip("Atelier", {
                  permanent: true, 
@@ -1308,25 +1308,36 @@
 
         function highlightZone(id) {
             if(!circleLayers[id]) return;
-            circleLayers[id].setStyle({ fillOpacity: 0.7, weight: 2 });
+            // Efecto visual fuerte: borde blanco y más opacidad
+            circleLayers[id].setStyle({ fillOpacity: 0.8, weight: 3, color: '#ffffff' });
         }
 
         function resetZone(id) {
             if(!circleLayers[id]) return;
             const original = zoneData.find(z => z.id === id);
-            circleLayers[id].setStyle({ fillOpacity: original.fillOpacity, weight: 1 });
+            // Regresa al estado original
+            circleLayers[id].setStyle({ fillOpacity: original.fillOpacity, weight: 1, color: original.color });
         }
 
         function openCoverageModal() {
             const modal = document.getElementById('coverage-modal');
             modal.classList.remove('hidden');
+            
+            // Renderizamos el mapa
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
                 initCoverageMap();
-                coverageMap.invalidateSize(); // Fix crítico para mapas Leaflet ocultos
             }, 10);
+
+            // FIX: Esperamos medio segundo a que el CSS del modal termine de abrirse para recalcular el tamaño del mapa
+            setTimeout(() => {
+                if (coverageMap) {
+                    coverageMap.invalidateSize();
+                }
+            }, 550);
+
             document.body.style.overflow = 'hidden';
-            stopAutoPlay(); // Pausa el carrusel de fondo
+            if (typeof stopAutoPlay === 'function') stopAutoPlay();
         }
 
         function closeCoverageModal() {
