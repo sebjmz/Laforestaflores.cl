@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
+    <!-- Página Principal -->
     <url>
         <loc>https://laforestaflores.cl/</loc>
         <lastmod>2026-07-08</lastmod>
@@ -8,6 +9,7 @@
         <priority>1.0</priority>
     </url>
 
+    <!-- Categorías Principales -->
     <url>
         <loc>https://laforestaflores.cl/condolencias.html</loc>
         <lastmod>2026-07-08</lastmod>
@@ -45,6 +47,7 @@
         <priority>0.9</priority>
     </url>
 
+    <!-- Productos Individuales -->
     <url>
         <loc>https://laforestaflores.cl/amor-eterno.html</loc>
         <lastmod>2026-07-08</lastmod>
@@ -64,7 +67,19 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://laforestaflores.cl/dulce-amor.html</loc>
+        <lastmod>2026-07-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://laforestaflores.cl/encanto-vivo.html</loc>
+        <lastmod>2026-07-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://laforestaflores.cl/esperanza.html</loc>
         <lastmod>2026-07-08</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
@@ -88,6 +103,18 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://laforestaflores.cl/luz-del-alba.html</loc>
+        <lastmod>2026-07-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://laforestaflores.cl/luz-infinita.html</loc>
+        <lastmod>2026-07-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://laforestaflores.cl/monte-mar-signature.html</loc>
         <lastmod>2026-07-08</lastmod>
         <changefreq>monthly</changefreq>
@@ -95,6 +122,12 @@
     </url>
     <url>
         <loc>https://laforestaflores.cl/pasion-de-sol.html</loc>
+        <lastmod>2026-07-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://laforestaflores.cl/sereno.html</loc>
         <lastmod>2026-07-08</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
@@ -118,6 +151,13 @@
         <priority>0.8</priority>
     </url>
 
+    <!-- Páginas de Utilidad e Información -->
+    <url>
+        <loc>https://laforestaflores.cl/despachos.html</loc>
+        <lastmod>2026-07-08</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
     <url>
         <loc>https://laforestaflores.cl/devoluciones.html</loc>
         <lastmod>2026-07-08</lastmod>
@@ -126,6 +166,12 @@
     </url>
     <url>
         <loc>https://laforestaflores.cl/privacidad.html</loc>
+        <lastmod>2026-07-08</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://laforestaflores.cl/terminos.html</loc>
         <lastmod>2026-07-08</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.5</priority>
