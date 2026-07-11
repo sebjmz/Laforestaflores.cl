@@ -4,22 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- ==========================================
-         SEO DE DOMINACIÓN (Categoría Romance)
-         ========================================== -->
     <title>Flores de Aniversario y Ramos de Rosas en Viña del Mar | La Foresta Flores</title>
     <meta name="description" content="Arreglos florales de aniversario, ramos de rosas exclusivas y diseños románticos de alta costura. Despacho express el mismo día en Viña del Mar, Reñaca y Concón.">
     <meta name="keywords" content="flores de aniversario, ramos de rosas, enviar rosas viña del mar, regalo romántico, florería reñaca, concón, flores premium amor">
     <link rel="canonical" href="https://laforestaflores.cl/romance-aniversario.html">
     <link rel="icon" type="image/png" href="/img/favicon.png">
 
-    <!-- OPTIMIZACIÓN SAFARI / IOS -->
     <meta name="theme-color" content="#fcfaf7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Romance">
 
-    <!-- OPEN GRAPH -->
     <meta property="og:site_name" content="La Foresta Flores">
     <meta property="og:title" content="Flores de Aniversario y Romance | La Foresta Flores">
     <meta property="og:description" content="Diseños florales apasionados y exclusivos de alta costura. Despacho express el mismo día en Viña del Mar, Reñaca y Concón.">
@@ -27,7 +22,6 @@
     <meta property="og:url" content="https://laforestaflores.cl/romance-aniversario.html">
     <meta property="og:image" content="https://laforestaflores.cl/img/social-share.jpg">
 
-    <!-- DATOS ESTRUCTURADOS DE CATEGORÍA -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -42,7 +36,6 @@
     }
     </script>
 
-    <!-- Tailwind y Fuentes -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
     
@@ -58,7 +51,9 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            scrollbar-width: none;
         }
+        ::-webkit-scrollbar { display: none; }
         .font-serif { font-family: 'Playfair Display', serif; }
         .product-card {
             transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -77,52 +72,75 @@
         .product-card:hover .img-zoom-container img {
             transform: scale(1.05);
         }
+        .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
-    <!-- Navegación -->
-    <nav class="fixed w-full z-50 bg-[#fcfaf7]/95 backdrop-blur-lg px-6 md:px-12 py-5 flex justify-between items-center border-b border-[#0a1f1c]/5">
-        <a href="/index.html" class="cursor-pointer">
-            <img src="img/logo-menu.png" alt="La Foresta Flores Logo" class="h-6 md:h-8 w-auto object-contain">
-        </a>
-        <div class="flex items-center space-x-8">
-            <a href="/index.html?action=open_vault#vault" class="text-[10px] font-bold uppercase tracking-widest hover:text-[#c5a059] transition-colors">Volver a Colección</a>
+    <nav class="fixed w-full z-[100] bg-[rgba(10,31,28,0.92)] backdrop-blur-[15px] border-b border-[rgba(197,160,89,0.2)] px-6 md:px-12 py-5 flex justify-between items-center text-[#c5a059]">
+        <div class="flex items-center space-x-12 min-w-0">
+            <a href="/index.html" class="cursor-pointer flex-shrink-0 flex items-center">
+                <img src="img/logo-menu.png" alt="La Foresta Flores" class="h-6 md:h-8 w-auto object-contain brightness-0 invert">
+            </a>
+            <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap">
+                <a href="/index.html#vault" class="hover:text-white transition-colors duration-300">Colección</a>
+                <a href="/index.html#privilege" class="hover:text-white transition-colors duration-300">Suscripción & B2B</a>
+                <a href="/index.html#garden" class="hover:text-white transition-colors duration-300">Jardinería</a>
+            </div>
+        </div>
+        
+        <div class="flex items-center space-x-8 flex-shrink-0">
+            <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Reñaca, Chile</div>
+            <a href="/index.html?action=open_cart" class="relative group flex items-center whitespace-nowrap hover:text-white transition-colors duration-300">
+                <span class="text-[10px] font-bold uppercase tracking-widest mr-2">Volver</span>
+            </a>
         </div>
     </nav>
 
-    <!-- Encabezado de Categoría Ultra Compactado y Enfocado en Producto -->
-    <header class="pt-32 pb-4 px-6 max-w-7xl mx-auto">
-        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-[#0a1f1c]/5 pb-6 mb-8">
-            <div class="max-w-2xl">
-                <span class="text-[#c5a059] text-[9px] font-bold uppercase tracking-[0.4em] mb-2 block">Amor & Alta Costura Botánica</span>
-                <h1 class="text-3xl md:text-5xl font-serif italic text-[#0a1f1c] leading-tight mb-3">Declaraciones absolutas de afecto.</h1>
-                <p class="text-xs md:text-sm text-zinc-500 font-light leading-relaxed">
-                    Rosas de exportación seleccionadas a mano y tulipanes de líneas arquitectónicas puras. Diseños esculturales de alta gama creados para conmover y marcar la diferencia en la V Región.
-                </p>
-            </div>
+    <section id="vault" class="bg-white pt-32 pb-12">
+        <div class="w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-16">
             
-            <!-- Barra de Garantías de Impacto y Confianza Inmediata (Aporte Corporativo Alto Valor) -->
-            <div class="flex flex-wrap gap-2 text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] lg:pb-1">
-                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-200/60 px-3 py-1.5 rounded-full shadow-sm">
-                    <span class="text-[#c5a059]">✓</span> Control Fotográfico Pre-Envío
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-4 pb-4 border-b border-[#0a1f1c]/5 mb-6">
+                <div class="w-full md:w-auto overflow-hidden">
+                    <h1 class="text-4xl md:text-7xl font-serif italic text-[#0a1f1c] mb-3 mt-2 md:mt-0">Colección</h1>
+                    <div class="w-full overflow-x-auto pb-1 hide-scroll">
+                        <nav aria-label="Filtros de colección" class="flex items-center space-x-6 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 whitespace-nowrap min-w-max">
+                            <a href="/index.html#vault" class="hover:text-[#c5a059] transition-all pb-1">Todos</a>
+                            <a href="#" class="text-[#0a1f1c] border-b-2 border-[#0a1f1c] pb-1 transition-all">Romance</a>
+                            <a href="/condolencias.html" class="hover:text-[#c5a059] transition-all pb-1">Condolencias</a>
+                            <a href="/celebraciones.html" class="hover:text-[#c5a059] transition-all pb-1">Celebraciones</a>
+                            <a href="/corporativo.html" class="hover:text-[#c5a059] transition-all pb-1">Corporativo</a>
+                        </nav>
+                    </div>
                 </div>
-                <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-200/60 px-3 py-1.5 rounded-full shadow-sm">
-                    <span class="text-[#c5a059]">✓</span> Despacho Express 1-2 Horas
+
+                <div class="bg-[#fcfaf7] border border-[#0a1f1c]/10 px-4 py-2.5 rounded-full inline-flex items-center gap-3 shadow-sm self-start md:self-auto shrink-0 mt-1 md:mt-0">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-[9px] uppercase tracking-widest font-bold text-[#0a1f1c] flex items-center gap-1.5">
+                        Categoría Activa
+                    </span>
                 </div>
             </div>
-        </div>
-    </header>
 
-    <!-- Grilla Curada de Alta Densidad (2 celular, 3 tablet, 4 pc) -->
-    <main class="pb-32 px-6 md:px-12 max-w-7xl mx-auto">
-        <div id="category-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-12 md:gap-y-16">
-            <!-- Los ramos se inyectarán aquí mediante JS -->
-        </div>
-    </main>
+            <div id="category-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-10 md:gap-y-12">
+                </div>
 
-    <!-- Footer Simple -->
-    <footer class="bg-forest-green text-soft-cream py-12 px-6 border-t border-gold-leaf/20 text-center">
+            <div class="mt-24 mb-8 text-center max-w-3xl mx-auto px-6">
+                <span class="text-[#c5a059] text-2xl tracking-widest block mb-6">❦</span>
+                <p class="font-serif italic text-2xl md:text-3xl text-[#0a1f1c] leading-relaxed">
+                    "El amor no se mira con los ojos, sino con el alma."
+                </p>
+                <span class="block mt-6 text-[9px] font-bold uppercase tracking-[0.4em] text-[#c5a059]">— William Shakespeare</span>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="bg-[#0a1f1c] text-[#fcfaf7] py-12 px-6 border-t border-[#c5a059]/20 text-center">
         <p class="text-[9px] uppercase tracking-widest opacity-40">La Foresta Flores & Garden. Despacho Premium V Región.</p>
     </footer>
 
@@ -140,11 +158,11 @@
         grid.innerHTML = categoryCatalog.map(product => `
             <div class="product-card group flex flex-col h-full">
                 <a href="${product.url}" class="block">
-                    <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center">
+                    <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center rounded-xl">
                         <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
                         <img src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" loading="lazy">
                         
-                        <div class="absolute top-2 right-2 md:top-4 md:right-4 bg-white/90 backdrop-blur-md px-2 py-1 text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm z-20">
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm z-20">
                             ${product.id === 3 ? 'Bestseller Premium' : 'Colección Amor'}
                         </div>
                     </div>
@@ -154,7 +172,7 @@
                     <a href="${product.url}" class="hover:text-[#c5a059] transition-colors">
                         <h3 class="font-serif text-sm md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${product.name}</h3>
                     </a>
-                    <p class="text-[8px] md:text-[10px] uppercase tracking-widest opacity-60 mt-1 line-clamp-2">${product.desc}</p>
+                    <p class="text-[8px] md:text-[10px] uppercase tracking-widest opacity-50 mt-1 line-clamp-2"><span class="text-[#c5a059] mr-1">★★★★★</span> ${product.desc}</p>
                 </div>
                 
                 <div class="mt-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
