@@ -442,23 +442,22 @@
         </div>
     </div>
 
+    <!-- 1. HERO SLIDER -->
     <section class="relative w-full h-[100dvh] min-h-[450px] md:min-h-[600px] overflow-hidden bg-[#0a1f1c]" id="hero-slider">
-        
         <div id="slider-wrapper" class="relative w-full h-full overflow-hidden">
             
+            <!-- SLIDE 1: Tradición -->
             <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
                 <div class="absolute inset-0 bg-gradient-to-r from-[#0a1f1c]/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
                 <img src="img/slide1-pc.jpg" alt="Familia La Foresta" class="absolute inset-0 w-full h-full object-cover object-center z-0">
-                
                 <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
                     <div class="md:w-1/2 lg:w-[40%] mr-auto text-left">
                         <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
-                            Contigo desde 2020
+                            Tradición desde 2020
                         </h4>
                         <h2 class="text-white text-6xl md:text-[6.5rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
                             Excelencia<br>Familiar.
                         </h2>
-                        
                         <div class="mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300">
                             <div class="flex items-center gap-3 mb-1">
                                 <span class="text-[#c5a059] text-xl md:text-2xl tracking-wider drop-shadow-md">★★★★★</span> 
@@ -468,18 +467,17 @@
                                 Bono de envío sobre $69.990.
                             </p>
                         </div>
-
                         <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <button onclick="scrollToVault()" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Explorar colección</button>
+                            <button onclick="scrollToVault()" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Explorar Colección</button>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- SLIDE 2: Logística y Mapa -->
             <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
                 <div class="absolute inset-0 bg-gradient-to-l from-black/90 via-black/40 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
                 <img src="img/slide2-pc.jpg" alt="Logística y Servicio Express" class="absolute inset-0 w-full h-full object-cover object-right z-0">
-                
                 <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
                     <div class="md:w-1/2 lg:w-[42%] ml-auto text-left md:text-right">
                         <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
@@ -492,16 +490,16 @@
                             Entregas en 1 a 2 hrs. Llegamos con precisión impecable desde Reñaca hasta Quintero y Curauma.
                         </p>
                         <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <button onclick="openCoverageModal()" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver zonas de cobertura</button>
+                            <button onclick="openCoverageModal()" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver Zonas de Cobertura</button>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
+            <!-- SLIDE 3: Membresías & B2B -->
             <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
                 <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
-                <img src="img/slide5-pc.jpg" alt="Suscripciones" class="absolute inset-0 w-full h-full object-cover object-center z-0">
-                
+                <img src="img/slide5-pc.jpg" alt="Suscripciones B2B" class="absolute inset-0 w-full h-full object-cover object-center z-0">
                 <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
                     <div class="md:w-1/2 lg:w-[42%] mr-auto text-left">
                         <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
@@ -514,6 +512,7 @@
                             Un ramo único en cada envío. Elige el plan perfecto para ti o tu empresa.
                         </p>
                         <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
+                            <!-- AQUÍ ESTÁ EL BOTÓN REPARADO -->
                             <button onclick="openB2BFlow()" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Elige el plan para ti</button>
                         </div>
                     </div>
@@ -1157,6 +1156,18 @@
     </div>
 
     <script>
+        function openB2BFlow() {
+            const flow = document.getElementById('b2b-flow');
+            if(!flow) {
+                console.error("No se encontró el modal B2B. Revisa que el <div id='b2b-flow'> no se haya borrado.");
+                return;
+            }
+            flow.classList.remove('hidden');
+            setTimeout(() => flow.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden'; 
+            if (typeof stopAutoPlay === 'function') stopAutoPlay(); // Pausa el slider para que no se mueva de fondo
+        }
+        
         function trackGA4(eventName, params) {
             if (typeof gtag === 'function') {
                 gtag('event', eventName, params);
