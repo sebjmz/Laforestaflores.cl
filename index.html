@@ -2327,18 +2327,40 @@
     function escribirMensaje(tipo) {
         const textarea = document.getElementById('card-message');
         if(!textarea) return;
+        
         let mensaje = "";
+        let opciones = [];
+
         if (tipo === 'romance') {
-            const opciones = ["Que estas flores te recuerden la belleza de lo que estamos construyendo juntos. Te amo más de lo que las palabras pueden expresar.", "No hay diseño en la naturaleza que se compare contigo. Eres mi instante favorito del día.", "Para la persona que ilumina mi vida, incluso en la distancia. Con todo mi amor."];
-            mensaje = opciones[Math.floor(Math.random() * opciones.length)];
+            opciones = [
+                "Cada pétalo de este ramo me recuerda a un momento a tu lado. Gracias por hacer que mi vida florezca de esta manera. Te amo profundamente.",
+                "Dicen que la naturaleza crea obras de arte irrepetibles, pero ninguna se compara con el privilegio de tenerte en mi vida. Eres mi lugar seguro.",
+                "Aunque el tiempo pase y las estaciones cambien, lo que siento por ti solo crece y se fortalece. Gracias por ser mi mayor refugio y mi alegría más pura."
+            ];
         } else if (tipo === 'condolencias') {
-            const opciones = ["Acompañándolos en este difícil momento. Que estas flores transmitan el abrazo y la paz que faltan en las palabras.", "Con profundo respeto y cariño. Mantendremos su recuerdo siempre vivo en nuestros corazones.", "Nuestras más sinceras condolencias. Que el tiempo traiga consuelo y serenidad a la familia."];
-            mensaje = opciones[Math.floor(Math.random() * opciones.length)];
+            opciones = [
+                "Sé que no hay palabras que puedan aliviar este dolor, pero quiero que sepas que estoy aquí para ti. Que estas flores te abracen en la distancia y te brinden un poco de paz.",
+                "Las almas que dejan huella nunca se marchan del todo; florecen en nuestros recuerdos. Con el mayor de los respetos, te acompaño en este difícil momento.",
+                "Te envío toda mi fuerza y cariño en este momento de tristeza. Que el amor de quienes te rodean y los recuerdos hermosos te sirvan de consuelo."
+            ];
         } else if (tipo === 'agradecimiento') {
-            mensaje = "Las palabras a veces quedan cortas para expresar la gratitud. Espero que este detalle transmita lo mucho que valoro tu apoyo.";
+            opciones = [
+                "Hay gestos que cambian el rumbo de las cosas, y el tuyo fue uno de ellos. Mi más sincero agradecimiento por tu apoyo incondicional; nunca lo olvidaré.",
+                "Las palabras a veces quedan cortas para expresar la verdadera gratitud. Espero que este detalle transmita lo mucho que valoro tu tiempo, tu ayuda y tu confianza.",
+                "Gracias por estar ahí cuando más lo necesitaba. Es un verdadero privilegio rodearse de personas con tanta calidad humana y un corazón tan noble."
+            ];
         } else if (tipo === 'cumpleanos') {
-            mensaje = "Que este nuevo año de vida florezca con la misma fuerza y alegría que transmite este arreglo. ¡Feliz Cumpleaños!";
+            opciones = [
+                "Que este nuevo año de vida florezca con la misma fuerza, luz y alegría que transmite este arreglo. Celebro tu vida hoy y siempre. ¡Muy feliz cumpleaños!",
+                "Un nuevo ciclo comienza y no puedo estar más feliz de poder celebrarlo contigo. Que la vida te siga sorprendiendo y te llene de momentos inolvidables.",
+                "Brindo por ti, por todo lo que has logrado y por la hermosa energía que compartes con el mundo. Que hoy recibas tanto amor como el que siempre entregas."
+            ];
         }
+
+        if (opciones.length > 0) {
+            mensaje = opciones[Math.floor(Math.random() * opciones.length)];
+        }
+
         textarea.value = "";
         let i = 0;
         const intervalo = setInterval(() => {
@@ -2346,7 +2368,9 @@
             i++;
             if (i >= mensaje.length) {
                 clearInterval(intervalo);
-                guardarProgresoCheckout(); 
+                if (typeof guardarProgresoCheckout === 'function') {
+                    guardarProgresoCheckout(); 
+                }
             }
         }, 15);
     }
