@@ -167,15 +167,6 @@
             z-index: 10;
         }
 
-        .hero-video-container h1 {
-            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            letter-spacing: -0.02em;
-        }
-
-        .hero-video-container h4 {
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
         .btn-premium {
             position: relative;
             padding: 1rem 2.5rem;
@@ -255,19 +246,6 @@
 
         ::-webkit-scrollbar { 
             display: none; 
-        }
-        
-        #video-bg-layer video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translate(-50%, -50%) scale(1.02);
-            object-fit: cover;
-            z-index: 1;
         }
 
         #checkout-flow, #garden-flow {
@@ -349,7 +327,6 @@
         .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
         .hide-scroll::-webkit-scrollbar { display: none; }
 
-        /* Protección para celulares en modo horizontal */
         @media (max-height: 500px) and (orientation: landscape) {
             #hero-slider h2 { 
                 font-size: 2.5rem !important; 
@@ -442,11 +419,9 @@
         </div>
     </div>
 
-    <!-- 1. HERO SLIDER -->
     <section class="relative w-full h-[100dvh] min-h-[450px] md:min-h-[600px] overflow-hidden bg-[#0a1f1c]" id="hero-slider">
         <div id="slider-wrapper" class="relative w-full h-full overflow-hidden">
             
-            <!-- SLIDE 1: Tradición -->
             <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
                 <div class="absolute inset-0 bg-gradient-to-r from-[#0a1f1c]/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
                 <img src="img/slide1-pc.jpg" alt="Familia La Foresta" class="absolute inset-0 w-full h-full object-cover object-center z-0">
@@ -474,7 +449,6 @@
                 </div>
             </div>
 
-            <!-- SLIDE 2: Logística y Mapa -->
             <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
                 <div class="absolute inset-0 bg-gradient-to-l from-black/90 via-black/40 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
                 <img src="img/slide2-pc.jpg" alt="Logística y Servicio Express" class="absolute inset-0 w-full h-full object-cover object-right z-0">
@@ -496,7 +470,6 @@
                 </div>
             </div>
 
-            <!-- SLIDE 3: Membresías & B2B -->
             <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
                 <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
                 <img src="img/slide5-pc.jpg" alt="Suscripciones B2B" class="absolute inset-0 w-full h-full object-cover object-center z-0">
@@ -512,7 +485,6 @@
                             Un ramo único en cada envío. Elige el plan perfecto para ti o tu empresa.
                         </p>
                         <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <!-- AQUÍ ESTÁ EL BOTÓN REPARADO -->
                             <button onclick="openB2BFlow()" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Elige el plan para ti</button>
                         </div>
                     </div>
@@ -605,7 +577,6 @@
 
     <section id="vault" class="bg-white pt-6 pb-12 border-t border-zinc-100">
         <div class="w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-16">
-            
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-4 pb-4 border-b border-[#0a1f1c]/5 mb-6">
                 <div class="w-full md:w-auto overflow-hidden">
                     <h2 class="text-4xl md:text-7xl font-serif italic text-[#0a1f1c] mb-3 mt-2 md:mt-0">Colección</h2>
@@ -630,10 +601,7 @@
                     </span>
                 </div>
             </div>
-
-            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-10 md:gap-y-12 pb-20">
-            </div>
-            
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-10 md:gap-y-12 pb-20"></div>
         </div>
     </section>
 
@@ -646,7 +614,6 @@
                     <p class="text-soft-cream/60 text-lg font-light leading-relaxed">
                         Diseñamos el entorno para las organizaciones más confiables de la región. Úna su empresa a nuestra red y experimente una nueva etapa comercial.
                     </p>
-                    
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-12">
                         <div class="border-l border-gold-leaf/30 pl-6">
                             <h4 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Inmobiliarias & Propiedades</h4>
@@ -846,11 +813,10 @@
                 <div class="mt-8 bg-[#c5a059]/10 border border-[#c5a059]/30 p-4 text-left flex items-start gap-3 rounded-lg">
                     <span class="text-[#c5a059] text-xs">⚠</span>
                     <p class="text-[9px] uppercase tracking-widest leading-relaxed text-white/80">
-                        <strong>Beneficio Exclusivo:</strong> Envíos gratis o bonificados sobre $69.990. Pase el cursor sobre cada zona para visualizar el área de alcance en el mapa interactivo.
+                        <strong>Beneficio Exclusivo:</strong> Envíos gratis o bonificados sobre $69.990. Pase el cursor sobre cada zona para visualizar el área en el mapa.
                     </p>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -1165,9 +1131,99 @@
             flow.classList.remove('hidden');
             setTimeout(() => flow.classList.remove('opacity-0'), 10);
             document.body.style.overflow = 'hidden'; 
-            if (typeof stopAutoPlay === 'function') stopAutoPlay(); // Pausa el slider para que no se mueva de fondo
+            if (typeof stopAutoPlay === 'function') stopAutoPlay(); 
         }
-        
+
+        function closeB2BFlow() {
+            const flow = document.getElementById('b2b-flow');
+            flow.classList.add('opacity-0');
+            setTimeout(() => {
+                flow.classList.add('hidden');
+                document.body.style.overflow = 'auto'; 
+                resetB2BFlow(); 
+            }, 500);
+        }
+
+        function selectB2BSegment(segment) {
+            document.getElementById('b2b-selected-segment').value = segment;
+            
+            const step1 = document.getElementById('b2b-step-1');
+            const step2 = document.getElementById('b2b-step-2');
+            
+            step1.classList.add('opacity-0', '-translate-x-8');
+            setTimeout(() => {
+                step1.classList.add('hidden');
+                step1.classList.remove('flex');
+                
+                step2.classList.remove('hidden');
+                step2.classList.add('flex');
+                setTimeout(() => step2.classList.remove('opacity-0', 'translate-x-8'), 50);
+            }, 300);
+        }
+
+        function backToB2BStep1() {
+            const step1 = document.getElementById('b2b-step-1');
+            const step2 = document.getElementById('b2b-step-2');
+            
+            step2.classList.add('opacity-0', 'translate-x-8');
+            setTimeout(() => {
+                step2.classList.add('hidden');
+                step2.classList.remove('flex');
+                
+                step1.classList.remove('hidden');
+                step1.classList.add('flex');
+                setTimeout(() => step1.classList.remove('opacity-0', '-translate-x-8'), 50);
+            }, 300);
+        }
+
+        function resetB2BFlow() {
+            document.getElementById('b2b-final-form').reset();
+            document.getElementById('b2b-step-1').className = "b2b-step flex flex-col items-center w-full max-w-lg text-center transition-all duration-500 transform opacity-100 translate-x-0";
+            document.getElementById('b2b-step-2').className = "b2b-step hidden flex-col items-center w-full max-w-md text-center transition-all duration-500 transform translate-x-8 opacity-0";
+            document.getElementById('b2b-success').classList.add('hidden');
+            document.getElementById('b2b-success').classList.remove('flex');
+        }
+
+        async function sendB2BConsultation(event) {
+            event.preventDefault(); 
+            
+            const btn = document.getElementById('b2b-submit-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'PROCESANDO...';
+            btn.disabled = true;
+
+            const formData = new FormData(event.target);
+            formData.append('_subject', 'Nueva Solicitud de Membresía B2B - La Foresta Flores');
+            formData.append('_captcha', 'false');
+
+            try {
+                const response = await fetch("https://formsubmit.co/ajax/contacto@laforestaflores.cl", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    document.getElementById('b2b-step-2').classList.add('hidden');
+                    document.getElementById('b2b-step-2').classList.remove('flex');
+                    
+                    const successScreen = document.getElementById('b2b-success');
+                    successScreen.classList.remove('hidden');
+                    successScreen.classList.add('flex');
+                } else {
+                    alert("Hubo un problema al procesar la solicitud. Por favor, intente vía WhatsApp.");
+                }
+            } catch (error) {
+                console.error("Error al enviar:", error);
+                alert("Error de conexión. Verifique su internet.");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
         function trackGA4(eventName, params) {
             if (typeof gtag === 'function') {
                 gtag('event', eventName, params);
