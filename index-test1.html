@@ -118,7 +118,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
     <style>
         /* Tooltip custom para el mapa */
-        .leaflet-tooltip.atelier-tooltip {
+        .-tooltip.atelier-tooltip {
             background-color: transparent;
             border: none;
             box-shadow: none;
@@ -1285,6 +1285,7 @@
             // Dibujamos los círculos en orden inverso para que los grandes no tapen a los chicos
             [...zoneData].reverse().forEach(z => {
                 let circle = L.circle(atelierCenter, {
+                    radius: z.radius, // <--- AQUÍ ESTABA EL ERROR, FALTABA EL RADIO
                     color: z.color,
                     weight: 1,
                     fillColor: z.color,
@@ -1312,32 +1313,35 @@
 
         function highlightZone(id) {
             if(!circleLayers[id]) return;
-            // Efecto visual fuerte: borde blanco y más opacidad
-            circleLayers[id].setStyle({ fillOpacity: 0.8, weight: 3, color: '#ffffff' });
+            // Efecto visual fuerte y traemos la capa al frente para que no se tape
+            circleLayers[id].setStyle({ fillOpacity: 0.6, weight: 3, color: '#ffffff' });
+            circleLayers[id].bringToFront();
         }
 
         function resetZone(id) {
             if(!circleLayers[id]) return;
             const original = zoneData.find(z => z.id === id);
+            
             // Regresa al estado original
             circleLayers[id].setStyle({ fillOpacity: original.fillOpacity, weight: 1, color: original.color });
+            
+            // Re-ordenamos todas las capas para que las pequeñas vuelvan a quedar arriba de las grandes
+            [...zoneData].reverse().forEach(z => {
+                if(circleLayers[z.id]) circleLayers[z.id].bringToFront();
+            });
         }
 
         function openCoverageModal() {
             const modal = document.getElementById('coverage-modal');
             modal.classList.remove('hidden');
             
-            // Renderizamos el mapa
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
                 initCoverageMap();
             }, 10);
 
-            // FIX: Esperamos medio segundo a que el CSS del modal termine de abrirse para recalcular el tamaño del mapa
             setTimeout(() => {
-                if (coverageMap) {
-                    coverageMap.invalidateSize();
-                }
+                if (coverageMap) coverageMap.invalidateSize();
             }, 550);
 
             document.body.style.overflow = 'hidden';
