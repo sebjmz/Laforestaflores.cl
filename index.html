@@ -1879,7 +1879,9 @@
             if (tiempoDecimal < 7.0) { htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`; }
             if (tiempoDecimal < 11.0) { htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`; }
             if (tiempoDecimal < 14.0) { htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 21:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Tarde (18:00 - 21:00)</button>`; }
-            if (selectedLogistics === 'envio' && tiempoDecimal < 19.0) { htmlExpress = generarHorasExpress(tiempoDecimal); }
+            
+            // Se cambió el límite de tiempoDecimal a 18.0 para cortar los express a las 18:00 hrs
+            if (selectedLogistics === 'envio' && tiempoDecimal < 18.0) { htmlExpress = generarHorasExpress(tiempoDecimal); }
             
             if (htmlNormal !== "") { html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`; }
             if (htmlExpress !== "") { html += `<div class="border-t border-[#c5a059]/30 pt-6 mt-2"><span class="text-[9px] font-bold uppercase tracking-widest text-[#c5a059] block mb-3 text-left">Servicio Express (1 hr)</span><div class="flex flex-col gap-2">${htmlExpress}</div></div>`; }
@@ -2303,7 +2305,10 @@
         if (!timerEl) return;
         const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
         const cutoffExpress = new Date(now);
-        cutoffExpress.setHours(19, 0, 0, 0);
+        
+        // Se cambió el límite a las 18:00 hrs
+        cutoffExpress.setHours(18, 0, 0, 0);
+        
         if (now >= cutoffExpress) {
             timerEl.innerHTML = "<span class='text-sm tracking-wide'>Envíos a partir de <strong>MAÑANA</strong>.</span>";
             return;
