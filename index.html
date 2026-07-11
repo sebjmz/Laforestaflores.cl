@@ -1843,27 +1843,41 @@
         }
 
         function addToCart(id, name, price, img) {
-            const existing = cart.find(item => item.id === id);
-            if (existing) { existing.qty++; }
-            else { cart.push({ id, name, price, img, qty: 1 }); }
-            updateCartUI();
-            const badge = document.getElementById('cart-count');
-            badge.classList.add('scale-150');
-            setTimeout(() => badge.classList.remove('scale-150'), 300);
-            if(!document.getElementById('atelier-bag').classList.contains('open')) { toggleCart(); }
+    const existing = cart.find(item => item.id === id);
+    if (existing) { existing.qty++; }
+    else { cart.push({ id, name, price, img, qty: 1 }); }
+    
+    // 1. Actualizamos la UI
+    updateCartUI(); 
 
-            trackGA4('add_to_cart', {
-                currency: 'CLP',
-                value: price,
-                items: [{
-                    item_id: String(id),
-                    item_name: name,
-                    price: price,
-                    quantity: 1,
-                    item_category: 'Ramos Florales'
-                }]
-            });
-        }
+    // 2. Animamos el badge solo si existe en esta página
+    const badge = document.getElementById('cart-count');
+    if (badge) {
+        badge.classList.add('scale-150');
+        setTimeout(() => badge.classList.remove('scale-150'), 300);
+    }
+
+    // 3. Abrimos el carrito de forma segura
+    const atelierBag = document.getElementById('atelier-bag');
+    if (atelierBag && !atelierBag.classList.contains('open')) { 
+        toggleCart(); 
+    } else if (!atelierBag) {
+        console.warn("No se encontró el elemento #atelier-bag en esta página.");
+    }
+
+    // 4. Tracking de Google Analytics
+    trackGA4('add_to_cart', {
+        currency: 'CLP',
+        value: price,
+        items: [{
+            item_id: String(id),
+            item_name: name,
+            price: price,
+            quantity: 1,
+            item_category: 'Ramos Florales'
+        }]
+    });
+}
 
         function removeFromCart(id) {
             cart = cart.filter(item => item.id !== id);
@@ -1880,103 +1894,114 @@
         }
 
         function updateCartUI() {
-            const tieneRamos = cart.some(item => item.id < 100);
-            if (!tieneRamos) { cart = []; }
+    const tieneRamos = cart.some(item => item.id < 100);
+    if (!tieneRamos) { cart = []; }
 
-            localStorage.setItem('laforesta_cart', JSON.stringify(cart));
-            const container = document.getElementById('cart-items-container');
-            const totalEl = document.getElementById('cart-total');
-            const countNav = document.getElementById('cart-count');
+    localStorage.setItem('laforesta_cart', JSON.stringify(cart));
+    
+    const container = document.getElementById('cart-items-container');
+    const totalEl = document.getElementById('cart-total');
+    const countNav = document.getElementById('cart-count');
+    
+    // PREVENCIÓN: Si no existe el contenedor en esta página, detenemos la actualización visual para no romper el JS
+    if (!container) return; 
+
+    if (cart.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-20 opacity-40">
+                <p class="uppercase tracking-widest text-[10px]">Su bolsa está vacía</p>
+                <button onclick="toggleCart(); scrollToVault();" class="mt-4 text-gold-leaf border-b border-gold-leaf text-[10px] font-bold uppercase tracking-widest">Ir a la Colección</button>
+            </div>`;
             
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-20 opacity-40">
-                        <p class="uppercase tracking-widest text-[10px]">Su bolsa está vacía</p>
-                        <button onclick="toggleCart(); scrollToVault();" class="mt-4 text-gold-leaf border-b border-gold-leaf text-[10px] font-bold uppercase tracking-widest">Ir a la Colección</button>
-                    </div>`;
-                totalEl.innerText = `$0`;
-                countNav.innerText = "0";
-                const stickyCart = document.getElementById('mobile-sticky-cart');
-                if (stickyCart) {
-                    document.getElementById('sticky-cart-count').innerText = "0";
-                    document.getElementById('sticky-cart-total').innerText = "$0";
-                    stickyCart.classList.add('translate-y-full');
-                }
-                return;
-            }
-
-            let html = cart.map(item => `
-                <div class="flex space-x-6 items-start">
-                    <div class="w-24 h-32 bg-zinc-50 overflow-hidden relative flex items-center justify-center border border-zinc-100">
-                        <img src="${item.img}" onerror="this.style.opacity='0'" class="w-full h-full object-cover relative z-10" alt="${item.name}">
-                    </div>
-                    <div class="flex-grow">
-                        <h4 class="font-serif text-lg italic mb-1 text-[#0a1f1c]">${item.name}</h4>
-                        <p class="text-gold-leaf text-sm font-bold">$${(item.price).toLocaleString()}</p>
-                        <div class="flex items-center space-x-6 mt-4">
-                            <div class="flex items-center space-x-3 border border-zinc-200 px-2 py-1 bg-white">
-                                <button onclick="updateQty(${item.id}, -1)" class="hover:text-gold-leaf transition-colors">-</button>
-                                <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
-                                <button onclick="updateQty(${item.id}, 1)" class="hover:text-gold-leaf transition-colors">+</button>
-                            </div>
-                            <button onclick="removeFromCart(${item.id})" class="text-[9px] uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity">Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            const inCartIds = cart.map(item => item.id);
-            const availableUpsells = upsellsCatalog.filter(u => !inCartIds.includes(u.id));
-
-            // Lógica de exclusión de upsells para ramos de condolencias
-            const condolenceIds = [13, 14, 15, 16, 17]; 
-            const tieneCondolencias = cart.some(item => condolenceIds.includes(item.id));
-
-            if (availableUpsells.length > 0 && !tieneCondolencias) {
-                html += `
-                    <div class="mt-12 border-t border-zinc-100 pt-8">
-                        <h5 class="font-serif text-lg italic mb-6 text-[#0a1f1c]">Acompañe su regalo</h5>
-                        <div id="upsell-slider" class="flex overflow-x-auto space-x-5 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
-                            ${availableUpsells.map(u => `
-                                <div class="w-[130px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
-                                    <div class="w-full aspect-square bg-[#fcfaf7] border border-zinc-200/60 mb-3 flex items-center justify-center relative overflow-hidden transition-all group-hover:bg-[#c5a059]/10 p-3 shadow-sm group-hover:border-[#c5a059]/30">
-                                        <span class="font-serif italic text-[#c5a059] text-3xl opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all absolute z-0">+</span>
-                                        <img src="${u.img}" onerror="this.style.opacity='0'" class="w-full h-full object-contain relative z-10 transition-transform duration-700 group-hover:scale-105" alt="${u.name}">
-                                    </div>
-                                    <h6 class="text-[9px] uppercase tracking-widest font-bold leading-normal text-[#0a1f1c] mb-1 min-h-[24px]">${u.name}</h6>
-                                    <p class="text-[#c5a059] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
-                                </div>
-                            `).join('')}
-                            <div class="w-4 flex-shrink-0"></div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            container.innerHTML = html;
-
-            const upsellSlider = document.getElementById('upsell-slider');
-            if (upsellSlider) {
-                upsellSlider.addEventListener('wheel', (evt) => {
-                    if (evt.deltaY !== 0) {
-                        evt.preventDefault();
-                        upsellSlider.scrollLeft += evt.deltaY;
-                    }
-                });
-            }
-
-            actualizarTotalConDespacho();
-            const itemsCount = cart.reduce((acc, item) => acc + item.qty, 0);
-            countNav.innerText = itemsCount;
-            
-            const stickyCart = document.getElementById('mobile-sticky-cart');
-            if (stickyCart) {
-                document.getElementById('sticky-cart-count').innerText = itemsCount;
-                document.getElementById('sticky-cart-total').innerText = totalEl.innerText;
-                if (cart.length > 0) { stickyCart.classList.remove('translate-y-full'); }
-                else { stickyCart.classList.add('translate-y-full'); }
-            }
+        if (totalEl) totalEl.innerText = `$0`;
+        if (countNav) countNav.innerText = "0";
+        
+        const stickyCart = document.getElementById('mobile-sticky-cart');
+        if (stickyCart) {
+            const stickyCount = document.getElementById('sticky-cart-count');
+            const stickyTotal = document.getElementById('sticky-cart-total');
+            if (stickyCount) stickyCount.innerText = "0";
+            if (stickyTotal) stickyTotal.innerText = "$0";
+            stickyCart.classList.add('translate-y-full');
         }
+        return;
+    }
+
+    let html = cart.map(item => `
+        <div class="flex space-x-6 items-start">
+            <div class="w-24 h-32 bg-zinc-50 overflow-hidden relative flex items-center justify-center border border-zinc-100">
+                <img src="${item.img}" onerror="this.style.opacity='0'" class="w-full h-full object-cover relative z-10" alt="${item.name}">
+            </div>
+            <div class="flex-grow">
+                <h4 class="font-serif text-lg italic mb-1 text-[#0a1f1c]">${item.name}</h4>
+                <p class="text-gold-leaf text-sm font-bold">$${(item.price).toLocaleString()}</p>
+                <div class="flex items-center space-x-6 mt-4">
+                    <div class="flex items-center space-x-3 border border-zinc-200 px-2 py-1 bg-white">
+                        <button onclick="updateQty(${item.id}, -1)" class="hover:text-gold-leaf transition-colors">-</button>
+                        <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
+                        <button onclick="updateQty(${item.id}, 1)" class="hover:text-gold-leaf transition-colors">+</button>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" class="text-[9px] uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    const inCartIds = cart.map(item => item.id);
+    const availableUpsells = upsellsCatalog.filter(u => !inCartIds.includes(u.id));
+    const condolenceIds = [13, 14, 15, 16, 17]; 
+    const tieneCondolencias = cart.some(item => condolenceIds.includes(item.id));
+
+    if (availableUpsells.length > 0 && !tieneCondolencias) {
+        html += `
+            <div class="mt-12 border-t border-zinc-100 pt-8">
+                <h5 class="font-serif text-lg italic mb-6 text-[#0a1f1c]">Acompañe su regalo</h5>
+                <div id="upsell-slider" class="flex overflow-x-auto space-x-5 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
+                    ${availableUpsells.map(u => `
+                        <div class="w-[130px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
+                            <div class="w-full aspect-square bg-[#fcfaf7] border border-zinc-200/60 mb-3 flex items-center justify-center relative overflow-hidden transition-all group-hover:bg-[#c5a059]/10 p-3 shadow-sm group-hover:border-[#c5a059]/30">
+                                <span class="font-serif italic text-[#c5a059] text-3xl opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all absolute z-0">+</span>
+                                <img src="${u.img}" onerror="this.style.opacity='0'" class="w-full h-full object-contain relative z-10 transition-transform duration-700 group-hover:scale-105" alt="${u.name}">
+                            </div>
+                            <h6 class="text-[9px] uppercase tracking-widest font-bold leading-normal text-[#0a1f1c] mb-1 min-h-[24px]">${u.name}</h6>
+                            <p class="text-[#c5a059] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
+                        </div>
+                    `).join('')}
+                    <div class="w-4 flex-shrink-0"></div>
+                </div>
+            </div>
+        `;
+    }
+
+    container.innerHTML = html;
+
+    const upsellSlider = document.getElementById('upsell-slider');
+    if (upsellSlider) {
+        upsellSlider.addEventListener('wheel', (evt) => {
+            if (evt.deltaY !== 0) {
+                evt.preventDefault();
+                upsellSlider.scrollLeft += evt.deltaY;
+            }
+        });
+    }
+
+    actualizarTotalConDespacho();
+    const itemsCount = cart.reduce((acc, item) => acc + item.qty, 0);
+    
+    // Validación de seguridad para los contadores
+    if (countNav) countNav.innerText = itemsCount;
+    
+    const stickyCart = document.getElementById('mobile-sticky-cart');
+    if (stickyCart) {
+        const stickyCount = document.getElementById('sticky-cart-count');
+        const stickyTotal = document.getElementById('sticky-cart-total');
+        if (stickyCount) stickyCount.innerText = itemsCount;
+        if (stickyTotal && totalEl) stickyTotal.innerText = totalEl.innerText;
+        
+        if (cart.length > 0) { stickyCart.classList.remove('translate-y-full'); }
+        else { stickyCart.classList.add('translate-y-full'); }
+    }
+}
 
         function scrollToVault() {
             const vaultSection = document.getElementById('vault');
