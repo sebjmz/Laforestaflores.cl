@@ -2285,6 +2285,17 @@
         if (flow) { flow.style.transform = 'translateY(100%)'; }
         updateCartUI();
         restaurarProgresoCheckout();
+
+        // Apertura automática del Atelier Bag al venir desde un producto
+        if (urlParams.get('action') === 'open_cart') {
+            setTimeout(() => {
+                const drawer = document.getElementById('atelier-bag');
+                if (drawer && !drawer.classList.contains('open')) {
+                    toggleCart();
+                }
+            }, 150);
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
     });
 
     function updateCountdown() {
@@ -2334,7 +2345,6 @@
             }
         }, 15);
     }
-
     // ==========================================
     // 7. MOTOR SLIDER INFINITO (Protegido)
     // ==========================================
