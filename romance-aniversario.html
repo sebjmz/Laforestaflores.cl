@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- ==========================================
+         SEO DE DOMINACIÓN (Categoría Romance)
+         ========================================== -->
     <title>Flores de Aniversario y Ramos de Rosas en Viña del Mar | La Foresta Flores</title>
     <meta name="description" content="Arreglos florales de aniversario, ramos de rosas exclusivas y diseños románticos de alta costura. Despacho express el mismo día en Viña del Mar, Reñaca y Concón.">
     <meta name="keywords" content="flores de aniversario, ramos de rosas, enviar rosas viña del mar, regalo romántico, florería reñaca, concón, flores premium amor">
     <link rel="canonical" href="https://laforestaflores.cl/romance-aniversario.html">
     <link rel="icon" type="image/png" href="/img/favicon.png">
 
+    <!-- OPTIMIZACIÓN SAFARI / IOS -->
     <meta name="theme-color" content="#fcfaf7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Romance">
 
+    <!-- OPEN GRAPH -->
     <meta property="og:site_name" content="La Foresta Flores">
     <meta property="og:title" content="Flores de Aniversario y Romance | La Foresta Flores">
     <meta property="og:description" content="Diseños florales apasionados y exclusivos de alta costura. Despacho express el mismo día en Viña del Mar, Reñaca y Concón.">
@@ -22,6 +27,7 @@
     <meta property="og:url" content="https://laforestaflores.cl/romance-aniversario.html">
     <meta property="og:image" content="https://laforestaflores.cl/img/social-share.jpg">
 
+    <!-- DATOS ESTRUCTURADOS DE CATEGORÍA -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -36,6 +42,7 @@
     }
     </script>
 
+    <!-- Tailwind y Fuentes -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
     
@@ -74,10 +81,22 @@
         }
         .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
         .hide-scroll::-webkit-scrollbar { display: none; }
+
+        /* ==========================================
+           Efecto de Texto Hundido (Letterpress)
+           ========================================== */
+        .text-encrusted {
+            /* Un color muy tenue, semitransparente basado en el verde oscuro */
+            color: rgba(10, 31, 28, 0.18); 
+            /* Sombra blanca abajo a la derecha (luz) y sombra oscura arriba a la izquierda (profundidad) */
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.9), -1px -1px 1px rgba(10, 31, 28, 0.05);
+            mix-blend-mode: multiply; /* Para que se fusione suavemente con el fondo crema */
+        }
     </style>
 </head>
 <body>
 
+    <!-- Navegación Idéntica al Index para mantener la inmersión -->
     <nav class="fixed w-full z-[100] bg-[rgba(10,31,28,0.92)] backdrop-blur-[15px] border-b border-[rgba(197,160,89,0.2)] px-6 md:px-12 py-5 flex justify-between items-center text-[#c5a059]">
         <div class="flex items-center space-x-12 min-w-0">
             <a href="/index.html" class="cursor-pointer flex-shrink-0 flex items-center">
@@ -98,9 +117,11 @@
         </div>
     </nav>
 
-    <section id="vault" class="bg-white pt-32 pb-12">
+    <!-- Sección Principal Estilo "Vault" del Index -->
+    <section id="vault" class="bg-white pt-32 pb-6">
         <div class="w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-16">
             
+            <!-- Ilusión de Filtros en la misma página -->
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-4 pb-4 border-b border-[#0a1f1c]/5 mb-6">
                 <div class="w-full md:w-auto overflow-hidden">
                     <h1 class="text-4xl md:text-7xl font-serif italic text-[#0a1f1c] mb-3 mt-2 md:mt-0">Colección</h1>
@@ -126,20 +147,25 @@
                 </div>
             </div>
 
+            <!-- Grilla Curada de Alta Densidad -->
             <div id="category-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-10 md:gap-y-12">
-                </div>
+                <!-- Los ramos se inyectarán aquí mediante JS -->
+            </div>
 
-            <div class="mt-24 mb-8 text-center max-w-3xl mx-auto px-6">
-                <span class="text-[#c5a059] text-2xl tracking-widest block mb-6">❦</span>
-                <p class="font-serif italic text-2xl md:text-3xl text-[#0a1f1c] leading-relaxed">
-                    "El amor no se mira con los ojos, sino con el alma."
+            <!-- Cita Elegante Encrustada en el Papel -->
+            <div class="mt-28 mb-12 text-center max-w-4xl mx-auto px-6">
+                <p class="font-serif italic text-3xl md:text-5xl text-encrusted leading-snug">
+                    "Las flores son las palabras que el corazón no sabe pronunciar, pero que los ojos comprenden al instante."
                 </p>
-                <span class="block mt-6 text-[9px] font-bold uppercase tracking-[0.4em] text-[#c5a059]">— William Shakespeare</span>
+                <!-- Linea separadora tenue -->
+                <div class="w-12 h-px bg-zinc-200 mx-auto mt-8 mb-6 shadow-[0_1px_0_white]"></div>
+                <span class="block text-[9px] md:text-[10px] font-bold uppercase tracking-[0.4em] text-encrusted">— El Idioma Botánico</span>
             </div>
 
         </div>
     </section>
 
+    <!-- Footer Simple -->
     <footer class="bg-[#0a1f1c] text-[#fcfaf7] py-12 px-6 border-t border-[#c5a059]/20 text-center">
         <p class="text-[9px] uppercase tracking-widest opacity-40">La Foresta Flores & Garden. Despacho Premium V Región.</p>
     </footer>
@@ -158,6 +184,7 @@
         grid.innerHTML = categoryCatalog.map(product => `
             <div class="product-card group flex flex-col h-full">
                 <a href="${product.url}" class="block">
+                    <!-- Agregado 'rounded-xl' para igualar al index -->
                     <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center rounded-xl">
                         <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
                         <img src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" loading="lazy">
