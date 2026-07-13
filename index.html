@@ -148,9 +148,17 @@
 
         .font-serif { font-family: 'Playfair Display', serif; }
 
+        /* [PARCHE iOS] Reseteo de estilos nativos de Input en iOS */
+        input, textarea, select {
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 0; 
+        }
+
         .glass-nav {
             background: rgba(10, 31, 28, 0.92);
             backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px); /* [PARCHE iOS] Obligatorio para el efecto cristal en Safari */
             border-bottom: 1px solid rgba(197, 160, 89, 0.2);
             color: var(--gold-leaf);
         }
@@ -298,8 +306,10 @@
         .checkout-step {
             max-height: 85vh;
             overflow-y: auto;
-            padding-bottom: 30px;
+            /* [PARCHE iOS] Soporte para la barra inferior de iPhone y scroll fluido */
+            padding-bottom: calc(30px + env(safe-area-inset-bottom));
             scrollbar-width: none;
+            -webkit-overflow-scrolling: touch; 
         }
         
         .checkout-step::-webkit-scrollbar {
@@ -311,11 +321,13 @@
             overflow-y: auto;
             padding-right: 5px;
             width: 100%;
+            -webkit-overflow-scrolling: touch; /* [PARCHE iOS] Evita que se trabe el scroll interior */
         }
 
         @keyframes marquee-infinite {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
+            /* [PARCHE iOS] Uso de translate3d para forzar la aceleración por hardware en Safari */
+            0% { transform: translate3d(0%, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
         }
 
         .animate-marquee {
@@ -324,8 +336,23 @@
             animation: marquee-infinite 30s linear infinite;
         }
         
-        .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+        .hide-scroll { 
+            scrollbar-width: none; 
+            -ms-overflow-style: none; 
+            -webkit-overflow-scrolling: touch; /* [PARCHE iOS] Scroll táctil suave */
+        }
         .hide-scroll::-webkit-scrollbar { display: none; }
+
+        /* [PARCHE iOS] Safe Area adicionales para elementos pegados al borde inferior */
+        #mobile-sticky-cart {
+            padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
+        }
+        #cart-items-container {
+            -webkit-overflow-scrolling: touch;
+        }
+        #atelier-bag .bg-zinc-50 {
+            padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+        }
 
         @media (max-height: 500px) and (orientation: landscape) {
             #hero-slider h2 { 
@@ -344,7 +371,7 @@
                 font-size: 0.8rem !important;
             }
         }
-    </style>
+</style>
 </head>
 <body>
 
@@ -419,7 +446,7 @@
         </div>
     </div>
 
-    <section class="relative w-full h-[100dvh] min-h-[450px] md:min-h-[600px] overflow-hidden bg-[#0a1f1c]" id="hero-slider">
+    <section class="relative w-full h-screen h-[100dvh] min-h-[450px] md:min-h-[600px] overflow-hidden bg-[#0a1f1c]" id="hero-slider">
         <div id="slider-wrapper" class="relative w-full h-full overflow-hidden">
             
             <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
@@ -1149,29 +1176,44 @@
         document.getElementById('b2b-selected-segment').value = segment;
         const step1 = document.getElementById('b2b-step-1');
         const step2 = document.getElementById('b2b-step-2');
+        
         step1.classList.add('opacity-0', '-translate-x-8');
+        
         setTimeout(() => {
             step1.classList.add('hidden');
             step1.classList.remove('flex');
+            
             step2.classList.remove('hidden');
             step2.classList.add('flex');
-            setTimeout(() => step2.classList.remove('opacity-0', 'translate-x-8'), 50);
+            
+            // [PARCHE iOS] Fuerza a Safari a recalcular y repintar la pantalla
+            void step2.offsetWidth; 
+            
+            // Como forzamos el repintado, podemos bajar el delay a 10ms (más fluido)
+            setTimeout(() => step2.classList.remove('opacity-0', 'translate-x-8'), 10);
         }, 300);
     }
 
     function backToB2BStep1() {
         const step1 = document.getElementById('b2b-step-1');
         const step2 = document.getElementById('b2b-step-2');
+        
         step2.classList.add('opacity-0', 'translate-x-8');
+        
         setTimeout(() => {
             step2.classList.add('hidden');
             step2.classList.remove('flex');
+            
             step1.classList.remove('hidden');
             step1.classList.add('flex');
-            setTimeout(() => step1.classList.remove('opacity-0', '-translate-x-8'), 50);
+            
+            // [PARCHE iOS] Fuerza a Safari a recalcular y repintar la pantalla
+            void step1.offsetWidth;
+            
+            // Animación de regreso
+            setTimeout(() => step1.classList.remove('opacity-0', '-translate-x-8'), 10);
         }, 300);
     }
-
     function resetB2BFlow() {
         const form = document.getElementById('b2b-final-form');
         if(form) form.reset();
