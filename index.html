@@ -1939,24 +1939,26 @@
 
     function generarHorasExpress(tiempoDecimal) {
         let opciones = "";
-        let horaInicio = Math.max(10.0, tiempoDecimal + 1.0);
-        let horaBase = Math.floor(horaInicio);
-        let remanente = horaInicio - horaBase;
-        let minutoBase = (remanente > 0 && remanente <= 0.5) ? 30 : (remanente > 0.5 ? 0 : 0);
-        if (remanente > 0.5) horaBase += 1;
+        
+        // 1. Sumamos 1 hora al tiempo actual y forzamos a la siguiente hora en punto.
+        // Ej: Si son las 9:20 (9.33), le suma 1 (10.33) y el techo (ceil) lo empuja a las 11:00.
+        let horaInicio = Math.ceil(tiempoDecimal + 1.0);
+        
+        // 2. Si compran de madrugada, definimos que el primer express del día sea a las 10:00
+        let horaBase = Math.max(10, horaInicio);
 
-        let tiempoOpcion = horaBase + (minutoBase / 60);
-        while (tiempoOpcion <= 20.0) {
-            let hh = Math.floor(tiempoOpcion);
-            let mm = Math.round((tiempoOpcion - hh) * 60);
-            let endHH = hh + 1;
-            let formatStart = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
-            let formatEnd = `${String(endHH).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+        // 3. Generamos los bloques cerrados de 1 hora hasta el cierre (20:00)
+        while (horaBase < 20) {
+            let formatStart = `${String(horaBase).padStart(2, '0')}:00`;
+            let formatEnd = `${String(horaBase + 1).padStart(2, '0')}:00`;
             
             opciones += `<button onclick="definirHorario('Express (${formatStart} - ${formatEnd})', true)" class="step-option text-[10px] uppercase tracking-widest font-bold py-4 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] transition w-full">${formatStart} - ${formatEnd}</button>`;
-            tiempoOpcion += 1.0; 
+            
+            horaBase += 1; // Avanzamos de 1 hora exacta en 1 hora exacta
         }
+        
         return opciones;
+    }
     }
 
     function regresarDesdeTime() {
