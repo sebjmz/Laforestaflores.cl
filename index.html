@@ -1606,7 +1606,7 @@
                 if (availableUpsells.length > 0 && !tieneCondolencias) {
                     html += `
                         <div class="mt-12 border-t border-zinc-100 pt-8">
-                            <h5 class="font-serif text-lg italic mb-6 text-[#0a1f1c]">Acompañe su regalo</h5>
+                            <h5 class="font-serif text-lg italic mb-6 text-[#0a1f1c]">Recomendaciones para este arreglo</h5>
                             <div id="upsell-slider" class="flex overflow-x-auto space-x-5 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
                                 ${availableUpsells.map(u => `
                                     <div class="w-[130px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
