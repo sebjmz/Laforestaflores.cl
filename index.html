@@ -1194,6 +1194,23 @@
         }, 300);
     }
 
+    // Añadir este bloque en laforestaflores.cl cuando el pago es exitoso
+function registrarOrdenIntranet(orderId, payloadData, totalPagado) {
+    const INT_API_URL = "https://laforesta-intranet.sebjmz.workers.dev";
+    fetch(`${INT_API_URL}/api/orden`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            orderId: orderId,
+            email: payloadData.metadata.comprador_email,
+            receptor: payloadData.metadata.receiver_name,
+            direccion: payloadData.metadata.logistics_detail.split('•')[1] || payloadData.metadata.logistics_detail,
+            fecha: payloadData.metadata.fecha_entrega + " / " + payloadData.metadata.time_slot,
+            totalCompra: totalPagado
+        })
+    }).catch(e => console.error("Fallo sincr. Intranet:", e));
+}
+        
     function backToB2BStep1() {
         const step1 = document.getElementById('b2b-step-1');
         const step2 = document.getElementById('b2b-step-2');
