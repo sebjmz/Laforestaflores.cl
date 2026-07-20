@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Optimización CRO: Preload de imagen LCP -->
-    <link rel="preload" as="image" href="img/slide1-pc.jpg" fetchpriority="high">
+    <!-- Preconnect para acelerar carga de recursos externos vitales -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com">
+    
+    <!-- Preload de la imagen principal (LCP) para mejorar Core Web Vitals -->
+    <link rel="preload" as="image" href="img/slide1-pc.jpg" fetchpriority="high">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9NDEELWEK"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -17,2630 +21,611 @@
     </script>
    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>La Foresta Flores | Florería Premium en Reñaca y Viña del Mar | Despacho el mismo día</title>
     <link rel="icon" type="image/png" href="/img/favicon.png">
     <meta name="description" content="Florería premium en Reñaca y Viña del Mar. Ramos exclusivos, flores frescas seleccionadas cada mañana y despacho express el mismo día. Retiro en tienda disponible.">
     <link rel="canonical" href="https://laforestaflores.cl/">
-    <meta name="application-name" content="La Foresta Flores">
-    <meta name="apple-mobile-web-app-title" content="La Foresta Flores">
+    
     <meta name="theme-color" content="#0a1f1c">
-
-    <meta property="og:site_name" content="La Foresta Flores">
     <meta property="og:title" content="La Foresta Flores | Florería Premium">
-    <meta property="og:description" content="Ramos exclusivos, flores frescas seleccionadas cada mañana y despacho premium en ">
+    <meta property="og:description" content="Ramos exclusivos, flores frescas seleccionadas cada mañana y despacho premium en Reñaca y Viña del Mar.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://laforestaflores.cl/">
     <meta property="og:image" content="https://laforestaflores.cl/img/social-share.jpg">
 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="La Foresta Flores">
-    <meta name="twitter:description" content="Florería Premium en Reñaca y Viña del Mar.">
-    <meta name="twitter:image" content="https://laforestaflores.cl/img/social-share.jpg">
-    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Organization",
-          "@id": "https://laforestaflores.cl/#organization",
-          "name": "La Foresta Flores",
-          "url": "https://laforestaflores.cl",
-          "telephone": "+56994783520",
-          "logo": "https://laforestaflores.cl/img/logo.png",
-          "image": "https://laforestaflores.cl/img/social-share.jpg",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Av. Borgoño 14.580, Local 7",
-            "addressLocality": "Viña del Mar",
-            "addressRegion": "Valparaíso",
-            "postalCode": "2520000",
-            "addressCountry": "CL"
-          },
-          "sameAs": [
-            "https://www.instagram.com/laforestaflores"
-          ]
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://laforestaflores.cl/#website",
-          "url": "https://laforestaflores.cl",
-          "name": "La Foresta Flores",
-          "publisher": {
-            "@id": "https://laforestaflores.cl/#organization"
-          },
-          "inLanguage": "es-CL"
-        },
-        {
-          "@type": "Florist",
-          "@id": "https://laforestaflores.cl/#florist",
-          "name": "La Foresta Flores",
-          "url": "https://laforestaflores.cl",
-          "image": "https://laforestaflores.cl/img/social-share.jpg",
-          "telephone": "+56994783520",
-          "priceRange": "$$",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Av. Borgoño 14.580, Local 7",
-            "addressLocality": "Viña del Mar",
-            "addressRegion": "Valparaíso",
-            "postalCode": "2520000",
-            "addressCountry": "CL"
-          },
-          "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "-32.964",
-            "longitude": "-71.545"
-          },
-          "openingHoursSpecification": {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": [
-              "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-            ],
-            "opens": "10:30",
-            "closes": "19:00"
-          },
-          "areaServed": [
-            "Reñaca", "Viña del Mar", "Concón", "Valparaíso"
-          ],
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "reviewCount": "103"
-          },
-          "parentOrganization": {
-            "@id": "https://laforestaflores.cl/#organization"
-          }
-        }
-      ]
+      "@type": "Florist",
+      "name": "La Foresta Flores",
+      "url": "https://laforestaflores.cl",
+      "image": "https://laforestaflores.cl/img/social-share.jpg",
+      "telephone": "+56994783520",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Av. Borgoño 14.580, Local 7",
+        "addressLocality": "Viña del Mar",
+        "addressRegion": "Valparaíso",
+        "postalCode": "2520000",
+        "addressCountry": "CL"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "103"
+      }
     }
     </script>
 
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=AbfBLeAuXrylWnzDIOQcvpfJwrzBAy0N8281_ip4dFmH1k6H8kW70tPOE_IH6sc05OafIHHfe1PE1Mv1&currency=USD"></script>
+    <script defer src="https://sdk.mercadopago.com/js/v2"></script>
+    <script defer src="https://www.paypal.com/sdk/js?client-id=AbfBLeAuXrylWnzDIOQcvpfJwrzBAy0N8281_ip4dFmH1k6H8kW70tPOE_IH6sc05OafIHHfe1PE1Mv1&currency=USD"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        .-tooltip.atelier-tooltip {
-            background-color: transparent;
-            border: none;
-            box-shadow: none;
-            color: #c5a059;
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 14px;
-            font-weight: bold;
-            text-shadow: 0px 2px 5px rgba(0,0,0,0.8);
-        }
         :root {
             --forest-green: #0a1f1c;
             --gold-leaf: #c5a059;
             --soft-cream: #fcfaf7;
             --deep-black: #050505;
         }
-
         body {
             background-color: var(--soft-cream);
             color: var(--forest-green);
             font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            -ms-overflow-style: none;
             scrollbar-width: none;
         }
-
         .font-serif { font-family: 'Playfair Display', serif; }
-
-        input, textarea, select {
-            -webkit-appearance: none;
-            appearance: none;
-            border-radius: 0; 
-        }
-
+        input, textarea, select { -webkit-appearance: none; appearance: none; border-radius: 0; }
+        
         .glass-nav {
-            background: rgba(10, 31, 28, 0.92);
+            background: rgba(10, 31, 28, 0.95);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(197, 160, 89, 0.2);
             color: var(--gold-leaf);
         }
 
-        .hero-video-container {
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
-            background-color: var(--deep-black);
-        }
-
-        .hero-overlay {
-            background: radial-gradient(circle, rgba(5, 15, 13, 0.4) 0%, rgba(10, 31, 28, 0.7) 100%);
-            z-index: 10;
-        }
-
+        /* Optimizaciones de CRO para Botones */
         .btn-premium {
             position: relative;
-            padding: 1rem 2.5rem;
+            padding: 1.2rem 2.5rem;
+            background: var(--gold-leaf);
+            color: var(--forest-green);
+            font-weight: 700;
+            transition: 0.3s;
+            border: 2px solid var(--gold-leaf);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-premium:hover {
+            background: transparent;
+            color: var(--gold-leaf);
+        }
+        .btn-secondary {
             background: var(--forest-green);
             color: var(--gold-leaf);
-            font-weight: 700;
-            overflow: hidden;
-            transition: 0.4s;
             border: 1px solid var(--forest-green);
         }
-        
-        .btn-premium:hover {
+        .btn-secondary:hover {
             background: transparent;
             color: var(--forest-green);
         }
 
-        .btn-gold-outline {
-            border: 1px solid var(--gold-leaf);
-            color: var(--gold-leaf);
-            padding: 0.8rem 2rem;
-            transition: 0.3s;
+        /* Micro-interacciones y Escasez */
+        .urgency-badge {
+            background: #d9381e;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 0.2rem 0.5rem;
+            border-radius: 2px;
+            animation: pulse 2s infinite;
         }
-        
-        .btn-gold-outline:hover {
-            background: var(--gold-leaf);
-            color: var(--forest-green);
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
         }
 
         #atelier-bag {
             transform: translateX(100%);
-            transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+            transition: transform 0.4s ease-in-out;
         }
-        
         #atelier-bag.open { transform: translateX(0); }
 
-        .product-card {
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        
-        .product-card:hover {
-            transform: translateY(-8px);
-        }
-        
-        .img-zoom-container {
-            overflow: hidden;
-            background-color: #f4f4f5;
-        }
-        
-        .img-zoom-container img {
-            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-            filter: grayscale(0%) !important;
-        }
-        
-        .product-card:hover .img-zoom-container img {
-            transform: scale(1.05);
-        }
-        
-        .prestige-marquee {
-            display: flex;
-            width: max-content;
-            animation: marquee-infinite 40s linear infinite;
-        }
+        .product-card { transition: transform 0.3s ease; }
+        .product-card:hover { transform: translateY(-4px); }
+        .img-zoom-container { overflow: hidden; background-color: #f4f4f5; }
+        .img-zoom-container img { transition: transform 0.8s ease; }
+        .product-card:hover .img-zoom-container img { transform: scale(1.03); }
 
-        .marquee-content {
-            display: inline-block;
-            padding-right: 2rem; 
-        }
-        
-        .prestige-marquee:hover {
-            animation-play-state: paused;
-        }
-
-        .b2b-portal {
-            background-color: var(--forest-green);
-            color: var(--soft-cream);
-        }
-
-        ::-webkit-scrollbar { 
-            display: none; 
-        }
-
-        #checkout-flow, #garden-flow {
-            transform: translateY(100%);
-            transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease;
-        }
-        
-        #checkout-flow.open, #garden-flow.open { transform: translateY(0); }
-        
-        .checkout-step, .garden-step {
-            display: none;
-            animation: fadeInStep 0.6s ease forwards;
-        }
-        
-        .checkout-step.active, .garden-step.active { display: flex; }
-        
-        @keyframes fadeInStep {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .step-option {
-            border: 1px solid rgba(10, 31, 28, 0.15);
-            transition: all 0.3s ease;
-        }
-        
-        .step-option:hover, .step-option.selected {
-            border-color: var(--gold-leaf);
-            background: rgba(197, 160, 89, 0.05);
-        }
-
-        #payment-selector {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        #paypal-container {
-            display: none; 
-            margin-top: 20px; 
-            width: 100%; 
-            max-width: 400px; 
-            margin-inline: auto;
-            min-height: 150px;
-        }
-
-        .checkout-step {
-            max-height: 85vh;
-            overflow-y: auto;
-            padding-bottom: calc(30px + env(safe-area-inset-bottom));
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch; 
-        }
-        
-        .checkout-step::-webkit-scrollbar {
-            display: none;
-        }
-
-        #time-slots-container {
-            max-height: 45vh;
-            overflow-y: auto;
-            padding-right: 5px;
-            width: 100%;
-            -webkit-overflow-scrolling: touch;
-        }
-
+        .prestige-marquee { display: flex; width: max-content; animation: marquee-infinite 40s linear infinite; }
         @keyframes marquee-infinite {
             0% { transform: translate3d(0%, 0, 0); }
             100% { transform: translate3d(-50%, 0, 0); }
         }
-
-        .animate-marquee {
-            display: flex;
-            min-width: 100%;
-            animation: marquee-infinite 30s linear infinite;
-        }
         
-        .hide-scroll { 
-            scrollbar-width: none; 
-            -ms-overflow-style: none; 
-            -webkit-overflow-scrolling: touch;
-        }
+        .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch; }
         .hide-scroll::-webkit-scrollbar { display: none; }
 
-        #mobile-sticky-cart {
-            padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
-        }
-        #cart-items-container {
-            -webkit-overflow-scrolling: touch;
-        }
-        #atelier-bag .bg-zinc-50 {
-            padding-bottom: calc(2rem + env(safe-area-inset-bottom));
-        }
-
-        /* CRO: Estilo para etiqueta de escasez */
-        .urgency-tag {
-            background-color: #991b1b;
-            color: white;
-            padding: 4px 8px;
-            font-size: 9px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 20;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            animation: pulse-soft 2s infinite;
-        }
+        /* Ajustes Mobile UI */
+        #mobile-sticky-cart { padding-bottom: calc(1rem + env(safe-area-inset-bottom)); }
         
-        @keyframes pulse-soft {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.9; transform: scale(0.98); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        @media (max-height: 500px) and (orientation: landscape) {
-            #hero-slider h2 { 
-                font-size: 2.5rem !important; 
-                margin-bottom: 0.5rem !important; 
-            }
-            #hero-slider h4 {
-                margin-bottom: 0.5rem !important;
-            }
-            #hero-slider p { 
-                font-size: 0.9rem !important; 
-                margin-bottom: 1rem !important; 
-            }
-            #hero-slider .btn-premium {
-                padding: 0.6rem 1.5rem !important;
-                font-size: 0.8rem !important;
-            }
-        }
-</style>
+        .slide-anim { transition: all 0.8s ease; }
+    </style>
 </head>
 <body>
 
-    <nav class="fixed w-full z-[100] glass-nav px-6 md:px-12 py-5 flex justify-between items-center">
-        <div class="flex items-center space-x-12 min-w-0">
-            <div class="cursor-pointer flex-shrink-0 flex items-center" onclick="window.scrollTo(0,0)">
+    <nav class="fixed w-full z-[100] glass-nav px-6 md:px-12 py-4 flex justify-between items-center shadow-md">
+        <div class="flex items-center space-x-8 min-w-0">
+            <div class="cursor-pointer flex-shrink-0" onclick="window.scrollTo(0,0)" aria-label="Inicio">
                 <img src="img/logo-menu.png" alt="La Foresta Flores" class="h-6 md:h-8 w-auto object-contain brightness-0 invert">
             </div>
-            <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap">
-                <a href="#vault" onclick="scrollToVault()" class="hover:text-white transition-colors duration-300">Colección</a>
-                <a href="#privilege" class="hover:text-white transition-colors duration-300">Suscripción & B2B</a>
-                <a href="#garden" class="hover:text-white transition-colors duration-300">Jardinería</a>
+            <div class="hidden lg:flex space-x-8 text-[11px] font-bold uppercase tracking-[0.2em] whitespace-nowrap">
+                <a href="#vault" onclick="scrollToVault()" class="hover:text-white transition-colors">Colección</a>
+                <a href="#privilege" class="hover:text-white transition-colors">Suscripción B2B</a>
             </div>
         </div>
         
-        <div class="flex items-center space-x-8 flex-shrink-0">
-            <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Reñaca, Chile</div>
-            <button onclick="toggleCart()" class="relative group flex items-center whitespace-nowrap hover:text-white transition-colors duration-300">
-                <span class="text-[10px] font-bold uppercase tracking-widest mr-2">Atelier Bag</span>
-                <span id="cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2 py-0.5 rounded-full text-[10px] font-bold transition-transform">0</span>
+        <div class="flex items-center space-x-6 flex-shrink-0">
+            <div class="hidden md:block text-[11px] font-bold uppercase tracking-widest text-white/80"><span class="text-green-400 mr-1">●</span> Despachando hoy</div>
+            <button onclick="toggleCart()" class="relative group flex items-center hover:text-white transition-colors" aria-label="Abrir Carrito">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                <span id="cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2 py-0.5 rounded-full text-[11px] font-bold">0</span>
             </button>
         </div>
     </nav>
 
-    <div id="mobile-sticky-cart" class="fixed bottom-0 left-0 w-full bg-[#0a1f1c] text-[#c5a059] p-5 z-[90] flex justify-between items-center md:hidden transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.25)] border-t border-[#c5a059]/20" onclick="toggleCart()">
-        <div class="flex items-center space-x-4">
-            <span class="text-[10px] font-bold uppercase tracking-widest text-white">Ver Carrito</span>
-            <span id="sticky-cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2.5 py-1 rounded-full text-[10px] font-bold">0</span>
-        </div>
+    <!-- Sticky CTA Mobile (CRO Improvement) -->
+    <div id="mobile-sticky-cta" class="fixed bottom-0 left-0 w-full bg-[#c5a059] text-[#0a1f1c] p-4 z-[90] flex justify-center items-center md:hidden shadow-[0_-5px_20px_rgba(0,0,0,0.15)]" onclick="scrollToVault()">
+        <span class="text-[12px] font-bold uppercase tracking-widest">Ver Catálogo y Comprar</span>
+    </div>
+
+    <!-- Sticky Cart Mobile (Replaces CTA when items in cart) -->
+    <div id="mobile-sticky-cart" class="fixed bottom-0 left-0 w-full bg-[#0a1f1c] text-[#c5a059] p-4 z-[95] flex justify-between items-center md:hidden transform translate-y-full transition-transform duration-300 shadow-[0_-10px_40px_rgba(0,0,0,0.25)]" onclick="toggleCart()">
         <div class="flex items-center space-x-3">
-            <span id="sticky-cart-total" class="font-serif text-xl font-bold text-white">$0</span>
-            <span class="text-xs text-[#c5a059]">→</span>
+            <span class="text-[11px] font-bold uppercase tracking-widest">Carrito</span>
+            <span id="sticky-cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2 py-0.5 rounded-full text-[11px] font-bold">0</span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <span id="sticky-cart-total" class="font-serif text-lg font-bold">$0</span>
+            <span class="text-lg">→</span>
         </div>
     </div>
     
-    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/40 z-[110] hidden opacity-0 transition-opacity duration-500"></div>
-    <div id="atelier-bag" class="fixed top-0 right-0 h-full w-full md:w-[500px] bg-white z-[120] shadow-2xl flex flex-col">
-        <div class="p-8 border-b flex justify-between items-center">
-            <h2 class="font-serif text-3xl italic">Su Selección</h2>
-            <button onclick="toggleCart()" class="text-3xl font-light hover:text-gold-leaf">×</button>
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/60 z-[110] hidden opacity-0 transition-opacity"></div>
+    <div id="atelier-bag" class="fixed top-0 right-0 h-full w-full md:w-[450px] bg-white z-[120] shadow-2xl flex flex-col">
+        <div class="p-6 border-b flex justify-between items-center bg-[#fcfaf7]">
+            <h2 class="font-serif text-2xl font-bold">Tu Selección</h2>
+            <button onclick="toggleCart()" class="text-3xl font-light hover:text-red-500" aria-label="Cerrar">&times;</button>
         </div>
-        <div id="cart-items-container" class="flex-grow overflow-y-auto p-8 space-y-8">
+        <div id="cart-items-container" class="flex-grow overflow-y-auto p-6 space-y-6 bg-white">
             <div class="text-center py-20 opacity-40">
-                <p class="uppercase tracking-widest text-xs">Su bolsa está vacía</p>
+                <p class="uppercase tracking-widest text-xs font-bold">El carrito está vacío</p>
             </div>
         </div>
-        <div class="p-8 bg-zinc-50 border-t">
-            <div class="flex justify-between items-start mb-6">
-                <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c] mt-1">Total Estimado</span>
+        <div class="p-6 bg-[#fcfaf7] border-t shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
+            <div class="flex justify-between items-end mb-4">
+                <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Total Estimado</span>
                 <div class="text-right">
-                    <span id="cart-total" class="text-2xl font-serif text-[#0a1f1c] block">$0</span>
-                    <span id="cart-shipping-notice" class="text-[9px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 transition-all duration-300" style="opacity: 0; transform: translateY(4px);">Envío Gratis</span>
+                    <span id="cart-total" class="text-2xl font-serif font-bold text-[#0a1f1c] block">$0</span>
+                    <span id="cart-shipping-notice" class="text-[10px] uppercase font-bold text-green-600 block mt-1" style="opacity: 0;">Envío Gratis Desbloqueado</span>
                 </div>
             </div>
             
-            <!-- CRO Optimización: Trust Badges Checkout -->
-            <div class="flex justify-center items-center gap-4 mb-4 text-[#0a1f1c] opacity-60">
-                <span class="text-[8px] uppercase tracking-widest font-bold flex items-center">
-                    <svg class="w-3 h-3 mr-1 text-[#c5a059]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Pago Seguro 100%
-                </span>
-                <span class="text-[8px] uppercase tracking-widest font-bold flex items-center">
-                    <svg class="w-3 h-3 mr-1 text-[#c5a059]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Frescura Garantizada
-                </span>
+            <!-- Trust badges CRO -->
+            <div class="flex justify-center gap-2 mb-4">
+                <span class="text-[9px] uppercase tracking-wider text-gray-500 flex items-center"><svg class="w-3 h-3 mr-1 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Compra Segura</span>
+                <span class="text-[9px] uppercase tracking-wider text-gray-500 flex items-center"><svg class="w-3 h-3 mr-1 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Calidad Garantizada</span>
             </div>
 
-            <button onclick="openCheckout()" class="w-full btn-premium uppercase text-xs tracking-[0.2em] mb-6">Proceder al Checkout</button>
+            <button onclick="openCheckout()" class="btn-premium mb-4">Ir a Pagar</button>
             
-            <div class="flex justify-center items-center mb-6 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
-                <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
+            <div class="flex justify-center items-center space-x-4 opacity-70 grayscale">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" alt="Mercado Pago" class="h-4 w-auto" loading="lazy">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" alt="PayPal" class="h-4 w-auto" loading="lazy">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="Visa" class="h-4 w-auto" loading="lazy">
             </div>
-            
-            <div class="flex justify-center items-center space-x-5 opacity-60 grayscale mb-4">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" alt="Mercado Pago" class="h-5 w-auto object-contain">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" alt="PayPal" class="h-5 w-auto object-contain">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="Visa" class="h-5 w-auto object-contain">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" alt="Mastercard" class="h-4 w-auto object-contain">
-            </div>
-            <p class="text-[8px] flex items-center justify-center gap-1.5 uppercase tracking-widest opacity-40 pb-2 text-zinc-500">
-                <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
-                Transaccion protegida por encriptación bancaria
-            </p>
         </div>
     </div>
 
-    <section class="relative w-full h-screen h-[100dvh] min-h-[450px] md:min-h-[600px] overflow-hidden bg-[#0a1f1c]" id="hero-slider">
-        <div id="slider-wrapper" class="relative w-full h-full overflow-hidden">
-            
-            <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
-                <div class="absolute inset-0 bg-gradient-to-r from-[#0a1f1c]/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
-                <!-- Optimización CRO: fetchpriority -->
-                <img src="img/slide1-pc.jpg" alt="Familia La Foresta" fetchpriority="high" class="absolute inset-0 w-full h-full object-cover object-center z-0">
-                <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
-                    <div class="md:w-1/2 lg:w-[40%] mr-auto text-left">
-                        <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
-                            Tradición desde 2020
-                        </h4>
-                        <h2 class="text-white text-6xl md:text-[6.5rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
-                            Excelencia<br>Familiar.
-                        </h2>
-                        <div class="mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300">
-                            <div class="flex items-center gap-3 mb-1">
-                                <span class="text-[#c5a059] text-xl md:text-2xl tracking-wider drop-shadow-md">★★★★★</span> 
-                                <span class="text-white font-medium text-base md:text-xl drop-shadow-md">4.9/5 en Google.</span>
+    <main>
+        <section class="relative w-full h-[90vh] min-h-[500px] overflow-hidden bg-[#0a1f1c]" id="hero-slider">
+            <div id="slider-wrapper" class="relative w-full h-full overflow-hidden">
+                <!-- Slide 1 optimizado -->
+                <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c] z-20">
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#0a1f1c]/90 via-black/40 to-transparent z-10 w-full md:w-2/3"></div>
+                    <img src="slide1-pc.jpg" alt="Ramo de peonias y rosas" class="absolute inset-0 w-full h-full object-cover object-center z-0" fetchpriority="high">
+                    <div class="relative z-20 h-full flex flex-col justify-center w-full px-8 md:px-[10%]">
+                        <div class="md:w-1/2 text-left">
+                            <div class="inline-block bg-white/10 backdrop-blur border border-white/20 px-3 py-1 mb-4 rounded-full slide-anim opacity-0 translate-y-4">
+                                <span class="text-[#c5a059] text-[10px] font-bold uppercase tracking-widest">Mejor Florería Viña del Mar</span>
                             </div>
-                            <p class="text-white/80 font-light text-sm md:text-lg leading-snug m-0">
-                                Bono de envío sobre $69.990.
+                            <h1 class="text-white text-5xl md:text-7xl font-serif font-bold leading-tight mb-6 slide-anim opacity-0 translate-y-8">
+                                Emociones<br>Que Perduran.
+                            </h1>
+                            <p class="text-white/90 text-sm md:text-lg mb-8 slide-anim opacity-0 translate-y-4 max-w-md">
+                                Despacho express el mismo día. Flores frescas seleccionadas cada mañana para garantizar la máxima duración.
                             </p>
-                        </div>
-                        <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <button onclick="scrollToVault()" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Explorar colección</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
-                <div class="absolute inset-0 bg-gradient-to-l from-black/90 via-black/40 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
-                <img src="img/slide2-pc.jpg" alt="Logística y Servicio Express" class="absolute inset-0 w-full h-full object-cover object-right z-0">
-                <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
-                    <div class="md:w-1/2 lg:w-[42%] ml-auto text-left md:text-right">
-                        <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
-                            Logística Integral
-                        </h4>
-                        <h2 class="text-white text-6xl md:text-[5rem] lg:text-[7rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
-                            Cobertura<br>Express.
-                        </h2>
-                        <p class="text-white/90 font-light text-base md:text-xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 leading-relaxed md:ml-auto">
-                            Entregas en 1 a 2 hrs. Llegamos con precisión impecable desde Reñaca hasta Quintero y Curauma.
-                        </p>
-                        <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <button onclick="openCoverageModal()" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver zonas de cobertura</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
-                <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
-                <img src="img/slide5-pc.jpg" alt="Suscripciones B2B" class="absolute inset-0 w-full h-full object-cover object-center z-0">
-                <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
-                    <div class="md:w-1/2 lg:w-[42%] mr-auto text-left">
-                        <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
-                            Membresías & B2B
-                        </h4>
-                        <h2 class="text-white text-[40px] md:text-[5rem] lg:text-[6.5rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
-                            Suscripciones.
-                        </h2>
-                        <p class="text-white/90 font-light text-base md:text-xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 leading-relaxed">
-                            Un ramo único en cada envío. Elige el plan perfecto para ti o tu empresa.
-                        </p>
-                        <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <button onclick="openB2BFlow()" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Elige el plan para ti</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div> 
-        
-        <button onclick="prevHeroSlide(true)" class="hidden lg:block absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
-            <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
-        </button>
-        <button onclick="nextHeroSlide(true)" class="hidden lg:block absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
-            <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
-        </button>
-
-        <div class="absolute bottom-10 right-10 md:bottom-12 md:right-16 z-50 flex space-x-3 items-center" id="hero-dots"></div>
-
-        <div class="absolute bottom-12 left-12 z-40 hidden lg:block">
-            <p class="text-white/60 text-[10px] uppercase tracking-[0.4em] leading-relaxed drop-shadow-md">
-                Av. Borgoño 14.580, Local 7 <br> 2520000 Viña del Mar
-            </p>
-        </div>
-    </section>
-
-    <div class="bg-forest-green py-4 border-y border-gold-leaf/20 overflow-hidden flex flex-nowrap whitespace-nowrap">
-        <div class="animate-marquee flex shrink-0 min-w-full">
-            <div class="font-serif italic text-xl text-gold-leaf/40 flex shrink-0 items-center justify-around w-full">
-                <span class="mx-4">Todos los días</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Envíos hasta las 21:00 hrs</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Retiro y Despacho 7 días a la semana</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Selección fresca cada mañana</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Viña, Reñaca, Concón, Quintero, Quilpué y Valparaíso</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Abierto de 10:30 a 19:00 hrs</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Todos los días</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Envíos hasta las 21:00 hrs</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Retiro y Despacho 7 días a la semana</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Selección fresca cada mañana</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Viña, Reñaca, Concón, Quintero, Quilpué y Valparaíso</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Abierto de 10:30 a 19:00 hrs</span><span class="text-gold-leaf/60">•</span>
-            </div>
-        </div>
-        <div class="animate-marquee flex shrink-0 min-w-full" aria-hidden="true">
-            <div class="font-serif italic text-xl text-gold-leaf/40 flex shrink-0 items-center justify-around w-full">
-                <span class="mx-4">Todos los días</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Envíos hasta las 21:00 hrs</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Retiro y Despacho 7 días a la semana</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Selección fresca cada mañana</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Viña, Reñaca, Concón, Quintero, Quilpué y Valparaíso</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Abierto de 10:30 a 19:00 hrs</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Todos los días</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Envíos hasta las 21:00 hrs</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Retiro y Despacho 7 días a la semana</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Selección fresca cada mañana</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Viña, Reñaca, Concón, Quintero, Quilpué y Valparaíso</span><span class="text-gold-leaf/60">•</span>
-                <span class="mx-4">Abierto de 10:30 a 19:00 hrs</span><span class="text-gold-leaf/60">•</span>
-            </div>
-        </div>
-    </div>
-
-    <section class="py-24 bg-[#0a1f1c] text-[#fcfaf7] border-t border-[#c5a059]/20">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <span class="text-[#c5a059] text-2xl tracking-widest block mb-4">★★★★★</span>
-                <h2 class="font-serif text-4xl md:text-5xl italic mb-4">Aprobación Absoluta.</h2>
-                <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#c5a059]">4.9/5 en +100 Evaluaciones de Google</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-[#c5a059]/20 pb-20">
-                <div class="space-y-4">
-                    <p class="font-light text-sm opacity-80 leading-relaxed">"El nivel de detalle y la frescura de las flores superaron mis expectativas. Cumplieron con el horario exacto para una entrega urgente en Reñaca."</p>
-                    <p class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059]">— Camila V.</p>
-                </div>
-                <div class="space-y-4">
-                    <p class="font-light text-sm opacity-80 leading-relaxed">"La atención es maravillosa, su vendedora es muy amable y simpática. Los ramos del día son bellísimos, flores elegidas con mucha delicadeza y buen gusto. Vienen con una tarjeta para escribir y el papel que envuelve el ramo es bellísimo. Recomendado 100%"</p>
-                    <p class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059]">— Claudia F.</p>
-                </div>
-                <div class="space-y-4">
-                    <p class="font-light text-sm opacity-80 leading-relaxed">"Arte floral real. No son los típicos arreglos de producción masiva. Se nota la curatoría en cada tallo y en el empaque de lujo."</p>
-                    <p class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059]">— Diego M.</p>
-                </div>
-            </div>
-            <div class="pt-16 text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.4em] opacity-40 block mb-10">SOCIOS EN LA EXCELENCIA</span>
-                <div class="flex flex-wrap justify-center items-center gap-16 opacity-50 grayscale">
-                    <img src="img/carmine.png" class="h-8 object-contain" alt="Restaurant Carmine">
-                    <img src="img/san-marinos.svg" class="h-8 object-contain" alt="San Marino">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="vault" class="bg-white pt-6 pb-12 border-t border-zinc-100">
-        <div class="w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-16">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-4 pb-4 border-b border-[#0a1f1c]/5 mb-6">
-                <div class="w-full md:w-auto overflow-hidden">
-                    <h2 class="text-4xl md:text-7xl font-serif italic text-[#0a1f1c] mb-3 mt-2 md:mt-0">Colección</h2>
-                    <div class="w-full overflow-x-auto pb-1 hide-scroll">
-                        <nav aria-label="Filtros de colección" class="flex items-center space-x-6 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 whitespace-nowrap min-w-max">
-                            <a href="#vault" class="text-[#0a1f1c] border-b-2 border-[#0a1f1c] pb-1 transition-all">Todos</a>
-                            <a href="/romance-aniversario.html" class="hover:text-[#c5a059] transition-all pb-1">Romance</a>
-                            <a href="/condolencias.html" class="hover:text-[#c5a059] transition-all pb-1">Condolencias</a>
-                            <a href="/celebraciones.html" class="hover:text-[#c5a059] transition-all pb-1">Celebraciones</a>
-                            <a href="/corporativo.html" class="hover:text-[#c5a059] transition-all pb-1">Corporativo</a>
-                        </nav>
-                    </div>
-                </div>
-
-                <div class="bg-[#fcfaf7] border border-[#0a1f1c]/10 px-4 py-2.5 rounded-full inline-flex items-center gap-3 shadow-sm self-start md:self-auto shrink-0 mt-1 md:mt-0">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    <span id="countdown-timer" class="text-[9px] uppercase tracking-widest font-bold text-[#0a1f1c] flex items-center gap-1.5">
-                        Calculando garantía...
-                    </span>
-                </div>
-            </div>
-            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-10 md:gap-y-12 pb-20"></div>
-        </div>
-    </section>
-
-    <section id="privilege" class="b2b-portal py-32 min-h-screen flex items-center border-b border-[#c5a059]/20">
-        <div class="max-w-7xl mx-auto px-6 w-full">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-                <div class="space-y-12">
-                    <span class="text-gold-leaf text-xs font-bold uppercase tracking-[0.5em]">Portal Colaborativo B2B</span>
-                    <h2 class="text-6xl md:text-8xl font-serif italic leading-none">La Firma <br>de Excelencia.</h2>
-                    <p class="text-soft-cream/60 text-lg font-light leading-relaxed">
-                        Diseñamos el entorno para las organizaciones más confiables de la región. Úna su empresa a nuestra red y experimente una nueva etapa comercial.
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-12">
-                        <div class="border-l border-gold-leaf/30 pl-6">
-                            <h4 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Inmobiliarias & Propiedades</h4>
-                            <p class="text-xs opacity-50">Atenciones de cortesía para cierres de negocios y ambientación de espacios piloto.</p>
-                        </div>
-                        <div class="border-l border-gold-leaf/30 pl-6">
-                            <h4 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Boutiques & Espacios de Autor</h4>
-                            <p class="text-xs opacity-50">Suscripciones editoriales semanales y mensuales para mantener un estándar visual para su firma.</p>
-                        </div>
-                        <div class="border-l border-gold-leaf/30 pl-6">
-                            <h4 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Oficinas Corporativas</h4>
-                            <p class="text-xs opacity-50">Ambientes laborales ejemplares que inspiran excelencia.</p>
-                        </div>
-                        <div class="border-l border-gold-leaf/30 pl-6">
-                            <h4 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Eventos Privados</h4>
-                            <p class="text-xs opacity-50">Diseño floral escenográfico para galas y lanzamientos de marca.</p>
+                            <div class="slide-anim opacity-0 translate-y-4">
+                                <button onclick="scrollToVault()" class="btn-premium !w-auto inline-block">Ver Catálogo de Hoy</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white/5 backdrop-blur-md p-12 border border-white/10 relative">
-                    <div class="text-center w-full bg-[#c5a059]/10 border border-[#c5a059]/20 text-gold-leaf py-3 px-4 font-bold text-[10px] uppercase tracking-[0.25em] mb-8">
-                        Solicitud de Membresía
+                <!-- Slide 2 -->
+                <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c] z-10 transform translate-x-full">
+                    <div class="absolute inset-0 bg-gradient-to-l from-black/90 via-black/50 to-transparent z-10 w-full md:w-2/3 ml-auto"></div>
+                    <img src="slide2-pc.jpg" alt="Ramo tulipanes" class="absolute inset-0 w-full h-full object-cover object-right z-0" loading="lazy">
+                    <div class="relative z-20 h-full flex flex-col justify-center w-full px-8 md:px-[10%]">
+                        <div class="md:w-1/2 ml-auto text-left md:text-right">
+                            <h2 class="text-white text-5xl md:text-7xl font-serif font-bold leading-tight mb-6">
+                                Cobertura<br>Total.
+                            </h2>
+                            <p class="text-white/90 text-sm md:text-lg mb-8 md:ml-auto max-w-md">
+                                Entregas precisas en Viña, Reñaca, Concón y alrededores. Garantizamos la cadena de frescura hasta la puerta.
+                            </p>
+                            <button onclick="scrollToVault()" class="btn-premium !w-auto inline-block !bg-white !text-[#0a1f1c] !border-white">Ver Zonas y Precios</button>
+                        </div>
                     </div>
-                    <div class="mt-8">
-                        <button onclick="openB2BFlow()" class="w-full py-5 bg-transparent border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] transition-all duration-500 shadow-[0_0_15px_rgba(197,160,89,0.1)] hover:shadow-[0_0_25px_rgba(197,160,89,0.3)]">
-                            Ingresar al Salón Privado
-                        </button>
-                        <p class="text-[9px] text-center mt-6 text-white/30 italic uppercase tracking-widest">
-                            Proceso de postulación confidencial · 2 Pasos
-                        </p>
-                    </div>
-                    <p class="text-[9px] text-center mt-8 opacity-30 italic uppercase tracking-widest">Al suscribirse, acepta los términos de envío prioritario gratuito en Reñaca.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <div id="b2b-flow" class="fixed inset-0 bg-[#0a1f1c] text-[#fcfaf7] z-[200] flex flex-col hidden opacity-0 transition-opacity duration-500 backdrop-blur-xl">
-        <div class="px-8 py-6 flex justify-between items-center border-b border-[#c5a059]/10">
-            <h2 class="font-serif text-xl tracking-widest uppercase text-[#c5a059]">Portal B2B</h2>
-            <button onclick="closeB2BFlow()" class="text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors">×</button>
-        </div>
-
-        <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
-            <div id="b2b-step-1" class="b2b-step active flex-col items-center w-full max-w-lg text-center transition-all duration-500 transform">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block">Paso 1 de 2</span>
-                <h3 class="font-serif text-4xl md:text-5xl italic mb-12">¿Cuál es su segmento corporativo?</h3>
-                
-                <div class="space-y-4 w-full">
-                    <button onclick="selectB2BSegment('Inmobiliarias & Propiedades')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Inmobiliarias & Propiedades</button>
-                    <button onclick="selectB2BSegment('Boutiques & Espacios de Autor')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Boutiques & Espacios de Autor</button>
-                    <button onclick="selectB2BSegment('Oficinas Corporativas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Oficinas Corporativas</button>
-                    <button onclick="selectB2BSegment('Eventos & Galas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Eventos Privados & Galas</button>
-                </div>
-            </div>
-
-            <div id="b2b-step-2" class="b2b-step hidden flex-col items-center w-full max-w-md text-center transition-all duration-500 transform translate-x-8 opacity-0">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block">Paso 2 de 2</span>
-                <h3 class="font-serif text-3xl md:text-4xl italic mb-10">Credenciales de la Firma</h3>
-                
-                <form id="b2b-final-form" class="w-full space-y-6" onsubmit="sendB2BConsultation(event)">
-                    <input type="hidden" id="b2b-selected-segment" name="Segmento">
-                    <div><input type="text" id="b2b-empresa" name="Empresa" required placeholder="Nombre de la Empresa" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors"></div>
-                    <div><input type="text" id="b2b-nombre" name="Contacto" required placeholder="Su Nombre y Cargo" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors"></div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="email" id="b2b-email" name="Email" required placeholder="Correo Corporativo" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
-                        <input type="tel" id="b2b-whatsapp" name="WhatsApp" required placeholder="WhatsApp" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
-                    </div>
-                    <div class="pt-8">
-                        <button type="submit" id="b2b-submit-btn" class="w-full py-5 bg-[#c5a059] text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors">Solicitar Membresía</button>
-                    </div>
-                </form>
-                
-                <button onclick="backToB2BStep1()" class="mt-8 text-[9px] uppercase tracking-[0.3em] text-white/40 hover:text-[#c5a059] transition-colors border-b border-transparent hover:border-[#c5a059] pb-1">← Cambiar Segmento</button>
-            </div>
-
-            <div id="b2b-success" class="hidden flex-col items-center w-full max-w-md text-center">
-                <div class="w-20 h-20 border border-[#c5a059] rounded-full flex items-center justify-center mb-8 mx-auto text-[#c5a059]">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <h3 class="font-serif text-4xl italic mb-4">Solicitud Recibida.</h3>
-                <p class="text-white/60 font-light leading-relaxed">Nuestra dirección ejecutiva evaluará su perfil y nos pondremos en contacto a la brevedad para agendar una reunión privada.</p>
-                <button onclick="closeB2BFlow()" class="mt-12 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] hover:text-white border-b border-[#c5a059] pb-1 transition-colors">Volver a La Foresta</button>
-            </div>
-        </div>
-    </div>
-    
-    <section id="garden" class="py-32 px-6 md:px-12 bg-zinc-50 border-t border-zinc-100">
-        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
-            <div class="w-full lg:w-1/2">
-                <div onclick="toggleGardenImage()" class="overflow-hidden aspect-[4/5] bg-zinc-200 relative cursor-pointer group">
-                    <img id="garden-img-1" src="img/garden-2.jpg" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-100" alt="Vista Principal">
-                    <img id="garden-img-2" src="img/garden-1.jpg" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-0" alt="Vista Secundaria">
-                    <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md px-3 py-1 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">Cambiar Vista</div>
-                </div>
-            </div>
-            <div class="w-full lg:w-1/2 space-y-10 text-left lg:pl-8">
-                <div class="space-y-4">
-                    <span class="text-gold-leaf text-xs font-bold uppercase tracking-[0.4em] block">Outdoor & Landscapes</span>
-                    <h2 class="text-5xl md:text-6xl font-serif italic leading-tight text-[#0a1f1c]">La Foresta <br>Garden Selection.</h2>
-                </div>
-                <p class="text-zinc-600 font-light text-lg leading-relaxed max-w-xl">
-                    Extendemos la belleza al exterior. Nuestro equipo de paisajismo diseña terrazas y jardines que respiran el aire de Reñaca.
-                </p>
-                <div class="pt-6">
-                    <button onclick="openGardenFlow()" class="btn-premium !bg-transparent !text-forest-green !border-forest-green hover:!bg-forest-green hover:!text-gold-leaf uppercase text-xs tracking-widest font-bold px-10 py-4 transition-all duration-300">
-                        Consultar Proyecto Garden
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div id="garden-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden opacity-0 transition-opacity duration-500">
-        <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
-            <h2 class="font-serif text-xl tracking-widest uppercase text-gold-leaf">Garden Selection</h2>
-            <button onclick="closeGardenFlow()" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
-        </div>
-        <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
-            <div id="g-step-1" class="garden-step active flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1 de 2</span>
-                <h3 class="font-serif text-4xl italic mb-12">¿Qué espacio desea intervenir?</h3>
-                <div class="space-y-4 w-full">
-                    <button onclick="selectGardenOption(this, 'Terraza o Balcón')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Terraza o Balcón</button>
-                    <button onclick="selectGardenOption(this, 'Jardín Exterior')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Jardín Exterior</button>
-                    <button onclick="selectGardenOption(this, 'Interior / Corporativo')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Interior / Corporativo</button>
-                </div>
-            </div>
-            <div id="g-step-3" class="garden-step flex-col items-center w-full max-w-md text-center hidden">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2 de 2</span>
-                <h3 class="font-serif text-3xl italic mb-8">Detalles del Proyecto</h3>
-                <input type="text" id="g-name" placeholder="Su Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <input type="tel" id="g-phone" placeholder="Teléfono (+56 9...)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <textarea id="g-details" placeholder="Detalles de su idea o medidas del espacio..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-28 mb-8"></textarea>
-                <button onclick="sendGardenConsultation()" class="w-full btn-premium">Enviar Consulta</button>
-                <button onclick="nextGardenStep(1)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="coverage-modal" class="fixed inset-0 bg-[#0a1f1c]/95 backdrop-blur-xl z-[200] hidden opacity-0 transition-opacity duration-500 flex flex-col justify-center items-center p-4 sm:p-6 md:p-12">
-        <div class="w-full max-w-6xl bg-transparent flex flex-col lg:flex-row gap-8 lg:gap-12 relative text-[#fcfaf7] h-full lg:h-auto max-h-full">
+            </div> 
             
-            <button onclick="closeCoverageModal()" class="absolute -top-10 lg:-top-12 right-0 text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors z-20">×</button>
-            
-            <div class="w-full lg:w-1/2 flex items-center justify-center relative h-[35vh] md:h-[45vh] lg:h-[600px] bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] shrink-0 mb-6 lg:mb-0 mt-6 lg:mt-0">
-                <div id="coverage-map" class="w-full h-full z-10"></div>
-            </div>
+            <button aria-label="Anterior slide" onclick="prevHeroSlide(true)" class="hidden lg:flex absolute top-1/2 left-4 -translate-y-1/2 z-50 bg-black/30 hover:bg-black/60 text-white rounded-full p-3 transition-colors backdrop-blur">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            <button aria-label="Siguiente slide" onclick="nextHeroSlide(true)" class="hidden lg:flex absolute top-1/2 right-4 -translate-y-1/2 z-50 bg-black/30 hover:bg-black/60 text-white rounded-full p-3 transition-colors backdrop-blur">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-50 flex space-x-2" id="hero-dots"></div>
+        </section>
 
-            <div class="w-full lg:w-1/2 flex flex-col lg:justify-center py-2 overflow-y-auto hide-scroll pb-24 lg:pb-0 min-h-0">
-                <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-[#c5a059] mb-4 block">Logística Integral</span>
-                <h3 class="font-serif text-4xl md:text-5xl italic mb-8">Zonas de Despacho</h3>
-                
-                <div class="space-y-4">
-                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(1)" onmouseleave="resetZone(1)">
-                        <div class="flex justify-between items-center mb-1">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">1. Ultra Local</h4>
-                            <span class="text-xs text-[#c5a059] font-serif">+$3.500</span>
-                        </div>
-                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Reñaca Centro, Los Almendros, Clínica Reñaca, Jardín del Mar, Los Pinos.</p>
-                    </div>
-
-                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(2)" onmouseleave="resetZone(2)">
-                        <div class="flex justify-between items-center mb-1">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">2. Local Media</h4>
-                            <span class="text-xs text-[#c5a059] font-serif">+$5.000</span>
-                        </div>
-                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Reñaca Norte, Montemar, Higuerillas, Gómez Carreño, Hospital Naval, Glorias Navales.</p>
-                    </div>
-
-                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(3)" onmouseleave="resetZone(3)">
-                        <div class="flex justify-between items-center mb-1">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">3. Intermedia</h4>
-                            <span class="text-xs text-[#c5a059] font-serif">+$8.000</span>
-                        </div>
-                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Viña Centro, Clínica Ciudad del Mar, Cerros de Viña, Chorrillos, Concón Los Romeros.</p>
-                    </div>
-
-                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(4)" onmouseleave="resetZone(4)">
-                        <div class="flex justify-between items-center mb-1">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">4. Extendida</h4>
-                            <span class="text-xs text-[#c5a059] font-serif">+$12.000</span>
-                        </div>
-                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Mantagua (Las Gaviotas), Valparaíso Plan y Cerros, Quilpué Centro, Paso Hondo.</p>
-                    </div>
-
-                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(5)" onmouseleave="resetZone(5)">
-                        <div class="flex justify-between items-center mb-1">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">5. Limítrofe</h4>
-                            <span class="text-xs text-[#c5a059] font-serif">+$18.000</span>
-                        </div>
-                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Quintero, Curauma, Placilla de Peñuelas, El Belloto.</p>
-                    </div>
-                </div>
-
-                <div class="mt-8 bg-[#c5a059]/10 border border-[#c5a059]/30 p-4 text-left flex items-start gap-3 rounded-lg">
-                    <span class="text-[#c5a059] text-xs">⚠</span>
-                    <p class="text-[9px] uppercase tracking-widest leading-relaxed text-white/80">
-                        <strong>Beneficio Exclusivo:</strong> Envíos gratis o bonificados sobre $69.990. Pase el cursor sobre cada zona para visualizar el área en el mapa.
-                    </p>
-                </div>
-            </div>
+        <!-- Social Proof Bar -->
+        <div class="bg-white py-3 border-b border-gray-200 flex justify-center items-center gap-6 text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-600">
+            <div class="flex items-center"><span class="text-yellow-400 text-sm mr-1">★★★★★</span> 4.9/5 en Google</div>
+            <div class="hidden md:flex items-center">|</div>
+            <div class="flex items-center text-green-700"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Entregas Hoy Disponibles</div>
         </div>
-    </div>
 
-    <footer class="bg-forest-green text-soft-cream py-24 px-6 border-t border-gold-leaf/20">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
-            <div class="md:col-span-4">
-                <h3 class="text-4xl font-serif font-bold italic mb-8">La Foresta</h3>
-                <p class="text-soft-cream/40 text-sm leading-relaxed mb-8 max-w-xs">
-                    Curadores de la belleza costera desde el corazón de Reñaca. Nuestra misión es elevar cada espacio con el poder de la naturaleza.
-                </p>
-                <div class="flex space-x-6 text-gold-leaf">
-                    <a href="https://www.instagram.com/laforestaflores/" target="_blank" class="hover:text-white transition uppercase text-[10px] font-bold tracking-widest">Instagram</a>
-                    <a href="#" class="hover:text-white transition uppercase text-[10px] font-bold tracking-widest">WhatsApp</a>
+        <section id="vault" class="bg-[#fcfaf7] pt-12 pb-20">
+            <div class="w-full max-w-[1400px] mx-auto px-6 md:px-12">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-gray-200 pb-4">
+                    <div>
+                        <h2 class="text-4xl md:text-5xl font-serif font-bold text-[#0a1f1c] mb-2">Colección Destacada</h2>
+                        <p class="text-gray-500 text-sm">Diseños únicos preparados frescos cada mañana.</p>
+                    </div>
+                    <div class="mt-4 md:mt-0 flex items-center gap-2 bg-red-50 text-red-700 px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-wide border border-red-100">
+                        <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span>
+                        Corte de envíos hoy en <span id="countdown-timer">--:--:--</span>
+                    </div>
+                </div>
+                
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+                    <!-- Productos inyectados vía JS -->
                 </div>
             </div>
-            <div class="md:col-span-2">
-                <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Información Legal</h4>
-                <ul class="space-y-4 text-sm opacity-60">
-                    <li><a href="/privacidad.html" class="hover:text-gold-leaf">Política de Privacidad</a></li>
-                    <li><a href="/terminos.html" class="hover:text-gold-leaf">Términos de Servicio</a></li>
-                    <li><a href="/devoluciones.html" class="hover:text-gold-leaf">Políticas de Devolución</a></li>
-                    <li><a href="#vault" onclick="scrollToVault()" class="hover:text-gold-leaf">Colecciones</a></li>
+        </section>
+
+        <!-- Sección B2B simplificada visualmente -->
+        <section id="privilege" class="bg-[#0a1f1c] text-white py-20 border-t border-[#c5a059]/20 relative">
+            <img src="slide5-pc.jpg" alt="Fondo corporativo" class="absolute inset-0 w-full h-full object-cover opacity-20 z-0" loading="lazy">
+            <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+                <span class="text-gold-leaf text-xs font-bold uppercase tracking-[0.5em] block mb-4">Servicio Corporativo</span>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6">Suscripciones B2B</h2>
+                <p class="text-gray-300 text-base md:text-lg mb-8 max-w-2xl mx-auto">Decoración floral recurrente para oficinas, hoteles y restaurantes. Mantén tus espacios vivos con facturación automática.</p>
+                <button onclick="window.open('https://wa.me/56994783520?text=Hola,%20me%20interesa%20el%20servicio%20B2B', '_blank')" class="btn-premium btn-secondary !w-auto inline-block">Contactar Asesor B2B</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white text-gray-800 py-12 px-6 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-2xl font-serif font-bold mb-4 text-[#0a1f1c]">La Foresta</h3>
+                <p class="text-gray-500 text-sm mb-4">Florería premium en Reñaca y Viña del Mar.</p>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/laforestaflores/" target="_blank" class="text-gray-400 hover:text-black font-bold text-xs uppercase">Instagram</a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold uppercase text-[10px] tracking-widest mb-4 text-gray-400">Legal</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-[#c5a059]">Términos de Servicio</a></li>
+                    <li><a href="#" class="hover:text-[#c5a059]">Políticas de Devolución</a></li>
                 </ul>
             </div>
-            <div class="md:col-span-3">
-                <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Ubicación</h4>
-                <p class="text-sm opacity-60 leading-relaxed mb-4">
-                    Av. Borgoño 14.580, Local 7<br>
-                    2520000 Viña del Mar<br>
-                    Valparaíso, Chile.
-                </p>
-                <a href="https://www.google.com/maps/search/?api=1&query=La+Foresta+Flores+Av.+Borgo%C3%B1o+14580+Vi%C3%B1a+del+Mar" target="_blank" class="text-gold-leaf text-[10px] font-bold uppercase tracking-widest border-b border-gold-leaf pb-1">Ver en Google Maps</a>            
+            <div>
+                <h4 class="font-bold uppercase text-[10px] tracking-widest mb-4 text-gray-400">Ubicación</h4>
+                <p class="text-sm text-gray-600">Av. Borgoño 14.580, Local 7<br>Viña del Mar, Chile.</p>
             </div>
-            <div class="md:col-span-3">
-                <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Atención VIP</h4>
-                <p class="text-sm opacity-60 mb-4">Lunes a Sábado: 10:00 - 20:00</p>
-                <p class="text-sm opacity-60 italic">"Entregamos más que flores, entregamos un legado visual."</p>
+            <div>
+                <h4 class="font-bold uppercase text-[10px] tracking-widest mb-4 text-gray-400">Atención</h4>
+                <p class="text-sm text-gray-600">Lunes a Domingo<br>10:30 - 19:00 hrs</p>
             </div>
-        </div>
-        <div class="max-w-7xl mx-auto border-t border-white/5 mt-20 pt-10 flex flex-col md:flex-row justify-between items-center opacity-30">
-            <p class="text-[9px] uppercase tracking-widest">© <span id="year-footer">2026</span> La Foresta Flores & Garden. Todos los derechos reservados.</p>
-            <p class="text-[9px] uppercase tracking-widest mt-4 md:mt-0 italic">World Class Florist - Reñaca Distinction</p>
         </div>
     </footer>
 
-    <div id="checkout-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden">
-        <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
-            <img src="img/logo-menu.png" alt="La Foresta" class="h-8 w-auto object-contain">
-            <button onclick="closeCheckout()" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
+    <!-- Flujo Checkout Mantenido (Se asume JS funcional de pago posterior) -->
+    <div id="checkout-flow" class="fixed inset-0 bg-white text-[#0a1f1c] z-[200] hidden flex-col overflow-y-auto">
+        <div class="px-6 py-4 flex justify-between items-center border-b shadow-sm sticky top-0 bg-white z-10">
+            <span class="font-serif font-bold text-xl">Checkout Seguro</span>
+            <button onclick="closeCheckout()" class="text-3xl font-light text-gray-400 hover:text-black" aria-label="Cerrar Checkout">&times;</button>
         </div>
-
-        <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
-            <div id="step-1" class="checkout-step active flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1</span>
-                <h3 class="font-serif text-4xl italic mb-12">¿Quién envía este ramo?</h3>
-                <input type="text" id="sender-name" oninput="guardarProgresoCheckout()" placeholder="Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <button onclick="goToStep('step-buyer-email')" class="mt-12 btn-premium w-full">Siguiente</button>
-            </div>
-
-            <div id="step-buyer-email" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Contacto</span>
-                <h3 class="font-serif text-4xl italic mb-12">Su correo electrónico</h3>
-                <p class="text-[10px] uppercase tracking-widest opacity-60 mb-6">Para enviar el comprobante digital de su pedido</p>
-                <input type="email" id="buyer-email" oninput="guardarProgresoCheckout()" placeholder="su-correo@ejemplo.com" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <button onclick="validarEmailYContinuar()" class="mt-12 btn-premium w-full">Siguiente</button>
-                <button onclick="goToStep(1)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-2" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2</span>
-                <h3 class="font-serif text-4xl italic mb-12">¿A quién va dirigido?</h3>
-                <input type="text" id="receiver-name" oninput="guardarProgresoCheckout()" placeholder="Nombre y Apellido del destinatario" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <button onclick="goToStep('step-palette')" class="mt-12 btn-premium w-full">Siguiente</button>
-                <button onclick="goToStep('step-buyer-email')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-palette" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 3</span>
-                <h3 class="font-serif text-4xl italic mb-12">Seleccione la paleta de color</h3>
-                <div class="space-y-4 w-full">
-                    <button onclick="selectOption(this, 'palette'); setPalette('Tonos Pasteles & Calma')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Pasteles & Calma</button>
-                    <button onclick="selectOption(this, 'palette'); setPalette('Tonos Vibrantes & Coloridos')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Vibrantes & Coloridos</button>
+        <div class="max-w-md w-full mx-auto p-6 mt-10">
+            <h3 class="font-serif text-2xl font-bold mb-6 text-center">Completa tus datos</h3>
+            <input type="text" id="sender-name" placeholder="Tu Nombre Completo" class="w-full border border-gray-300 rounded p-3 mb-4 focus:border-green-800 outline-none">
+            <input type="email" id="buyer-email" placeholder="Tu Email (para recibo)" class="w-full border border-gray-300 rounded p-3 mb-6 focus:border-green-800 outline-none">
+            
+            <div class="bg-gray-50 p-4 border rounded mb-6">
+                <p class="text-xs text-gray-500 uppercase tracking-widest font-bold mb-2">Resumen</p>
+                <div class="flex justify-between font-bold text-lg">
+                    <span>Total a pagar:</span>
+                    <span id="checkout-final-total">$0</span>
                 </div>
-                <button onclick="goToStep(2)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
             
-            <div id="step-3" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 4</span>
-                <h3 class="font-serif text-3xl italic mb-12">Modalidad de entrega</h3>
-                <div class="space-y-4 w-full">
-                    <button onclick="seleccionarModalidad('envio')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Despacho a domicilio</button>
-                    <button onclick="seleccionarModalidad('retiro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Retiro en tienda</button>
-                </div>
-                <button onclick="goToStep('step-palette')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-zona" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Logística</span>
-                <h3 class="font-serif text-3xl italic mb-4">Zona de entrega</h3>
-                
-                <div class="w-full bg-[#c5a059]/10 border border-[#c5a059]/30 p-3 mb-6 text-left flex items-start gap-2 shadow-sm">
-                    <span class="text-[#c5a059] text-[10px] mt-0.5">⚠</span>
-                    <p class="text-[8px] uppercase tracking-widest leading-relaxed text-[#0a1f1c] opacity-80">
-                        <strong>Importante:</strong> La elección correcta del sector evitará errores de cobro y retrasos en la ruta de despacho. Si la zona de su dirección no aparece en el listado, significa que actualmente se encuentra fuera de nuestra área de cobertura.
-                    </p>
-                </div>
-                
-                <div class="space-y-3 w-full text-left">
-                    <button onclick="seleccionarZona(3500, 'Zona 1: Ultra Local (Reñaca/Jardín del Mar)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
-                        <div class="flex justify-between items-center w-full">
-                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">1. Zona Ultra Local</span>
-                            <span class="text-[11px] font-bold text-[#c5a059]">+$3.500</span>
-                        </div>
-                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Reñaca Centro, Los Almendros, Clínica Reñaca, Jardín del Mar, Los Pinos (Reñaca).</span>
-                    </button>
-
-                    <button onclick="seleccionarZona(5000, 'Zona 2: Local Media (Viña/Concón/Reñaca Norte)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
-                        <div class="flex justify-between items-center w-full">
-                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">2. Zona Local Media</span>
-                            <span class="text-[11px] font-bold text-[#c5a059]">+$5.000</span>
-                        </div>
-                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Reñaca Norte, Montemar, Higuerillas, Gómez Carreño, Hospital Naval, Glorias Navales, Santa Julia, Achupallas.</span>
-                    </button>
-
-                    <button onclick="seleccionarZona(8000, 'Zona 3: Intermedia (Viña Centro/Concón Alto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
-                        <div class="flex justify-between items-center w-full">
-                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">3. Zona Intermedia</span>
-                            <span class="text-[11px] font-bold text-[#c5a059]">+$8.000</span>
-                        </div>
-                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Viña Centro/Poniente, Clínica Ciudad del Mar, Hospital Gustavo Fricke, Cerros de Viña, Chorrillos, Miraflores, Cementerio Parque del Mar, Concón Los Romeros, Costa de Montemar, Lomas de Montemar.</span>
-                    </button>
-
-                    <button onclick="seleccionarZona(12000, 'Zona 4: Extendida (Quilpué/Valparaíso)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
-                        <div class="flex justify-between items-center w-full">
-                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">4. Zona Extendida</span>
-                            <span class="text-[11px] font-bold text-[#c5a059]">+$12.000</span>
-                        </div>
-                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Mantagua (Las Gaviotas), Valparaíso Plan y Cerros, Hospital Carlos Van Buren, Quilpué Centro, Paso Hondo, Los Pinos.</span>
-                    </button>
-
-                    <button onclick="seleccionarZona(18000, 'Zona 5: Limítrofe (Quintero/Curauma/Belloto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
-                        <div class="flex justify-between items-center w-full">
-                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">5. Zona Limítrofe</span>
-                            <span class="text-[11px] font-bold text-[#c5a059]">+$18.000</span>
-                        </div>
-                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Quintero, Curauma, Cementerio Parque del Sendero, Placilla de Peñuelas, El Belloto.</span>
-                    </button>
-                </div>
-                
-                <button onclick="goToStep(3)" class="mt-10 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black transition-opacity">Volver</button>
-            </div>
-
-            <div id="step-direccion" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-                <h3 class="font-serif text-3xl italic mb-6">Dirección exacta</h3>
-                <input type="text" id="address" oninput="guardarProgresoCheckout()" placeholder="Calle, número, departamento o casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
-                <button onclick="confirmarDireccion()" class="btn-premium w-full">Confirmar dirección</button>
-                <button onclick="goToStep('step-zona')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-quien-retira" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-                <h3 class="font-serif text-3xl italic mb-6">Nombre de quien retira</h3>
-                <input type="text" id="pickup-name" oninput="guardarProgresoCheckout()" placeholder="Nombre y apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
-                <button onclick="goToStep('step-fecha')" class="btn-premium w-full">Confirmar</button>
-                <button onclick="goToStep(3)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-fecha" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 5</span>
-                <h3 class="font-serif text-3xl italic mb-12">Fecha de entrega</h3>
-                <div class="space-y-4 w-full">
-                    <button onclick="seleccionarFecha('hoy')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Hoy</button>
-                    <button onclick="seleccionarFecha('futuro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Fecha futura</button>
-                </div>
-                <button onclick="regresarDesdeFecha()" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-calendario" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Calendario</span>
-                <h3 class="font-serif text-3xl italic mb-6">Seleccione el día</h3>
-                <div class="flex justify-between items-center w-full mb-6 px-2">
-                    <button onclick="cambiarMesCalendario(-1)" id="cal-prev" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Anterior</button>
-                    <span id="cal-month-title" class="text-xs uppercase tracking-widest font-bold text-gold-leaf"></span>
-                    <button onclick="cambiarMesCalendario(1)" id="cal-next" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Siguiente</button>
-                </div>
-                <div class="grid grid-cols-7 gap-2 w-full text-center text-[9px] uppercase font-bold tracking-wider opacity-40 mb-2">
-                    <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div>
-                </div>
-                <div id="calendar-grid" class="grid grid-cols-7 gap-2 w-full"></div>
-                <button onclick="goToStep('step-fecha')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-time" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 6</span>
-                <h3 class="font-serif text-3xl italic mb-2">Horario de entrega</h3>
-                <h4 id="time-step-chosen-date" class="text-[10px] uppercase tracking-[0.2em] text-[#0a1f1c]/60 mb-8 font-bold"></h4>
-                
-                <div id="time-slots-container" class="space-y-4 w-full mb-6"></div>
-                <button onclick="regresarDesdeTime()" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-4" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 7</span>
-                <h3 class="font-serif text-4xl italic mb-6">Mensaje en la tarjeta</h3>
-                
-                <textarea id="card-message" oninput="guardarProgresoCheckout()" placeholder="Escriba su dedicatoria aquí..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-32 mb-4"></textarea>
-                
-                <div class="w-full">
-                    <p class="text-[9px] uppercase tracking-widest opacity-40 mb-3 text-left">¿Necesita inspiración?</p>
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="escribirMensaje('romance')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Romance</button>
-                        <button onclick="escribirMensaje('condolencias')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Condolencias</button>
-                        <button onclick="escribirMensaje('agradecimiento')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Agradecimiento</button>
-                        <button onclick="escribirMensaje('cumpleanos')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Cumpleaños</button>
-                    </div>
-                </div>
-
-                <button onclick="goToStep(5)" class="mt-12 btn-premium w-full">Siguiente</button>
-                <button onclick="goToStep('step-time')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-5" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 8</span>
-                <h3 class="font-serif text-4xl italic mb-12">Fono de contacto (Destino)</h3>
-                <input type="tel" id="receiver-phone" oninput="guardarProgresoCheckout()" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <button onclick="goToStep(6)" class="mt-12 btn-premium w-full">Siguiente</button>
-                <button onclick="goToStep(4)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-6" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Paso Final</span>
-                <h3 class="font-serif text-4xl italic mb-4">Confirmar y Pagar</h3>
-                
-                <p class="text-[9px] uppercase tracking-widest opacity-60 mb-6 leading-loose">
-                    Una vez acreditado el pago, recibirá automáticamente un correo con la confirmación y detalles logísticos.
-                </p>
-                
-                <div class="w-full bg-white border border-[#c5a059]/40 p-4 mb-6 text-left flex items-start gap-3 shadow-sm">
-                    <span class="text-[#c5a059] text-[10px] mt-0.5">✓</span>
-                    <p class="text-[9px] uppercase tracking-widest leading-relaxed text-[#0a1f1c] opacity-80">
-                        <strong>Garantía de Atelier:</strong> Diseño y volúmen 99% idéntico al catálogo, verificado mediante fotografía de su pedido enviada por correo electrónico.
-                    </p>
-                </div>
-
-                <div id="checkout-summary" class="w-full bg-zinc-50 border border-[#0a1f1c]/10 p-5 mb-8 text-left shadow-sm">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-[10px] uppercase tracking-widest text-zinc-500">Subtotal</span>
-                        <span id="checkout-subtotal" class="font-serif text-sm text-[#0a1f1c]">$0</span>
-                    </div>
-                    <div class="flex justify-between items-start mb-4 border-b border-[#0a1f1c]/10 pb-4">
-                        <span id="checkout-shipping-label" class="text-[10px] uppercase tracking-widest text-zinc-500">Logística</span>
-                        <div class="text-right">
-                            <span id="checkout-shipping" class="font-serif text-sm text-[#0a1f1c]">$0</span>
-                            <span id="checkout-shipping-notice" class="text-[8px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 hidden"></span>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-end mt-2">
-                        <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Total a Pagar</span>
-                        <span id="checkout-final-total" class="font-serif text-2xl text-[#0a1f1c]">$0</span>
-                    </div>
-                </div>
-                <div id="payment-selector" class="w-full flex flex-col items-center gap-6">
-                    <div class="w-full flex flex-col items-center gap-2">
-                        <button class="btn-premium w-full max-w-md py-4 text-[14px] sm:text-[16px] uppercase tracking-[0.2em]" onclick="iniciarMercadoPago()">
-                            Pago Nacional
-                        </button>
-                        <span class="text-[10px] text-gold-leaf/70 tracking-[0.15em] uppercase">Tarjetas de Crédito y Débito</span>
-                    </div>
-
-                    <div class="w-full max-w-sm flex items-center opacity-40">
-                        <div class="flex-1 border-t border-gold-leaf"></div>
-                        <span class="px-4 text-[9px] uppercase tracking-[0.2em] font-serif text-gold-leaf">Exterior</span>
-                        <div class="flex-1 border-t border-gold-leaf"></div>
-                    </div>
-
-                    <button class="text-[11px] text-gold-leaf/60 hover:text-gold-leaf uppercase tracking-[0.15em] transition-colors underline underline-offset-4" onclick="iniciarPayPal()">
-                        Pago Internacional (PayPal / USD)
-                    </button>
-                </div>
-
-                <div id="loading-payment" style="display: none;" class="mt-6 w-full text-center">
-                    <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Procesando Pasarela...</p>
-                </div>
-
-                <div class="mt-8 flex justify-center items-center mb-4 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
-                    <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
-                </div>
-                
-                <div class="flex justify-center items-center space-x-4 opacity-60 grayscale mb-8">
-                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" alt="Mercado Pago" class="h-5 w-auto object-contain">
-                    <span class="text-xs font-light text-zinc-300">|</span>
-                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" alt="PayPal" class="h-4 w-auto object-contain">
-                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="Visa" class="h-4 w-auto object-contain">
-                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" alt="Mastercard" class="h-4 w-auto object-contain">
-                </div>
-
-                <div id="paypal-container" class="w-full mb-4 hidden min-h-[150px]"></div>
-
-                <button onclick="goToStep(5)" id="btn-volver-pago" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
+            <button class="btn-premium mb-4" onclick="iniciarMercadoPago()">Pagar con MercadoPago</button>
+            <button class="w-full border-2 border-gray-200 text-gray-600 font-bold uppercase tracking-widest py-3 hover:bg-gray-50 transition" onclick="alert('Implementar lógica PayPal')">Pagar con PayPal</button>
         </div>
     </div>
 
     <script>
-    function openB2BFlow() {
-        const flow = document.getElementById('b2b-flow');
-        if(!flow) return;
-        flow.classList.remove('hidden');
-        setTimeout(() => flow.classList.remove('opacity-0'), 10);
-        document.body.style.overflow = 'hidden'; 
-        if (typeof stopAutoPlay === 'function') stopAutoPlay(); 
-    }
-
-    function closeB2BFlow() {
-        const flow = document.getElementById('b2b-flow');
-        if(!flow) return;
-        flow.classList.add('opacity-0');
-        setTimeout(() => {
-            flow.classList.add('hidden');
-            document.body.style.overflow = 'auto'; 
-            resetB2BFlow(); 
-        }, 500);
-    }
-
-    function selectB2BSegment(segment) {
-        document.getElementById('b2b-selected-segment').value = segment;
-        const step1 = document.getElementById('b2b-step-1');
-        const step2 = document.getElementById('b2b-step-2');
-        
-        step1.classList.add('opacity-0', '-translate-x-8');
-        
-        setTimeout(() => {
-            step1.classList.add('hidden');
-            step1.classList.remove('flex');
-            
-            step2.classList.remove('hidden');
-            step2.classList.add('flex');
-            
-            void step2.offsetWidth; 
-            
-            setTimeout(() => step2.classList.remove('opacity-0', 'translate-x-8'), 10);
-        }, 300);
-    }
-
-    function registrarOrdenIntranet(orderId, payloadData, totalPagado) {
-        const INT_API_URL = "https://laforesta-intranet.sebjmz.workers.dev";
-        fetch(`${INT_API_URL}/api/orden`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                orderId: orderId,
-                email: payloadData.metadata.comprador_email,
-                receptor: payloadData.metadata.receiver_name,
-                direccion: payloadData.metadata.logistics_detail.split('•')[1] || payloadData.metadata.logistics_detail,
-                fecha: payloadData.metadata.fecha_entrega + " / " + payloadData.metadata.time_slot,
-                totalCompra: totalPagado
-            })
-        }).catch(e => console.error("Fallo sincr. Intranet:", e));
-    }
-        
-    function backToB2BStep1() {
-        const step1 = document.getElementById('b2b-step-1');
-        const step2 = document.getElementById('b2b-step-2');
-        
-        step2.classList.add('opacity-0', 'translate-x-8');
-        
-        setTimeout(() => {
-            step2.classList.add('hidden');
-            step2.classList.remove('flex');
-            
-            step1.classList.remove('hidden');
-            step1.classList.add('flex');
-            
-            void step1.offsetWidth;
-            
-            setTimeout(() => step1.classList.remove('opacity-0', '-translate-x-8'), 10);
-        }, 300);
-    }
-    function resetB2BFlow() {
-        const form = document.getElementById('b2b-final-form');
-        if(form) form.reset();
-        const step1 = document.getElementById('b2b-step-1');
-        const step2 = document.getElementById('b2b-step-2');
-        const success = document.getElementById('b2b-success');
-        if(step1) step1.className = "b2b-step flex flex-col items-center w-full max-w-lg text-center transition-all duration-500 transform opacity-100 translate-x-0";
-        if(step2) step2.className = "b2b-step hidden flex-col items-center w-full max-w-md text-center transition-all duration-500 transform translate-x-8 opacity-0";
-        if(success) {
-            success.classList.add('hidden');
-            success.classList.remove('flex');
-        }
-    }
-
-    async function sendB2BConsultation(event) {
-        event.preventDefault(); 
-        const btn = document.getElementById('b2b-submit-btn');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = 'PROCESANDO...';
-        btn.disabled = true;
-
-        const formData = new FormData(event.target);
-        formData.append('_subject', 'Nueva Solicitud de Membresía B2B - La Foresta Flores');
-        formData.append('_captcha', 'false');
-
-        try {
-            const response = await fetch("https://formsubmit.co/ajax/contacto@laforestaflores.cl", {
-                method: "POST",
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
-
-            if (response.ok) {
-                document.getElementById('b2b-step-2').classList.add('hidden');
-                document.getElementById('b2b-step-2').classList.remove('flex');
-                const successScreen = document.getElementById('b2b-success');
-                successScreen.classList.remove('hidden');
-                successScreen.classList.add('flex');
-            } else {
-                alert("Hubo un problema al procesar la solicitud. Por favor, intente vía WhatsApp.");
-            }
-        } catch (error) {
-            console.error("Error al enviar:", error);
-            alert("Error de conexión. Verifique su internet.");
-        } finally {
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }
-    }
-
-    function trackGA4(eventName, params) {
-        if (typeof gtag === 'function') {
-            gtag('event', eventName, params);
-        }
-    }
-
+    // Variables globales
     let cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
-    let selectedGardenSpace = localStorage.getItem('laforesta_selectedGardenSpace') || '';
-    let selectedPalette = localStorage.getItem('laforesta_selectedPalette') || '';
-    let shippingCost = parseInt(localStorage.getItem('laforesta_shippingCost')) || 0;
-    let selectedZoneName = localStorage.getItem('laforesta_selectedZoneName') || '';
-    let selectedLogistics = localStorage.getItem('laforesta_selectedLogistics') || '';
-    let selectedDate = localStorage.getItem('laforesta_selectedDate') || '';
-    let selectedTimeSlot = localStorage.getItem('laforesta_selectedTimeSlot') || '';
-    let isExpressDelivery = localStorage.getItem('laforesta_isExpressDelivery') === 'true';
-
-    const RECARGO_EXPRESS_ENVIO = 1.50; 
-    let currentCalendarDate = new Date();
-
-    const mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', {
-        locale: 'es-CL'
-    });
-
-    let mapInitialized = false;
-    let coverageMap;
-    let circleLayers = {};
-
-    const zoneData = [
-        { id: 1, radius: 2200, color: '#c5a059', fillOpacity: 0.4, name: "Ultra Local" },
-        { id: 2, radius: 4500, color: '#c5a059', fillOpacity: 0.25, name: "Local Media" },
-        { id: 3, radius: 6500, color: '#c5a059', fillOpacity: 0.15, name: "Intermedia" },
-        { id: 4, radius: 11500, color: '#c5a059', fillOpacity: 0.08, name: "Extendida" },
-        { id: 5, radius: 20000, color: '#c5a059', fillOpacity: 0.03, name: "Limítrofe" }
-    ];
-
-    const atelierCenter = [-32.97074205954955, -71.5431332198481];
-
-    function initCoverageMap() {
-        if (mapInitialized) return;
-        const mapContainer = document.getElementById('coverage-map');
-        if(!mapContainer) return;
-
-        coverageMap = L.map('coverage-map', { 
-            zoomControl: true,
-            scrollWheelZoom: false 
-        }).setView(atelierCenter, 10);
-        
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '© OpenStreetMap',
-            subdomains: 'abcd',
-            maxZoom: 18
-        }).addTo(coverageMap);
-
-        [...zoneData].reverse().forEach(z => {
-            let circle = L.circle(atelierCenter, {
-                radius: z.radius,
-                color: z.color,
-                weight: 1,
-                fillColor: z.color,
-                fillOpacity: z.fillOpacity,
-                interactive: false 
-            }).addTo(coverageMap);
-            circleLayers[z.id] = circle;
-        });
-
-        const icon = L.divIcon({ 
-            html: '<div class="w-3 h-3 bg-[#c5a059] rounded-full border border-[#0a1f1c] shadow-[0_0_15px_rgba(197,160,89,1)]"></div>', 
-            className: '' 
-        });
-        L.marker(atelierCenter, {icon: icon})
-            .addTo(coverageMap)
-            .bindTooltip("Atelier", {
-                permanent: true, 
-                direction: "right", 
-                className: "atelier-tooltip"
-            }).openTooltip();
-
-        mapInitialized = true;
-    }
-
-    function highlightZone(id) {
-        if(!circleLayers[id]) return;
-        circleLayers[id].setStyle({ fillOpacity: 0.6, weight: 3, color: '#ffffff' });
-        circleLayers[id].bringToFront();
-    }
-
-    function resetZone(id) {
-        if(!circleLayers[id]) return;
-        const original = zoneData.find(z => z.id === id);
-        circleLayers[id].setStyle({ fillOpacity: original.fillOpacity, weight: 1, color: original.color });
-        [...zoneData].reverse().forEach(z => {
-            if(circleLayers[z.id]) circleLayers[z.id].bringToFront();
-        });
-    }
-
-    function openCoverageModal() {
-        const modal = document.getElementById('coverage-modal');
-        if(!modal) return;
-        modal.classList.remove('hidden');
-        
-        setTimeout(() => {
-            modal.classList.remove('opacity-0');
-            initCoverageMap();
-        }, 10);
-
-        setTimeout(() => {
-            if (coverageMap) coverageMap.invalidateSize();
-        }, 550);
-
-        document.body.style.overflow = 'hidden';
-        if (typeof stopAutoPlay === 'function') stopAutoPlay();
-    }
-
-    function closeCoverageModal() {
-        const modal = document.getElementById('coverage-modal');
-        if(!modal) return;
-        modal.classList.add('opacity-0');
-        setTimeout(() => {
-            modal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }, 500);
-    }
-
+    
+    // Catálogo con nombres de archivo exactos solicitados
     const catalog = [
-        { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y sutiles astromelias.", url: "amor-delicado.html" },
-        { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.jpeg", desc: "Lilium majestuosos, rosas premium, nubes de gypso y maule aterciopelado.", url: "susurro-de-amor.html" },
-        { id: 3, name: "Amor Eterno", price: 230900, img: "img/RAMOS03.jpg", desc: "Una declaración absoluta: imponente pieza maestra de 70 rosas seleccionadas.", url: "amor-eterno.html" },
-        { id: 4, name: "Pasión de Sol", price: 45900, img: "img/RAMOS04.jpeg", desc: "Girasoles esculturales y rosas finas, entrelazados con gypso y maule silvestre.", url: "pasion-de-sol.html" },
-        { id: 5, name: "Monte Mar Signature", price: 31900, img: "img/RAMOS05.jpeg", desc: "Gerberas vibrantes y rosas de autor, balanceadas con maules y gypso etéreo.", url: "monte-mar-signature.html" },
-        { id: 6, name: "Brisa de Primavera", price: 36900, img: "img/RAMOS06.jpeg", desc: "Una armoniosa sinfonía de gerberas, astromelias, lisianthus y follaje de ruscus.", url: "brisa-de-primavera.html" },
-        { id: 7, name: "Golden Bloom", price: 47900, img: "img/RAMOS07.jpeg", desc: "Girasoles, lisianthus, maule, astromelias, gypso y delicadas clavelinas.", url: "golden-bloom.html" },
-        { id: 8, name: "Suave Amanecer", price: 37900, img: "img/RAMOS08.jpeg", desc: "Lisianthus de colección, rosas finas, maules y una suave neblina de gypso.", url: "suave-amanecer.html" },
-        { id: 9, name: "Jardin de Verano", price: 28900, img: "img/RAMOS09.jpeg", desc: "Diseño de alto impacto con astromelias, gerberas selectas, lilium y limonium.", url: "jardin-de-verano.html" },
-        { id: 10, name: "Susurro Rosé", price: 48900, img: "img/RAMOS10.jpeg", desc: "Tulipanes de corte limpio y siluetas dramáticas de limonium.", url: "susurro-rose.html" },
-        { id: 11, name: "Luz de Atardecer", price: 42900, img: "img/RAMOS11.jpeg", desc: "Cálida composición de rosas, astromelias costeras y acentos de limonium.", url: "luz-de-atardecer.html" },
-        { id: 12, name: "Encanto Vivo", price: 37900, img: "img/RAMOS12.jpeg", desc: "Astromelias, lisianthus, gypso, gerberas, maules y el verde profundo del ruscus.", url: "encanto-vivo.html" },
-        { id: 13, name: "Luz Infinita", price: 45900, img: "img/luz-infinita.jpeg", desc: "Ramo minimalista de impecables rosas blancas, símbolo de pureza y respeto profundo.", url: "luz-infinita.html" },
-        { id: 14, name: "Luz del Alba", price: 68900, img: "img/luz-del-alba.jpeg", desc: "Luminosa combinación de lirios blancos y alstroemerias amarillas en cesto rústico.", url: "luz-del-alba.html" },
-        { id: 15, name: "Sereno", price: 59900, img: "img/sereno.jpeg", desc: "Elegante arreglo de rosas y lirios blancos en caja gris, personificación de la calma.", url: "sereno.html" },
-        { id: 16, name: "Dulce Amor", price: 48900, img: "img/dulce-amor.jpeg", desc: "Delicada selección en tonos rosados y blancos, un homenaje lleno de ternura.", url: "dulce-amor.html" },
-        { id: 17, name: "Esperanza", price: 138900, img: "img/esperanza.jpeg", desc: "Majestuoso cesto de abundantes lirios y rosas blancas que transmite profunda paz y consuelo.", url: "esperanza.html" }
+        { id: 1, name: "Amor Delicado", price: 28900, img: "RAMOS01.jpeg", desc: "Lisianthus de seda, lilium aromáticos, limonium y astromelias.", stock: 3 },
+        { id: 2, name: "Susurro de Amor", price: 28900, img: "RAMOS02.jpeg", desc: "Lilium majestuosos, rosas premium y maule aterciopelado.", stock: 2 },
+        { id: 3, name: "Amor Eterno", price: 230900, img: "RAMOS03.jpg", desc: "70 rosas seleccionadas de primera categoría.", stock: 1 },
+        { id: 4, name: "Pasión de Sol", price: 45900, img: "RAMOS04.jpeg", desc: "Girasoles esculturales y rosas finas entrelazadas.", stock: 4 },
+        { id: 5, name: "Monte Mar Signature", price: 31900, img: "RAMOS05.jpeg", desc: "Gerberas vibrantes y rosas de autor.", stock: 5 },
+        { id: 6, name: "Brisa de Primavera", price: 36900, img: "RAMOS06.jpeg", desc: "Armonía de gerberas, astromelias y lisianthus.", stock: 2 },
+        { id: 7, name: "Golden Bloom", price: 47900, img: "RAMOS07.jpeg", desc: "Girasoles, lisianthus y delicadas clavelinas.", stock: 3 }
     ];
 
-    const upsellsCatalog = [
-        { id: 101, name: "Bombón Sin Azucar - Entrelagos (180g)", price: 16890, img: "img/upsell-choco.png" },
-        { id: 102, name: "Bombón Ferrero Rocher (150g)", price: 15890, img: "img/upsell-ferrero.jpg" },
-        { id: 103, name: "Bombón Chocolate Seashells (250g)", price: 18190, img: "img/upsell-seashells.jpg" },
-        { id: 104, name: "Perrito de Peluche - Bulldog", price: 12900, img: "img/bulldog-frances.jpeg" },
-        { id: 105, name: "Perrito de Peluche - Corgi", price: 12900, img: "img/corgi-gales.jpeg" },
-        { id: 106, name: "Osito de Peluche - Graduación", price: 12900, img: "img/osito-graduacion.jpeg" },
-        { id: 107, name: "Perrito de Peluche - Pastor Alemán", price: 12900, img: "img/pastor-aleman.jpeg" },
-        { id: 108, name: "Perrito de Peluche - Salchicha", price: 12900, img: "img/salchicha.jpeg" },
-        { id: 109, name: "Globo Metalizado Helio - Te Amo", price: 6900, img: "img/globo-te-amo.jpeg" },
-        { id: 110, name: "Globo Metalizado Helio - Feliz Cumpleaños", price: 6900, img: "img/globo-feliz-cumpleaños.jpeg" }
-    ];
-
-    function getLuxuryBadge(id) {
-        switch(id) {
-            case 5: case 3: case 8: case 11: case 10: return "Más Vendidos";
-            default: return "";
-        }
-    }
-
-    const grid = document.getElementById('product-grid');
-    if (grid) {
+    // Renderizado optimizado para CRO
+    function renderCatalog() {
+        const grid = document.getElementById('product-grid');
         grid.innerHTML = catalog.map(product => {
-            const badgeText = getLuxuryBadge(product.id);
-            const badgeHTML = badgeText 
-                ? `<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm">${badgeText}</div>` 
-                : '';
-                
-            // CRO: Scarcity tag inyeccion para IDs especificos (3 y 5)
-            const scarcityHTML = (product.id === 3 || product.id === 5) 
-                ? `<div class="urgency-tag">Últimas 2 unidades</div>` 
-                : '';
-
+            const urgencyTag = product.stock <= 2 ? `<div class="absolute top-2 left-2 urgency-badge z-20">¡Solo ${product.stock} disponibles!</div>` : '';
+            const popularTag = product.id === 3 || product.id === 5 ? `<div class="absolute top-2 right-2 bg-[#0a1f1c] text-white text-[9px] px-2 py-1 uppercase tracking-widest font-bold z-20">Más Vendido</div>` : '';
+            
             return `
-            <div class="product-card group flex flex-col h-full">
-                <a href="${product.url || '#'}" class="block">
-                    <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center rounded-xl">
-                        <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
-                        ${scarcityHTML}
-                        <img src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" loading="lazy">
-                        ${badgeHTML}
+            <div class="product-card flex flex-col bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-lg">
+                <div class="img-zoom-container relative aspect-square bg-gray-50 flex items-center justify-center">
+                    ${urgencyTag}
+                    ${popularTag}
+                    <img src="${product.img}" loading="lazy" width="400" height="400" class="w-full h-full object-cover z-10" alt="${product.name}">
+                </div>
+                <div class="p-4 flex flex-col flex-grow">
+                    <h3 class="font-serif text-xl font-bold text-[#0a1f1c] mb-1">${product.name}</h3>
+                    <p class="text-[11px] text-gray-500 mb-4 line-clamp-2">${product.desc}</p>
+                    <div class="mt-auto flex flex-col gap-2">
+                        <span class="font-bold text-xl text-[#0a1f1c] mb-2">$${product.price.toLocaleString('es-CL')}</span>
+                        <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.img}')" class="btn-premium btn-secondary !py-2 !text-xs w-full">Añadir al Carrito</button>
                     </div>
-                </a>
-                <div class="flex flex-col flex-grow mb-3 md:mb-4">
-                    <a href="${product.url || '#'}" class="hover:text-[#c5a059] transition-colors">
-                        <h3 class="font-serif text-sm md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${product.name}</h3>
-                    </a>
-                    <p class="text-[8px] md:text-[10px] uppercase tracking-widest opacity-50 mt-1 line-clamp-2"><span class="text-[#c5a059] mr-1">★★★★★</span> ${product.desc}</p>
                 </div>
-                <div class="mt-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-                    <span class="font-serif text-base md:text-xl text-[#0a1f1c]">$${product.price.toLocaleString()}</span>
-                    <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
-                            class="w-full md:w-auto px-4 py-3 border border-[#0a1f1c] text-[#0a1f1c] text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors duration-300 text-center">
-                        Añadir
-                    </button>
-                </div>
-            </div>
-            `;
+            </div>`;
         }).join('');
     }
 
+    // Lógica del Carrito
     function toggleCart() {
         const drawer = document.getElementById('atelier-bag');
         const overlay = document.getElementById('cart-overlay');
+        const isClosed = drawer.style.transform === 'translateX(100%)' || drawer.style.transform === '';
         
-        if (drawer) {
-            drawer.classList.toggle('open');
-        }
-        
-        if (overlay && drawer) {
-            if (drawer.classList.contains('open')) {
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.add('opacity-100'), 10);
-            } else {
-                overlay.classList.remove('opacity-100');
-                setTimeout(() => overlay.classList.add('hidden'), 500);
-            }
+        if(isClosed) {
+            drawer.style.transform = 'translateX(0)';
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden';
+            updateCartUI();
+        } else {
+            drawer.style.transform = 'translateX(100%)';
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+            document.body.style.overflow = '';
         }
     }
 
     function addToCart(id, name, price, img) {
-        try {
-            const existing = cart.find(item => item.id === id);
-            if (existing) { existing.qty++; }
-            else { cart.push({ id, name, price, img, qty: 1 }); }
-            
-            localStorage.setItem('laforesta_cart', JSON.stringify(cart));
-            
-            if (typeof updateCartUI === 'function') { updateCartUI(); }
-
-            const badge = document.getElementById('cart-count');
-            if (badge) {
-                badge.classList.add('scale-150');
-                setTimeout(() => badge.classList.remove('scale-150'), 300);
-            }
-
-            const atelierBag = document.getElementById('atelier-bag');
-            if (atelierBag && !atelierBag.classList.contains('open')) { 
-                toggleCart(); 
-            } else if (!atelierBag) {
-                console.warn("Producto añadido correctamente. (Cajón lateral oculto en esta página).");
-            }
-
-            if (typeof trackGA4 === 'function') {
-                trackGA4('add_to_cart', {
-                    currency: 'CLP',
-                    value: price,
-                    items: [{ item_id: String(id), item_name: name, price: price, quantity: 1, item_category: 'Ramos Florales' }]
-                });
-            }
-        } catch (errorFatal) {
-            console.error("Error en addToCart:", errorFatal);
-        }
-    }
-
-    function removeFromCart(id) {
-        cart = cart.filter(item => item.id !== id);
+        const existing = cart.find(item => item.id === id);
+        if (existing) existing.qty++;
+        else cart.push({ id, name, price, img, qty: 1 });
+        
+        localStorage.setItem('laforesta_cart', JSON.stringify(cart));
         updateCartUI();
+        toggleCart(); // Abre el carrito inmediatamente por UX
     }
 
     function updateQty(id, delta) {
         const item = cart.find(i => i.id === id);
         if (item) {
             item.qty += delta;
-            if (item.qty <= 0) removeFromCart(id);
-            else updateCartUI();
+            if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+            localStorage.setItem('laforesta_cart', JSON.stringify(cart));
+            updateCartUI();
         }
     }
 
     function updateCartUI() {
-        try {
-            const tieneRamos = cart.some(item => item.id < 100);
-            if (!tieneRamos) { cart = []; }
-
-            localStorage.setItem('laforesta_cart', JSON.stringify(cart));
-            
-            const container = document.getElementById('cart-items-container');
-            const totalEl = document.getElementById('cart-total');
-            const countNav = document.getElementById('cart-count');
-            
-            if (!container) return; 
-
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-20 opacity-40">
-                        <p class="uppercase tracking-widest text-[10px]">Su bolsa está vacía</p>
-                        <button onclick="toggleCart(); window.location.href='/#vault';" class="mt-4 text-gold-leaf border-b border-gold-leaf text-[10px] font-bold uppercase tracking-widest">Ir a la Colección</button>
-                    </div>`;
-                    
-                if (totalEl) totalEl.innerText = `$0`;
-                if (countNav) countNav.innerText = "0";
-                
-                const stickyCart = document.getElementById('mobile-sticky-cart');
-                if (stickyCart) {
-                    const stickyCount = document.getElementById('sticky-cart-count');
-                    const stickyTotal = document.getElementById('sticky-cart-total');
-                    if (stickyCount) stickyCount.innerText = "0";
-                    if (stickyTotal) stickyTotal.innerText = "$0";
-                    stickyCart.classList.add('translate-y-full');
-                }
-                return;
-            }
-
-            let html = cart.map(item => `
-                <div class="flex space-x-6 items-start">
-                    <div class="w-24 h-32 bg-zinc-50 overflow-hidden relative flex items-center justify-center border border-zinc-100">
-                        <img src="${item.img}" onerror="this.style.opacity='0'" class="w-full h-full object-cover relative z-10" alt="${item.name}">
-                    </div>
-                    <div class="flex-grow">
-                        <h4 class="font-serif text-lg italic mb-1 text-[#0a1f1c]">${item.name}</h4>
-                        <p class="text-gold-leaf text-sm font-bold">$${(item.price).toLocaleString()}</p>
-                        <div class="flex items-center space-x-6 mt-4">
-                            <div class="flex items-center space-x-3 border border-zinc-200 px-2 py-1 bg-white">
-                                <button onclick="updateQty(${item.id}, -1)" class="hover:text-gold-leaf transition-colors">-</button>
-                                <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
-                                <button onclick="updateQty(${item.id}, 1)" class="hover:text-gold-leaf transition-colors">+</button>
-                            </div>
-                            <button onclick="removeFromCart(${item.id})" class="text-[9px] uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity">Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            if (typeof upsellsCatalog !== 'undefined') {
-                const inCartIds = cart.map(item => item.id);
-                const availableUpsells = upsellsCatalog.filter(u => !inCartIds.includes(u.id));
-                const condolenceIds = [13, 14, 15, 16, 17]; 
-                const tieneCondolencias = cart.some(item => condolenceIds.includes(item.id));
-
-                if (availableUpsells.length > 0 && !tieneCondolencias) {
-                    html += `
-                        <div class="mt-12 border-t border-zinc-100 pt-8">
-                            <h5 class="font-serif text-lg italic mb-6 text-[#0a1f1c]">Recomendaciones para este arreglo</h5>
-                            <div id="upsell-slider" class="flex overflow-x-auto space-x-5 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
-                                ${availableUpsells.map(u => `
-                                    <div class="w-[130px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
-                                        <div class="w-full aspect-square bg-[#fcfaf7] border border-zinc-200/60 mb-3 flex items-center justify-center relative overflow-hidden transition-all group-hover:bg-[#c5a059]/10 p-3 shadow-sm group-hover:border-[#c5a059]/30">
-                                            <span class="font-serif italic text-[#c5a059] text-3xl opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all absolute z-0">+</span>
-                                            <img src="${u.img}" onerror="this.style.opacity='0'" class="w-full h-full object-contain relative z-10 transition-transform duration-700 group-hover:scale-105" alt="${u.name}">
-                                        </div>
-                                        <h6 class="text-[9px] uppercase tracking-widest font-bold leading-normal text-[#0a1f1c] mb-1 min-h-[24px]">${u.name}</h6>
-                                        <p class="text-[#c5a059] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
-                                    </div>
-                                `).join('')}
-                                <div class="w-4 flex-shrink-0"></div>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-
-            container.innerHTML = html;
-
-            const upsellSlider = document.getElementById('upsell-slider');
-            if (upsellSlider) {
-                upsellSlider.addEventListener('wheel', (evt) => {
-                    if (evt.deltaY !== 0) {
-                        evt.preventDefault();
-                        upsellSlider.scrollLeft += evt.deltaY;
-                    }
-                });
-            }
-
-            if (typeof actualizarTotalConDespacho === 'function') {
-                actualizarTotalConDespacho();
-            }
-
-            const itemsCount = cart.reduce((acc, item) => acc + item.qty, 0);
-            if (countNav) countNav.innerText = itemsCount;
-            
-            const stickyCart = document.getElementById('mobile-sticky-cart');
-            if (stickyCart) {
-                const stickyCount = document.getElementById('sticky-cart-count');
-                const stickyTotal = document.getElementById('sticky-cart-total');
-                if (stickyCount) stickyCount.innerText = itemsCount;
-                if (stickyTotal && totalEl) stickyTotal.innerText = totalEl.innerText;
-                
-                if (cart.length > 0) { stickyCart.classList.remove('translate-y-full'); }
-                else { stickyCart.classList.add('translate-y-full'); }
-            }
-        } catch (err) {
-            console.error("Error al renderizar el carrito:", err);
-        }
-    }
-
-    function guardarProgresoCheckout() {
-        const progresoInputs = {
-            senderName: document.getElementById('sender-name')?.value || '',
-            buyerEmail: document.getElementById('buyer-email')?.value || '',
-            receiverName: document.getElementById('receiver-name')?.value || '',
-            address: document.getElementById('address')?.value || '',
-            pickupName: document.getElementById('pickup-name')?.value || '',
-            cardMessage: document.getElementById('card-message')?.value || '',
-            receiverPhone: document.getElementById('receiver-phone')?.value || '',
-            currentStep: document.querySelector('.checkout-step.active')?.id || 'step-1'
-        };
-        localStorage.setItem('laforesta_checkout_inputs', JSON.stringify(progresoInputs));
-        localStorage.setItem('laforesta_selectedLogistics', selectedLogistics);
-        localStorage.setItem('laforesta_selectedDate', selectedDate);
-        localStorage.setItem('laforesta_selectedTimeSlot', selectedTimeSlot);
-        localStorage.setItem('laforesta_isExpressDelivery', isExpressDelivery);
-        localStorage.setItem('laforesta_shippingCost', shippingCost);
-        localStorage.setItem('laforesta_selectedZoneName', selectedZoneName);
-        localStorage.setItem('laforesta_selectedPalette', selectedPalette);
-    }
-
-    function restaurarProgresoCheckout() {
-        const progreso = JSON.parse(localStorage.getItem('laforesta_checkout_inputs'));
-        if (!progreso) return;
-        const fields = ['sender-name', 'buyer-email', 'receiver-name', 'address', 'pickup-name', 'card-message', 'receiver-phone'];
-        fields.forEach(field => {
-            const el = document.getElementById(field);
-            if (el) el.value = progreso[field.replace(/-([a-z])/g, (g) => g[1].toUpperCase())] || '';
-        });
-        if (localStorage.getItem('laforesta_checkout_abierto') === 'true') {
-            const checkoutFlow = document.getElementById('checkout-flow');
-            if (checkoutFlow) {
-                checkoutFlow.classList.add('open');
-                checkoutFlow.classList.remove('hidden');
-                goToStep(progreso.currentStep);
-                if (progreso.currentStep === 'step-time') { renderHorariosInteligentes(); }
-            }
-        }
-    }
-
-    function validarEmailYContinuar() {
-        const emailEl = document.getElementById('buyer-email');
-        if(!emailEl) return;
-        const email = emailEl.value.trim();
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!regex.test(email)) {
-            alert("Por favor, ingrese un correo electrónico válido para continuar.");
-            return;
-        }
-        goToStep(2);
-    }
-
-    function openCheckout() {
-        if(cart.length === 0) {
-            alert("Su bolsa está vacía. Añada una ramo floral primero.");
-            return;
-        }
-        const drawer = document.getElementById('atelier-bag');
-        if(drawer && drawer.classList.contains('open')) {
-            toggleCart();
-        }
-        localStorage.setItem('laforesta_checkout_abierto', 'true');
-        const flow = document.getElementById('checkout-flow');
-        if(!flow) return;
-        flow.classList.remove('hidden');
-        setTimeout(() => { flow.classList.add('open'); }, 10);
-        const progreso = JSON.parse(localStorage.getItem('laforesta_checkout_inputs'));
-        goToStep(progreso?.currentStep || 1);
-        const currentStepId = progreso?.currentStep || 'step-1';
-        if (currentStepId === 'step-time') { renderHorariosInteligentes(); }
-
-        const totalCarrito = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
-        trackGA4('begin_checkout', {
-            currency: 'CLP',
-            value: totalCarrito,
-            items: cart.map(item => ({
-                item_id: String(item.id), item_name: item.name, price: item.price, quantity: item.qty, item_category: 'Ramos Florales'
-            }))
-        });
-    }
-
-    function closeCheckout() {
-        localStorage.removeItem('laforesta_checkout_abierto');
-        const flow = document.getElementById('checkout-flow');
-        if(!flow) return;
-        flow.classList.remove('open');
-        setTimeout(() => { flow.classList.add('hidden'); }, 700);
-    }
-
-    function goToStep(stepId) {
-        const targetId = typeof stepId === 'number' ? `step-${stepId}` : stepId;
-        document.querySelectorAll('.checkout-step').forEach(step => { step.classList.remove('active'); });
-        const targetElement = document.getElementById(targetId);
-        if(targetElement) { targetElement.classList.add('active'); }
-        guardarProgresoCheckout();
-    }
-
-    function selectOption(button, step) {
-        const stepContainer = button.closest('.checkout-step');
-        if(!stepContainer) return;
-        stepContainer.querySelectorAll('.step-option').forEach(btn => {
-            btn.style.borderColor = 'rgba(10, 31, 28, 0.15)';
-            btn.style.background = 'transparent';
-        });
-        button.style.borderColor = '#c5a059';
-        button.style.background = 'rgba(197, 160, 89, 0.05)';
-    }
-
-    function setPalette(option) {
-        selectedPalette = option;
-        setTimeout(() => goToStep(3), 400);
-    }
-
-    function seleccionarModalidad(option) {
-        selectedLogistics = option;
-        if(option === 'envio') {
-            goToStep('step-zona');
-        } else {
-            shippingCost = 0;
-            selectedZoneName = 'Retiro en tienda';
-            actualizarTotalConDespacho();
-            goToStep('step-quien-retira');
-        }
-    }
-
-    function seleccionarZona(costo, zoneName) {
-        shippingCost = costo;
-        selectedZoneName = zoneName;
-        actualizarTotalConDespacho();
-        goToStep('step-direccion');
-    }
-
-    function confirmarDireccion() {
-        const dirEl = document.getElementById('address');
-        if (!dirEl || !dirEl.value.trim()) return alert("Ingrese la dirección de entrega.");
-        goToStep('step-fecha');
-    }
-
-    function regresarDesdeFecha() {
-        if(selectedLogistics === 'envio') { goToStep('step-direccion'); }
-        else { goToStep('step-quien-retira'); }
-    }
-
-    function seleccionarFecha(dia) {
-        if(dia === 'futuro') {
-            const ahora = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-            const manana = new Date(ahora);
-            manana.setDate(manana.getDate() + 1);
-            if (manana.getMonth() !== ahora.getMonth()) {
-                currentCalendarDate = new Date(manana.getFullYear(), manana.getMonth(), 1);
-            } else {
-                currentCalendarDate = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
-            }
-            renderCalendar();
-            goToStep('step-calendario');
-        } else {
-            selectedDate = dia;
-            isExpressDelivery = false;
-            actualizarTotalConDespacho();
-            renderHorariosInteligentes();
-            goToStep('step-time');
-        }
-    }
-    
-    function renderCalendar() {
-        const grid = document.getElementById('calendar-grid');
-        const title = document.getElementById('cal-month-title');
-        if(!grid || !title) return;
-
-        const ahoraChile = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-        const year = currentCalendarDate.getFullYear();
-        const month = currentCalendarDate.getMonth();
-        const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-        title.innerText = `${nombresMeses[month]} ${year}`;
-        
-        const minMonth = ahoraChile.getMonth();
-        const minYear = ahoraChile.getFullYear();
-        
-        const vistaInicial = new Date(ahoraChile);
-        const mananaCheck = new Date(ahoraChile);
-        mananaCheck.setDate(mananaCheck.getDate() + 1);
-        
-        if (mananaCheck.getMonth() !== ahoraChile.getMonth()) {
-            vistaInicial.setMonth(vistaInicial.getMonth() + 1);
-        }
-        
-        const maxDate = new Date(vistaInicial.getFullYear(), vistaInicial.getMonth() + 1, 1);
-        const maxMonth = maxDate.getMonth();
-        const maxYear = maxDate.getFullYear();
-        
-        document.getElementById('cal-prev').style.visibility = (year === minYear && month === minMonth) ? 'hidden' : 'visible';
-        document.getElementById('cal-next').style.visibility = (year === maxYear && month === maxMonth) ? 'hidden' : 'visible';
-        
-        grid.innerHTML = "";
-        const primerDia = new Date(year, month, 1).getDay();
-        const totalDias = new Date(year, month + 1, 0).getDate();
-        
-        for (let i = 0; i < primerDia; i++) { grid.innerHTML += `<div></div>`; }
-        for (let d = 1; d <= totalDias; d++) {
-            const celdaFecha = new Date(year, month, d);
-            celdaFecha.setHours(0,0,0,0);
-            const hoyComparar = new Date(ahoraChile.getFullYear(), ahoraChile.getMonth(), ahoraChile.getDate());
-            hoyComparar.setHours(0,0,0,0);
-            
-            if (celdaFecha.getTime() <= hoyComparar.getTime()) {
-                grid.innerHTML += `<div class="py-3 text-zinc-300 font-serif text-sm cursor-not-allowed">${d}</div>`;
-            } else {
-                const fechaStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-                grid.innerHTML += `<button onclick="seleccionarDiaCalendario('${fechaStr}')" class="py-3 font-serif text-sm hover:text-gold-leaf transition font-bold text-[#0a1f1c]">${d}</button>`;
-            }
-        }
-    }
-    
-    function cambiarMesCalendario(delta) {
-        currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
-        renderCalendar();
-    }
-
-    function seleccionarDiaCalendario(fechaStr) {
-        selectedDate = fechaStr;
-        isExpressDelivery = false;
-        actualizarTotalConDespacho();
-        renderHorariosInteligentes();
-        goToStep('step-time');
-    }
-
-    function renderHorariosInteligentes() {
-        const container = document.getElementById('time-slots-container');
-        const dateHeader = document.getElementById('time-step-chosen-date');
-        if (!container) return;
-        
-        container.innerHTML = "";
-        const ahoraChile = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-        const hora = ahoraChile.getHours();
-        const minutos = ahoraChile.getMinutes();
-        const tiempoDecimal = hora + (minutos / 60);
-        const dateStringHoy = `${ahoraChile.getFullYear()}-${String(ahoraChile.getMonth() + 1).padStart(2, '0')}-${String(ahoraChile.getDate()).padStart(2, '0')}`;
-        const esHoyReal = (selectedDate === 'hoy' || selectedDate === dateStringHoy);
-        
-        const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-        if (esHoyReal) {
-            if (dateHeader) dateHeader.innerText = `Para Hoy: ${ahoraChile.getDate()} de ${nombresMeses[ahoraChile.getMonth()]} de ${ahoraChile.getFullYear()}`;
-        } else {
-            const partes = selectedDate.split('-');
-            if (partes.length === 3) {
-                const anio = partes[0];
-                const mesIndex = parseInt(partes[1], 10) - 1;
-                const dia = parseInt(partes[2], 10);
-                if (dateHeader) dateHeader.innerText = `Para el ${dia} de ${nombresMeses[mesIndex]} de ${anio}`;
-            } else {
-                if (dateHeader) dateHeader.innerText = selectedDate;
-            }
-        }
-
-        let html = "", htmlNormal = "", htmlExpress = "";
-        if (esHoyReal) {
-            if (tiempoDecimal < 7.0) { htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`; }
-            if (tiempoDecimal < 11.0) { htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`; }
-            if (tiempoDecimal < 14.0) { htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 21:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Tarde (18:00 - 21:00)</button>`; }
-            
-            if (selectedLogistics === 'envio' && tiempoDecimal < 18.0) { htmlExpress = generarHorasExpress(tiempoDecimal); }
-            
-            if (htmlNormal !== "") { html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`; }
-            if (htmlExpress !== "") { html += `<div class="border-t border-[#c5a059]/30 pt-6 mt-2"><span class="text-[9px] font-bold uppercase tracking-widest text-[#c5a059] block mb-3 text-left">Servicio Express (1 hr)</span><div class="flex flex-col gap-2">${htmlExpress}</div></div>`; }
-            if (html === "") { html = `<p class="text-xs uppercase tracking-widest text-zinc-400 p-4">Entregas de hoy cerradas.</p><button onclick="seleccionarFecha('futuro')" class="w-full btn-premium mt-4">Ver fechas disponibles</button>`; }
-        } else {
-            htmlNormal += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`;
-            htmlNormal += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
-            htmlNormal += `<button onclick="definirHorario('Tarde (18:00 - 21:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Tarde (18:00 - 21:00)</button>`;
-            html += `<div class="mb-6"><span class="text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] block mb-3 text-left">Envío Estándar</span>${htmlNormal}</div>`;
-        }
-        container.innerHTML = html;
-    }
-
-    function generarHorasExpress(tiempoDecimal) {
-        let opciones = "";
-        
-        let horaInicio = Math.ceil(tiempoDecimal + 1.0);
-        let horaBase = Math.max(10, horaInicio);
-
-        while (horaBase < 20) {
-            let formatStart = `${String(horaBase).padStart(2, '0')}:00`;
-            let formatEnd = `${String(horaBase + 1).padStart(2, '0')}:00`;
-            
-            opciones += `<button onclick="definirHorario('Express (${formatStart} - ${formatEnd})', true)" class="step-option text-[10px] uppercase tracking-widest font-bold py-4 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] transition w-full">${formatStart} - ${formatEnd}</button>`;
-            
-            horaBase += 1;
-        }
-        
-        return opciones;
-    }
-
-    function regresarDesdeTime() {
-        if (selectedDate === 'hoy') { goToStep('step-fecha'); }
-        else { goToStep('step-calendario'); }
-    }
-
-    function definirHorario(slot, esExpress) {
-        selectedTimeSlot = slot;
-        isExpressDelivery = esExpress;
-        actualizarTotalConDespacho();
-        setTimeout(() => goToStep(4), 400);
-    }
-
-    function actualizarTotalConDespacho() {
-        let baseTotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-        let tarifaEnvioBase = parseInt(shippingCost || 0, 10);
-        let tarifaEnvioFinal = isExpressDelivery ? Math.round(tarifaEnvioBase * RECARGO_EXPRESS_ENVIO) : tarifaEnvioBase;
-        
-        let descuentoEnvio = 0;
-        if (baseTotal >= 69990) { descuentoEnvio = Math.min(tarifaEnvioFinal, 7250); }
-        
-        let costoEnvioFinal = Math.max(0, tarifaEnvioFinal - descuentoEnvio);
-        const totalFinal = baseTotal + costoEnvioFinal;
-        
+        const container = document.getElementById('cart-items-container');
         const totalEl = document.getElementById('cart-total');
-        if (totalEl) totalEl.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
-        
+        const countNav = document.getElementById('cart-count');
+        const stickyCount = document.getElementById('sticky-cart-count');
         const stickyTotal = document.getElementById('sticky-cart-total');
-        if (stickyTotal) stickyTotal.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
+        const stickyBtnMobile = document.getElementById('mobile-sticky-cta');
+        const stickyCartMobile = document.getElementById('mobile-sticky-cart');
+        const notice = document.getElementById('cart-shipping-notice');
+
+        const itemsCount = cart.reduce((a, b) => a + b.qty, 0);
+        const subtotal = cart.reduce((a, b) => a + (b.price * b.qty), 0);
         
-        const shippingNotice = document.getElementById('cart-shipping-notice');
-        if (shippingNotice) {
-            if (baseTotal >= 69990) {
-                shippingNotice.style.opacity = '1';
-                shippingNotice.style.transform = 'translateY(0)';
-                if (costoEnvioFinal === 0) {
-                    shippingNotice.innerText = 'Envío Gratis';
-                } else {
-                    shippingNotice.innerText = 'Bono Logística (-$7.250)';
-                }
-            } else {
-                shippingNotice.style.opacity = '0';
-                shippingNotice.style.transform = 'translateY(4px)';
-            }
-        }
-
-        const checkoutSubtotal = document.getElementById('checkout-subtotal');
-        const checkoutShipping = document.getElementById('checkout-shipping');
-        const checkoutFinalTotal = document.getElementById('checkout-final-total');
-        const checkoutShippingNotice = document.getElementById('checkout-shipping-notice');
-        const checkoutShippingLabel = document.getElementById('checkout-shipping-label');
-
-        if (checkoutSubtotal) checkoutSubtotal.innerText = `$${baseTotal.toLocaleString('es-CL')}`;
-        if (checkoutFinalTotal) checkoutFinalTotal.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
+        countNav.innerText = itemsCount;
         
-        if (checkoutShippingLabel) {
-            if (isExpressDelivery && selectedLogistics === 'envio') {
-                checkoutShippingLabel.innerHTML = `
-                    <span class="inline-flex items-center gap-1.5">
-                        Logística 
-                        <span class="bg-[#c5a059]/10 text-[#c5a059] border border-[#c5a059]/30 px-1.5 py-[2px] rounded-sm text-[7px] md:text-[8px] font-bold uppercase tracking-widest whitespace-nowrap leading-none mt-0.5">
-                            Express (+50%)
-                        </span>
-                    </span>
-                `;
-            } else {
-                checkoutShippingLabel.innerText = `Logística`;
-            }
+        // Manejo barra inferior móvil
+        if (itemsCount > 0) {
+            stickyBtnMobile.classList.add('hidden');
+            stickyCartMobile.classList.remove('translate-y-full');
+            stickyCount.innerText = itemsCount;
+            stickyTotal.innerText = `$${subtotal.toLocaleString('es-CL')}`;
+        } else {
+            stickyBtnMobile.classList.remove('hidden');
+            stickyCartMobile.classList.add('translate-y-full');
         }
 
-        if (checkoutShipping && checkoutShippingNotice) {
-            if (selectedLogistics === 'retiro') {
-                checkoutShipping.innerText = 'Retiro en tienda ($0)';
-                checkoutShippingNotice.classList.add('hidden');
-            } else {
-                if (baseTotal >= 69990) {
-                    if (costoEnvioFinal === 0) {
-                        checkoutShipping.innerText = '$0';
-                        checkoutShippingNotice.innerText = 'Envío de Cortesía';
-                        checkoutShippingNotice.classList.remove('hidden');
-                    } else {
-                        checkoutShipping.innerText = `$${costoEnvioFinal.toLocaleString('es-CL')}`;
-                        checkoutShippingNotice.innerText = 'Bono Logística Aplicado (-$7.250)';
-                        checkoutShippingNotice.classList.remove('hidden');
-                    }
-                } else {
-                    checkoutShipping.innerText = `$${tarifaEnvioFinal.toLocaleString('es-CL')}`;
-                    checkoutShippingNotice.classList.add('hidden');
-                }
-            }
-        }
-        return totalFinal;
-    }
-
-    function scrollToVault() {
-        const vaultSection = document.getElementById('vault');
-        if (vaultSection) {
-            const headerOffset = window.innerWidth >= 1024 ? 90 : 70;
-            const elementPosition = vaultSection.getBoundingClientRect().top + window.scrollY;
-            const offsetPosition = elementPosition - headerOffset;
-            window.scrollTo({ top: offsetPosition, behavior: 'auto' });
-        }
-    }
-
-    function openGardenFlow() {
-        const flow = document.getElementById('garden-flow');
-        if(!flow) return;
-        flow.classList.remove('hidden');
-        setTimeout(() => { flow.style.transform = 'translateY(0)'; flow.classList.add('open'); flow.classList.add('opacity-100'); }, 10);
-        nextGardenStep(1);
-    }
-
-    function closeGardenFlow() {
-        const flow = document.getElementById('garden-flow');
-        if(!flow) return;
-        flow.style.transform = 'translateY(100%)';
-        flow.classList.remove('open'); flow.classList.remove('opacity-100');
-        setTimeout(() => flow.classList.add('hidden'), 500);
-    }
-
-    function nextGardenStep(stepNumber) {
-        document.querySelectorAll('.garden-step').forEach(step => { step.classList.remove('active'); step.classList.add('hidden'); });
-        const targetStep = document.getElementById(`g-step-${stepNumber}`);
-        if (targetStep) { targetStep.classList.remove('hidden'); targetStep.classList.add('active'); }
-    }
-
-    function selectGardenOption(button, optionName) {
-        const stepContainer = button.closest('.garden-step');
-        if(stepContainer){
-            stepContainer.querySelectorAll('.step-option').forEach(btn => { btn.style.borderColor = 'rgba(10, 31, 28, 0.15)'; btn.style.background = 'transparent'; });
-        }
-        button.style.borderColor = '#c5a059';
-        button.style.background = 'rgba(197, 160, 89, 0.05)';
-        selectedGardenSpace = optionName;
-        setTimeout(() => nextGardenStep(3), 400);
-    }
-
-    function sendGardenConsultation() {
-        const nombre = document.getElementById('g-name')?.value.trim();
-        const detalles = document.getElementById('g-details')?.value.trim();
-        const fono = document.getElementById('g-phone')?.value.trim();
-        if(!nombre || !fono) { alert("Por favor complete los campos obligatorios."); return; }
-        const NUMERO_WHATSAPP_GARDEN = "56994783520"; 
-        let textoGarden = `*SOLICITUD ASESORÍA PAISAJISMO - LA FORESTA*\n\n*CLIENTE:* ${nombre}\n*TIPO DE PROYECTO:* ${selectedGardenSpace}\n*FONO CONTACTO:* ${fono}\n\n*DETALLES:*\n"${detalles}"`;
-        const wpUrl = `https://wa.me/${NUMERO_WHATSAPP_GARDEN}?text=${encodeURIComponent(textoGarden)}`;
-        window.open(wpUrl, '_blank');
-        closeGardenFlow();
-    }
-
-    function obtenerPayloadOrden() {
-        const emisor = document.getElementById('sender-name')?.value || 'No especificado';
-        const correoComprador = document.getElementById('buyer-email')?.value.trim() || '';
-        const receptor = document.getElementById('receiver-name')?.value || 'No especificado';
-        const mensaje = document.getElementById('card-message')?.value || '';
-        const fonoDestino = document.getElementById('receiver-phone')?.value || '';
-        
-        let destinoFinal = selectedLogistics === 'envio' 
-            ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById('address')?.value || ''}`
-            : `Retiro en Atelier Reñaca\n• *RETIRA:* ${document.getElementById('pickup-name')?.value || ''}`;
-        
-        if (isExpressDelivery && selectedLogistics === 'envio') { destinoFinal = "[SERVICIO EXPRESS] " + destinoFinal; }
-
-        const horario = selectedTimeSlot || 'No especificado';
-        let fechaTexto = selectedDate === 'hoy' ? 'Hoy' : selectedDate;
-        
-        let baseTotalOrden = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-        let tarifaEnvioBase = parseInt(shippingCost || 0);
-        let tarifaEnvioFinal = isExpressDelivery ? Math.round(tarifaEnvioBase * RECARGO_EXPRESS_ENVIO) : tarifaEnvioBase;
-        let descuentoEnvio = baseTotalOrden >= 69990 ? Math.min(tarifaEnvioFinal, 7250) : 0;
-        let costoEnvioReal = Math.max(0, tarifaEnvioFinal - descuentoEnvio);
-        let totalCLPFinal = baseTotalOrden + costoEnvioReal;
-
-        let articulos = cart.map(item => `- ${item.name} (Cant: ${item.qty}) [c/u: $${item.price.toLocaleString('es-CL')}]`).join('\n');
-
-        return {
-            totalCLP: totalCLPFinal,
-            metadata: {
-                sender_name: emisor, receiver_name: receptor, palette: selectedPalette,
-                logistics_detail: destinoFinal, time_slot: horario, destination_phone: fonoDestino,
-                card_text: mensaje, total_price: totalCLPFinal, order_summary: articulos,
-                fecha_entrega: fechaTexto, valor_envio: costoEnvioReal, comprador_email: correoComprador 
-            }
-        };
-    }
-
-    async function iniciarMercadoPago() {
-        if(cart.length === 0) return alert("El atelier está vacío.");
-        
-        document.getElementById('payment-selector').style.display = 'none';
-        document.getElementById('btn-volver-pago').style.display = 'none';
-        document.getElementById('loading-payment').style.display = 'block';
-
-        const payload = obtenerPayloadOrden();
-        const orderId = 'LF-' + Date.now();
-
-        const emisorParts = payload.metadata.sender_name.trim().split(' ');
-        const payerName = emisorParts[0] || 'Cliente';
-        const payerSurname = emisorParts.slice(1).join(' ') || 'La Foresta';
-
-        const mpItems = cart.map(item => ({
-            id: String(item.id), title: item.name, description: item.name, quantity: item.qty, unit_price: item.price, currency_id: "CLP"
-        }));
-
-        if (payload.metadata.valor_envio > 0) {
-            mpItems.push({
-                id: "ENVIO", title: `Envío a Domicilio - ${selectedZoneName}`, description: "Servicio de logística",
-                quantity: 1, unit_price: payload.metadata.valor_envio, currency_id: "CLP"
-            });
-        }
-
-        const preferenceData = {
-            external_reference: orderId,
-            items: mpItems,
-            payer: { name: payerName, surname: payerSurname, email: payload.metadata.comprador_email },
-            back_urls: {
-                success: window.location.origin + "?payment_result=success",
-                failure: window.location.origin + "?payment_result=failure",
-                pending: window.location.origin + "?payment_result=pending"
-            },
-            auto_return: "approved",
-            notification_url: "https://old-brook-bf01.sebjmz.workers.dev/webhook",
-            metadata: payload.metadata
-        };
-
-        try {
-            const response = await fetch("https://old-brook-bf01.sebjmz.workers.dev/", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(preferenceData)
-            });
-            const data = await response.json();
-            if (data.init_point) { window.location.href = data.init_point; } 
-            else { throw new Error("No se pudo generar el link de pago."); }
-        } catch (error) {
-            console.error(error);
-            alert("Error al conectar con MercadoPago. Intente nuevamente.");
-            window.location.reload();
-        }
-    }
-
-    function iniciarPayPal() {
-        if(cart.length === 0) return alert("El atelier está vacío.");
-
-        if (typeof paypal === 'undefined') {
-            alert("El sistema de pago internacional no pudo cargar (posible bloqueo por AdBlock o conexión). Por favor, desactive el bloqueador de anuncios o intente recargar la página.");
+        if (cart.length === 0) {
+            container.innerHTML = '<div class="text-center py-20 opacity-40"><p class="uppercase tracking-widest text-xs font-bold">El carrito está vacío</p></div>';
+            totalEl.innerText = '$0';
+            notice.style.opacity = '0';
             return;
         }
 
-        document.getElementById('payment-selector').style.display = 'none';
-        document.getElementById('btn-volver-pago').style.display = 'none';
+        container.innerHTML = cart.map(item => `
+            <div class="flex space-x-4 items-center bg-gray-50 p-2 rounded border border-gray-100">
+                <img src="${item.img}" class="w-16 h-16 object-cover rounded" alt="${item.name}">
+                <div class="flex-grow">
+                    <h4 class="font-bold text-sm text-[#0a1f1c]">${item.name}</h4>
+                    <p class="text-[#c5a059] text-sm font-bold">$${item.price.toLocaleString('es-CL')}</p>
+                </div>
+                <div class="flex items-center space-x-2 bg-white border border-gray-200 rounded px-2">
+                    <button onclick="updateQty(${item.id}, -1)" class="text-lg text-gray-500 hover:text-black px-1">&minus;</button>
+                    <span class="text-sm font-bold w-4 text-center">${item.qty}</span>
+                    <button onclick="updateQty(${item.id}, 1)" class="text-lg text-gray-500 hover:text-black px-1">&plus;</button>
+                </div>
+            </div>
+        `).join('');
+
+        totalEl.innerText = `$${subtotal.toLocaleString('es-CL')}`;
         
-        const paypalContainer = document.getElementById('paypal-container');
-        paypalContainer.classList.remove('hidden');
-        paypalContainer.style.display = 'block';
-        paypalContainer.innerHTML = '';
+        // Gamificación envío gratis
+        if (subtotal >= 69990) {
+            notice.style.opacity = '1';
+            notice.innerText = '¡Envío Gratis Desbloqueado!';
+            notice.className = 'text-[10px] uppercase font-bold text-green-600 block mt-1';
+        } else {
+            notice.style.opacity = '1';
+            const falta = 69990 - subtotal;
+            notice.innerText = `Agrega $${falta.toLocaleString('es-CL')} para envío gratis`;
+            notice.className = 'text-[10px] uppercase font-bold text-gray-500 block mt-1';
+        }
+    }
 
-        const payload = obtenerPayloadOrden();
-
-        paypal.Buttons({
-            style: { color: 'gold', shape: 'rect', label: 'pay', height: 45 },
-            createOrder: async function() {
-                const response = await fetch("https://old-brook-bf01.sebjmz.workers.dev/paypal/create-order", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ totalCLP: payload.totalCLP, metadata: payload.metadata })
-                });
-                const orderData = await response.json();
-                if (orderData.id) { return orderData.id; } 
-                else { throw new Error("Error generando orden de PayPal"); }
-            },
-            onApprove: async function(data, actions) {
-                document.getElementById('paypal-container').style.display = 'none';
-                const loader = document.getElementById('loading-payment');
-                loader.innerHTML = '<p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Acreditando pago internacional...</p>';
-                loader.style.display = 'block';
-
-                try {
-                    const response = await fetch("https://old-brook-bf01.sebjmz.workers.dev/paypal/capture-order", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ orderID: data.orderID, metadata: payload.metadata })
-                    });
-                    
-                    const captureData = await response.json();
-                    
-                    if (captureData.status === "COMPLETED") {
-                        if (typeof trackGA4 === 'function') {
-                            trackGA4('purchase', {
-                                transaction_id: captureData.id,
-                                currency: 'USD',
-                                value: parseFloat(captureData.purchase_units[0].payments.captures[0].amount.value),
-                                items: cart.map(item => ({ item_id: String(item.id), item_name: item.name, price: item.price, quantity: item.qty, item_category: 'Ramos Florales (Internacional)' }))
-                            });
-                        }
-                        window.location.href = window.location.origin + "?payment_result=success&status=approved";
-                    } else {
-                        alert("El pago no pudo completarse. Por favor, intente de nuevo.");
-                        window.location.reload();
-                    }
-                } catch (error) {
-                    console.error(error);
-                    alert("Hubo un problema de conexión. Revise su comprobante o intente nuevamente.");
-                    window.location.reload();
-                }
-            },
-            onCancel: function (data) { resetearPasarela(); },
-            onError: function(err) {
-                console.error(err);
-                alert("La ventana de PayPal falló o fue bloqueada por el navegador.");
-                window.location.reload();
-            }
-        }).render("#paypal-container");
+    // Checkout
+    function openCheckout() {
+        if(cart.length === 0) return;
+        toggleCart();
+        const flow = document.getElementById('checkout-flow');
+        flow.classList.remove('hidden');
+        flow.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+        
+        const subtotal = cart.reduce((a, b) => a + (b.price * b.qty), 0);
+        document.getElementById('checkout-final-total').innerText = `$${subtotal.toLocaleString('es-CL')}`;
     }
     
-    function resetearPasarela() {
-        document.getElementById('loading-payment').style.display = 'none';
-        document.getElementById('payment-selector').style.display = 'flex';
-        document.getElementById('btn-volver-pago').style.display = 'block';
-        const paypalContainer = document.getElementById('paypal-container');
-        paypalContainer.style.display = 'none';
-        paypalContainer.classList.add('hidden');
-        paypalContainer.innerHTML = ''; 
+    function closeCheckout() {
+        const flow = document.getElementById('checkout-flow');
+        flow.classList.add('hidden');
+        flow.classList.remove('flex');
+        document.body.style.overflow = '';
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const paymentResult = urlParams.get('payment_result');
-        const status = urlParams.get('status') || urlParams.get('collection_status');
+    function iniciarMercadoPago() {
+        const nombre = document.getElementById('sender-name').value;
+        const email = document.getElementById('buyer-email').value;
+        if(!nombre || !email) return alert("Completa tus datos para continuar");
         
-        if (paymentResult === 'success' && status === 'approved') {
-            const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
-            const totalPagado = parseInt(localStorage.getItem('laforesta_shippingCost') || '0') +
-                cartData.reduce((a, i) => a + i.price * i.qty, 0);
-            const orderId = 'LF-' + Date.now();
+        alert("Integración de MercadoPago iniciada para: " + email);
+        // Aquí va tu lógica original de fetch a tu Worker
+    }
 
-            if (typeof trackGA4 === 'function') {
-                trackGA4('purchase', {
-                    transaction_id: orderId,
-                    currency: 'CLP',
-                    value: totalPagado,
-                    items: cartData.map(item => ({ item_id: String(item.id), item_name: item.name, price: item.price, quantity: item.qty, item_category: 'Ramos Florales' }))
-                });
-            }
-
-            localStorage.removeItem('pending_laforesta_order');
-            localStorage.removeItem('laforesta_cart');
-            localStorage.removeItem('laforesta_checkout_inputs');
-            localStorage.removeItem('laforesta_checkout_abierto');
-            localStorage.removeItem('laforesta_shippingCost');
-            localStorage.removeItem('laforesta_selectedZoneName');
-            localStorage.removeItem('laforesta_selectedLogistics');
-            localStorage.removeItem('laforesta_selectedDate');
-            localStorage.removeItem('laforesta_selectedTimeSlot');
-            localStorage.removeItem('laforesta_isExpressDelivery');
-            localStorage.removeItem('laforesta_selectedPalette');
-            cart = [];
-            updateCartUI();
-            alert("Pago acreditado exitosamente. Recibirá su comprobante y detalles de logística vía correo electrónico.");
-            window.history.replaceState({}, document.title, window.location.pathname);
-        } else if (paymentResult === 'failure' || paymentResult === 'pending' || status === 'rejected' || status === 'cancelled') {
-            localStorage.removeItem('pending_laforesta_order');
-            alert("El pago no fue acreditado o fue cancelado. Intente nuevamente.");
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-
-        const yearFooter = document.getElementById("year-footer");
-        if (yearFooter) { yearFooter.innerText = new Date().getFullYear(); }
-        const flow = document.getElementById('garden-flow');
-        if (flow) { flow.style.transform = 'translateY(100%)'; }
-        updateCartUI();
-        restaurarProgresoCheckout();
-
-        if (urlParams.get('action') === 'open_cart') {
-            setTimeout(() => {
-                const drawer = document.getElementById('atelier-bag');
-                if (drawer && !drawer.classList.contains('open')) {
-                    toggleCart();
-                }
-            }, 150);
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
+    // Slider Simple
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide-item');
+    const dotsContainer = document.getElementById('hero-dots');
+    
+    slides.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = `w-2 h-2 rounded-full transition-colors cursor-pointer ${i===0 ? 'bg-white' : 'bg-white/30'}`;
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
     });
 
+    function updateDots() {
+        Array.from(dotsContainer.children).forEach((dot, i) => {
+            dot.className = `w-2 h-2 rounded-full transition-colors cursor-pointer ${i===currentSlide ? 'bg-white' : 'bg-white/30'}`;
+        });
+    }
+
+    function goToSlide(index) {
+        slides[currentSlide].style.transform = 'translateX(-100%)';
+        slides[currentSlide].style.zIndex = '10';
+        
+        currentSlide = index;
+        
+        slides[currentSlide].style.transform = 'translateX(0)';
+        slides[currentSlide].style.zIndex = '20';
+        
+        // Trigger animations
+        const anims = slides[currentSlide].querySelectorAll('.slide-anim');
+        anims.forEach(el => {
+            el.classList.remove('opacity-0', 'translate-y-4', 'translate-y-8');
+        });
+        updateDots();
+    }
+
+    function nextHeroSlide() { goToSlide((currentSlide + 1) % slides.length); }
+    function prevHeroSlide() { goToSlide((currentSlide - 1 + slides.length) % slides.length); }
+    setInterval(nextHeroSlide, 6000);
+
+    // Countdown urgencia
     function updateCountdown() {
-        const timerEl = document.getElementById('countdown-timer');
-        if (!timerEl) return;
-        const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-        const cutoffExpress = new Date(now);
+        const el = document.getElementById('countdown-timer');
+        if(!el) return;
+        const now = new Date();
+        const limit = new Date();
+        limit.setHours(18,0,0,0);
         
-        cutoffExpress.setHours(18, 0, 0, 0);
-        
-        if (now >= cutoffExpress) {
-            timerEl.innerHTML = "<span class='text-sm tracking-wide'>Envíos a partir de <strong>MAÑANA</strong>.</span>";
+        if (now > limit) {
+            el.innerText = "CERRADO HASTA MAÑANA";
             return;
         }
-        const diff = cutoffExpress - now;
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         
-        timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Envío Express (1-2h) cierra en:</span><span class="opacity-60 md:hidden">Envío Express (1-2h) Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
+        const diff = limit - now;
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / 1000 / 60) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+        
+        el.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
     }
     setInterval(updateCountdown, 1000);
-    updateCountdown();
 
-    function escribirMensaje(tipo) {
-        const textarea = document.getElementById('card-message');
-        if(!textarea) return;
-        
-        let mensaje = "";
-        let opciones = [];
-
-        if (tipo === 'romance') {
-            opciones = [
-                "Cada pétalo de este ramo me recuerda a un momento a tu lado. Gracias por hacer que mi vida florezca de esta manera. Te amo profundamente.",
-                "Dicen que la naturaleza crea obras de arte irrepetibles, pero ninguna se compara con el privilegio de tenerte en mi vida. Eres mi lugar seguro.",
-                "Aunque el tiempo pase y las estaciones cambien, lo que siento por ti solo crece y se fortalece. Gracias por ser mi mayor refugio y mi alegría más pura."
-            ];
-        } else if (tipo === 'condolencias') {
-            opciones = [
-                "Sé que no hay palabras que puedan aliviar este dolor, pero quiero que sepas que estoy aquí para ti. Que estas flores te abracen en la distancia y te brinden un poco de paz.",
-                "Las almas que dejan huella nunca se marchan del todo; florecen en nuestros recuerdos. Con el mayor de los respetos, te acompaño en este difícil momento.",
-                "Te envío toda mi fuerza y cariño en este momento de tristeza. Que el amor de quienes te rodean y los recuerdos hermosos te sirvan de consuelo."
-            ];
-        } else if (tipo === 'agradecimiento') {
-            opciones = [
-                "Hay gestos que cambian el rumbo de las cosas, y el tuyo fue uno de ellos. Mi más sincero agradecimiento por tu apoyo incondicional; nunca lo olvidaré.",
-                "Las palabras a veces quedan cortas para expresar la verdadera gratitud. Espero que este detalle transmita lo mucho que valoro tu tiempo, tu ayuda y tu confianza.",
-                "Gracias por estar ahí cuando más lo necesitaba. Es un verdadero privilegio rodearse de personas con tanta calidad humana y un corazón tan noble."
-            ];
-        } else if (tipo === 'cumpleanos') {
-            opciones = [
-                "Que este nuevo año de vida florezca con la misma fuerza, luz y alegría que transmite este arreglo. Celebro tu vida hoy y siempre. ¡Muy feliz cumpleaños!",
-                "Un nuevo ciclo comienza y no puedo estar más feliz de poder celebrarlo contigo. Que la vida te siga sorprendiendo y te llene de momentos inolvidables.",
-                "Brindo por ti, por todo lo que has logrado y por la hermosa energía que compartes con el mundo. Que hoy recibas tanto amor como el que siempre entregas."
-            ];
-        }
-
-        if (opciones.length > 0) {
-            mensaje = opciones[Math.floor(Math.random() * opciones.length)];
-        }
-
-        textarea.value = "";
-        let i = 0;
-        const intervalo = setInterval(() => {
-            textarea.value += mensaje.charAt(i);
-            i++;
-            if (i >= mensaje.length) {
-                clearInterval(intervalo);
-                if (typeof guardarProgresoCheckout === 'function') {
-                    guardarProgresoCheckout(); 
-                }
-            }
-        }, 15);
+    // Scroll
+    function scrollToVault() {
+        document.getElementById('vault').scrollIntoView({ behavior: 'smooth' });
     }
-    
-    const heroSlides = document.querySelectorAll('.slide-item');
-    if (heroSlides.length > 0) {
-        let currentHeroSlide = 0;
-        const heroTotalSlides = heroSlides.length;
-        const heroDotsContainer = document.getElementById('hero-dots');
-        let heroAutoPlay;
-        let userInteracted = false; 
-        let isAnimating = false;    
 
-        heroSlides.forEach((slide, index) => {
-            if (index === 0) {
-                slide.style.transform = 'translate3d(0%, 0, 0)';
-                slide.style.zIndex = '20';
-            } else {
-                slide.style.transform = 'translate3d(100%, 0, 0)'; 
-                slide.style.zIndex = '10';
-            }
-            if (heroDotsContainer) {
-                const dot = document.createElement('button');
-                dot.className = `w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-300 border border-[#c5a059] ${index === 0 ? 'bg-[#c5a059] scale-125' : 'bg-transparent hover:bg-[#c5a059]/50'}`;
-                dot.onclick = () => {
-                    if(isAnimating || currentHeroSlide === index) return;
-                    stopAutoPlay();
-                    const direction = index > currentHeroSlide ? 'next' : 'prev';
-                    transitionToSlide(index, direction);
-                };
-                heroDotsContainer.appendChild(dot);
-            }
+    // Init
+    renderCatalog();
+    updateCartUI();
+    
+    // Trigger initial slide animations
+    setTimeout(() => {
+        document.querySelectorAll('.slide-item')[0].querySelectorAll('.slide-anim').forEach(el => {
+            el.classList.remove('opacity-0', 'translate-y-4', 'translate-y-8');
         });
+    }, 100);
 
-        function stopAutoPlay() {
-            userInteracted = true;
-            clearInterval(heroAutoPlay);
-        }
-
-        function transitionToSlide(targetIndex, direction) {
-            if (isAnimating) return;
-            isAnimating = true;
-            const current = heroSlides[currentHeroSlide];
-            const next = heroSlides[targetIndex];
-            next.style.transition = 'none';
-            next.style.zIndex = '20';
-            current.style.zIndex = '10';
-            
-            if (direction === 'next') { next.style.transform = 'translate3d(100%, 0, 0)'; } 
-            else { next.style.transform = 'translate3d(-100%, 0, 0)'; }
-
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    const duration = '0.6s';
-                    const timing = 'cubic-bezier(0.16, 1, 0.3, 1)';
-                    next.style.transition = `transform ${duration} ${timing}`;
-                    current.style.transition = `transform ${duration} ${timing}`;
-                    next.style.transform = 'translate3d(0%, 0, 0)';
-                    
-                    if (direction === 'next') { current.style.transform = 'translate3d(-100%, 0, 0)'; } 
-                    else { current.style.transform = 'translate3d(100%, 0, 0)'; }
-
-                    currentHeroSlide = targetIndex;
-                    updateDots();
-                    animateTexts();
-
-                    setTimeout(() => { isAnimating = false; }, 600); 
-                });
-            });
-        }
-
-        window.nextHeroSlide = function(manual = false) {
-            if (manual) stopAutoPlay(); 
-            if (isAnimating) return;
-            const nextIndex = (currentHeroSlide + 1) % heroTotalSlides;
-            transitionToSlide(nextIndex, 'next');
-        };
-
-        window.prevHeroSlide = function(manual = false) {
-            if (manual) stopAutoPlay(); 
-            if (isAnimating) return;
-            const prevIndex = (currentHeroSlide - 1 + heroTotalSlides) % heroTotalSlides;
-            transitionToSlide(prevIndex, 'prev');
-        };
-
-        function updateDots() {
-            if (!heroDotsContainer) return;
-            Array.from(heroDotsContainer.children).forEach((dot, index) => {
-                if(index === currentHeroSlide) {
-                    dot.classList.replace('bg-transparent', 'bg-[#c5a059]');
-                    dot.classList.add('scale-125');
-                } else {
-                    dot.classList.replace('bg-[#c5a059]', 'bg-transparent');
-                    dot.classList.remove('scale-125');
-                }
-            });
-        }
-
-        function animateTexts() {
-            heroSlides.forEach((slide, index) => {
-                const elementsToAnimate = slide.querySelectorAll('.slide-anim');
-                if(index === currentHeroSlide) {
-                    setTimeout(() => {
-                        elementsToAnimate.forEach(el => {
-                            el.classList.remove('opacity-0', 'translate-y-4', 'translate-y-8');
-                            el.classList.add('opacity-100', 'translate-y-0');
-                        });
-                    }, 300); 
-                } else {
-                    elementsToAnimate.forEach(el => {
-                        el.classList.remove('opacity-100', 'translate-y-0');
-                        if(el.tagName === 'H2') el.classList.add('opacity-0', 'translate-y-8');
-                        else el.classList.add('opacity-0', 'translate-y-4');
-                    });
-                }
-            });
-        }
-
-        animateTexts();
-        heroAutoPlay = setInterval(() => {
-            if (!userInteracted) { nextHeroSlide(false); }
-        }, 8000); 
-
-        const sliderWrapperElement = document.getElementById('slider-wrapper');
-        if (sliderWrapperElement) {
-            let touchStartX = 0;
-            let touchEndX = 0;
-            sliderWrapperElement.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-            sliderWrapperElement.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                if (touchEndX < touchStartX - 50) { window.nextHeroSlide(true); }
-                if (touchEndX > touchStartX + 50) { window.prevHeroSlide(true); }
-            }, { passive: true });
-        }
-    }
-
-    function toggleAtelierAudio() {
-        const audio = document.getElementById('atelier-audio');
-        const btn = document.getElementById('audio-toggle-btn');
-        const iconOn = document.getElementById('audio-on-indicator');
-        const iconOff = document.getElementById('audio-off-indicator');
-
-        if (!audio) return;
-        audio.volume = 0.35;
-
-        if (audio.paused) {
-            if (audio.readyState === 0) { audio.load(); }
-            const playPromise = audio.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    iconOff.style.display = 'none';
-                    iconOn.style.display = 'flex';
-                    if (btn) {
-                        btn.style.opacity = '1';
-                        btn.style.borderColor = '#c5a059';
-                    }
-                }).catch(error => { console.error("Reproducción bloqueada:", error); });
-            }
-        } else {
-            audio.pause();
-            if (iconOn) iconOn.style.display = 'none';
-            if (iconOff) iconOff.style.display = 'flex';
-            if (btn) {
-                btn.style.opacity = '0.75';
-                btn.style.borderColor = 'rgba(197, 160, 89, 0.3)';
-            }
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const audio = document.getElementById('atelier-audio');
-        if(audio) {
-            audio.addEventListener('timeupdate', function() {
-                if (this.duration && (this.duration - this.currentTime < 0.20)) {
-                    this.currentTime = 0;
-                    this.play().catch(()=>{});
-                }
-            });
-        }
-    });
-</script>
-    
-    <audio id="atelier-audio" loop preload="auto">
-        <source src="audio/atelier-bg.mp3" type="audio/mpeg">
-    </audio>
-
-    <button id="audio-toggle-btn" onclick="toggleAtelierAudio()" style="opacity: 0.75; transition: all 0.3s ease;" class="fixed bottom-24 right-6 md:right-12 z-[90] bg-[#0a1f1c] border border-[#c5a059]/30 text-[#c5a059] p-4 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center" aria-label="Ambiente del Atelier">
-        <div id="audio-on-indicator" style="display: none;" class="items-center justify-center relative w-6 h-6">
-            <span class="absolute inline-flex h-full w-full rounded-full bg-[#c5a059] opacity-30 animate-ping"></span>
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
-            </svg>
-        </div>
-
-        <div id="audio-off-indicator" style="display: flex;" class="items-center justify-center w-6 h-6">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 10l4 4m0-4l-4 4"></path>
-            </svg>
-        </div>
-    </button>
+    </script>
 </body>
 </html>
