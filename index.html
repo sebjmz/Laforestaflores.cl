@@ -1210,6 +1210,30 @@
 
     function selectB2BSegment(segment) {
         document.getElementById('b2b-selected-segment').value = segment;
+        
+        // --- INICIO LÓGICA DE TESTIMONIOS DINÁMICOS ---
+        const textEl = document.getElementById('b2b-testimonial-text');
+        const authorEl = document.getElementById('b2b-testimonial-author');
+        const containerEl = document.getElementById('b2b-dynamic-testimonial');
+        
+        // Reseteamos la opacidad para la animación
+        containerEl.classList.add('opacity-0');
+
+        if (segment === 'Inmobiliarias & Propiedades') {
+            textEl.innerText = '"Desde que entregamos nuestras propiedades con la curatoría de La Foresta, la percepción de lujo de nuestros clientes es inmediata. El cierre perfecto."';
+            authorEl.innerText = '— Directora Comercial, Inmobiliaria Premium';
+        } else if (segment === 'Boutiques & Espacios de Autor') {
+            textEl.innerText = '"Mantienen nuestra boutique viva cada semana. Es el estándar de frescura y diseño editorial que nuestra firma exige."';
+            authorEl.innerText = '— Fundadora, Boutique de Alta Costura';
+        } else if (segment === 'Oficinas Corporativas') {
+            textEl.innerText = '"El ambiente en el directorio cambió por completo. Un servicio puntual, discreto y con una elegancia que representa nuestros valores."';
+            authorEl.innerText = '— Gerente General, Firma Consultora';
+        } else if (segment === 'Eventos & Galas') { // Ajusta este string si en tu HTML original el botón pasa otro valor
+            textEl.innerText = '"Su arte floral eleva la escenografía a otro nivel. Trabajar con ellos es tener la garantía de que el diseño será espectacular."';
+            authorEl.innerText = '— Productora Ejecutiva de Eventos';
+        }
+        // --- FIN LÓGICA DE TESTIMONIOS DINÁMICOS ---
+
         const step1 = document.getElementById('b2b-step-1');
         const step2 = document.getElementById('b2b-step-2');
         
@@ -1224,7 +1248,14 @@
             
             void step2.offsetWidth; 
             
-            setTimeout(() => step2.classList.remove('opacity-0', 'translate-x-8'), 10);
+            // Animamos la entrada del formulario
+            setTimeout(() => {
+                step2.classList.remove('opacity-0', 'translate-x-8');
+                // Animamos el testimonio 400ms después para crear un efecto cascada suave
+                setTimeout(() => {
+                    containerEl.classList.remove('opacity-0');
+                }, 400);
+            }, 10);
         }, 300);
     }
 
