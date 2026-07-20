@@ -2839,6 +2839,20 @@
             transitionToSlide(prevIndex, 'prev');
         };
 
+        function toggleFabMenu() {
+    const menu = document.getElementById('fab-menu');
+    const icon = document.getElementById('fab-icon');
+    if (menu.classList.contains('opacity-0')) {
+        menu.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+        menu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        icon.style.transform = 'rotate(180deg)';
+    } else {
+        menu.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        menu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        icon.style.transform = 'rotate(0deg)';
+    }
+}
+        
         function updateDots() {
             if (!heroDotsContainer) return;
             Array.from(heroDotsContainer.children).forEach((dot, index) => {
@@ -2893,12 +2907,24 @@
     }
 </script>
 
-    <button onclick="scrollToVault()" class="fixed bottom-24 right-6 md:right-12 z-[90] bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group" aria-label="Ver Catálogo">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+    <div class="fixed bottom-24 right-6 md:right-12 z-[90] flex flex-col items-end gap-3">
+    <div id="fab-menu" class="flex flex-col gap-3 items-end opacity-0 pointer-events-none translate-y-4 transition-all duration-300">
+        <button onclick="scrollToVault(); toggleFabMenu();" class="bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+            <span class="text-[9px] font-bold uppercase tracking-widest">Colección Floral</span>
+        </button>
+        <button onclick="document.querySelector('.collage-container').scrollIntoView({behavior: 'smooth', block: 'center'}); toggleFabMenu();" class="bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+            <span class="text-[9px] font-bold uppercase tracking-widest">Testimonios</span>
+        </button>
+    </div>
+
+    <button onclick="toggleFabMenu()" class="bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
+        <svg id="fab-icon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
         </svg>
-        <span class="text-[10px] font-bold uppercase tracking-widest">Ver Ramos</span>
+        <span class="text-[10px] font-bold uppercase tracking-widest">Ver</span>
     </button>
+</div>
 
     <!-- SCRIPT CORREGIDO PARA EFECTO INSTANTÁNEO EN MÓVIL SIN ATASCOS -->
     <script>
