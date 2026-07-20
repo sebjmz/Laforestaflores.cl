@@ -462,15 +462,16 @@
             opacity: 1;
         }
 
-        /* Rolodex Vertical para Celulares (Escudo anti-desfiguración PC) */
+        /* Rolodex Vertical para Celulares (Distancia Fija y Sin Deformación 3D) */
         @media (max-width: 1024px) {
             .collage-container {
                 flex-direction: column;
                 height: auto; 
                 padding: 40px 20px;
-                perspective: 1200px;
+                /* ELIMINAMOS la perspectiva 3D aquí para evitar deformaciones en los extremos */
+                perspective: none; 
                 width: 100%;
-                gap: 25px; 
+                gap: 30px; /* DISTANCIA FIJA E INAMOVIBLE ENTRE TARJETAS */
                 overflow: visible;
             }
             
@@ -478,27 +479,27 @@
                 width: 100%;
                 max-width: 340px;
                 height: 420px; 
-                margin: 0 auto !important; /* Mata el margen negativo del PC */
+                margin: 0 auto !important; /* Mantiene todo centrado y anula márgenes de PC */
                 transform-origin: center center;
-                /* Forzamos rotateY(0deg) para evitar que los ángulos se mezclen */
-                transform: rotateX(25deg) rotateY(0deg) scale(0.95) !important;
+                /* Tarjetas inactivas: Planas y ligeramente más pequeñas, CERO ángulos */
+                transform: scale(0.95) !important;
                 transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
             }
             
-            /* Bloqueamos el Hover fantasma del PC y aplicamos solo el del móvil */
+            /* Tarjeta Activa (La que pasa por el centro) */
             .collage-page:hover, 
             .collage-page.active-page {
-                transform: rotateX(0deg) rotateY(0deg) scale(1.05) translateZ(20px) !important;
-                margin: 0 auto !important; /* Mata el margen derecho de 150px del PC */
-                box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+                transform: scale(1.02) !important; /* Solo crece hacia el frente */
+                margin: 0 auto !important; 
+                box-shadow: 0 20px 40px rgba(0,0,0,0.6);
                 border-color: var(--gold-leaf);
                 z-index: 20;
             }
             
-            /* Mantenemos las demás tarjetas quietas y sin desfigurarse */
+            /* Las demás tarjetas se mantienen quietas */
             .collage-page:hover ~ .collage-page, 
             .collage-page.active-page ~ .collage-page {
-                transform: rotateX(25deg) rotateY(0deg) scale(0.95) !important;
+                transform: scale(0.95) !important;
                 margin: 0 auto !important;
             }
         }
