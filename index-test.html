@@ -1792,6 +1792,25 @@ if (segment === 'Inmobiliarias & Propiedades') {
         }
     }
 
+    // === LÓGICA DE ESCASEZ DINÁMICA (CADA 24 HORAS) ===
+    const todayStr = new Date().toDateString();
+    let scarcityData = JSON.parse(localStorage.getItem('laforesta_scarcity_data'));
+
+    if (!scarcityData || scarcityData.date !== todayStr) {
+        scarcityData = { date: todayStr, items: {} };
+        const numProducts = Math.floor(Math.random() * 2) + 2; // Elige 2 o 3 productos al azar
+        const availableIds = [...catalog.map(p => p.id)];
+
+        for (let i = 0; i < numProducts; i++) {
+            if (availableIds.length === 0) break;
+            const randomIndex = Math.floor(Math.random() * availableIds.length);
+            const selectedId = availableIds.splice(randomIndex, 1)[0]; // Extrae el ID para no repetirlo
+            const unidades = Math.floor(Math.random() * 2) + 2; // Elige "2" o "3" unidades
+            scarcityData.items[selectedId] = `Últimas ${unidades} unidades`;
+        }
+        localStorage.setItem('laforesta_scarcity_data', JSON.stringify(scarcityData));
+    }
+
     const grid = document.getElementById('product-grid');
     if (grid) {
         grid.innerHTML = catalog.map(product => {
@@ -1800,9 +1819,10 @@ if (segment === 'Inmobiliarias & Propiedades') {
                 ? `<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm">${badgeText}</div>` 
                 : '';
                 
-            // CRO: Scarcity tag inyeccion para IDs especificos (3 y 5)
-            const scarcityHTML = (product.id === 3 || product.id === 5) 
-                ? `<div class="urgency-tag">Últimas 2 unidades</div>` 
+            // CRO: Inyección de etiqueta basada en el generador diario guardado en localStorage
+            const scarcityText = scarcityData.items[product.id];
+            const scarcityHTML = scarcityText 
+                ? `<div class="urgency-tag">${scarcityText}</div>` 
                 : '';
 
             return `
