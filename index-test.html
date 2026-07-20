@@ -462,42 +462,50 @@
             opacity: 1;
         }
 
-        /* Rolodex Vertical para Celulares (Ajustado para 13 ítems) */
+        /* Rolodex Vertical para Celulares (Optimizado con Snap Nativo) */
         @media (max-width: 1024px) {
             .collage-container {
                 flex-direction: column;
-                height: auto;
-                min-height: 1400px; /* Mucho más alto para contener 13 tarjetas sin cortar la última */
+                height: 75vh; /* Creamos una "ventana" de scroll interno */
+                min-height: 500px;
+                max-height: 650px;
+                overflow-y: auto; /* Activamos el scroll interno */
+                scroll-snap-type: y mandatory; /* MAGIA: Obliga a detenerse justo en la imagen */
                 padding: 40px 20px;
                 perspective: 1200px;
-                width: 100%; 
-            }
-            .collage-page {
                 width: 100%;
-                max-width: 340px;
-                height: 240px; 
-                margin-left: 0 !important; 
-                margin-right: 0 !important; 
-                margin-top: -140px;
-                transform-origin: top center;
-                transform: rotateX(35deg) scale(0.9);
-            }
-            .collage-page:first-child {
-                margin-top: 0;
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
             }
             
-            /* Corrección del centrado al tocar en móvil */
-            .collage-page:hover, .collage-page.active-page {
-                transform: rotateX(0deg) scale(1.05) translateZ(30px);
-                margin-bottom: 140px; 
-                margin-top: 0;
+            .collage-page {
+                scroll-snap-align: center; /* Centra la tarjeta perfectamente al soltar el dedo */
+                scroll-snap-stop: always; /* Evita que pase de largo si deslizas muy rápido */
+                flex: 0 0 auto;
+                width: 100%;
+                max-width: 340px;
+                height: 420px; /* Tarjeta alta para que el texto encaje perfecto */
                 margin-left: 0 !important; 
                 margin-right: 0 !important; 
+                margin-top: 0;
+                margin-bottom: 25px; /* Separación fija para eliminar los saltos (glitches) */
+                transform-origin: center center;
+                transform: rotateX(20deg) scale(0.9);
+                will-change: transform;
+            }
+            
+            .collage-page:first-child { margin-top: 20px; }
+            .collage-page:last-child { margin-bottom: 60px; }
+            
+            /* Eliminamos los cambios de margen para que la estructura nunca salte */
+            .collage-page:hover, .collage-page.active-page {
+                transform: rotateX(0deg) scale(1) translateZ(30px);
+                /* Sin margin-bottom para no romper el scroll */
             }
             
             .collage-page:hover ~ .collage-page, .collage-page.active-page ~ .collage-page {
-                transform: rotateX(45deg) scale(0.9) translateZ(-20px);
-            } 
+                transform: rotateX(20deg) scale(0.9) translateZ(-10px);
+            }
         }
 
         @media (max-height: 500px) and (orientation: landscape) {
@@ -517,7 +525,7 @@
                 font-size: 0.8rem !important;
             }
         }
-</style>
+    </style>
 </head>
 <body>
 
@@ -2951,53 +2959,46 @@
         </div>
     </button>
 
-    <!-- AQUÍ INICIA EL SCRIPT CORREGIDO PARA EL ACORDEÓN 3D -->
+    <!-- SCRIPT CORREGIDO PARA SCROLL SNAP -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const collagePages = document.querySelectorAll('.collage-page');
+        const collageContainer = document.querySelector('.collage-container');
         
-        // 1. Mantiene el comportamiento táctil y de mouse (Tap / Hover)
+        // 1. Mantiene el comportamiento perfecto para PC (Mouse)
         collagePages.forEach(page => {
-            page.addEventListener('touchstart', function(e) {
-                collagePages.forEach(p => p.classList.remove('active-page'));
-                this.classList.add('active-page');
-            }, { passive: true });
-
             page.addEventListener('mouseenter', function() {
-                collagePages.forEach(p => p.classList.remove('active-page'));
-                this.classList.add('active-page');
+                if(window.innerWidth > 1024) {
+                    collagePages.forEach(p => p.classList.remove('active-page'));
+                    this.classList.add('active-page');
+                }
             });
-            
             page.addEventListener('mouseleave', function() {
-                this.classList.remove('active-page');
+                if(window.innerWidth > 1024) {
+                    this.classList.remove('active-page');
+                }
             });
         });
 
-        // 2. NUEVO: Lógica de Scroll Automático para Móviles (iOS/Android)
-        // Detecta si es una pantalla móvil basada en el punto de quiebre de tu CSS (1024px)
+        // 2. Lógica para Móviles (iOS / Android)
         if (window.innerWidth <= 1024) {
-            // Configuramos un "área de activación" en el centro exacto de la pantalla
+            // Observador que detecta la tarjeta que está en el centro del contenedor
             const observerOptions = {
-                root: null,
-                // El margen de -40% arriba y abajo hace que la tarjeta solo se active
-                // cuando pasa justo por el 20% central de la pantalla
-                rootMargin: '-40% 0px -40% 0px',
-                threshold: 0
+                root: collageContainer, // Observa dentro de la "ventana" de scroll que creamos
+                rootMargin: '0px',
+                threshold: 0.6 // La imagen debe estar al 60% visible para activarse
             };
 
             const scrollObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    // Si la tarjeta entra en la zona central
                     if (entry.isIntersecting) {
-                        // Cerramos todas
+                        // Enciende la tarjeta que quedó centrada tras el "Snap"
                         collagePages.forEach(p => p.classList.remove('active-page'));
-                        // Abrimos la que está en el centro
                         entry.target.classList.add('active-page');
                     }
                 });
             }, observerOptions);
 
-            // Observamos cada tarjeta del collage
             collagePages.forEach(page => {
                 scrollObserver.observe(page);
             });
