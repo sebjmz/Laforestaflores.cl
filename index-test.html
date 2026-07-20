@@ -462,15 +462,15 @@
             opacity: 1;
         }
 
-        /* Rolodex Vertical para Celulares (Fluido y sin trampa de scroll) */
+        /* Rolodex Vertical para Celulares (Escudo anti-desfiguración PC) */
         @media (max-width: 1024px) {
             .collage-container {
                 flex-direction: column;
-                height: auto; /* Deja que el contenedor muestre las 13 imágenes */
+                height: auto; 
                 padding: 40px 20px;
                 perspective: 1200px;
                 width: 100%;
-                gap: 25px; /* Separación fija y limpia entre tarjetas */
+                gap: 25px; 
                 overflow: visible;
             }
             
@@ -478,23 +478,28 @@
                 width: 100%;
                 max-width: 340px;
                 height: 420px; 
-                margin: 0 auto !important; /* Centrado perfecto sin superposiciones */
+                margin: 0 auto !important; /* Mata el margen negativo del PC */
                 transform-origin: center center;
-                transform: rotateX(25deg) scale(0.95);
+                /* Forzamos rotateY(0deg) para evitar que los ángulos se mezclen */
+                transform: rotateX(25deg) rotateY(0deg) scale(0.95) !important;
                 transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
             }
             
-            /* Efecto cuando la tarjeta pasa por el centro de la pantalla */
+            /* Bloqueamos el Hover fantasma del PC y aplicamos solo el del móvil */
+            .collage-page:hover, 
             .collage-page.active-page {
-                transform: rotateX(0deg) scale(1.05) translateZ(20px);
+                transform: rotateX(0deg) rotateY(0deg) scale(1.05) translateZ(20px) !important;
+                margin: 0 auto !important; /* Mata el margen derecho de 150px del PC */
                 box-shadow: 0 20px 40px rgba(0,0,0,0.8);
                 border-color: var(--gold-leaf);
                 z-index: 20;
             }
             
-            /* Anulamos empujes mecánicos en móvil para que el scroll fluya */
-            .collage-page:hover ~ .collage-page, .collage-page.active-page ~ .collage-page {
-                transform: rotateX(25deg) scale(0.95);
+            /* Mantenemos las demás tarjetas quietas y sin desfigurarse */
+            .collage-page:hover ~ .collage-page, 
+            .collage-page.active-page ~ .collage-page {
+                transform: rotateX(25deg) rotateY(0deg) scale(0.95) !important;
+                margin: 0 auto !important;
             }
         }
 
