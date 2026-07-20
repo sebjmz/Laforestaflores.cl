@@ -453,10 +453,11 @@
         </div>
         <div class="p-8 bg-zinc-50 border-t">
             <div class="flex justify-between items-start mb-6">
-                <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c] mt-1">Total Estimado</span>
+                <!-- Etiqueta cambiada a Subtotal -->
+                <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c] mt-1">Subtotal de Productos</span>
                 <div class="text-right">
                     <span id="cart-total" class="text-2xl font-serif text-[#0a1f1c] block">$0</span>
-                    <span id="cart-shipping-notice" class="text-[9px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 transition-all duration-300" style="opacity: 0; transform: translateY(4px);">Envío Gratis</span>
+                    <span id="cart-shipping-notice" class="text-[9px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 transition-all duration-300" style="opacity: 0; transform: translateY(4px);"></span>
                 </div>
             </div>
             
@@ -2015,30 +2016,28 @@
         let costoEnvioFinal = Math.max(0, tarifaEnvioFinal - descuentoEnvio);
         const totalFinal = baseTotal + costoEnvioFinal;
         
+        // Carga SOLO el subtotal en el Atelier Bag y Footer Flotante Móvil
         const totalEl = document.getElementById('cart-total');
-        if (totalEl) totalEl.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
+        if (totalEl) totalEl.innerText = `$${baseTotal.toLocaleString('es-CL')}`;
         
         const stickyTotal = document.getElementById('sticky-cart-total');
-        if (stickyTotal) stickyTotal.innerText = `$${totalFinal.toLocaleString('es-CL')}`;
+        if (stickyTotal) stickyTotal.innerText = `$${baseTotal.toLocaleString('es-CL')}`;
         
         const shippingNotice = document.getElementById('cart-shipping-notice');
         if (shippingNotice) {
             if (baseTotal >= 69990) {
                 shippingNotice.style.opacity = '1';
                 shippingNotice.style.transform = 'translateY(0)';
-                if (costoEnvioFinal === 0) {
-                    shippingNotice.innerText = 'Envío Gratis';
-                } else {
-                    shippingNotice.innerText = 'Bono Envío (-$7.250)';
-                }
+                shippingNotice.innerText = 'Envío Gratis Desbloqueado';
             } else {
                 shippingNotice.style.opacity = '1';
                 shippingNotice.style.transform = 'translateY(0)';
                 let faltante = 69990 - baseTotal;
-                shippingNotice.innerText = `$${faltante.toLocaleString('es-CL')} para dscto`;
+                shippingNotice.innerText = `Agrega $${faltante.toLocaleString('es-CL')} para envío gratis*`;
             }
         }
 
+        // Carga Desglose y Total Final real en el flujo de Checkout
         const checkoutSubtotal = document.getElementById('checkout-subtotal');
         const checkoutShipping = document.getElementById('checkout-shipping');
         const checkoutFinalTotal = document.getElementById('checkout-final-total');
@@ -2075,7 +2074,7 @@
                         checkoutShippingNotice.classList.remove('hidden');
                     } else {
                         checkoutShipping.innerText = `$${costoEnvioFinal.toLocaleString('es-CL')}`;
-                        checkoutShippingNotice.innerText = 'Bono Envío Aplicado (-$7.250)';
+                        checkoutShippingNotice.innerText = 'Bono Logística Aplicado (-$7.250)';
                         checkoutShippingNotice.classList.remove('hidden');
                     }
                 } else {
