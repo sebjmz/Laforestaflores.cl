@@ -2938,28 +2938,35 @@ if (segment === 'Inmobiliarias & Propiedades') {
     }
 </script>
 
-    <div class="fixed bottom-24 right-6 md:right-12 z-[90] flex flex-col items-end gap-3">
-    <div id="fab-menu" class="flex flex-col gap-3 items-end opacity-0 invisible pointer-events-none translate-y-4 transition-all duration-300">
-    <button onclick="scrollToVault(); toggleFabMenu();" class="bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
-        <span class="text-[9px] font-bold uppercase tracking-widest">Colección Floral</span>
-    </button>
-    <button onclick="document.getElementById('privilege').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
-        <span class="text-[9px] font-bold uppercase tracking-widest">Suscripciones</span>
-    </button>
-    <button onclick="document.getElementById('garden').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
-        <span class="text-[9px] font-bold uppercase tracking-widest">Jardinería</span>
-    </button>
-    <button onclick="document.querySelector('.collage-container').closest('section').scrollIntoView({behavior: 'smooth', block: 'start'}); toggleFabMenu();" class="bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300 group">
-        <div class="flex items-center gap-1.5">
-            <span class="text-[9px] font-bold uppercase tracking-widest">Testimonios</span>
-            <svg class="w-3.5 h-3.5 text-[#c5a059] animate-pulse group-hover:text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-            </svg>
-        </div>
-    </button>
-</div>
+    <div class="fixed bottom-24 right-6 md:right-12 z-[90] pointer-events-none flex flex-col items-end">
+    
+    <!-- El menú ahora es position: absolute, desvinculado del tamaño físico del contenedor -->
+    <div id="fab-menu" class="absolute bottom-[calc(100%+12px)] right-0 flex flex-col gap-3 items-end opacity-0 invisible pointer-events-none translate-y-4 transition-all duration-300 w-max">
+        
+        <button onclick="scrollToVault(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+            <span class="text-[9px] font-bold uppercase tracking-widest">Colección Floral</span>
+        </button>
+        
+        <button onclick="document.getElementById('privilege').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+            <span class="text-[9px] font-bold uppercase tracking-widest">Suscripciones</span>
+        </button>
+        
+        <button onclick="document.getElementById('garden').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+            <span class="text-[9px] font-bold uppercase tracking-widest">Jardinería</span>
+        </button>
+        
+        <button onclick="document.querySelector('.collage-container').closest('section').scrollIntoView({behavior: 'smooth', block: 'start'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300 group">
+            <div class="flex items-center gap-1.5">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Testimonios</span>
+                <svg class="w-3.5 h-3.5 text-[#c5a059] animate-pulse group-hover:text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                </svg>
+            </div>
+        </button>
+    </div>
 
-    <button onclick="toggleFabMenu()" class="bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
+    <!-- Botón "Ver" base -->
+    <button onclick="toggleFabMenu()" class="pointer-events-auto relative bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
         <svg id="fab-icon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
