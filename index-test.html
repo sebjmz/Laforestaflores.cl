@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="preconnect" href="https://api.mercadopago.com">
+    <link rel="preconnect" href="https://api.mercadolibre.com">
     <!-- Optimización CRO: Preload de imagen LCP -->
     <link rel="preload" as="image" href="img/slide1-pc.jpg" fetchpriority="high">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -377,6 +379,133 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
+        /* --- MOTOR 3D: COLLAGE DE CLIENTES (13 ITEMS PANORÁMICOS) --- */
+        .collage-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            max-width: 100%;
+            height: 580px;
+            perspective: 2000px;
+            overflow: hidden; 
+            padding: 40px 0;
+            margin: 0 auto;
+        }
+
+        .collage-page {
+            position: relative;
+            width: 260px;
+            height: 420px;
+            background-color: var(--forest-green);
+            margin-left: -160px; /* Superposición PC */
+            border-radius: 10px;
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            box-shadow: -20px 0 40px rgba(0,0,0,0.7);
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        margin 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-origin: left center;
+            transform: rotateY(35deg) scale(0.95);
+            overflow: hidden;
+            cursor: pointer;
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+            will-change: transform, margin;
+        }
+
+        .collage-page:first-child {
+            margin-left: 0;
+        }
+
+        /* Efecto de apertura (Hover en PC) */
+        .collage-page:hover, .collage-page.active-page {
+            transform: rotateY(0deg) scale(1.05) translateZ(40px);
+            margin-right: 150px;
+            z-index: 20;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9);
+            border-color: var(--gold-leaf);
+        }
+
+        /* Empuje mecánico a las cartas de la derecha en PC */
+        .collage-page:hover ~ .collage-page, .collage-page.active-page ~ .collage-page {
+            transform: rotateY(45deg) scale(0.9) translateZ(-20px);
+        }
+
+        .collage-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            transition: opacity 0.5s ease, filter 0.5s ease;
+            filter: grayscale(100%);
+        }
+
+        .collage-page:hover .collage-img, .collage-page.active-page .collage-img {
+            opacity: 1;
+            filter: grayscale(0%);
+        }
+
+        /* Textos testimoniales */
+        .collage-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 20px;
+            background: linear-gradient(to top, rgba(10,31,28,0.98) 0%, rgba(10,31,28,0.85) 55%, transparent 100%);
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            opacity: 0;
+        }
+
+        .collage-page:hover .collage-content, .collage-page.active-page .collage-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Rolodex Vertical para Celulares (Distancia Fija y Sin Deformación 3D) */
+        @media (max-width: 1024px) {
+            .collage-container {
+                flex-direction: column;
+                height: auto; 
+                padding: 40px 20px;
+                /* ELIMINAMOS la perspectiva 3D aquí para evitar deformaciones en los extremos */
+                perspective: none; 
+                width: 100%;
+                gap: 30px; /* DISTANCIA FIJA E INAMOVIBLE ENTRE TARJETAS */
+                overflow: visible;
+            }
+            
+            .collage-page {
+                width: 100%;
+                max-width: 340px;
+                height: 420px; 
+                margin: 0 auto !important; /* Mantiene todo centrado y anula márgenes de PC */
+                transform-origin: center center;
+                /* Tarjetas inactivas: Planas y ligeramente más pequeñas, CERO ángulos */
+                transform: scale(0.95) !important;
+                transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+            }
+            
+            /* Tarjeta Activa (La que pasa por el centro) */
+            .collage-page:hover, 
+            .collage-page.active-page {
+                transform: scale(1.02) !important; /* Solo crece hacia el frente */
+                margin: 0 auto !important; 
+                box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+                border-color: var(--gold-leaf);
+                z-index: 20;
+            }
+            
+            /* Las demás tarjetas se mantienen quietas */
+            .collage-page:hover ~ .collage-page, 
+            .collage-page.active-page ~ .collage-page {
+                transform: scale(0.95) !important;
+                margin: 0 auto !important;
+            }
+        }
+
         @media (max-height: 500px) and (orientation: landscape) {
             #hero-slider h2 { 
                 font-size: 2.5rem !important; 
@@ -394,7 +523,7 @@
                 font-size: 0.8rem !important;
             }
         }
-</style>
+    </style>
 </head>
 <body>
 
@@ -403,12 +532,17 @@
             <div class="cursor-pointer flex-shrink-0 flex items-center" onclick="window.scrollTo(0,0)">
                 <img src="img/logo-menu.png" alt="La Foresta Flores" class="h-6 md:h-8 w-auto object-contain brightness-0 invert">
             </div>
-            <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap">
+            <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap items-center">
                 <a href="#vault" onclick="scrollToVault()" class="hover:text-white transition-colors duration-300">Colección</a>
                 <a href="#privilege" class="hover:text-white transition-colors duration-300">Suscripción & B2B</a>
                 <a href="#garden" class="hover:text-white transition-colors duration-300">Jardinería</a>
-                <a href="#testimonios" class="hover:text-white transition-colors duration-300">Testimonios</a>
-            </div>
+                <a href="#testimonios" class="hover:text-white transition-colors duration-300 flex items-center gap-1.5 group">
+        Testimonios
+        <svg class="w-3.5 h-3.5 text-[#c5a059] group-hover:text-white transition-colors duration-300 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+        </svg>
+    </a>
+</div>
         </div>
         
         <div class="flex items-center space-x-4 md:space-x-6 flex-shrink-0">
@@ -458,7 +592,7 @@
                 <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c] mt-1">Total Estimado</span>
                 <div class="text-right">
                     <span id="cart-total" class="text-2xl font-serif text-[#0a1f1c] block">$0</span>
-                    <span id="cart-shipping-notice" class="text-[9px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 transition-all duration-300" style="opacity: 0; transform: translateY(4px);"></span>
+                    <span id="cart-shipping-notice" class="text-[9px] uppercase tracking-[0.2em] font-bold text-[#0a1f1c] block mt-1 transition-all duration-300" style="opacity: 0; transform: translateY(4px);"></span>
                 </div>
             </div>
             
@@ -615,35 +749,163 @@
     </div>
 
     <section id="testimonios" class="py-24 bg-[#0a1f1c] text-[#fcfaf7] border-t border-[#c5a059]/20 overflow-hidden w-full">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <span class="text-[#c5a059] text-2xl tracking-widest block mb-4">★★★★★</span>
-                <h2 class="font-serif text-4xl md:text-5xl italic mb-4">Aprobación Absoluta.</h2>
-                <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#c5a059]">4.9/5 en +100 Evaluaciones de Google</p>
+    <div class="w-full max-w-full mx-auto px-0">
+        <div class="text-center mb-12 px-6">
+            <span class="text-[#c5a059] text-2xl tracking-widest block mb-4">★★★★★</span>
+            <h2 class="font-serif text-4xl md:text-5xl italic mb-4 flex justify-center items-center gap-3">
+            Aprobación Absoluta.
+            <svg class="w-8 h-8 md:w-10 md:h-10 text-[#c5a059]" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+    </svg>
+</h2>
+            <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#c5a059]">4.9/5 en +100 Evaluaciones de Google</p>
+        </div>
+
+        <!-- ACORDEÓN 3D DE 13 CLIENTES -->
+        <div class="collage-container border-b border-[#c5a059]/20 pb-24 mb-16">
+            
+            <!-- 1. GARANTÍA DEL FUNDADOR -->
+            <div class="collage-page">
+                <img src="img/garantia-fundador.jpg" alt="Fundador La Foresta" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">LUIS JIMÉNEZ R.</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Casi una década de devoción floral. Desde 2018, nuestra promesa ha sido inquebrantable: llevar la frescura absoluta y el diseño vanguardista a cada rincón de la V Región. Cada tallo guarda nuestra garantía de excelencia."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Fundador, La Foresta Flores.</p>
+                </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-[#c5a059]/20 pb-20">
-                <div class="space-y-4">
-                    <p class="font-light text-sm opacity-80 leading-relaxed">"El nivel de detalle y la frescura de las flores superaron mis expectativas. Cumplieron con el horario exacto para una entrega urgente en Reñaca."</p>
-                    <p class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059]">— Camila V.</p>
-                </div>
-                <div class="space-y-4">
-                    <p class="font-light text-sm opacity-80 leading-relaxed">"La atención es maravillosa, su vendedora es muy amable y simpática. Los ramos del día son bellísimos, flores elegidas con mucha delicadeza y buen gusto. Vienen con una tarjeta para escribir y el papel que envuelve el ramo es bellísimo. Recomendado 100%"</p>
-                    <p class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059]">— Claudia F.</p>
-                </div>
-                <div class="space-y-4">
-                    <p class="font-light text-sm opacity-80 leading-relaxed">"Arte floral real. No son los típicos arreglos de producción masiva. Se nota la curatoría en cada tallo y en el empaque de lujo."</p>
-                    <p class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059]">— Diego M.</p>
+
+            <!-- 2. HOMBRE CORPORATIVO / OFICINA -->
+            <div class="collage-page">
+                <img src="img/oficina.jpg" alt="Cliente Corporativo" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"La Foresta ofrece una experiencia excepcional de principio a fin. El nivel de decoro, la armonía y la puntualidad corporativa son impecables. Un estándar de calidad que eleva cualquier espacio."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Pablo S.</p>
                 </div>
             </div>
-            <div class="pt-16 text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.4em] opacity-40 block mb-10">SOCIOS EN LA EXCELENCIA</span>
-                <div class="flex flex-wrap justify-center items-center gap-16 opacity-50 grayscale">
-                    <img src="img/carmine.png" class="h-8 object-contain" alt="Restaurant Carmine">
-                    <img src="img/san-marinos.svg" class="h-8 object-contain" alt="San Marino">
+
+            <!-- 3. MUJER 1 -->
+            <div class="collage-page">
+                <img src="img/mujer1.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Se nota la curatoría y el amor en cada tallo seleccionado. La frescura es innegable y la atención es simplemente maravillosa, un verdadero lujo visual y humano."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Lorena S.</p>
                 </div>
+            </div>
+
+            <!-- 4. MUJER 2 -->
+            <div class="collage-page">
+                <img src="img/mujer2.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Gracias por embellecer mis días. Las flores son hermosas y la combinación de texturas es arte puro... realmente logran plasmar la vida en colores. 100% recomendados."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— María J.</p>
+                </div>
+            </div>
+
+            <!-- 5. HOMBRE (CRISTHIAN) -->
+            <div class="collage-page">
+                <img src="img/hombre1.jpg" alt="Cliente Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Quedé como rey. La asesoría experta y las flores frescas son fundamentales para lograr el arreglo perfecto. Un servicio de primer nivel para sorprender a quien amas."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Cristhian G.</p>
+                </div>
+            </div>
+
+            <!-- 6. MUJER 3 -->
+            <div class="collage-page">
+                <img src="img/mujer3.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Atención excelente. Las flores son preciosas, y con los consejos expertos que te entregan en el atelier, los arreglos pueden durar intactos más de un mes. Calidad superior."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Mónica V.</p>
+                </div>
+            </div>
+
+            <!-- 7. MUJER 4 (MAGDALENA) -->
+            <div class="collage-page">
+                <img src="img/mujer4.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El equilibrio perfecto entre diseño premium y un valor accesible. Las flores más hermosas y frescas de la Quinta Región, con un estándar visual inigualable."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Magdalena.</p>
+                </div>
+            </div>
+
+            <!-- 8. MUJER 5 -->
+            <div class="collage-page">
+                <img src="img/mujer5.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Vivo fuera del país y quería enviar un detalle especial; la confianza y puntualidad logística que brindan es invaluable. Acortan distancias con muchísima belleza."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Ale C.</p>
+                </div>
+            </div>
+
+            <!-- 9. HOMBRE (MATÍAS) -->
+            <div class="collage-page">
+                <img src="img/hombre2.jpg" alt="Cliente Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Compré flores para una celebración de cumpleaños y el ramo quedó simplemente espectacular. La atención fue impecable y su puntualidad en la entrega aún mejor."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Matías C.</p>
+                </div>
+            </div>
+
+            <!-- 10. MUJER 6 -->
+            <div class="collage-page">
+                <img src="img/mujer6.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Tienen una sensibilidad artística única. Sus creaciones para bodas y eventos importantes respiran elegancia. Me fascinó absolutamente la propuesta estética de mi arreglo."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Belén N.</p>
+                </div>
+            </div>
+
+            <!-- 11. MUJER 7 -->
+            <div class="collage-page">
+                <img src="img/mujer7.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El bouquet resultó ser aún más impresionante en persona que en las fotos. Flores frescas, atención de primerísimo nivel y entrega exacta. Definitivamente mi florería de confianza."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Soulfia.</p>
+                </div>
+            </div>
+
+            <!-- 12. MUJER 8 -->
+            <div class="collage-page">
+                <img src="img/mujer8.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"La experiencia de compra es fabulosa. La asesoría es detallista y los ramos del día son sencillamente bellísimos. Tienen un gusto exquisito para armar las paletas de color."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Claudia F.</p>
+                </div>
+            </div>
+
+            <!-- 13. MUJER 9 -->
+            <div class="collage-page">
+                <img src="img/mujer9.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El servicio es tremendamente profesional. Cada encargo llega a tiempo y la presentación es impecable. Para mí, es por lejos la florería más distinguida de la V Región."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Irene V.</p>
+                </div>
+            </div>
+
+        </div>
+        <!-- FIN ACORDEÓN 3D -->
+
+        <div class="text-center px-6">
+            <span class="text-[9px] font-bold uppercase tracking-[0.4em] opacity-40 block mb-10">SOCIOS EN LA EXCELENCIA</span>
+            <div class="flex flex-wrap justify-center items-center gap-16 opacity-50 grayscale">
+                <img src="img/carmine.png" class="h-8 object-contain" alt="Restaurant Carmine" loading="lazy">
+                <img src="img/san-marinos.svg" class="h-8 object-contain" alt="San Marino" loading="lazy">
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <section id="vault" class="bg-white pt-6 pb-12 border-t border-zinc-100">
         <div class="w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-16">
@@ -710,7 +972,7 @@
                     </div>
                     <div class="mt-8">
                         <button onclick="openB2BFlow()" class="w-full py-5 bg-transparent border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] transition-all duration-500 shadow-[0_0_15px_rgba(197,160,89,0.1)] hover:shadow-[0_0_25px_rgba(197,160,89,0.3)]">
-                            Ingresar al Salón Privado
+                            Hagamos Equipo
                         </button>
                         <p class="text-[9px] text-center mt-6 text-white/30 italic uppercase tracking-widest">
                             Proceso de postulación confidencial · 2 Pasos
@@ -723,61 +985,81 @@
     </section>
 
     <div id="b2b-flow" class="fixed inset-0 bg-[#0a1f1c] text-[#fcfaf7] z-[200] flex flex-col hidden opacity-0 transition-opacity duration-500 backdrop-blur-xl">
-        <div class="px-8 py-6 flex justify-between items-center border-b border-[#c5a059]/10">
-            <h2 class="font-serif text-xl tracking-widest uppercase text-[#c5a059]">Portal B2B</h2>
-            <button onclick="closeB2BFlow()" class="text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors">×</button>
+    <div class="px-8 py-6 flex justify-between items-center border-b border-[#c5a059]/10 shrink-0">
+        <h2 class="font-serif text-xl tracking-widest uppercase text-[#c5a059]">Portal B2B</h2>
+        <button onclick="closeB2BFlow()" class="text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors">×</button>
+    </div>
+
+    <!-- Contenedor con overflow-y-auto y justify-start -->
+    <div class="flex-grow flex flex-col justify-start items-center p-6 relative overflow-y-auto w-full pb-20">
+        
+        <!-- Paso 1 (con my-auto) -->
+        <div id="b2b-step-1" class="b2b-step active flex-col items-center w-full max-w-lg text-center transition-all duration-500 transform my-auto">
+            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block mt-4">Paso 1 de 2</span>
+            <h3 class="font-serif text-4xl md:text-5xl italic mb-12">¿Cuál es su negocio?</h3>
+            
+            <div class="space-y-4 w-full">
+    <button onclick="selectB2BSegment('Inmobiliarias & Propiedades')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Inmobiliarias & Propiedades</button>
+    <button onclick="selectB2BSegment('Boutiques & Espacios de Autor')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Boutiques & Espacios de Autor</button>
+    <button onclick="selectB2BSegment('Oficinas Corporativas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Oficinas Corporativas</button>
+    <button onclick="selectB2BSegment('Eventos & Galas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Eventos Privados & Galas</button>
+    <button onclick="selectB2BSegment('Hogar & Jardín')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Hogar y Jardín</button>
+</div>
         </div>
 
-        <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
-            <div id="b2b-step-1" class="b2b-step active flex-col items-center w-full max-w-lg text-center transition-all duration-500 transform">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block">Paso 1 de 2</span>
-                <h3 class="font-serif text-4xl md:text-5xl italic mb-12">¿Cuál es su segmento corporativo?</h3>
-                
-                <div class="space-y-4 w-full">
-                    <button onclick="selectB2BSegment('Inmobiliarias & Propiedades')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Inmobiliarias & Propiedades</button>
-                    <button onclick="selectB2BSegment('Boutiques & Espacios de Autor')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Boutiques & Espacios de Autor</button>
-                    <button onclick="selectB2BSegment('Oficinas Corporativas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Oficinas Corporativas</button>
-                    <button onclick="selectB2BSegment('Eventos & Galas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Eventos Privados & Galas</button>
-                </div>
+        <!-- Paso 2 (con my-auto) -->
+        <div id="b2b-step-2" class="b2b-step hidden flex-col items-center w-full max-w-md text-center transition-all duration-500 transform translate-x-8 opacity-0 my-auto">
+            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block mt-4">Paso 2 de 2</span>
+            <h3 class="font-serif text-3xl md:text-4xl italic mb-6">Credenciales de la Firma</h3>
+            
+            <div id="b2b-dynamic-testimonial" class="mb-10 p-5 border-l border-[#c5a059]/50 bg-[#c5a059]/5 text-left transition-opacity duration-[800ms] opacity-0 shadow-sm w-full">
+                <p id="b2b-testimonial-text" class="font-light text-sm italic text-[#fcfaf7]/80 leading-relaxed"></p>
+                <p id="b2b-testimonial-author" class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059] mt-3"></p>
             </div>
+            
+            <form id="b2b-final-form" class="w-full space-y-6" onsubmit="sendB2BConsultation(event)">
+    <input type="hidden" id="b2b-selected-segment" name="Segmento">
+    
+    <div>
+        <input type="text" id="b2b-empresa" name="Empresa_o_Familia" required placeholder="Nombre Empresa o Dirección (Opcional)" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+    </div>
+    
+    <div class="grid grid-cols-2 gap-4">
+        <input type="text" id="b2b-nombre" name="Nombre" required placeholder="Su Nombre" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+        
+        <select id="b2b-cargo" name="Cargo" required class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] transition-colors cursor-pointer outline-none">
+            <option value="" disabled selected class="bg-[#0a1f1c] text-white/50">Seleccione su rol</option>
+            <option value="Propietario / Dueño" class="bg-[#0a1f1c] text-[#fcfaf7]">Propietario / Dueño</option>
+            <option value="Gerencia / Dirección" class="bg-[#0a1f1c] text-[#fcfaf7]">Gerencia / Dirección</option>
+            <option value="Productor / Eventos" class="bg-[#0a1f1c] text-[#fcfaf7]">Productor / Eventos</option>
+            <option value="Asistente / Otro" class="bg-[#0a1f1c] text-[#fcfaf7]">Asistente / Otro</option>
+        </select>
+    </div>
+    
+    <div class="grid grid-cols-2 gap-4">
+        <input type="email" id="b2b-email" name="Email" required placeholder="Correo de contacto" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+        <input type="tel" id="b2b-whatsapp" name="WhatsApp" required placeholder="WhatsApp" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+    </div>
+    
+    <div class="pt-8">
+        <button type="submit" id="b2b-submit-btn" class="w-full py-5 bg-[#c5a059] text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors">Solicitar Membresía</button>
+    </div>
+</form>
+            
+            <button onclick="backToB2BStep1()" class="mt-8 text-[9px] uppercase tracking-[0.3em] text-white/40 hover:text-[#c5a059] transition-colors border-b border-transparent hover:border-[#c5a059] pb-1">← Cambiar Segmento</button>
+        </div>
 
-            <div id="b2b-step-2" class="b2b-step hidden flex-col items-center w-full max-w-md text-center transition-all duration-500 transform translate-x-8 opacity-0">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block">Paso 2 de 2</span>
-                <h3 class="font-serif text-3xl md:text-4xl italic mb-6">Credenciales de la Firma</h3>
-                
-                <!-- NUEVO: Contenedor Dinámico de Testimonio -->
-                <div id="b2b-dynamic-testimonial" class="mb-10 p-5 border-l border-[#c5a059]/50 bg-[#c5a059]/5 text-left transition-opacity duration-[800ms] opacity-0 shadow-sm w-full">
-                    <p id="b2b-testimonial-text" class="font-light text-sm italic text-[#fcfaf7]/80 leading-relaxed"></p>
-                    <p id="b2b-testimonial-author" class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059] mt-3"></p>
-                </div>
-                
-                <form id="b2b-final-form" class="w-full space-y-6" onsubmit="sendB2BConsultation(event)">
-                   <!-- Tus inputs se mantienen exactamente iguales aquí abajo -->
-                    <input type="hidden" id="b2b-selected-segment" name="Segmento">
-                    <div><input type="text" id="b2b-empresa" name="Empresa" required placeholder="Nombre de la Empresa" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors"></div>
-                    <div><input type="text" id="b2b-nombre" name="Contacto" required placeholder="Su Nombre y Cargo" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors"></div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="email" id="b2b-email" name="Email" required placeholder="Correo Corporativo" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
-                        <input type="tel" id="b2b-whatsapp" name="WhatsApp" required placeholder="WhatsApp" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
-                    </div>
-                    <div class="pt-8">
-                        <button type="submit" id="b2b-submit-btn" class="w-full py-5 bg-[#c5a059] text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors">Solicitar Membresía</button>
-                    </div>
-                </form>
-                
-                <button onclick="backToB2BStep1()" class="mt-8 text-[9px] uppercase tracking-[0.3em] text-white/40 hover:text-[#c5a059] transition-colors border-b border-transparent hover:border-[#c5a059] pb-1">← Cambiar Segmento</button>
+        <!-- Success (con my-auto) -->
+        <div id="b2b-success" class="hidden flex-col items-center w-full max-w-md text-center my-auto">
+            <div class="w-20 h-20 border border-[#c5a059] rounded-full flex items-center justify-center mb-8 mx-auto text-[#c5a059]">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path></svg>
             </div>
-
-            <div id="b2b-success" class="hidden flex-col items-center w-full max-w-md text-center">
-                <div class="w-20 h-20 border border-[#c5a059] rounded-full flex items-center justify-center mb-8 mx-auto text-[#c5a059]">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <h3 class="font-serif text-4xl italic mb-4">Solicitud Recibida.</h3>
-                <p class="text-white/60 font-light leading-relaxed">Nuestra dirección ejecutiva evaluará su perfil y nos pondremos en contacto a la brevedad para agendar una reunión privada.</p>
-                <button onclick="closeB2BFlow()" class="mt-12 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] hover:text-white border-b border-[#c5a059] pb-1 transition-colors">Volver a La Foresta</button>
-            </div>
+            <h3 class="font-serif text-4xl italic mb-4">Solicitud Recibida.</h3>
+            <p class="text-white/60 font-light leading-relaxed">Nuestra dirección ejecutiva evaluará su perfil y nos pondremos en contacto a la brevedad para agendar una reunión privada.</p>
+            <button onclick="closeB2BFlow()" class="mt-12 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] hover:text-white border-b border-[#c5a059] pb-1 transition-colors">Volver a La Foresta</button>
         </div>
     </div>
+</div>
     
     <section id="garden" class="py-32 px-6 md:px-12 bg-zinc-50 border-t border-zinc-100">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
@@ -1148,7 +1430,7 @@
                         <span id="checkout-shipping-label" class="text-[10px] uppercase tracking-widest text-zinc-500">Logística</span>
                         <div class="text-right">
                             <span id="checkout-shipping" class="font-serif text-sm text-[#0a1f1c]">$0</span>
-                            <span id="checkout-shipping-notice" class="text-[8px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 hidden"></span>
+                            <span id="checkout-shipping-notice" class="text-[8px] uppercase tracking-[0.2em] font-bold text-[#0a1f1c] block mt-1 hidden"></span>
                         </div>
                     </div>
                     <div class="flex justify-between items-end mt-2">
@@ -1213,27 +1495,30 @@
         document.getElementById('b2b-selected-segment').value = segment;
         
         // --- INICIO LÓGICA DE TESTIMONIOS DINÁMICOS ---
-        const textEl = document.getElementById('b2b-testimonial-text');
-        const authorEl = document.getElementById('b2b-testimonial-author');
-        const containerEl = document.getElementById('b2b-dynamic-testimonial');
-        
-        // Reseteamos la opacidad para la animación
-        containerEl.classList.add('opacity-0');
+const textEl = document.getElementById('b2b-testimonial-text');
+const authorEl = document.getElementById('b2b-testimonial-author');
+const containerEl = document.getElementById('b2b-dynamic-testimonial');
 
-        if (segment === 'Inmobiliarias & Propiedades') {
-            textEl.innerText = '"Desde que entregamos nuestras propiedades con la belleza orgánica de La Foresta Flores, la percepción de nuestros clientes es inmediata. El boca a boca explotó."';
-            authorEl.innerText = '— Director Comercial, Inmobiliaria Jiménez y Asociados';
-        } else if (segment === 'Boutiques & Espacios de Autor') {
-            textEl.innerText = '"Mantienen nuestra boutique viva cada semana. Es la frescura y diseño que nuestra tienda garantiza."';
-            authorEl.innerText = '— Fundadora, Boutique de Alta Costura';
-        } else if (segment === 'Oficinas Corporativas') {
-            textEl.innerText = '"El ambiente en el directorio cambió por completo. Servicio puntual, discreto y con una elegancia que representa nuestros valores."';
-            authorEl.innerText = '— Gerente General, Firma Consultora';
-        } else if (segment === 'Eventos & Galas') { // Ajusta este string si en tu HTML original el botón pasa otro valor
-            textEl.innerText = '"Su arte floral eleva la escenografía a otro nivel. Trabajar con ellos es tener la garantía de que el diseño será el tema central."';
-            authorEl.innerText = '— Productora Ejecutiva de Eventos';
-        }
-        // --- FIN LÓGICA DE TESTIMONIOS DINÁMICOS ---
+// Reseteamos la opacidad para la animación
+containerEl.classList.add('opacity-0');
+
+if (segment === 'Inmobiliarias & Propiedades') {
+    textEl.innerText = '"Desde que entregamos nuestras propiedades con la belleza de La Foresta Flores, la percepción de nuestros clientes es inmediata. El boca a boca es la mejor publicidad."';
+    authorEl.innerText = '— Director Comercial, Inmobiliaria Jiménez y Asociados';
+} else if (segment === 'Boutiques & Espacios de Autor') {
+    textEl.innerText = '"Los arreglos de La Foresta son la suavidad y colorida comodidad que nuestra tienda garantiza cada vez que alguien entra por la puerta."';
+    authorEl.innerText = '— Fundadora, Boutique de Alta Costura';
+} else if (segment === 'Oficinas Corporativas') {
+    textEl.innerText = '"El ambiente laboral mejoró aún más. El servicio puntual, ordenado y con una limpieza visual y originalidad que representa totalmente nuestros valores."';
+    authorEl.innerText = '— Gerente General, Firma Consultora';
+} else if (segment === 'Eventos & Galas') {
+    textEl.innerText = '"Su arte floral eleva la escenografía a otro nivel. Trabajar con ellos es tener la garantía de que el diseño será el tema central."';
+    authorEl.innerText = '— Productora Ejecutiva de Eventos';
+} else if (segment === 'Hogar & Jardín') {
+    textEl.innerText = '"Recibir arreglos de autor cada semana da esa luz y elegancia fresca para pasar excelentes momentos en familia y amigos."';
+    authorEl.innerText = '— Cliente Particular, Bosques de Montemar';
+}
+// --- FIN LÓGICA DE TESTIMONIOS DINÁMICOS ---
 
         const step1 = document.getElementById('b2b-step-1');
         const step2 = document.getElementById('b2b-step-2');
@@ -1682,7 +1967,7 @@
                 if (availableUpsells.length > 0 && !tieneCondolencias) {
                     html += `
                         <div class="mt-8 border-t border-zinc-100 pt-6">
-                            <h5 class="font-serif text-lg italic mb-4 text-[#0a1f1c]">Agrega a este ramo</h5>
+                            <h5 class="font-serif text-lg italic mb-4 text-[#0a1f1c]">Agregar a este arreglo</h5>
                             <div id="upsell-slider" class="flex overflow-x-auto space-x-4 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
                                 ${availableUpsells.map(u => {
                                     const uFileName = u.img.split('/').pop();
@@ -2069,7 +2354,7 @@
                 shippingNotice.style.opacity = '1';
                 shippingNotice.style.transform = 'translateY(0)';
                 let faltante = 69990 - baseTotal;
-                shippingNotice.innerText = `solo $${faltante.toLocaleString('es-CL')} para dscto`;
+                shippingNotice.innerText = `agrega $${faltante.toLocaleString('es-CL')} para envío de cortesía*`;
             }
         }
 
@@ -2128,7 +2413,7 @@
             const headerOffset = window.innerWidth >= 1024 ? 90 : 70;
             const elementPosition = vaultSection.getBoundingClientRect().top + window.scrollY;
             const offsetPosition = elementPosition - headerOffset;
-            window.scrollTo({ top: offsetPosition, behavior: 'auto' });
+            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
         }
     }
 
@@ -2587,6 +2872,20 @@
             transitionToSlide(prevIndex, 'prev');
         };
 
+        function toggleFabMenu() {
+            const menu = document.getElementById('fab-menu');
+            const icon = document.getElementById('fab-icon');
+            if (menu.classList.contains('opacity-0')) {
+            menu.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'translate-y-4');
+            menu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+            icon.style.transform = 'rotate(180deg)';
+        } else {
+            menu.classList.add('opacity-0', 'pointer-events-none', 'invisible', 'translate-y-4');
+            menu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+            icon.style.transform = 'rotate(0deg)';
+        }
+    }
+        
         function updateDots() {
             if (!heroDotsContainer) return;
             Array.from(heroDotsContainer.children).forEach((dot, index) => {
@@ -2639,71 +2938,92 @@
             }, { passive: true });
         }
     }
+</script>
 
-    function toggleAtelierAudio() {
-        const audio = document.getElementById('atelier-audio');
-        const btn = document.getElementById('audio-toggle-btn');
-        const iconOn = document.getElementById('audio-on-indicator');
-        const iconOff = document.getElementById('audio-off-indicator');
+    <div class="fixed bottom-24 right-6 md:right-12 z-[90] pointer-events-none flex flex-col items-end">
+    
+    <!-- El menú ahora es position: absolute, desvinculado del tamaño físico del contenedor -->
+    <div id="fab-menu" class="absolute bottom-[calc(100%+12px)] right-0 flex flex-col gap-3 items-end opacity-0 invisible pointer-events-none translate-y-4 transition-all duration-300 w-max">
+        
+        <button onclick="scrollToVault(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+            <span class="text-[9px] font-bold uppercase tracking-widest">Colección Floral</span>
+        </button>
+        
+        <button onclick="document.getElementById('privilege').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+            <span class="text-[9px] font-bold uppercase tracking-widest">Suscripciones</span>
+        </button>
+        
+        <button onclick="document.getElementById('garden').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+            <span class="text-[9px] font-bold uppercase tracking-widest">Jardinería</span>
+        </button>
+        
+        <button onclick="document.querySelector('.collage-container').closest('section').scrollIntoView({behavior: 'smooth', block: 'start'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300 group">
+            <div class="flex items-center gap-1.5">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Testimonios</span>
+                <svg class="w-3.5 h-3.5 text-[#c5a059] animate-pulse group-hover:text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                </svg>
+            </div>
+        </button>
+    </div>
 
-        if (!audio) return;
-        audio.volume = 0.35;
+    <!-- Botón "Ver" base -->
+    <button onclick="toggleFabMenu()" class="pointer-events-auto relative bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
+        <svg id="fab-icon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+        </svg>
+        <span class="text-[10px] font-bold uppercase tracking-widest">Ver</span>
+    </button>
+</div>
 
-        if (audio.paused) {
-            if (audio.readyState === 0) { audio.load(); }
-            const playPromise = audio.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    iconOff.style.display = 'none';
-                    iconOn.style.display = 'flex';
-                    if (btn) {
-                        btn.style.opacity = '1';
-                        btn.style.borderColor = '#c5a059';
-                    }
-                }).catch(error => { console.error("Reproducción bloqueada:", error); });
-            }
-        } else {
-            audio.pause();
-            if (iconOn) iconOn.style.display = 'none';
-            if (iconOff) iconOff.style.display = 'flex';
-            if (btn) {
-                btn.style.opacity = '0.75';
-                btn.style.borderColor = 'rgba(197, 160, 89, 0.3)';
-            }
-        }
-    }
-
+    <!-- SCRIPT CORREGIDO PARA EFECTO INSTANTÁNEO EN MÓVIL SIN ATASCOS -->
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const audio = document.getElementById('atelier-audio');
-        if(audio) {
-            audio.addEventListener('timeupdate', function() {
-                if (this.duration && (this.duration - this.currentTime < 0.20)) {
-                    this.currentTime = 0;
-                    this.play().catch(()=>{});
+        const collagePages = document.querySelectorAll('.collage-page');
+        
+        // 1. LÓGICA PARA PC (Hover normal con el mouse)
+        collagePages.forEach(page => {
+            page.addEventListener('mouseenter', function() {
+                if(window.innerWidth > 1024) {
+                    collagePages.forEach(p => p.classList.remove('active-page'));
+                    this.classList.add('active-page');
                 }
+            });
+            page.addEventListener('mouseleave', function() {
+                if(window.innerWidth > 1024) {
+                    this.classList.remove('active-page');
+                }
+            });
+        });
+
+        // 2. LÓGICA PARA MÓVILES (Escáner central automático)
+        if (window.innerWidth <= 1024) {
+            // Configuramos márgenes negativos para crear una "línea de activación" 
+            // justo en el centro de la pantalla del celular.
+            const observerOptions = {
+                root: null, // Usa la pantalla principal (evita que el scroll se tranque)
+                rootMargin: '-35% 0px -35% 0px', 
+                threshold: 0
+            };
+
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // Cuando la tarjeta cruza la línea central, se activa instantáneamente
+                    if (entry.isIntersecting) {
+                        collagePages.forEach(p => p.classList.remove('active-page'));
+                        entry.target.classList.add('active-page');
+                    }
+                });
+            }, observerOptions);
+
+            // Le asignamos el escáner a las 13 imágenes
+            collagePages.forEach(page => {
+                scrollObserver.observe(page);
             });
         }
     });
-</script>
+    </script>
     
-    <audio id="atelier-audio" loop preload="auto">
-        <source src="audio/atelier-bg.mp3" type="audio/mpeg">
-    </audio>
-
-    <button id="audio-toggle-btn" onclick="toggleAtelierAudio()" style="opacity: 0.75; transition: all 0.3s ease;" class="fixed bottom-24 right-6 md:right-12 z-[90] bg-[#0a1f1c] border border-[#c5a059]/30 text-[#c5a059] p-4 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center" aria-label="Ambiente del Atelier">
-        <div id="audio-on-indicator" style="display: none;" class="items-center justify-center relative w-6 h-6">
-            <span class="absolute inline-flex h-full w-full rounded-full bg-[#c5a059] opacity-30 animate-ping"></span>
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
-            </svg>
-        </div>
-
-        <div id="audio-off-indicator" style="display: flex;" class="items-center justify-center w-6 h-6">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 10l4 4m0-4l-4 4"></path>
-            </svg>
-        </div>
-    </button>
 </body>
 </html>
