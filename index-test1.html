@@ -454,7 +454,7 @@
         <div class="p-8 bg-zinc-50 border-t">
             <div class="flex justify-between items-start mb-6">
                 <!-- Etiqueta cambiada a Subtotal -->
-                <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c] mt-1">Subtotal de Productos</span>
+                <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c] mt-1">Total Estimado</span>
                 <div class="text-right">
                     <span id="cart-total" class="text-2xl font-serif text-[#0a1f1c] block">$0</span>
                     <span id="cart-shipping-notice" class="text-[9px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 transition-all duration-300" style="opacity: 0; transform: translateY(4px);"></span>
@@ -2030,7 +2030,7 @@
                 shippingNotice.style.opacity = '1';
                 shippingNotice.style.transform = 'translateY(0)';
                 let faltante = 69990 - baseTotal;
-                shippingNotice.innerText = `Agrega $${faltante.toLocaleString('es-CL')} para envío gratis*`;
+                shippingNotice.innerText = `$${faltante.toLocaleString('es-CL')} para dscto`;
             }
         }
 
