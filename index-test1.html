@@ -1614,10 +1614,12 @@
                 return;
             }
 
-            let html = cart.map(item => `
+            let html = cart.map(item => {
+                const fileName = item.img.split('/').pop();
+                return `
                 <div class="flex space-x-4 items-center">
                     <div class="w-24 h-24 flex-shrink-0 bg-white overflow-hidden relative flex items-center justify-center border border-zinc-200 rounded-md shadow-sm">
-                        <img src="${item.img}" class="w-full h-full object-cover relative z-10" alt="${item.name}">
+                        <img src="img/${fileName}" class="w-full h-full object-cover relative z-10" alt="${item.name}">
                     </div>
                     <div class="flex-grow">
                         <h4 class="font-serif text-lg italic mb-1 text-[#0a1f1c]">${item.name}</h4>
@@ -1632,7 +1634,8 @@
                         </div>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
 
             if (typeof upsellsCatalog !== 'undefined') {
                 const inCartIds = cart.map(item => item.id);
@@ -1645,16 +1648,19 @@
                         <div class="mt-8 border-t border-zinc-100 pt-6">
                             <h5 class="font-serif text-lg italic mb-4 text-[#0a1f1c]">Recomendaciones para este arreglo</h5>
                             <div id="upsell-slider" class="flex overflow-x-auto space-x-4 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
-                                ${availableUpsells.map(u => `
-                                    <div class="w-[110px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
+                                ${availableUpsells.map(u => {
+                                    const uFileName = u.img.split('/').pop();
+                                    return `
+                                    <div class="w-[110px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, 'img/${uFileName}')">
                                         <div class="w-[110px] h-[110px] bg-white border border-zinc-200 mb-2 flex items-center justify-center relative overflow-hidden transition-all group-hover:border-[#c5a059] rounded-md shadow-sm p-2">
                                             <span class="font-serif italic text-[#c5a059] text-3xl opacity-20 group-hover:opacity-100 transition-all absolute z-0">+</span>
-                                            <img src="${u.img}" class="w-full h-full object-contain relative z-10 transition-transform duration-500 group-hover:scale-105" alt="${u.name}">
+                                            <img src="img/${uFileName}" class="w-full h-full object-contain relative z-10 transition-transform duration-500 group-hover:scale-105" alt="${u.name}">
                                         </div>
                                         <h6 class="text-[9px] uppercase tracking-widest font-bold leading-tight text-[#0a1f1c] mb-1 line-clamp-2">${u.name}</h6>
                                         <p class="text-[#c5a059] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
                                     </div>
-                                `).join('')}
+                                    `;
+                                }).join('')}
                             </div>
                         </div>
                     `;
@@ -1662,7 +1668,6 @@
             }
 
             container.innerHTML = html;
-
             const upsellSlider = document.getElementById('upsell-slider');
             if (upsellSlider) {
                 upsellSlider.addEventListener('wheel', (evt) => {
