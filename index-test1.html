@@ -1623,7 +1623,7 @@
                     </div>
                     <div class="flex-grow">
                         <h4 class="font-serif text-lg italic mb-1 text-[#0a1f1c]">${item.name}</h4>
-                        <p class="text-[#c5a059] text-sm font-bold">$${(item.price).toLocaleString()}</p>
+                        <p class="text-[#0a1f1c] text-sm font-bold">$${(item.price).toLocaleString()}</p>
                         <div class="flex items-center space-x-6 mt-3">
                             <div class="flex items-center space-x-3 border border-zinc-200 px-2 py-1 bg-white rounded">
                                 <button onclick="updateQty(${item.id}, -1)" class="hover:text-[#c5a059] transition-colors">-</button>
@@ -1657,7 +1657,7 @@
                                             <img src="img/${uFileName}" class="w-full h-full object-contain relative z-10 transition-transform duration-500 group-hover:scale-105" alt="${u.name}">
                                         </div>
                                         <h6 class="text-[9px] uppercase tracking-widest font-bold leading-tight text-[#0a1f1c] mb-1 line-clamp-2">${u.name}</h6>
-                                        <p class="text-[#c5a059] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
+                                        <p class="text-[#0a1f1c] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
                                     </div>
                                     `;
                                 }).join('')}
@@ -1668,6 +1668,7 @@
             }
 
             container.innerHTML = html;
+            
             const upsellSlider = document.getElementById('upsell-slider');
             if (upsellSlider) {
                 upsellSlider.addEventListener('wheel', (evt) => {
