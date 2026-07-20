@@ -1615,18 +1615,18 @@
             }
 
             let html = cart.map(item => `
-                <div class="flex space-x-6 items-start">
-                    <div class="w-24 h-32 bg-zinc-50 overflow-hidden relative flex items-center justify-center border border-zinc-100">
-                        <img src="${item.img}" onerror="this.style.opacity='0'" class="w-full h-full object-cover relative z-10" alt="${item.name}">
+                <div class="flex space-x-4 items-center">
+                    <div class="w-24 h-24 flex-shrink-0 bg-white overflow-hidden relative flex items-center justify-center border border-zinc-200 rounded-md shadow-sm">
+                        <img src="${item.img}" class="w-full h-full object-cover relative z-10" alt="${item.name}">
                     </div>
                     <div class="flex-grow">
                         <h4 class="font-serif text-lg italic mb-1 text-[#0a1f1c]">${item.name}</h4>
-                        <p class="text-gold-leaf text-sm font-bold">$${(item.price).toLocaleString()}</p>
-                        <div class="flex items-center space-x-6 mt-4">
-                            <div class="flex items-center space-x-3 border border-zinc-200 px-2 py-1 bg-white">
-                                <button onclick="updateQty(${item.id}, -1)" class="hover:text-gold-leaf transition-colors">-</button>
+                        <p class="text-[#c5a059] text-sm font-bold">$${(item.price).toLocaleString()}</p>
+                        <div class="flex items-center space-x-6 mt-3">
+                            <div class="flex items-center space-x-3 border border-zinc-200 px-2 py-1 bg-white rounded">
+                                <button onclick="updateQty(${item.id}, -1)" class="hover:text-[#c5a059] transition-colors">-</button>
                                 <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
-                                <button onclick="updateQty(${item.id}, 1)" class="hover:text-gold-leaf transition-colors">+</button>
+                                <button onclick="updateQty(${item.id}, 1)" class="hover:text-[#c5a059] transition-colors">+</button>
                             </div>
                             <button onclick="removeFromCart(${item.id})" class="text-[9px] uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity">Eliminar</button>
                         </div>
@@ -1642,20 +1642,19 @@
 
                 if (availableUpsells.length > 0 && !tieneCondolencias) {
                     html += `
-                        <div class="mt-12 border-t border-zinc-100 pt-8">
-                            <h5 class="font-serif text-lg italic mb-6 text-[#0a1f1c]">Recomendaciones para este arreglo</h5>
-                            <div id="upsell-slider" class="flex overflow-x-auto space-x-5 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
+                        <div class="mt-8 border-t border-zinc-100 pt-6">
+                            <h5 class="font-serif text-lg italic mb-4 text-[#0a1f1c]">Recomendaciones para este arreglo</h5>
+                            <div id="upsell-slider" class="flex overflow-x-auto space-x-4 pb-4 hide-scroll w-full cursor-grab active:cursor-grabbing">
                                 ${availableUpsells.map(u => `
-                                    <div class="w-[130px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
-                                        <div class="w-full aspect-square bg-[#fcfaf7] border border-zinc-200/60 mb-3 flex items-center justify-center relative overflow-hidden transition-all group-hover:bg-[#c5a059]/10 p-3 shadow-sm group-hover:border-[#c5a059]/30">
-                                            <span class="font-serif italic text-[#c5a059] text-3xl opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all absolute z-0">+</span>
-                                            <img src="${u.img}" onerror="this.style.opacity='0'" class="w-full h-full object-contain relative z-10 transition-transform duration-700 group-hover:scale-105" alt="${u.name}">
+                                    <div class="w-[110px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, '${u.img}')">
+                                        <div class="w-[110px] h-[110px] bg-white border border-zinc-200 mb-2 flex items-center justify-center relative overflow-hidden transition-all group-hover:border-[#c5a059] rounded-md shadow-sm p-2">
+                                            <span class="font-serif italic text-[#c5a059] text-3xl opacity-20 group-hover:opacity-100 transition-all absolute z-0">+</span>
+                                            <img src="${u.img}" class="w-full h-full object-contain relative z-10 transition-transform duration-500 group-hover:scale-105" alt="${u.name}">
                                         </div>
-                                        <h6 class="text-[9px] uppercase tracking-widest font-bold leading-normal text-[#0a1f1c] mb-1 min-h-[24px]">${u.name}</h6>
+                                        <h6 class="text-[9px] uppercase tracking-widest font-bold leading-tight text-[#0a1f1c] mb-1 line-clamp-2">${u.name}</h6>
                                         <p class="text-[#c5a059] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
                                     </div>
                                 `).join('')}
-                                <div class="w-4 flex-shrink-0"></div>
                             </div>
                         </div>
                     `;
