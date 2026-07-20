@@ -2033,7 +2033,7 @@
                 if (costoEnvioFinal === 0) {
                     shippingNotice.innerText = 'Envío Gratis';
                 } else {
-                    shippingNotice.innerText = 'Bono Logística (-$7.250)';
+                    shippingNotice.innerText = 'Bono Envío (-$7.250)';
                 }
             } else {
                 shippingNotice.style.opacity = '1';
@@ -2079,7 +2079,7 @@
                         checkoutShippingNotice.classList.remove('hidden');
                     } else {
                         checkoutShipping.innerText = `$${costoEnvioFinal.toLocaleString('es-CL')}`;
-                        checkoutShippingNotice.innerText = 'Bono Logística Aplicado (-$7.250)';
+                        checkoutShippingNotice.innerText = 'Bono Envío Aplicado (-$7.250)';
                         checkoutShippingNotice.classList.remove('hidden');
                     }
                 } else {
