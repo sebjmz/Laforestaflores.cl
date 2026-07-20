@@ -2951,18 +2951,18 @@
         </div>
     </button>
 
+    <!-- AQUÍ INICIA EL SCRIPT CORREGIDO PARA EL ACORDEÓN 3D -->
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Inicializador Táctil para el Acordeón 3D
         const collagePages = document.querySelectorAll('.collage-page');
         
+        // 1. Mantiene el comportamiento táctil y de mouse (Tap / Hover)
         collagePages.forEach(page => {
-            // Manejo táctil en celulares (Touch)
             page.addEventListener('touchstart', function(e) {
                 collagePages.forEach(p => p.classList.remove('active-page'));
                 this.classList.add('active-page');
             }, { passive: true });
 
-            // Manejo de mouse en PC
             page.addEventListener('mouseenter', function() {
                 collagePages.forEach(p => p.classList.remove('active-page'));
                 this.classList.add('active-page');
@@ -2972,7 +2972,38 @@
                 this.classList.remove('active-page');
             });
         });
+
+        // 2. NUEVO: Lógica de Scroll Automático para Móviles (iOS/Android)
+        // Detecta si es una pantalla móvil basada en el punto de quiebre de tu CSS (1024px)
+        if (window.innerWidth <= 1024) {
+            // Configuramos un "área de activación" en el centro exacto de la pantalla
+            const observerOptions = {
+                root: null,
+                // El margen de -40% arriba y abajo hace que la tarjeta solo se active
+                // cuando pasa justo por el 20% central de la pantalla
+                rootMargin: '-40% 0px -40% 0px',
+                threshold: 0
+            };
+
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // Si la tarjeta entra en la zona central
+                    if (entry.isIntersecting) {
+                        // Cerramos todas
+                        collagePages.forEach(p => p.classList.remove('active-page'));
+                        // Abrimos la que está en el centro
+                        entry.target.classList.add('active-page');
+                    }
+                });
+            }, observerOptions);
+
+            // Observamos cada tarjeta del collage
+            collagePages.forEach(page => {
+                scrollObserver.observe(page);
+            });
+        }
     });
+    </script>
     
 </body>
 </html>
