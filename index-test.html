@@ -377,7 +377,7 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* --- MOTOR 3D: COLLAGE DE CLIENTES (PANORÁMICO EDGE-TO-EDGE) --- */
+        /* --- MOTOR 3D: COLLAGE DE CLIENTES (13 ITEMS PANORÁMICOS) --- */
         .collage-container {
             display: flex;
             flex-direction: row;
@@ -385,7 +385,7 @@
             align-items: center;
             width: 100vw;
             max-width: 100%;
-            height: 600px;
+            height: 580px; /* Altura óptima */
             perspective: 2000px;
             overflow: hidden; 
             padding: 40px 0;
@@ -394,10 +394,10 @@
 
         .collage-page {
             position: relative;
-            width: 300px;
-            height: 450px;
+            width: 260px; /* Ligeramente más esbeltas para que quepan 13 */
+            height: 420px;
             background-color: var(--forest-green);
-            margin-left: -160px;
+            margin-left: -160px; /* Mayor superposición para no desbordar la pantalla */
             border-radius: 10px;
             border: 1px solid rgba(197, 160, 89, 0.3);
             box-shadow: -20px 0 40px rgba(0,0,0,0.7);
@@ -416,16 +416,16 @@
             margin-left: 0;
         }
 
-        /* Efecto de apertura (Hover en PC / Active en Móvil) */
+        /* Efecto de apertura (Hover en PC) */
         .collage-page:hover, .collage-page.active-page {
             transform: rotateY(0deg) scale(1.05) translateZ(40px);
-            margin-right: 170px;
+            margin-right: 150px; /* Abre justo el espacio necesario para leer */
             z-index: 20;
             box-shadow: 0 25px 60px rgba(0,0,0,0.9);
             border-color: var(--gold-leaf);
         }
 
-        /* Empuje mecánico a las cartas de la derecha */
+        /* Empuje mecánico a las cartas de la derecha en PC */
         .collage-page:hover ~ .collage-page, .collage-page.active-page ~ .collage-page {
             transform: rotateY(45deg) scale(0.9) translateZ(-20px);
         }
@@ -462,37 +462,44 @@
             opacity: 1;
         }
 
-        /* Rolodex Vertical para Celulares (iOS/Android) */
+        /* Rolodex Vertical para Celulares (Ajustado para 13 ítems) */
         @media (max-width: 1024px) {
             .collage-container {
                 flex-direction: column;
                 height: auto;
-                min-height: 1000px;
+                min-height: 1400px; /* Mucho más alto para contener 13 tarjetas sin cortar la última */
                 padding: 40px 20px;
                 perspective: 1200px;
+                width: 100%; 
             }
             .collage-page {
                 width: 100%;
                 max-width: 340px;
-                height: 200px;
-                margin-left: 0;
-                margin-top: -130px;
+                height: 240px; 
+                margin-left: 0 !important; 
+                margin-right: 0 !important; 
+                margin-top: -140px;
                 transform-origin: top center;
                 transform: rotateX(35deg) scale(0.9);
             }
             .collage-page:first-child {
                 margin-top: 0;
             }
+            
+            /* Corrección del centrado al tocar en móvil */
             .collage-page:hover, .collage-page.active-page {
                 transform: rotateX(0deg) scale(1.05) translateZ(30px);
-                margin-bottom: 110px;
+                margin-bottom: 140px; 
                 margin-top: 0;
+                margin-left: 0 !important; 
+                margin-right: 0 !important; 
             }
+            
             .collage-page:hover ~ .collage-page, .collage-page.active-page ~ .collage-page {
                 transform: rotateX(45deg) scale(0.9) translateZ(-20px);
             } 
         }
-            
+
         @media (max-height: 500px) and (orientation: landscape) {
             #hero-slider h2 { 
                 font-size: 2.5rem !important; 
@@ -737,7 +744,7 @@
             <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#c5a059]">4.9/5 en +100 Evaluaciones de Google</p>
         </div>
 
-        <!-- ACORDEÓN 3D DE 10 CLIENTES -->
+        <!-- ACORDEÓN 3D DE 13 CLIENTES -->
         <div class="collage-container border-b border-[#c5a059]/20 pb-24 mb-16">
             
             <!-- 1. GARANTÍA DEL FUNDADOR -->
@@ -780,7 +787,17 @@
                 </div>
             </div>
 
-            <!-- 5. MUJER 3 -->
+            <!-- 5. HOMBRE (CRISTHIAN) -->
+            <div class="collage-page">
+                <img src="img/hombre1.jpg" alt="Cliente Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Quedé como rey. La asesoría experta y las flores frescas son fundamentales para lograr el arreglo perfecto. Un servicio de primer nivel para sorprender a quien amas."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Cristhian García.</p>
+                </div>
+            </div>
+
+            <!-- 6. MUJER 3 -->
             <div class="collage-page">
                 <img src="img/mujer3.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
                 <div class="collage-content">
@@ -790,9 +807,19 @@
                 </div>
             </div>
 
-            <!-- 6. MUJER 4 -->
+            <!-- 7. MUJER 4 (MAGDALENA) -->
             <div class="collage-page">
                 <img src="img/mujer4.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El equilibrio perfecto entre diseño premium y un valor accesible. Las flores más hermosas y frescas de la Quinta Región, con un estándar visual inigualable."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Magdalena.</p>
+                </div>
+            </div>
+
+            <!-- 8. MUJER 5 -->
+            <div class="collage-page">
+                <img src="img/mujer5.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
                 <div class="collage-content">
                     <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
                     <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Vivo fuera del país y quería enviar un detalle especial; la confianza y puntualidad logística que brindan es invaluable. Acortan distancias con muchísima belleza."</p>
@@ -800,9 +827,19 @@
                 </div>
             </div>
 
-            <!-- 7. MUJER 5 -->
+            <!-- 9. HOMBRE (MATÍAS) -->
             <div class="collage-page">
-                <img src="img/mujer5.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <img src="img/hombre2.jpg" alt="Cliente Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Compré flores para una celebración de cumpleaños y el ramo quedó simplemente espectacular. La atención fue impecable y su puntualidad en la entrega aún mejor."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Matías Cuevas.</p>
+                </div>
+            </div>
+
+            <!-- 10. MUJER 6 -->
+            <div class="collage-page">
+                <img src="img/mujer6.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
                 <div class="collage-content">
                     <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
                     <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Tienen una sensibilidad artística única. Sus creaciones para bodas y eventos importantes respiran elegancia. Me fascinó absolutamente la propuesta estética de mi arreglo."</p>
@@ -810,9 +847,9 @@
                 </div>
             </div>
 
-            <!-- 8. MUJER 6 -->
+            <!-- 11. MUJER 7 -->
             <div class="collage-page">
-                <img src="img/mujer6.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <img src="img/mujer7.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
                 <div class="collage-content">
                     <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
                     <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El bouquet resultó ser aún más impresionante en persona que en las fotos. Flores frescas, atención de primerísimo nivel y entrega exacta. Definitivamente mi florería de confianza."</p>
@@ -820,22 +857,22 @@
                 </div>
             </div>
 
-            <!-- 9. MUJER 7 -->
-            <div class="collage-page">
-                <img src="img/mujer7.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"La experiencia de compra es fabulosa. La asesoría es detallista y los ramos del día son sencillamente bellísimos. Tienen un gusto exquisito para armar las paletas."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Claudia Fernandini.</p>
-                </div>
-            </div>
-
-            <!-- 10. MUJER 8 -->
+            <!-- 12. MUJER 8 -->
             <div class="collage-page">
                 <img src="img/mujer8.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
                 <div class="collage-content">
                     <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El servicio es tremendamente profesional. Cada encargo corporativo llega a tiempo y la presentación es impecable. Para mí, la florería más distinguida de la V Región."</p>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"La experiencia de compra es fabulosa. La asesoría es detallista y los ramos del día son sencillamente bellísimos. Tienen un gusto exquisito para armar las paletas de color."</p>
+                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Claudia Fernandini.</p>
+                </div>
+            </div>
+
+            <!-- 13. MUJER 9 -->
+            <div class="collage-page">
+                <img src="img/mujer9.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                <div class="collage-content">
+                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El servicio es tremendamente profesional. Cada encargo llega a tiempo y la presentación es impecable. Para mí, es por lejos la florería más distinguida de la V Región."</p>
                     <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Carolina Jorquera.</p>
                 </div>
             </div>
