@@ -2368,36 +2368,47 @@
         }
     });
 
+    function toggleGardenImage() {
+    const img1 = document.getElementById('garden-img-1');
+    const img2 = document.getElementById('garden-img-2');
+    if (!img1 || !img2) return;
+    
+    if (img1.classList.contains('opacity-100')) {
+        img1.classList.replace('opacity-100', 'opacity-0');
+        img2.classList.replace('opacity-0', 'opacity-100');
+    } else {
+        img1.classList.replace('opacity-0', 'opacity-100');
+        img2.classList.replace('opacity-100', 'opacity-0');
+    }
+}
+        
     function updateCountdown() {
-        const timerEl = document.getElementById('countdown-timer');
-        const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-        const cutoffExpress = new Date(now);
-        cutoffExpress.setHours(18, 0, 0, 0);
+    const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
+    const cutoffExpress = new Date(now);
+    cutoffExpress.setHours(18, 0, 0, 0);
 
-    // NUEVO: Actualizar texto del navbar
+    // Actualizar texto del navbar
     const navTextEl = document.getElementById('nav-dispatch-text');
     if (navTextEl) {
         navTextEl.innerText = now >= cutoffExpress ? 'Despachando Mañana' : 'Despachando Hoy';
     }
-    
-        if (!timerEl) return;
-        const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-        const cutoffExpress = new Date(now);
-        
-        cutoffExpress.setHours(18, 0, 0, 0);
-        
-        if (now >= cutoffExpress) {
-            timerEl.innerHTML = "<span class='text-sm tracking-wide'>Envíos a partir de <strong>MAÑANA</strong>.</span>";
-            return;
-        }
-        const diff = cutoffExpress - now;
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        
-        timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Envío Express (1-2h) cierra en:</span><span class="opacity-60 md:hidden">Envío Express (1-2h) Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
+
+    const timerEl = document.getElementById('countdown-timer');
+    if (!timerEl) return;
+
+    if (now >= cutoffExpress) {
+        timerEl.innerHTML = "<span class='text-sm tracking-wide'>Envíos a partir de <strong>MAÑANA</strong>.</span>";
+        return;
     }
+    
+    const diff = cutoffExpress - now;
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    
+    timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Envío Express (1-2h) cierra en:</span><span class="opacity-60 md:hidden">Envío Express (1-2h) Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
+}
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
