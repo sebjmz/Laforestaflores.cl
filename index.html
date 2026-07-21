@@ -2530,7 +2530,7 @@ if (segment === 'Inmobiliarias & Propiedades') {
             items: mpItems,
             payer: { name: payerName, surname: payerSurname, email: payload.metadata.comprador_email },
             back_urls: {
-                success: window.location.origin + "?payment_result=success",
+                success: window.location.origin + "/gracias.html",
                 failure: window.location.origin + "?payment_result=failure",
                 pending: window.location.origin + "?payment_result=pending"
             },
@@ -2609,7 +2609,7 @@ if (segment === 'Inmobiliarias & Propiedades') {
                                 items: cart.map(item => ({ item_id: String(item.id), item_name: item.name, price: item.price, quantity: item.qty, item_category: 'Ramos Florales (Internacional)' }))
                             });
                         }
-                        window.location.href = window.location.origin + "?payment_result=success&status=approved";
+                        window.location.href = window.location.origin + "/gracias.html?payment_id=" + captureData.id;
                     } else {
                         alert("El pago no pudo completarse. Por favor, intente de nuevo.");
                         window.location.reload();
