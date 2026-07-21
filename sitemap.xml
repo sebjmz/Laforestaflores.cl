@@ -67,6 +67,24 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://laforestaflores.cl/cojin-de-condolencias.html</loc>
+        <lastmod>2026-07-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://laforestaflores.cl/corona-memorial-premium.html</loc>
+        <lastmod>2026-07-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://laforestaflores.cl/cubre-urna-sublime.html</loc>
+        <lastmod>2026-07-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://laforestaflores.cl/dulce-amor.html</loc>
         <lastmod>2026-07-20</lastmod>
         <changefreq>monthly</changefreq>
@@ -127,6 +145,12 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://laforestaflores.cl/pedestal-de-honor.html</loc>
+        <lastmod>2026-07-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://laforestaflores.cl/sereno.html</loc>
         <lastmod>2026-07-20</lastmod>
         <changefreq>monthly</changefreq>
@@ -179,6 +203,12 @@
     <url>
         <loc>https://laforestaflores.cl/gracias.html</loc>
         <lastmod>2026-07-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://laforestaflores.cl/gracias1.html</loc>
+        <lastmod>2026-07-21</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.5</priority>
     </url>
