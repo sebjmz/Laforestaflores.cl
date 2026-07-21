@@ -150,19 +150,18 @@
     </footer>
 
     <script>
-        // Catálogo Francotirador (Productos Fúnebres de Alto Ticket)
+        // Catálogo actualizado con descripciones respetuosas y solemnes
         const funeralCatalog = [
-            { id: 201, name: "Corona Memorial Premium", price: 95000, img: "img/corona.jpg", desc: "Imponente corona tejida en rosas blancas, lilium y follaje noble. Incluye atril y cinta impresa." },
-            { id: 202, name: "Cubre Urna Sublime", price: 85000, img: "img/cubre-urna.jpg", desc: "Manto floral simétrico de extremo a extremo, diseñado en tonos blancos y crema de absoluta pureza." },
-            { id: 203, name: "Cojín de Condolencias", price: 55000, img: "img/cojin.jpg", desc: "Composición sobria y compacta, ideal para acompañar el féretro. Diseño en rosas y astromelias." },
-            { id: 204, name: "Pedestal de Honor", price: 125000, img: "img/pedestal.jpg", desc: "Estructura vertical de alto impacto visual para velatorios. Exceso de volumen y flores de autor." }
+            { id: 201, name: "Corona Memorial Premium", price: 95000, img: "img/corona.jpg", desc: "Un tributo solemne en rosas blancas, lilium y follaje noble. Expresa condolencias con profundo respeto y serenidad. Incluye cinta dedicatoria." },
+            { id: 202, name: "Cubre Urna Sublime", price: 85000, img: "img/cubre-urna.jpg", desc: "Delicado homenaje en tonos blancos y crema, diseñado cuidadosamente para brindar un mensaje de paz y acompañamiento." },
+            { id: 203, name: "Cojín de Condolencias", price: 55000, img: "img/cojin.jpg", desc: "Composición sobria en rosas y astromelias, elaborada con delicadeza para ofrecer consuelo y afecto perdurable a la familia." },
+            { id: 204, name: "Pedestal de Honor", price: 125000, img: "img/pedestal.jpg", desc: "Elegante arreglo de presencia respetuosa, compuesto por flores seleccionadas para honrar la memoria de sus seres queridos con dignidad." }
         ];
 
         const grid = document.getElementById('funeral-grid');
         grid.innerHTML = funeralCatalog.map(product => `
             <div class="product-card group flex flex-col h-full">
                 <a href="#" class="block cursor-default">
-                    <!-- Agregado 'rounded-xl' para igualar al index -->
                     <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center rounded-xl">
                         <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
                         <img src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" loading="lazy">
