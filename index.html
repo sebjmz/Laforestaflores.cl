@@ -526,10 +526,14 @@
     <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Reñaca, Chile</div>
     
     <!-- Indicador de despacho -->
+<!-- Indicador de despacho estilo iOS -->
 <div class="flex items-center bg-white/5 border border-white/10 rounded-full px-3 py-1.5 cursor-default select-none">
-    <span class="text-[10px] font-bold uppercase tracking-widest text-white mr-2">Despachos</span>
-    <div id="nav-dispatch-icon-container" class="flex items-center justify-center bg-black/40 rounded-full p-1.5 border border-white/10 shadow-inner">
-        <!-- El SVG se insertará por JS -->
+    <span class="text-[10px] font-bold uppercase tracking-widest text-white mr-2.5">Despachos</span>
+    
+    <!-- Rendija del interruptor -->
+    <div id="nav-dispatch-toggle" class="w-8 h-4 rounded-full p-0.5 flex items-center transition-colors duration-500">
+        <!-- Bolita blanca que se desliza -->
+        <div id="nav-dispatch-knob" class="w-3 h-3 bg-white rounded-full shadow-sm transform transition-transform duration-500"></div>
     </div>
 </div>
 
@@ -2875,35 +2879,33 @@
             parts.forEach(({ type, value }) => { dateObj[type] = value; });
             
             const now = new Date(`${dateObj.year}-${dateObj.month}-${dateObj.day}T${dateObj.hour}:${dateObj.minute}:${dateObj.second}`);
-            if (isNaN(now.getTime())) return; 
+if (isNaN(now.getTime())) return; 
 
-    // 1. Extraemos solo la hora actual (0 a 23)
-            const currentHour = now.getHours();
+// 1. Extraemos la hora actual
+const currentHour = now.getHours();
 
-    // 2. Regla estricta: Activo desde las 11:00 hasta las 17:59
-            const isOpen = currentHour >= 11 && currentHour < 18;
+// 2. Regla estricta: Activo desde las 11:00 hasta las 17:59
+const isOpen = currentHour >= 11 && currentHour < 18;
 
-    // 3. Inyectamos solo el ícono correspondiente
-            const iconContainer = document.getElementById('nav-dispatch-icon-container');
+// 3. Controlamos el Switch de iOS
+const toggleTrack = document.getElementById('nav-dispatch-toggle');
+const toggleKnob = document.getElementById('nav-dispatch-knob');
 
-            if (iconContainer) {
-            if (isOpen) {
-                // Ícono Encendido (Verde Esmeralda) - Despachos Activos
-            iconContainer.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.9)]">
-                <path d="M12 2v10"></path>
-                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-            </svg>`;
+if (toggleTrack && toggleKnob) {
+    if (isOpen) {
+        // ABIERTO: Fondo verde, bolita a la derecha
+        toggleTrack.classList.remove('bg-red-500');
+        toggleTrack.classList.add('bg-emerald-500');
+        // Mueve la bolita 16px a la derecha
+        toggleKnob.style.transform = 'translateX(16px)'; 
     } else {
-        // Ícono Apagado (Rojo) - Despachos del día cerrados
-        iconContainer.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-red-500 drop-shadow-[0_0_6px_rgba(239,68,68,0.9)]">
-                <path d="M12 2v10"></path>
-                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-            </svg>`;
+        // CERRADO: Fondo rojo, bolita a la izquierda
+        toggleTrack.classList.remove('bg-emerald-500');
+        toggleTrack.classList.add('bg-red-500');
+        // Devuelve la bolita a la posición inicial (0)
+        toggleKnob.style.transform = 'translateX(0)'; 
     }
 }
-
             const timerEl = document.getElementById('countdown-timer');
             if (!timerEl) return;
 
