@@ -150,18 +150,18 @@
     </footer>
 
     <script>
-        // Catálogo actualizado con descripciones respetuosas y solemnes
+        // Catálogo actualizado con los nuevos precios, descripciones y URLs
         const funeralCatalog = [
-            { id: 201, name: "Corona Memorial Premium", price: 95000, img: "img/corona.jpg", desc: "Un tributo solemne en rosas blancas, lilium y follaje noble. Expresa condolencias con profundo respeto y serenidad. Incluye cinta dedicatoria." },
-            { id: 202, name: "Cubre Urna Sublime", price: 85000, img: "img/cubre-urna.jpg", desc: "Delicado homenaje en tonos blancos y crema, diseñado cuidadosamente para brindar un mensaje de paz y acompañamiento." },
-            { id: 203, name: "Cojín de Condolencias", price: 55000, img: "img/cojin.jpg", desc: "Composición sobria en rosas y astromelias, elaborada con delicadeza para ofrecer consuelo y afecto perdurable a la familia." },
-            { id: 204, name: "Pedestal de Honor", price: 125000, img: "img/pedestal.jpg", desc: "Elegante arreglo de presencia respetuosa, compuesto por flores seleccionadas para honrar la memoria de sus seres queridos con dignidad." }
+            { id: 201, name: "Corona Memorial Premium", price: 109900, img: "img/corona.jpg", desc: "Un tributo solemne en rosas blancas, lilium y follaje noble. Expresa condolencias con profundo respeto y serenidad. Incluye cinta dedicatoria.", url: "corona-memorial-premium.html" },
+            { id: 202, name: "Cubre Urna Sublime", price: 104900, img: "img/cubre-urna.jpg", desc: "Delicado homenaje en tonos blancos y crema, diseñado cuidadosamente para brindar un mensaje de paz y acompañamiento.", url: "cubre-urna-sublime.html" },
+            { id: 203, name: "Cojín de Condolencias", price: 58900, img: "img/cojin.jpg", desc: "Composición sobria en rosas y astromelias, elaborada con delicadeza para ofrecer consuelo y afecto perdurable a la familia.", url: "cojin-de-condolencias.html" },
+            { id: 204, name: "Pedestal de Honor", price: 164900, img: "img/pedestal.jpg", desc: "Elegante arreglo de presencia respetuosa, compuesto por flores seleccionadas para honrar la memoria de sus seres queridos con dignidad.", url: "pedestal-de-honor.html" }
         ];
 
         const grid = document.getElementById('funeral-grid');
         grid.innerHTML = funeralCatalog.map(product => `
             <div class="product-card group flex flex-col h-full">
-                <a href="#" class="block cursor-default">
+                <a href="${product.url}" class="block">
                     <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center rounded-xl">
                         <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
                         <img src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" loading="lazy">
@@ -173,14 +173,14 @@
                 </a>
                 
                 <div class="flex flex-col flex-grow mb-3 md:mb-4">
-                    <a href="#" class="hover:text-[#c5a059] transition-colors cursor-default">
+                    <a href="${product.url}" class="hover:text-[#c5a059] transition-colors">
                         <h3 class="font-serif text-sm md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${product.name}</h3>
                     </a>
                     <p class="text-[8px] md:text-[10px] uppercase tracking-widest opacity-50 mt-1 line-clamp-2"><span class="text-[#c5a059] mr-1">★★★★★</span> ${product.desc}</p>
                 </div>
                 
                 <div class="mt-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-                    <span class="font-serif text-base md:text-xl text-[#0a1f1c]">$${product.price.toLocaleString()}</span>
+                    <span class="font-serif text-base md:text-xl text-[#0a1f1c]">$${product.price.toLocaleString('es-CL')}</span>
                     <button onclick="agregarYVolver(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
                             class="w-full md:w-auto px-4 py-3 border border-[#0a1f1c] text-[#0a1f1c] text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors duration-300 text-center">
                         Añadir
