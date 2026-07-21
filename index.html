@@ -1637,18 +1637,41 @@ if (segment === 'Inmobiliarias & Propiedades') {
         }
     }
 
-    let cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
-    let selectedGardenSpace = localStorage.getItem('laforesta_selectedGardenSpace') || '';
-    let selectedPalette = localStorage.getItem('laforesta_selectedPalette') || '';
-    let shippingCost = parseInt(localStorage.getItem('laforesta_shippingCost')) || 0;
-    let selectedZoneName = localStorage.getItem('laforesta_selectedZoneName') || '';
-    let selectedLogistics = localStorage.getItem('laforesta_selectedLogistics') || '';
-    let selectedDate = localStorage.getItem('laforesta_selectedDate') || '';
-    let selectedTimeSlot = localStorage.getItem('laforesta_selectedTimeSlot') || '';
-    let isExpressDelivery = localStorage.getItem('laforesta_isExpressDelivery') === 'true';
+    // Variables protegidas contra el Modo Incógnito de iOS
+let cart = [];
+let selectedGardenSpace = '';
+let selectedPalette = '';
+let shippingCost = 0;
+let selectedZoneName = '';
+let selectedLogistics = '';
+let selectedDate = '';
+let selectedTimeSlot = '';
+let isExpressDelivery = false;
 
-    const RECARGO_EXPRESS_ENVIO = 1.50; 
-    let currentCalendarDate = new Date();
+try {
+    cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
+    selectedGardenSpace = localStorage.getItem('laforesta_selectedGardenSpace') || '';
+    selectedPalette = localStorage.getItem('laforesta_selectedPalette') || '';
+    shippingCost = parseInt(localStorage.getItem('laforesta_shippingCost')) || 0;
+    selectedZoneName = localStorage.getItem('laforesta_selectedZoneName') || '';
+    selectedLogistics = localStorage.getItem('laforesta_selectedLogistics') || '';
+    selectedDate = localStorage.getItem('laforesta_selectedDate') || '';
+    selectedTimeSlot = localStorage.getItem('laforesta_selectedTimeSlot') || '';
+    isExpressDelivery = localStorage.getItem('laforesta_isExpressDelivery') === 'true';
+} catch (e) {
+    console.warn("Navegación privada detectada, funciones de memoria limitadas.");
+}
+
+const RECARGO_EXPRESS_ENVIO = 1.50;
+let currentCalendarDate = new Date();
+
+// Proteger MercadoPago contra bloqueadores de anuncios (AdBlock) en móviles
+let mp;
+try {
+    mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', { locale: 'es-CL' });
+} catch (e) {
+    console.warn("MercadoPago SDK bloqueado por el navegador.");
+}
 
     const mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', {
         locale: 'es-CL'
@@ -2716,48 +2739,57 @@ if (segment === 'Inmobiliarias & Propiedades') {
 }
         
     function updateCountdown() {
-    const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
-    const cutoffExpress = new Date(now);
-    cutoffExpress.setHours(18, 0, 0, 0);
+    try {
+        // Fix seguro para fechas en iOS (evita caracteres invisibles que rompen Safari)
+        const dateOptions = { timeZone: "America/Santiago", year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
+        const formatter = new Intl.DateTimeFormat('en-US', dateOptions);
+        const parts = formatter.formatToParts(new Date());
+        const dateObj = {};
+        parts.forEach(({ type, value }) => { dateObj[type] = value; });
+        
+        // Construimos la fecha de forma manual y segura
+        const now = new Date(`${dateObj.year}-${dateObj.month}-${dateObj.day}T${dateObj.hour}:${dateObj.minute}:${dateObj.second}`);
+        
+        if (isNaN(now.getTime())) return; // Si el navegador falla, salimos sin romper el script
 
-    // Actualizar indicador de despacho con ícono de encendido/apagado
-    const iconContainer = document.getElementById('nav-dispatch-icon-container');
-    
-    if (iconContainer) {
-        if (now >= cutoffExpress) {
-            // OFF: Rojo, círculo incompleto clásico
-            iconContainer.innerHTML = `
-                <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-red-500 drop-shadow-[0_0_4px_rgba(239,68,68,0.8)] opacity-90">
-                    <path d="M12 2v10"></path>
-                    <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-                </svg>
-            `;
-        } else {
-            // ON: Verde, círculo completo
-            iconContainer.innerHTML = `
-                <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-green-400 drop-shadow-[0_0_5px_rgba(74,222,128,0.9)]">
-                    <path d="M12 2v10"></path>
-                    <circle cx="12" cy="12" r="9"></circle>
-                </svg>
-            `;
+        const cutoffExpress = new Date(now);
+        cutoffExpress.setHours(18, 0, 0, 0);
+
+        const iconContainer = document.getElementById('nav-dispatch-icon-container');
+        if (iconContainer) {
+            if (now >= cutoffExpress) {
+                iconContainer.innerHTML = `
+                    <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-red-500 drop-shadow-[0_0_4px_rgba(239,68,68,0.8)] opacity-90">
+                        <path d="M12 2v10"></path>
+                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                    </svg>`;
+            } else {
+                iconContainer.innerHTML = `
+                    <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-green-400 drop-shadow-[0_0_5px_rgba(74,222,128,0.9)]">
+                        <path d="M12 2v10"></path>
+                        <circle cx="12" cy="12" r="9"></circle>
+                    </svg>`;
+            }
         }
-    }
 
-    const timerEl = document.getElementById('countdown-timer');
-    if (!timerEl) return;
+        const timerEl = document.getElementById('countdown-timer');
+        if (!timerEl) return;
 
-    if (now >= cutoffExpress) {
-        timerEl.innerHTML = "<span class='text-sm tracking-wide'>Envíos a partir de <strong>MAÑANA</strong>.</span>";
-        return;
+        if (now >= cutoffExpress) {
+            timerEl.innerHTML = "<span class='text-sm tracking-wide'>Envíos a partir de <strong>MAÑANA</strong>.</span>";
+            return;
+        }
+        
+        const diff = cutoffExpress - now;
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        
+        timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Envío Express (1-2h) cierra en:</span><span class="opacity-60 md:hidden">Envío Express (1-2h) Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
+    } catch(e) {
+        console.warn("Contador visual desactivado", e);
     }
-    
-    const diff = cutoffExpress - now;
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    
-    timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Envío Express (1-2h) cierra en:</span><span class="opacity-60 md:hidden">Envío Express (1-2h) Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
 }
     setInterval(updateCountdown, 1000);
     updateCountdown();
