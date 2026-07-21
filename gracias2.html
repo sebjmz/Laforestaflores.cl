@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orden Confirmada | La Foresta Flores</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --forest-green: #0a1f1c;
+            --gold-leaf: #c5a059;
+            --soft-cream: #fcfaf7;
+        }
+        body {
+            background-color: var(--forest-green);
+            color: var(--soft-cream);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .btn-gold-outline {
+            border: 1px solid var(--gold-leaf);
+            color: var(--gold-leaf);
+            transition: all 0.3s ease;
+        }
+        .btn-gold-outline:hover {
+            background-color: var(--gold-leaf);
+            color: var(--forest-green);
+        }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6 lg:p-12 relative overflow-x-hidden">
+
+    <!-- Decoración de fondo -->
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20 bg-[radial-gradient(circle_at_top_left,_var(--gold-leaf)_0%,_transparent_50%)] blur-3xl"></div>
+
+    <div class="w-full max-w-7xl relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        
+        <!-- Columna Izquierda: Información y Confirmación -->
+        <div class="flex flex-col text-left">
+            <a href="/" class="mb-10 inline-block">
+                <img src="img/logo-menu.png" alt="La Foresta Flores" class="h-8 md:h-10 w-auto object-contain brightness-0 invert opacity-80 hover:opacity-100 transition-opacity">
+            </a>
+
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-12 h-12 rounded-full border border-[#c5a059] flex items-center justify-center bg-[#c5a059]/10 shadow-[0_0_20px_rgba(197,160,89,0.2)] shrink-0">
+                    <svg class="w-6 h-6 text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 6L9 17l-5-5"></path>
+                    </svg>
+                </div>
+                <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl italic">Orden Confirmada.</h1>
+            </div>
+            
+            <p class="text-white/60 text-sm md:text-base font-light leading-relaxed mb-6 max-w-lg">
+                Su transacción ha sido procesada con éxito. El pedido ya ingresó a nuestro sistema para su preparación.
+            </p>
+            
+            <div class="bg-white/5 border border-white/10 px-5 py-2.5 rounded-lg inline-flex items-center gap-3 mb-12 self-start">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></span>
+                <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-white" id="order-reference">Generando ID...</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full mb-12">
+                <div class="border-t border-[#c5a059]/30 pt-4">
+                    <span class="text-[#c5a059] text-[9px] font-bold uppercase tracking-[0.3em] block mb-2">01. Correo</span>
+                    <h3 class="font-serif text-xl italic mb-2">Comprobante</h3>
+                    <p class="text-[10px] text-white/50 uppercase tracking-widest leading-relaxed">
+                        El detalle de compra fue enviado a su email (Revise Spam).
+                    </p>
+                </div>
+
+                <div class="border-t border-[#c5a059]/30 pt-4">
+                    <span class="text-[#c5a059] text-[9px] font-bold uppercase tracking-[0.3em] block mb-2">02. Logística</span>
+                    <h3 class="font-serif text-xl italic mb-2">Ejecución</h3>
+                    <p class="text-[10px] text-white/50 uppercase tracking-widest leading-relaxed">
+                        Despacho o retiro programado según las coordenadas indicadas.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+                <a href="/" class="w-full text-center bg-[#c5a059] text-[#0a1f1c] px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors duration-300">
+                    Volver al Inicio
+                </a>
+                <a href="https://wa.me/56994783520" target="_blank" class="w-full text-center btn-gold-outline px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">
+                    Soporte WhatsApp
+                </a>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Imagen de Confianza con bordes redondeados -->
+        <div class="w-full h-[400px] lg:h-[650px] relative hidden md:block">
+            <!-- Utiliza img/slide1-pc.jpg o img/garantia-fundador.jpg -->
+            <img src="img/slide1-pc.jpg" alt="Familia La Foresta" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-10">
+            
+            <!-- Etiqueta superpuesta (Trust Badge) -->
+            <div class="absolute bottom-8 left-8 z-20 bg-[#0a1f1c]/80 backdrop-blur-md border border-[#c5a059]/30 p-5 rounded-2xl shadow-xl max-w-xs">
+                <span class="text-[#c5a059] text-xl block mb-2">★★★★★</span>
+                <p class="text-[10px] text-white/90 uppercase tracking-widest font-bold leading-relaxed">
+                    Respaldado por nuestro compromiso de excelencia floral.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paymentId = urlParams.get('payment_id') || urlParams.get('token') || 'LF-' + Math.floor(Math.random() * 1000000);
+            
+            const refElement = document.getElementById('order-reference');
+            if (refElement) {
+                refElement.innerText = `REF: ${paymentId}`;
+            }
+
+            const keysToRemove = [
+                'laforesta_cart', 'laforesta_checkout_inputs', 'laforesta_shippingCost', 
+                'laforesta_selectedZoneName', 'laforesta_selectedLogistics', 'laforesta_selectedDate', 
+                'laforesta_selectedTimeSlot', 'laforesta_isExpressDelivery', 'laforesta_selectedPalette'
+            ];
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+        });
+    </script>
+</body>
+</html>
