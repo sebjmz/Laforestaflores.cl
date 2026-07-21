@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orden Confirmada | La Foresta Flores</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --forest-green: #0a1f1c;
+            --gold-leaf: #c5a059;
+            --soft-cream: #fcfaf7;
+        }
+        body {
+            background-color: var(--forest-green);
+            color: var(--soft-cream);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .btn-gold-outline {
+            border: 1px solid var(--gold-leaf);
+            color: var(--gold-leaf);
+            transition: all 0.3s ease;
+        }
+        .btn-gold-outline:hover {
+            background-color: var(--gold-leaf);
+            color: var(--forest-green);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
+
+    <!-- Decoración de fondo -->
+    <div class="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(circle_at_center,_var(--gold-leaf)_0%,_transparent_60%)] scale-150 blur-3xl"></div>
+
+    <div class="w-full max-w-3xl relative z-10 flex flex-col items-center text-center">
+        
+        <!-- Logo -->
+        <a href="/" class="mb-12">
+            <img src="img/logo-menu.png" alt="La Foresta Flores" class="h-10 md:h-12 w-auto object-contain brightness-0 invert opacity-80 hover:opacity-100 transition-opacity">
+        </a>
+
+        <!-- Icono Check -->
+        <div class="w-20 h-20 md:w-24 md:h-24 rounded-full border border-[#c5a059] flex items-center justify-center mb-8 bg-[#c5a059]/10 shadow-[0_0_30px_rgba(197,160,89,0.2)]">
+            <svg class="w-10 h-10 md:w-12 md:h-12 text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6L9 17l-5-5"></path>
+            </svg>
+        </div>
+
+        <!-- Títulos -->
+        <h1 class="font-serif text-5xl md:text-6xl italic mb-4">Orden Confirmada.</h1>
+        <p class="text-white/60 text-sm md:text-base font-light max-w-xl mx-auto leading-relaxed mb-4">
+            Su transacción ha sido procesada con éxito y el pedido ya ingresó a nuestro sistema.
+        </p>
+        
+        <div class="bg-white/5 border border-white/10 px-6 py-3 rounded-lg inline-flex items-center gap-3 mb-16">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-white" id="order-reference">Generando ID de orden...</span>
+        </div>
+
+        <!-- Pasos / Instrucciones -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 w-full text-left mb-16">
+            
+            <div class="border-t border-[#c5a059]/30 pt-6">
+                <span class="text-[#c5a059] text-[10px] font-bold uppercase tracking-[0.3em] block mb-3">01. Correo</span>
+                <h3 class="font-serif text-2xl italic mb-3">Comprobante</h3>
+                <p class="text-[11px] text-white/50 uppercase tracking-widest leading-relaxed">
+                    Recibirá el detalle de su compra en su correo electrónico. Revise su bandeja de Entrada y la carpeta de Spam.
+                </p>
+            </div>
+
+            <div class="border-t border-[#c5a059]/30 pt-6">
+                <span class="text-[#c5a059] text-[10px] font-bold uppercase tracking-[0.3em] block mb-3">02. Atelier</span>
+                <h3 class="font-serif text-2xl italic mb-3">Producción</h3>
+                <p class="text-[11px] text-white/50 uppercase tracking-widest leading-relaxed">
+                    El equipo floral preparará su arreglo con tallos frescos del día, garantizando el estándar de calidad La Foresta.
+                </p>
+            </div>
+
+            <div class="border-t border-[#c5a059]/30 pt-6">
+                <span class="text-[#c5a059] text-[10px] font-bold uppercase tracking-[0.3em] block mb-3">03. Logística</span>
+                <h3 class="font-serif text-2xl italic mb-3">Entrega</h3>
+                <p class="text-[11px] text-white/50 uppercase tracking-widest leading-relaxed">
+                    El pedido será despachado al domicilio indicado o estará listo para retiro en el rango de fecha y horario seleccionado.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-md">
+            <a href="/" class="w-full text-center bg-[#c5a059] text-[#0a1f1c] px-8 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors duration-300">
+                Volver al Inicio
+            </a>
+            <a href="https://wa.me/56994783520" target="_blank" class="w-full text-center btn-gold-outline px-8 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">
+                Soporte WhatsApp
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Script para capturar ID de transacción si proviene de MercadoPago/PayPal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paymentId = urlParams.get('payment_id') || urlParams.get('token') || 'LF-' + Math.floor(Math.random() * 1000000);
+            
+            const refElement = document.getElementById('order-reference');
+            if (refElement) {
+                refElement.innerText = `REF: ${paymentId}`;
+            }
+
+            // Limpieza del carrito al confirmar éxito (backup por si no se limpió en el index)
+            localStorage.removeItem('laforesta_cart');
+            localStorage.removeItem('laforesta_checkout_inputs');
+            localStorage.removeItem('laforesta_shippingCost');
+            localStorage.removeItem('laforesta_selectedZoneName');
+            localStorage.removeItem('laforesta_selectedLogistics');
+            localStorage.removeItem('laforesta_selectedDate');
+            localStorage.removeItem('laforesta_selectedTimeSlot');
+            localStorage.removeItem('laforesta_isExpressDelivery');
+            localStorage.removeItem('laforesta_selectedPalette');
+        });
+    </script>
+</body>
+</html>
