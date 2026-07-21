@@ -550,8 +550,10 @@
     
     <!-- Indicador de despacho -->
     <div class="flex items-center bg-white/5 border border-white/10 rounded-full px-3 py-1.5 cursor-default select-none">
-        <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-        <span id="nav-dispatch-text" class="text-[10px] font-bold uppercase tracking-widest text-white">Despachando Hoy</span>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-white mr-2">Despachando</span>
+        <div id="nav-dispatch-icon-container" class="flex items-center justify-center bg-black/40 rounded-full p-1 border border-white/10 shadow-inner">
+            <!-- El SVG se insertará por JS -->
+        </div>
     </div>
 
     <!-- Botón interactivo para el carrito con icono de bolsa -->
@@ -2715,10 +2717,27 @@ if (segment === 'Inmobiliarias & Propiedades') {
     const cutoffExpress = new Date(now);
     cutoffExpress.setHours(18, 0, 0, 0);
 
-    // Actualizar texto del navbar
-    const navTextEl = document.getElementById('nav-dispatch-text');
-    if (navTextEl) {
-        navTextEl.innerText = now >= cutoffExpress ? 'Despachando Mañana' : 'Despachando Hoy';
+    // Actualizar indicador de despacho con ícono de encendido/apagado
+    const iconContainer = document.getElementById('nav-dispatch-icon-container');
+    
+    if (iconContainer) {
+        if (now >= cutoffExpress) {
+            // OFF: Rojo, círculo incompleto clásico
+            iconContainer.innerHTML = `
+                <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-red-500 drop-shadow-[0_0_4px_rgba(239,68,68,0.8)] opacity-90">
+                    <path d="M12 2v10"></path>
+                    <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                </svg>
+            `;
+        } else {
+            // ON: Verde, círculo completo
+            iconContainer.innerHTML = `
+                <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-green-400 drop-shadow-[0_0_5px_rgba(74,222,128,0.9)]">
+                    <path d="M12 2v10"></path>
+                    <circle cx="12" cy="12" r="9"></circle>
+                </svg>
+            `;
+        }
     }
 
     const timerEl = document.getElementById('countdown-timer');
