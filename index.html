@@ -526,18 +526,7 @@
         <div class="flex items-center space-x-4 md:space-x-6 flex-shrink-0">
     <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Reñaca, Chile</div>
     
-    <!-- Indicador de despacho estilo iOS -->
-<div class="flex items-center bg-white/5 border border-white/10 rounded-full px-3 py-1.5 cursor-default select-none">
-    <span class="text-[10px] font-bold uppercase tracking-widest text-white mr-2.5">Despachos</span>
-    
-    <!-- Rendija del interruptor -->
-    <div id="nav-dispatch-toggle" style="background-color: #ef4444;" class="w-8 h-4 rounded-full p-[2px] flex items-center transition-colors duration-500 shadow-inner">
-        <!-- Bolita blanca que se desliza -->
-        <div id="nav-dispatch-knob" class="w-3 h-3 bg-white rounded-full shadow-md transform transition-transform duration-500"></div>
-    </div>
-</div>
-
-    <!-- Botón interactivo para el carrito con icono de bolsa -->
+        <!-- Botón interactivo para el carrito con icono de bolsa -->
     <button onclick="toggleCart()" class="relative group flex items-center hover:scale-110 transition-transform duration-300">
         <svg class="w-5 h-5 text-[#c5a059] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
@@ -2900,26 +2889,6 @@ function onGardenTurnstileSuccess(token) { gardenTurnstileToken = token; }
             const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"}));
 
             if (isNaN(now.getTime())) return;
-
-            // 1. Extraemos la hora actual
-            const currentHour = now.getHours();
-
-            // 2. Regla estricta: Activo desde las 11:00 hasta las 17:59
-            const isOpen = currentHour >= 11 && currentHour < 18;
-
-            // 3. Controlamos el Switch de iOS en la barra de navegación
-            const toggleTrack = document.getElementById('nav-dispatch-toggle');
-            const toggleKnob = document.getElementById('nav-dispatch-knob');
-
-            if (toggleTrack && toggleKnob) {
-                if (isOpen) {
-                    toggleTrack.style.backgroundColor = '#10b981'; // Verde (Abierto)
-                    toggleKnob.style.transform = 'translateX(16px)';
-                } else {
-                    toggleTrack.style.backgroundColor = '#ef4444'; // Rojo (Cerrado)
-                    toggleKnob.style.transform = 'translateX(0px)';
-                }
-            }
 
             // Definimos la hora de corte a las 18:00 del día actual
             const cutoffExpress = new Date(now);
