@@ -30,7 +30,7 @@
 
     <meta property="og:site_name" content="La Foresta Flores">
     <meta property="og:title" content="La Foresta Flores | Florería Premium">
-    <meta property="og:description" content="Ramos exclusivos, flores frescas seleccionadas cada mañana y despacho premium en ">
+    <meta property="og:description" content="Ramos exclusivos, flores frescas seleccionadas cada mañana y despacho premium en Reñaca y Viña del Mar.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://laforestaflores.cl/">
     <meta property="og:image" content="https://laforestaflores.cl/img/social-share.jpg">
@@ -236,21 +236,6 @@
         .product-card:hover .img-zoom-container img {
             transform: scale(1.05);
         }
-        
-        .prestige-marquee {
-            display: flex;
-            width: max-content;
-            animation: marquee-infinite 40s linear infinite;
-        }
-
-        .marquee-content {
-            display: inline-block;
-            padding-right: 2rem; 
-        }
-        
-        .prestige-marquee:hover {
-            animation-play-state: paused;
-        }
 
         .b2b-portal {
             background-color: var(--forest-green);
@@ -379,7 +364,7 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* --- MOTOR 3D: COLLAGE DE CLIENTES (13 ITEMS PANORÁMICOS) --- */
+        /* --- MOTOR 3D: COLLAGE DE CLIENTES --- */
         .collage-container {
             display: flex;
             flex-direction: row;
@@ -399,7 +384,7 @@
             width: 260px;
             height: 420px;
             background-color: var(--forest-green);
-            margin-left: -160px; /* Superposición PC */
+            margin-left: -160px; 
             border-radius: 10px;
             border: 1px solid rgba(197, 160, 89, 0.3);
             box-shadow: -20px 0 40px rgba(0,0,0,0.7);
@@ -418,7 +403,6 @@
             margin-left: 0;
         }
 
-        /* Efecto de apertura (Hover en PC) */
         .collage-page:hover, .collage-page.active-page {
             transform: rotateY(0deg) scale(1.05) translateZ(40px);
             margin-right: 150px;
@@ -427,7 +411,6 @@
             border-color: var(--gold-leaf);
         }
 
-        /* Empuje mecánico a las cartas de la derecha en PC */
         .collage-page:hover ~ .collage-page, .collage-page.active-page ~ .collage-page {
             transform: rotateY(45deg) scale(0.9) translateZ(-20px);
         }
@@ -446,7 +429,6 @@
             filter: grayscale(0%);
         }
 
-        /* Textos testimoniales */
         .collage-content {
             position: absolute;
             bottom: 0;
@@ -464,16 +446,14 @@
             opacity: 1;
         }
 
-        /* Rolodex Vertical para Celulares (Distancia Fija y Sin Deformación 3D) */
         @media (max-width: 1024px) {
             .collage-container {
                 flex-direction: column;
                 height: auto; 
                 padding: 40px 20px;
-                /* ELIMINAMOS la perspectiva 3D aquí para evitar deformaciones en los extremos */
                 perspective: none; 
                 width: 100%;
-                gap: 30px; /* DISTANCIA FIJA E INAMOVIBLE ENTRE TARJETAS */
+                gap: 30px; 
                 overflow: visible;
             }
             
@@ -481,24 +461,21 @@
                 width: 100%;
                 max-width: 340px;
                 height: 420px; 
-                margin: 0 auto !important; /* Mantiene todo centrado y anula márgenes de PC */
+                margin: 0 auto !important; 
                 transform-origin: center center;
-                /* Tarjetas inactivas: Planas y ligeramente más pequeñas, CERO ángulos */
                 transform: scale(0.95) !important;
                 transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
             }
             
-            /* Tarjeta Activa (La que pasa por el centro) */
             .collage-page:hover, 
             .collage-page.active-page {
-                transform: scale(1.02) !important; /* Solo crece hacia el frente */
+                transform: scale(1.02) !important; 
                 margin: 0 auto !important; 
                 box-shadow: 0 20px 40px rgba(0,0,0,0.6);
                 border-color: var(--gold-leaf);
                 z-index: 20;
             }
             
-            /* Las demás tarjetas se mantienen quietas */
             .collage-page:hover ~ .collage-page, 
             .collage-page.active-page ~ .collage-page {
                 transform: scale(0.95) !important;
@@ -590,7 +567,6 @@
         </div>
         <div class="p-8 bg-zinc-50 border-t">
             <div class="flex justify-between items-start mb-6">
-                <!-- Etiqueta cambiada a Subtotal -->
                 <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c] mt-1">Total Estimado</span>
                 <div class="text-right">
                     <span id="cart-total" class="text-2xl font-serif text-[#0a1f1c] block">$0</span>
@@ -598,7 +574,6 @@
                 </div>
             </div>
             
-            <!-- CRO Optimización: Trust Badges Checkout -->
             <div class="flex justify-center items-center gap-4 mb-4 text-[#0a1f1c] opacity-60">
                 <span class="text-[8px] uppercase tracking-widest font-bold flex items-center">
                     <svg class="w-3 h-3 mr-1 text-[#c5a059]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Frescura y Calidad Garantizada
@@ -629,7 +604,6 @@
             
             <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
                 <div class="absolute inset-0 bg-gradient-to-r from-[#0a1f1c]/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
-                <!-- Optimización CRO: fetchpriority -->
                 <img src="img/slide1-pc.jpg" alt="Familia La Foresta" fetchpriority="high" class="absolute inset-0 w-full h-full object-cover object-center z-0">
                 <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
                     <div class="md:w-1/2 lg:w-[40%] mr-auto text-left">
@@ -992,24 +966,21 @@
         <button onclick="closeB2BFlow()" class="text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors">×</button>
     </div>
 
-    <!-- Contenedor con overflow-y-auto y justify-start -->
     <div class="flex-grow flex flex-col justify-start items-center p-6 relative overflow-y-auto w-full pb-20">
         
-        <!-- Paso 1 (con my-auto) -->
         <div id="b2b-step-1" class="b2b-step active flex-col items-center w-full max-w-lg text-center transition-all duration-500 transform my-auto">
             <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block mt-4">Paso 1 de 2</span>
             <h3 class="font-serif text-4xl md:text-5xl italic mb-12">¿Cuál es su negocio?</h3>
             
             <div class="space-y-4 w-full">
-    <button onclick="selectB2BSegment('Inmobiliarias & Propiedades')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Inmobiliarias & Propiedades</button>
-    <button onclick="selectB2BSegment('Boutiques & Espacios de Autor')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Boutiques & Espacios de Autor</button>
-    <button onclick="selectB2BSegment('Oficinas Corporativas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Oficinas Corporativas</button>
-    <button onclick="selectB2BSegment('Eventos & Galas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Eventos Privados & Galas</button>
-    <button onclick="selectB2BSegment('Hogar & Jardín')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Hogar y Jardín</button>
+    <button type="button" onclick="selectB2BSegment('Inmobiliarias & Propiedades')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Inmobiliarias & Propiedades</button>
+    <button type="button" onclick="selectB2BSegment('Boutiques & Espacios de Autor')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Boutiques & Espacios de Autor</button>
+    <button type="button" onclick="selectB2BSegment('Oficinas Corporativas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Oficinas Corporativas</button>
+    <button type="button" onclick="selectB2BSegment('Eventos & Galas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Eventos Privados & Galas</button>
+    <button type="button" onclick="selectB2BSegment('Hogar & Jardín')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Hogar y Jardín</button>
 </div>
         </div>
 
-        <!-- Paso 2 (con my-auto) -->
         <div id="b2b-step-2" class="b2b-step hidden flex-col items-center w-full max-w-md text-center transition-all duration-500 transform translate-x-8 opacity-0 my-auto">
             <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block mt-4">Paso 2 de 2</span>
             <h3 class="font-serif text-3xl md:text-4xl italic mb-6">Credenciales de la Firma</h3>
@@ -1048,17 +1019,16 @@
     </div>
 </form>
             
-            <button onclick="backToB2BStep1()" class="mt-8 text-[9px] uppercase tracking-[0.3em] text-white/40 hover:text-[#c5a059] transition-colors border-b border-transparent hover:border-[#c5a059] pb-1">← Cambiar Segmento</button>
+            <button type="button" onclick="backToB2BStep1()" class="mt-8 text-[9px] uppercase tracking-[0.3em] text-white/40 hover:text-[#c5a059] transition-colors border-b border-transparent hover:border-[#c5a059] pb-1">← Cambiar Segmento</button>
         </div>
 
-        <!-- Success (con my-auto) -->
         <div id="b2b-success" class="hidden flex-col items-center w-full max-w-md text-center my-auto">
             <div class="w-20 h-20 border border-[#c5a059] rounded-full flex items-center justify-center mb-8 mx-auto text-[#c5a059]">
                 <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path></svg>
             </div>
             <h3 class="font-serif text-4xl italic mb-4">Solicitud Recibida.</h3>
             <p class="text-white/60 font-light leading-relaxed">Nuestra dirección ejecutiva evaluará su perfil y nos pondremos en contacto a la brevedad para agendar una reunión privada.</p>
-            <button onclick="closeB2BFlow()" class="mt-12 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] hover:text-white border-b border-[#c5a059] pb-1 transition-colors">Volver a La Foresta</button>
+            <button type="button" onclick="closeB2BFlow()" class="mt-12 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] hover:text-white border-b border-[#c5a059] pb-1 transition-colors">Volver a La Foresta</button>
         </div>
     </div>
 </div>
@@ -1067,8 +1037,8 @@
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
             <div class="w-full lg:w-1/2">
                 <div onclick="toggleGardenImage()" class="overflow-hidden aspect-[4/5] bg-zinc-200 relative cursor-pointer group">
-                    <img id="garden-img-1" src="img/garden-2.jpg" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-100" alt="Vista Principal">
-                    <img id="garden-img-2" src="img/garden-1.jpg" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-0" alt="Vista Secundaria">
+                    <img id="garden-img-1" src="img/garden-2.jpg" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-100" alt="Vista Principal" loading="lazy">
+                    <img id="garden-img-2" src="img/garden-1.jpg" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-0" alt="Vista Secundaria" loading="lazy">
                     <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md px-3 py-1 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">Cambiar Vista</div>
                 </div>
             </div>
@@ -1473,13 +1443,16 @@
     </div>
 
     <script>
+    // Corrección para scope: Haciendo `stopAutoPlay` global para que otros modales puedan usarla sin arrojar error
+    window.stopAutoPlay = null;
+
     function openB2BFlow() {
         const flow = document.getElementById('b2b-flow');
         if(!flow) return;
         flow.classList.remove('hidden');
         setTimeout(() => flow.classList.remove('opacity-0'), 10);
         document.body.style.overflow = 'hidden'; 
-        if (typeof stopAutoPlay === 'function') stopAutoPlay(); 
+        if (typeof window.stopAutoPlay === 'function') window.stopAutoPlay(); 
     }
 
     function closeB2BFlow() {
@@ -1496,31 +1469,28 @@
     function selectB2BSegment(segment) {
         document.getElementById('b2b-selected-segment').value = segment;
         
-        // --- INICIO LÓGICA DE TESTIMONIOS DINÁMICOS ---
-const textEl = document.getElementById('b2b-testimonial-text');
-const authorEl = document.getElementById('b2b-testimonial-author');
-const containerEl = document.getElementById('b2b-dynamic-testimonial');
+        const textEl = document.getElementById('b2b-testimonial-text');
+        const authorEl = document.getElementById('b2b-testimonial-author');
+        const containerEl = document.getElementById('b2b-dynamic-testimonial');
 
-// Reseteamos la opacidad para la animación
-containerEl.classList.add('opacity-0');
+        containerEl.classList.add('opacity-0');
 
-if (segment === 'Inmobiliarias & Propiedades') {
-    textEl.innerText = '"Desde que entregamos nuestras propiedades con la belleza de La Foresta Flores, la percepción de nuestros clientes es inmediata. El boca a boca es la mejor publicidad."';
-    authorEl.innerText = '— Director Comercial, Inmobiliaria Jiménez y Asociados';
-} else if (segment === 'Boutiques & Espacios de Autor') {
-    textEl.innerText = '"Los arreglos de La Foresta son la suavidad y colorida comodidad que nuestra tienda garantiza cada vez que alguien entra por la puerta."';
-    authorEl.innerText = '— Fundadora, Boutique de Alta Costura';
-} else if (segment === 'Oficinas Corporativas') {
-    textEl.innerText = '"El ambiente laboral mejoró aún más. El servicio puntual, ordenado y con una limpieza visual y originalidad que representa totalmente nuestros valores."';
-    authorEl.innerText = '— Gerente General, Firma Consultora';
-} else if (segment === 'Eventos & Galas') {
-    textEl.innerText = '"Su arte floral eleva la escenografía a otro nivel. Trabajar con ellos es tener la garantía de que el diseño será el tema central."';
-    authorEl.innerText = '— Productora Ejecutiva de Eventos';
-} else if (segment === 'Hogar & Jardín') {
-    textEl.innerText = '"Recibir arreglos de autor cada semana da esa luz y elegancia fresca para pasar excelentes momentos en familia y amigos."';
-    authorEl.innerText = '— Cliente Particular, Bosques de Montemar';
-}
-// --- FIN LÓGICA DE TESTIMONIOS DINÁMICOS ---
+        if (segment === 'Inmobiliarias & Propiedades') {
+            textEl.innerText = '"Desde que entregamos nuestras propiedades con la belleza de La Foresta Flores, la percepción de nuestros clientes es inmediata. El boca a boca es la mejor publicidad."';
+            authorEl.innerText = '— Director Comercial, Inmobiliaria Jiménez y Asociados';
+        } else if (segment === 'Boutiques & Espacios de Autor') {
+            textEl.innerText = '"Los arreglos de La Foresta son la suavidad y colorida comodidad que nuestra tienda garantiza cada vez que alguien entra por la puerta."';
+            authorEl.innerText = '— Fundadora, Boutique de Alta Costura';
+        } else if (segment === 'Oficinas Corporativas') {
+            textEl.innerText = '"El ambiente laboral mejoró aún más. El servicio puntual, ordenado y con una limpieza visual y originalidad que representa totalmente nuestros valores."';
+            authorEl.innerText = '— Gerente General, Firma Consultora';
+        } else if (segment === 'Eventos & Galas') {
+            textEl.innerText = '"Su arte floral eleva la escenografía a otro nivel. Trabajar con ellos es tener la garantía de que el diseño será el tema central."';
+            authorEl.innerText = '— Productora Ejecutiva de Eventos';
+        } else if (segment === 'Hogar & Jardín') {
+            textEl.innerText = '"Recibir arreglos de autor cada semana da esa luz y elegancia fresca para pasar excelentes momentos en familia y amigos."';
+            authorEl.innerText = '— Cliente Particular, Bosques de Montemar';
+        }
 
         const step1 = document.getElementById('b2b-step-1');
         const step2 = document.getElementById('b2b-step-2');
@@ -1536,10 +1506,8 @@ if (segment === 'Inmobiliarias & Propiedades') {
             
             void step2.offsetWidth; 
             
-            // Animamos la entrada del formulario
             setTimeout(() => {
                 step2.classList.remove('opacity-0', 'translate-x-8');
-                // Animamos el testimonio 400ms después para crear un efecto cascada suave
                 setTimeout(() => {
                     containerEl.classList.remove('opacity-0');
                 }, 400);
@@ -1581,6 +1549,7 @@ if (segment === 'Inmobiliarias & Propiedades') {
             setTimeout(() => step1.classList.remove('opacity-0', '-translate-x-8'), 10);
         }, 300);
     }
+    
     function resetB2BFlow() {
         const form = document.getElementById('b2b-final-form');
         if(form) form.reset();
@@ -1637,45 +1606,40 @@ if (segment === 'Inmobiliarias & Propiedades') {
         }
     }
 
-    // Variables protegidas contra el Modo Incógnito de iOS
-let cart = [];
-let selectedGardenSpace = '';
-let selectedPalette = '';
-let shippingCost = 0;
-let selectedZoneName = '';
-let selectedLogistics = '';
-let selectedDate = '';
-let selectedTimeSlot = '';
-let isExpressDelivery = false;
+    // Variables protegidas
+    let cart = [];
+    let selectedGardenSpace = '';
+    let selectedPalette = '';
+    let shippingCost = 0;
+    let selectedZoneName = '';
+    let selectedLogistics = '';
+    let selectedDate = '';
+    let selectedTimeSlot = '';
+    let isExpressDelivery = false;
 
-try {
-    cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
-    selectedGardenSpace = localStorage.getItem('laforesta_selectedGardenSpace') || '';
-    selectedPalette = localStorage.getItem('laforesta_selectedPalette') || '';
-    shippingCost = parseInt(localStorage.getItem('laforesta_shippingCost')) || 0;
-    selectedZoneName = localStorage.getItem('laforesta_selectedZoneName') || '';
-    selectedLogistics = localStorage.getItem('laforesta_selectedLogistics') || '';
-    selectedDate = localStorage.getItem('laforesta_selectedDate') || '';
-    selectedTimeSlot = localStorage.getItem('laforesta_selectedTimeSlot') || '';
-    isExpressDelivery = localStorage.getItem('laforesta_isExpressDelivery') === 'true';
-} catch (e) {
-    console.warn("Navegación privada detectada, funciones de memoria limitadas.");
-}
+    try {
+        cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
+        selectedGardenSpace = localStorage.getItem('laforesta_selectedGardenSpace') || '';
+        selectedPalette = localStorage.getItem('laforesta_selectedPalette') || '';
+        shippingCost = parseInt(localStorage.getItem('laforesta_shippingCost')) || 0;
+        selectedZoneName = localStorage.getItem('laforesta_selectedZoneName') || '';
+        selectedLogistics = localStorage.getItem('laforesta_selectedLogistics') || '';
+        selectedDate = localStorage.getItem('laforesta_selectedDate') || '';
+        selectedTimeSlot = localStorage.getItem('laforesta_selectedTimeSlot') || '';
+        isExpressDelivery = localStorage.getItem('laforesta_isExpressDelivery') === 'true';
+    } catch (e) {
+        console.warn("Navegación privada detectada, funciones de memoria limitadas.");
+    }
 
-const RECARGO_EXPRESS_ENVIO = 1.50;
-let currentCalendarDate = new Date();
+    const RECARGO_EXPRESS_ENVIO = 1.50;
+    let currentCalendarDate = new Date();
 
-// Proteger MercadoPago contra bloqueadores de anuncios (AdBlock) en móviles
-let mp;
-try {
-    mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', { locale: 'es-CL' });
-} catch (e) {
-    console.warn("MercadoPago SDK bloqueado por el navegador.");
-}
-
-    const mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', {
-        locale: 'es-CL'
-    });
+    let mp;
+    try {
+        mp = new MercadoPago('APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb', { locale: 'es-CL' });
+    } catch (e) {
+        console.warn("MercadoPago SDK bloqueado por el navegador.");
+    }
 
     let mapInitialized = false;
     let coverageMap;
@@ -1764,7 +1728,7 @@ try {
         }, 550);
 
         document.body.style.overflow = 'hidden';
-        if (typeof stopAutoPlay === 'function') stopAutoPlay();
+        if (typeof window.stopAutoPlay === 'function') window.stopAutoPlay();
     }
 
     function closeCoverageModal() {
@@ -1795,9 +1759,8 @@ try {
         { id: 15, name: "Sereno", price: 59900, img: "img/sereno.jpeg", desc: "Rosas y lirios blancos en caja gris.", url: "sereno.html" },
         { id: 16, name: "Dulce Amor", price: 48900, img: "img/dulce-amor.jpeg", desc: "Selección de flores en tonos rosados y blancos.", url: "dulce-amor.html" },
         { id: 17, name: "Esperanza", price: 138900, img: "img/esperanza.jpeg", desc: "Cesto de lirios y rosas blancas.", url: "esperanza.html" },
-        { id: 201, name: "Cubre Urna Sublime", price: 129900, img: "img/cubre-urna.jpg", desc: "Delicado homenaje en tonos blancos y crema, diseñado cuidadosamente para brindar un mensaje de paz y acompañamiento.", url: "cubre-urna-sublime.html" },
-        { id: 202, name: "Cojín de Condolencias", price: 58900, img: "img/cojin.jpg", desc: "Composición sobria en rosas y astromelias, elaborada con delicadeza para ofrecer consuelo y afecto perdurable a la familia.", url: "cojin-de-condolencias.html" },
-        
+        { id: 201, name: "Cubre Urna Sublime", price: 129900, img: "img/cubre-urna.jpg", desc: "Delicado homenaje en tonos blancos y crema.", url: "cubre-urna-sublime.html" },
+        { id: 202, name: "Cojín de Condolencias", price: 58900, img: "img/cojin.jpg", desc: "Composición sobria en rosas y astromelias.", url: "cojin-de-condolencias.html" }
     ];
 
     const upsellsCatalog = [
@@ -1828,7 +1791,6 @@ try {
                 ? `<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm">${badgeText}</div>` 
                 : '';
                 
-            // CRO: Scarcity tag inyeccion para IDs especificos (3 y 5)
             const scarcityHTML = (product.id === 3 || product.id === 5) 
                 ? `<div class="urgency-tag">Últimas 2 unidades</div>` 
                 : '';
@@ -1899,8 +1861,6 @@ try {
             const atelierBag = document.getElementById('atelier-bag');
             if (atelierBag && !atelierBag.classList.contains('open')) { 
                 toggleCart(); 
-            } else if (!atelierBag) {
-                console.warn("Producto añadido correctamente. (Cajón lateral oculto en esta página).");
             }
 
             if (typeof trackGA4 === 'function') {
@@ -2003,7 +1963,7 @@ try {
                                     <div class="w-[110px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, 'img/${uFileName}')">
                                         <div class="w-[110px] h-[110px] bg-white border border-zinc-200 mb-2 flex items-center justify-center relative overflow-hidden transition-all group-hover:border-[#c5a059] rounded-md shadow-sm p-2">
                                             <span class="font-serif italic text-[#c5a059] text-3xl opacity-20 group-hover:opacity-100 transition-all absolute z-0">+</span>
-                                            <img src="img/${uFileName}" class="w-full h-full object-contain relative z-10 transition-transform duration-500 group-hover:scale-105" alt="${u.name}">
+                                            <img src="img/${uFileName}" loading="lazy" class="w-full h-full object-contain relative z-10 transition-transform duration-500 group-hover:scale-105" alt="${u.name}">
                                         </div>
                                         <h6 class="text-[9px] uppercase tracking-widest font-bold leading-tight text-[#0a1f1c] mb-1 line-clamp-2">${u.name}</h6>
                                         <p class="text-[#0a1f1c] text-[10px] font-bold">+$${u.price.toLocaleString()}</p>
@@ -2326,7 +2286,6 @@ try {
 
     function generarHorasExpress(tiempoDecimal) {
         let opciones = "";
-        
         let horaInicio = Math.ceil(tiempoDecimal + 1.0);
         let horaBase = Math.max(10, horaInicio);
 
@@ -2335,10 +2294,8 @@ try {
             let formatEnd = `${String(horaBase + 1).padStart(2, '0')}:00`;
             
             opciones += `<button onclick="definirHorario('Express (${formatStart} - ${formatEnd})', true)" class="step-option text-[10px] uppercase tracking-widest font-bold py-4 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] transition w-full">${formatStart} - ${formatEnd}</button>`;
-            
             horaBase += 1;
         }
-        
         return opciones;
     }
 
@@ -2365,7 +2322,6 @@ try {
         let costoEnvioFinal = Math.max(0, tarifaEnvioFinal - descuentoEnvio);
         const totalFinal = baseTotal + costoEnvioFinal;
         
-        // Carga SOLO el subtotal en el Atelier Bag y Footer Flotante Móvil
         const totalEl = document.getElementById('cart-total');
         if (totalEl) totalEl.innerText = `$${baseTotal.toLocaleString('es-CL')}`;
         
@@ -2386,7 +2342,6 @@ try {
             }
         }
 
-        // Carga Desglose y Total Final real en el flujo de Checkout
         const checkoutSubtotal = document.getElementById('checkout-subtotal');
         const checkoutShipping = document.getElementById('checkout-shipping');
         const checkoutFinalTotal = document.getElementById('checkout-final-total');
@@ -2722,75 +2677,246 @@ try {
             }, 150);
             window.history.replaceState({}, document.title, window.location.pathname);
         }
+
+        // --- INICIALIZACIÓN DE MOTOR 3D Y ANIMACIONES AL CARGAR ---
+        const collagePages = document.querySelectorAll('.collage-page');
+        
+        // 1. LÓGICA PARA PC
+        collagePages.forEach(page => {
+            page.addEventListener('mouseenter', function() {
+                if(window.innerWidth > 1024) {
+                    collagePages.forEach(p => p.classList.remove('active-page'));
+                    this.classList.add('active-page');
+                }
+            });
+            page.addEventListener('mouseleave', function() {
+                if(window.innerWidth > 1024) {
+                    this.classList.remove('active-page');
+                }
+            });
+        });
+
+        // 2. LÓGICA PARA MÓVILES (Escáner)
+        if (window.innerWidth <= 1024) {
+            const observerOptions = {
+                root: null, 
+                rootMargin: '-35% 0px -35% 0px', 
+                threshold: 0
+            };
+
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        collagePages.forEach(p => p.classList.remove('active-page'));
+                        entry.target.classList.add('active-page');
+                    }
+                });
+            }, observerOptions);
+
+            collagePages.forEach(page => scrollObserver.observe(page));
+        }
+
+        // --- INICIALIZACIÓN DE SLIDER HERO ---
+        const heroSlides = document.querySelectorAll('.slide-item');
+        if (heroSlides.length > 0) {
+            let currentHeroSlide = 0;
+            const heroTotalSlides = heroSlides.length;
+            const heroDotsContainer = document.getElementById('hero-dots');
+            let heroAutoPlay;
+            let userInteracted = false; 
+            let isAnimating = false;    
+
+            heroSlides.forEach((slide, index) => {
+                if (index === 0) {
+                    slide.style.transform = 'translate3d(0%, 0, 0)';
+                    slide.style.zIndex = '20';
+                } else {
+                    slide.style.transform = 'translate3d(100%, 0, 0)'; 
+                    slide.style.zIndex = '10';
+                }
+                if (heroDotsContainer) {
+                    const dot = document.createElement('button');
+                    dot.className = `w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-300 border border-[#c5a059] ${index === 0 ? 'bg-[#c5a059] scale-125' : 'bg-transparent hover:bg-[#c5a059]/50'}`;
+                    dot.onclick = () => {
+                        if(isAnimating || currentHeroSlide === index) return;
+                        if (typeof window.stopAutoPlay === 'function') window.stopAutoPlay();
+                        const direction = index > currentHeroSlide ? 'next' : 'prev';
+                        transitionToSlide(index, direction);
+                    };
+                    heroDotsContainer.appendChild(dot);
+                }
+            });
+
+            window.stopAutoPlay = function() {
+                userInteracted = true;
+                clearInterval(heroAutoPlay);
+            }
+
+            function transitionToSlide(targetIndex, direction) {
+                if (isAnimating) return;
+                isAnimating = true;
+                const current = heroSlides[currentHeroSlide];
+                const next = heroSlides[targetIndex];
+                next.style.transition = 'none';
+                next.style.zIndex = '20';
+                current.style.zIndex = '10';
+                
+                if (direction === 'next') { next.style.transform = 'translate3d(100%, 0, 0)'; } 
+                else { next.style.transform = 'translate3d(-100%, 0, 0)'; }
+
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        const duration = '0.6s';
+                        const timing = 'cubic-bezier(0.16, 1, 0.3, 1)';
+                        next.style.transition = `transform ${duration} ${timing}`;
+                        current.style.transition = `transform ${duration} ${timing}`;
+                        next.style.transform = 'translate3d(0%, 0, 0)';
+                        
+                        if (direction === 'next') { current.style.transform = 'translate3d(-100%, 0, 0)'; } 
+                        else { current.style.transform = 'translate3d(100%, 0, 0)'; }
+
+                        currentHeroSlide = targetIndex;
+                        updateDots();
+                        animateTexts();
+
+                        setTimeout(() => { isAnimating = false; }, 600); 
+                    });
+                });
+            }
+
+            window.nextHeroSlide = function(manual = false) {
+                if (manual && typeof window.stopAutoPlay === 'function') window.stopAutoPlay(); 
+                if (isAnimating) return;
+                const nextIndex = (currentHeroSlide + 1) % heroTotalSlides;
+                transitionToSlide(nextIndex, 'next');
+            };
+
+            window.prevHeroSlide = function(manual = false) {
+                if (manual && typeof window.stopAutoPlay === 'function') window.stopAutoPlay(); 
+                if (isAnimating) return;
+                const prevIndex = (currentHeroSlide - 1 + heroTotalSlides) % heroTotalSlides;
+                transitionToSlide(prevIndex, 'prev');
+            };
+
+            function updateDots() {
+                if (!heroDotsContainer) return;
+                Array.from(heroDotsContainer.children).forEach((dot, index) => {
+                    if(index === currentHeroSlide) {
+                        dot.classList.replace('bg-transparent', 'bg-[#c5a059]');
+                        dot.classList.add('scale-125');
+                    } else {
+                        dot.classList.replace('bg-[#c5a059]', 'bg-transparent');
+                        dot.classList.remove('scale-125');
+                    }
+                });
+            }
+
+            function animateTexts() {
+                heroSlides.forEach((slide, index) => {
+                    const elementsToAnimate = slide.querySelectorAll('.slide-anim');
+                    if(index === currentHeroSlide) {
+                        setTimeout(() => {
+                            elementsToAnimate.forEach(el => {
+                                el.classList.remove('opacity-0', 'translate-y-4', 'translate-y-8');
+                                el.classList.add('opacity-100', 'translate-y-0');
+                            });
+                        }, 300); 
+                    } else {
+                        elementsToAnimate.forEach(el => {
+                            el.classList.remove('opacity-100', 'translate-y-0');
+                            if(el.tagName === 'H2') el.classList.add('opacity-0', 'translate-y-8');
+                            else el.classList.add('opacity-0', 'translate-y-4');
+                        });
+                    }
+                });
+            }
+
+            animateTexts();
+            heroAutoPlay = setInterval(() => {
+                if (!userInteracted) { nextHeroSlide(false); }
+            }, 8000); 
+
+            const sliderWrapperElement = document.getElementById('slider-wrapper');
+            if (sliderWrapperElement) {
+                let touchStartX = 0;
+                let touchEndX = 0;
+                sliderWrapperElement.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, { passive: true });
+                sliderWrapperElement.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    if (touchEndX < touchStartX - 50) { window.nextHeroSlide(true); }
+                    if (touchEndX > touchStartX + 50) { window.prevHeroSlide(true); }
+                }, { passive: true });
+            }
+        }
     });
 
     function toggleGardenImage() {
-    const img1 = document.getElementById('garden-img-1');
-    const img2 = document.getElementById('garden-img-2');
-    if (!img1 || !img2) return;
-    
-    if (img1.classList.contains('opacity-100')) {
-        img1.classList.replace('opacity-100', 'opacity-0');
-        img2.classList.replace('opacity-0', 'opacity-100');
-    } else {
-        img1.classList.replace('opacity-0', 'opacity-100');
-        img2.classList.replace('opacity-100', 'opacity-0');
+        const img1 = document.getElementById('garden-img-1');
+        const img2 = document.getElementById('garden-img-2');
+        if (!img1 || !img2) return;
+        
+        if (img1.classList.contains('opacity-100')) {
+            img1.classList.replace('opacity-100', 'opacity-0');
+            img2.classList.replace('opacity-0', 'opacity-100');
+        } else {
+            img1.classList.replace('opacity-0', 'opacity-100');
+            img2.classList.replace('opacity-100', 'opacity-0');
+        }
     }
-}
         
     function updateCountdown() {
-    try {
-        // Fix seguro para fechas en iOS (evita caracteres invisibles que rompen Safari)
-        const dateOptions = { timeZone: "America/Santiago", year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
-        const formatter = new Intl.DateTimeFormat('en-US', dateOptions);
-        const parts = formatter.formatToParts(new Date());
-        const dateObj = {};
-        parts.forEach(({ type, value }) => { dateObj[type] = value; });
-        
-        // Construimos la fecha de forma manual y segura
-        const now = new Date(`${dateObj.year}-${dateObj.month}-${dateObj.day}T${dateObj.hour}:${dateObj.minute}:${dateObj.second}`);
-        
-        if (isNaN(now.getTime())) return; // Si el navegador falla, salimos sin romper el script
+        try {
+            const dateOptions = { timeZone: "America/Santiago", year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
+            const formatter = new Intl.DateTimeFormat('en-US', dateOptions);
+            const parts = formatter.formatToParts(new Date());
+            const dateObj = {};
+            parts.forEach(({ type, value }) => { dateObj[type] = value; });
+            
+            const now = new Date(`${dateObj.year}-${dateObj.month}-${dateObj.day}T${dateObj.hour}:${dateObj.minute}:${dateObj.second}`);
+            
+            if (isNaN(now.getTime())) return; 
 
-        const cutoffExpress = new Date(now);
-        cutoffExpress.setHours(18, 0, 0, 0);
+            const cutoffExpress = new Date(now);
+            cutoffExpress.setHours(18, 0, 0, 0);
 
-        const iconContainer = document.getElementById('nav-dispatch-icon-container');
-        if (iconContainer) {
-            if (now >= cutoffExpress) {
-                iconContainer.innerHTML = `
-                    <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-red-500 drop-shadow-[0_0_4px_rgba(239,68,68,0.8)] opacity-90">
-                        <path d="M12 2v10"></path>
-                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-                    </svg>`;
-            } else {
-                iconContainer.innerHTML = `
-                    <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-green-400 drop-shadow-[0_0_5px_rgba(74,222,128,0.9)]">
-                        <path d="M12 2v10"></path>
-                        <circle cx="12" cy="12" r="9"></circle>
-                    </svg>`;
+            const iconContainer = document.getElementById('nav-dispatch-icon-container');
+            if (iconContainer) {
+                if (now >= cutoffExpress) {
+                    iconContainer.innerHTML = `
+                        <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-red-500 drop-shadow-[0_0_4px_rgba(239,68,68,0.8)] opacity-90">
+                            <path d="M12 2v10"></path>
+                            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                        </svg>`;
+                } else {
+                    iconContainer.innerHTML = `
+                        <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24" class="w-3.5 h-3.5 text-green-400 drop-shadow-[0_0_5px_rgba(74,222,128,0.9)]">
+                            <path d="M12 2v10"></path>
+                            <circle cx="12" cy="12" r="9"></circle>
+                        </svg>`;
+                }
             }
-        }
 
-        const timerEl = document.getElementById('countdown-timer');
-        if (!timerEl) return;
+            const timerEl = document.getElementById('countdown-timer');
+            if (!timerEl) return;
 
-        if (now >= cutoffExpress) {
-            timerEl.innerHTML = "<span class='text-sm tracking-wide'>Envíos a partir de <strong>MAÑANA</strong>.</span>";
-            return;
+            if (now >= cutoffExpress) {
+                timerEl.innerHTML = "<span class='text-sm tracking-wide'>Envíos a partir de <strong>MAÑANA</strong>.</span>";
+                return;
+            }
+            
+            const diff = cutoffExpress - now;
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Envío Express (1-2h) cierra en:</span><span class="opacity-60 md:hidden">Envío Express (1-2h) Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
+        } catch(e) {
+            console.warn("Contador visual desactivado", e);
         }
-        
-        const diff = cutoffExpress - now;
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        
-        timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Envío Express (1-2h) cierra en:</span><span class="opacity-60 md:hidden">Envío Express (1-2h) Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
-    } catch(e) {
-        console.warn("Contador visual desactivado", e);
     }
-}
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
@@ -2844,92 +2970,11 @@ try {
             }
         }, 15);
     }
-    
-    const heroSlides = document.querySelectorAll('.slide-item');
-    if (heroSlides.length > 0) {
-        let currentHeroSlide = 0;
-        const heroTotalSlides = heroSlides.length;
-        const heroDotsContainer = document.getElementById('hero-dots');
-        let heroAutoPlay;
-        let userInteracted = false; 
-        let isAnimating = false;    
 
-        heroSlides.forEach((slide, index) => {
-            if (index === 0) {
-                slide.style.transform = 'translate3d(0%, 0, 0)';
-                slide.style.zIndex = '20';
-            } else {
-                slide.style.transform = 'translate3d(100%, 0, 0)'; 
-                slide.style.zIndex = '10';
-            }
-            if (heroDotsContainer) {
-                const dot = document.createElement('button');
-                dot.className = `w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-300 border border-[#c5a059] ${index === 0 ? 'bg-[#c5a059] scale-125' : 'bg-transparent hover:bg-[#c5a059]/50'}`;
-                dot.onclick = () => {
-                    if(isAnimating || currentHeroSlide === index) return;
-                    stopAutoPlay();
-                    const direction = index > currentHeroSlide ? 'next' : 'prev';
-                    transitionToSlide(index, direction);
-                };
-                heroDotsContainer.appendChild(dot);
-            }
-        });
-
-        function stopAutoPlay() {
-            userInteracted = true;
-            clearInterval(heroAutoPlay);
-        }
-
-        function transitionToSlide(targetIndex, direction) {
-            if (isAnimating) return;
-            isAnimating = true;
-            const current = heroSlides[currentHeroSlide];
-            const next = heroSlides[targetIndex];
-            next.style.transition = 'none';
-            next.style.zIndex = '20';
-            current.style.zIndex = '10';
-            
-            if (direction === 'next') { next.style.transform = 'translate3d(100%, 0, 0)'; } 
-            else { next.style.transform = 'translate3d(-100%, 0, 0)'; }
-
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    const duration = '0.6s';
-                    const timing = 'cubic-bezier(0.16, 1, 0.3, 1)';
-                    next.style.transition = `transform ${duration} ${timing}`;
-                    current.style.transition = `transform ${duration} ${timing}`;
-                    next.style.transform = 'translate3d(0%, 0, 0)';
-                    
-                    if (direction === 'next') { current.style.transform = 'translate3d(-100%, 0, 0)'; } 
-                    else { current.style.transform = 'translate3d(100%, 0, 0)'; }
-
-                    currentHeroSlide = targetIndex;
-                    updateDots();
-                    animateTexts();
-
-                    setTimeout(() => { isAnimating = false; }, 600); 
-                });
-            });
-        }
-
-        window.nextHeroSlide = function(manual = false) {
-            if (manual) stopAutoPlay(); 
-            if (isAnimating) return;
-            const nextIndex = (currentHeroSlide + 1) % heroTotalSlides;
-            transitionToSlide(nextIndex, 'next');
-        };
-
-        window.prevHeroSlide = function(manual = false) {
-            if (manual) stopAutoPlay(); 
-            if (isAnimating) return;
-            const prevIndex = (currentHeroSlide - 1 + heroTotalSlides) % heroTotalSlides;
-            transitionToSlide(prevIndex, 'prev');
-        };
-
-        function toggleFabMenu() {
-            const menu = document.getElementById('fab-menu');
-            const icon = document.getElementById('fab-icon');
-            if (menu.classList.contains('opacity-0')) {
+    function toggleFabMenu() {
+        const menu = document.getElementById('fab-menu');
+        const icon = document.getElementById('fab-icon');
+        if (menu.classList.contains('opacity-0')) {
             menu.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'translate-y-4');
             menu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
             icon.style.transform = 'rotate(180deg)';
@@ -2939,64 +2984,10 @@ try {
             icon.style.transform = 'rotate(0deg)';
         }
     }
-        
-        function updateDots() {
-            if (!heroDotsContainer) return;
-            Array.from(heroDotsContainer.children).forEach((dot, index) => {
-                if(index === currentHeroSlide) {
-                    dot.classList.replace('bg-transparent', 'bg-[#c5a059]');
-                    dot.classList.add('scale-125');
-                } else {
-                    dot.classList.replace('bg-[#c5a059]', 'bg-transparent');
-                    dot.classList.remove('scale-125');
-                }
-            });
-        }
-
-        function animateTexts() {
-            heroSlides.forEach((slide, index) => {
-                const elementsToAnimate = slide.querySelectorAll('.slide-anim');
-                if(index === currentHeroSlide) {
-                    setTimeout(() => {
-                        elementsToAnimate.forEach(el => {
-                            el.classList.remove('opacity-0', 'translate-y-4', 'translate-y-8');
-                            el.classList.add('opacity-100', 'translate-y-0');
-                        });
-                    }, 300); 
-                } else {
-                    elementsToAnimate.forEach(el => {
-                        el.classList.remove('opacity-100', 'translate-y-0');
-                        if(el.tagName === 'H2') el.classList.add('opacity-0', 'translate-y-8');
-                        else el.classList.add('opacity-0', 'translate-y-4');
-                    });
-                }
-            });
-        }
-
-        animateTexts();
-        heroAutoPlay = setInterval(() => {
-            if (!userInteracted) { nextHeroSlide(false); }
-        }, 8000); 
-
-        const sliderWrapperElement = document.getElementById('slider-wrapper');
-        if (sliderWrapperElement) {
-            let touchStartX = 0;
-            let touchEndX = 0;
-            sliderWrapperElement.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-            sliderWrapperElement.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                if (touchEndX < touchStartX - 50) { window.nextHeroSlide(true); }
-                if (touchEndX > touchStartX + 50) { window.prevHeroSlide(true); }
-            }, { passive: true });
-        }
-    }
-</script>
+    </script>
 
     <div class="fixed bottom-24 right-6 md:right-12 z-[90] pointer-events-none flex flex-col items-end">
     
-    <!-- El menú ahora es position: absolute, desvinculado del tamaño físico del contenedor -->
     <div id="fab-menu" class="absolute bottom-[calc(100%+12px)] right-0 flex flex-col gap-3 items-end opacity-0 invisible pointer-events-none translate-y-4 transition-all duration-300 w-max">
         
         <button onclick="scrollToVault(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
@@ -3031,53 +3022,5 @@ try {
     </button>
 </div>
 
-    <!-- SCRIPT CORREGIDO PARA EFECTO INSTANTÁNEO EN MÓVIL SIN ATASCOS -->
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const collagePages = document.querySelectorAll('.collage-page');
-        
-        // 1. LÓGICA PARA PC (Hover normal con el mouse)
-        collagePages.forEach(page => {
-            page.addEventListener('mouseenter', function() {
-                if(window.innerWidth > 1024) {
-                    collagePages.forEach(p => p.classList.remove('active-page'));
-                    this.classList.add('active-page');
-                }
-            });
-            page.addEventListener('mouseleave', function() {
-                if(window.innerWidth > 1024) {
-                    this.classList.remove('active-page');
-                }
-            });
-        });
-
-        // 2. LÓGICA PARA MÓVILES (Escáner central automático)
-        if (window.innerWidth <= 1024) {
-            // Configuramos márgenes negativos para crear una "línea de activación" 
-            // justo en el centro de la pantalla del celular.
-            const observerOptions = {
-                root: null, // Usa la pantalla principal (evita que el scroll se tranque)
-                rootMargin: '-35% 0px -35% 0px', 
-                threshold: 0
-            };
-
-            const scrollObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    // Cuando la tarjeta cruza la línea central, se activa instantáneamente
-                    if (entry.isIntersecting) {
-                        collagePages.forEach(p => p.classList.remove('active-page'));
-                        entry.target.classList.add('active-page');
-                    }
-                });
-            }, observerOptions);
-
-            // Le asignamos el escáner a las 13 imágenes
-            collagePages.forEach(page => {
-                scrollObserver.observe(page);
-            });
-        }
-    });
-    </script>
-    
 </body>
 </html>
