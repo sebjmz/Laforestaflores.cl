@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9NDEELWEK"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -1016,7 +1017,15 @@
         <input type="email" id="b2b-email" name="Email" required placeholder="Correo de contacto" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
         <input type="tel" id="b2b-whatsapp" name="WhatsApp" required placeholder="WhatsApp" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
     </div>
+
+    <div class="pt-4 flex justify-center w-full">
+        <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-callback="onB2BTurnstileSuccess" data-theme="dark"></div>
+    </div>
     
+    <div class="pt-8">
+        <button type="submit" id="b2b-submit-btn" class="w-full py-5 bg-[#c5a059] text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors">Solicitar Membresía</button>
+    </div>
+                
     <div class="pt-8">
         <button type="submit" id="b2b-submit-btn" class="w-full py-5 bg-[#c5a059] text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors">Solicitar Membresía</button>
     </div>
@@ -1083,6 +1092,10 @@
                 <input type="text" id="g-name" placeholder="Su Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
                 <input type="tel" id="g-phone" placeholder="Teléfono (+56 9...)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
                 <textarea id="g-details" placeholder="Detalles de su idea o medidas del espacio..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-28 mb-8"></textarea>
+                <div class="mb-8 flex justify-center w-full">
+                    <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-callback="onGardenTurnstileSuccess" data-theme="light"></div>
+                </div>
+
                 <button onclick="sendGardenConsultation()" class="w-full btn-premium">Enviar Consulta</button>
                 <button onclick="nextGardenStep(1)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
@@ -1569,6 +1582,12 @@
 
     async function sendB2BConsultation(event) {
         event.preventDefault(); 
+
+        if (!b2bTurnstileToken) {
+            alert("Por favor, verifica que eres humano marcando la casilla de seguridad.");
+            return;
+        }
+
         const btn = document.getElementById('b2b-submit-btn');
         const originalText = btn.innerHTML;
         btn.innerHTML = 'PROCESANDO...';
@@ -1619,6 +1638,11 @@
     let selectedDate = '';
     let selectedTimeSlot = '';
     let isExpressDelivery = false;
+    let b2bTurnstileToken = null;
+    let gardenTurnstileToken = null;
+
+function onB2BTurnstileSuccess(token) { b2bTurnstileToken = token; }
+function onGardenTurnstileSuccess(token) { gardenTurnstileToken = token; }
 
     try {
         cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
@@ -2441,6 +2465,11 @@
         const detalles = document.getElementById('g-details')?.value.trim();
         const fono = document.getElementById('g-phone')?.value.trim();
         if(!nombre || !fono) { alert("Por favor complete los campos obligatorios."); return; }
+                if (!gardenTurnstileToken) {
+            alert("Por favor, verifica que eres humano marcando la casilla de seguridad.");
+            return;
+        }
+
         const NUMERO_WHATSAPP_GARDEN = "56994783520"; 
         let textoGarden = `*SOLICITUD ASESORÍA PAISAJISMO - LA FORESTA*\n\n*CLIENTE:* ${nombre}\n*TIPO DE PROYECTO:* ${selectedGardenSpace}\n*FONO CONTACTO:* ${fono}\n\n*DETALLES:*\n"${detalles}"`;
         const wpUrl = `https://wa.me/${NUMERO_WHATSAPP_GARDEN}?text=${encodeURIComponent(textoGarden)}`;
