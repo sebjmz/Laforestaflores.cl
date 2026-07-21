@@ -2870,58 +2870,65 @@
     }
         
     function updateCountdown() {
-        try {
-            const dateOptions = { timeZone: "America/Santiago", year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
-            const formatter = new Intl.DateTimeFormat('en-US', dateOptions);
-            const parts = formatter.formatToParts(new Date());
-            const dateObj = {};
-            parts.forEach(({ type, value }) => { dateObj[type] = value; });
-            
-            const now = new Date(`${dateObj.year}-${dateObj.month}-${dateObj.day}T${dateObj.hour}:${dateObj.minute}:${dateObj.second}`);
-if (isNaN(now.getTime())) return; 
+    try {
+        const dateOptions = { timeZone: "America/Santiago", year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
+        const formatter = new Intl.DateTimeFormat('en-US', dateOptions);
+        const parts = formatter.formatToParts(new Date());
+        const dateObj = {};
+        parts.forEach(({ type, value }) => { dateObj[type] = value; });
+        
+        const now = new Date(`${dateObj.year}-${dateObj.month}-${dateObj.day}T${dateObj.hour}:${dateObj.minute}:${dateObj.second}`);
+        if (isNaN(now.getTime())) return; 
 
-// 1. Extraemos la hora actual
-const currentHour = now.getHours();
+        // 1. Extraemos la hora actual
+        const currentHour = now.getHours();
 
-// 2. Regla estricta: Activo desde las 11:00 hasta las 17:59
-const isOpen = currentHour >= 11 && currentHour < 18;
+        // 2. Regla estricta: Activo desde las 11:00 hasta las 17:59
+        const isOpen = currentHour >= 11 && currentHour < 18;
 
-// 3. Controlamos el Switch de iOS
-const toggleTrack = document.getElementById('nav-dispatch-toggle');
-const toggleKnob = document.getElementById('nav-dispatch-knob');
+        // 3. Controlamos el Switch de iOS
+        const toggleTrack = document.getElementById('nav-dispatch-toggle');
+        const toggleKnob = document.getElementById('nav-dispatch-knob');
 
-if (toggleTrack && toggleKnob) {
-    if (isOpen) {
-        // ABIERTO: Verde Esmeralda, bolita a la derecha
-        toggleTrack.style.backgroundColor = '#10b981'; 
-        toggleKnob.style.transform = 'translateX(16px)'; // Desliza exacto al borde
-    } else {
-        // CERRADO: Rojo, bolita a la izquierda
-        toggleTrack.style.backgroundColor = '#ef4444'; 
-        toggleKnob.style.transform = 'translateX(0px)'; // Vuelve al inicio
+        if (toggleTrack && toggleKnob) {
+            if (isOpen) {
+                // ABIERTO: Verde Esmeralda, bolita a la derecha
+                toggleTrack.style.backgroundColor = '#10b981'; 
+                toggleKnob.style.transform = 'translateX(16px)'; // Desliza exacto al borde
+            } else {
+                // CERRADO: Rojo, bolita a la izquierda
+                toggleTrack.style.backgroundColor = '#ef4444'; 
+                toggleKnob.style.transform = 'translateX(0px)'; // Vuelve al inicio
+            }
+        }
+
+        // --- ¡AQUÍ ESTÁ LA PARTE QUE FALTABA EN TU CÓDIGO! ---
+        // Definimos la hora de corte a las 18:00 del día actual
+        const cutoffExpress = new Date(now);
+        cutoffExpress.setHours(18, 0, 0, 0);
+
+        const timerEl = document.getElementById('countdown-timer');
+        if (!timerEl) return;
+
+        if (now >= cutoffExpress) {
+            timerEl.innerHTML = "<span class='text-sm tracking-wide'>Envíos a partir de <strong>MAÑANA</strong>.</span>";
+            return;
+        }
+        
+        const diff = cutoffExpress - now;
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        
+        timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Envío Express (1-2h) cierra en:</span><span class="opacity-60 md:hidden">Envío Express (1-2h) Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
+        
+    } catch(e) {
+        console.warn("Contador visual desactivado", e);
     }
 }
-            const timerEl = document.getElementById('countdown-timer');
-            if (!timerEl) return;
-
-            if (now >= cutoffExpress) {
-                timerEl.innerHTML = "<span class='text-sm tracking-wide'>Envíos a partir de <strong>MAÑANA</strong>.</span>";
-                return;
-            }
-            
-            const diff = cutoffExpress - now;
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            
-            timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Envío Express (1-2h) cierra en:</span><span class="opacity-60 md:hidden">Envío Express (1-2h) Cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
-        } catch(e) {
-            console.warn("Contador visual desactivado", e);
-        }
-    }
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
+setInterval(updateCountdown, 1000);
+updateCountdown();
 
     function escribirMensaje(tipo) {
         const textarea = document.getElementById('card-message');
