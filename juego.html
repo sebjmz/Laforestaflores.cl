@@ -3,360 +3,564 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Santuario Botánico | La Foresta</title>
+    <title>La Foresta | Tierra Virtual</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --glass-bg: rgba(10, 15, 12, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #050505; /* Fondo oscuro cinematográfico */
-            background-image: radial-gradient(circle at 50% 0%, #1a2e28 0%, #050505 70%);
             color: #fcfaf7;
             margin: 0;
             min-height: 100vh;
             overflow-x: hidden;
+            /* Fondo que simulará el entorno del jardín (Cambiará por JS) */
+            background-color: #1a2421; 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background-image 2s ease-in-out;
         }
         .font-serif { font-family: 'Playfair Display', serif; }
 
-        /* Panel de Cristal (Estilo VisionOS / Apple) */
+        /* Capa de atmósfera (para oscurecer de noche o dar brillo de día) */
+        #atmosphere-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            transition: background 2s ease-in-out;
+        }
+
+        /* Paneles de Cristal (HUD) - Ahora más difuminados para dejar ver la tierra */
         .glass-panel {
-            background: rgba(20, 25, 23, 0.4);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-        }
-
-        /* Espacios del Jardín (Slots) */
-        .garden-slot {
-            aspect-ratio: 1 / 1;
-            border-radius: 20px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(197, 160, 89, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.5s ease;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
             position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        
-        .garden-slot.active {
-            border-color: rgba(197, 160, 89, 0.6);
-            box-shadow: 0 0 30px rgba(197, 160, 89, 0.15), inset 0 0 40px rgba(0,0,0,0.8);
+            z-index: 10;
         }
 
-        .garden-slot.locked {
-            opacity: 0.3;
+        /* La "Tierra Virtual" (El Terreno) */
+        .plot-area {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.5);
+            border: 2px solid rgba(197, 160, 89, 0.2);
+            transition: all 1s ease;
+        }
+
+        /* La imagen de la tierra/planta */
+        .plot-visual {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 1.5s ease-in-out, transform 3s ease-out, filter 1s ease;
+            transform-origin: bottom center; /* Crece desde abajo */
+        }
+
+        /* Efectos de la naturaleza superpuestos en la tierra */
+        .nature-effect {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            background-size: cover;
+            opacity: 0;
+            transition: opacity 2s ease;
+            mix-blend-mode: overlay;
+        }
+
+        /* Botones de herramientas del jardín */
+        .tool-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #e4e4e7;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            gap: 0.5rem;
+        }
+        .tool-btn:hover:not(:disabled) {
+            background: rgba(197, 160, 89, 0.15);
+            border-color: rgba(197, 160, 89, 0.6);
+            color: #c5a059;
+            transform: translateY(-5px);
+        }
+        .tool-btn:disabled {
+            opacity: 0.2;
             cursor: not-allowed;
             filter: grayscale(100%);
         }
 
-        /* Imagen Hiperrealista (Simulación) */
-        .realistic-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.8;
-            transition: opacity 1s ease, transform 2s ease;
+        /* Eventos y Notificaciones Flotantes */
+        .event-toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(10, 15, 12, 0.9);
+            border-left: 4px solid #c5a059;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            transform: translateX(120%);
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            z-index: 100;
         }
+        .event-toast.show { transform: translateX(0); }
+
+        /* Barra de Vida Orgánica */
+        .health-bar-container { height: 6px; background: rgba(0,0,0,0.5); border-radius: 6px; overflow: hidden; margin-top: 4px; }
+        .health-bar { height: 100%; transition: width 1s ease, background-color 1s ease; }
         
-        .garden-slot.active:hover .realistic-img {
-            opacity: 1;
-            transform: scale(1.05);
-        }
-
-        /* Botones Minimalistas */
-        .action-btn {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #e4e4e7;
-            transition: all 0.3s ease;
-        }
-        .action-btn:hover:not(:disabled) {
-            background: rgba(197, 160, 89, 0.1);
-            border-color: rgba(197, 160, 89, 0.5);
-            color: #c5a059;
-        }
-        .action-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        /* Barras de Estadísticas */
-        .stat-bar-bg { background: rgba(255,255,255,0.05); height: 4px; border-radius: 4px; overflow: hidden; }
-        .stat-bar-fill { height: 100%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
-        .fill-gold { background: #c5a059; }
-        .fill-green { background: #4ade80; }
-        .fill-blue { background: #60a5fa; }
+        /* Modal de Inventario de Semillas */
+        #inventory-modal { backdrop-filter: blur(15px); }
     </style>
 </head>
-<body class="flex flex-col items-center py-10 px-4 md:px-0">
+<body>
 
-    <!-- Header / HUD -->
-    <header class="w-full max-w-4xl flex justify-between items-start mb-10 px-2">
-        <div>
-            <h1 class="font-serif text-3xl md:text-4xl italic text-[#c5a059] tracking-wide">Santuario Personal</h1>
-            <p class="text-[10px] uppercase tracking-[0.3em] text-zinc-400 mt-2 font-medium">Departamento • Balcón Sur</p>
-        </div>
-        <div class="text-right glass-panel px-5 py-3 rounded-2xl">
-            <div id="real-clock" class="text-2xl font-light tracking-widest text-zinc-200">00:00</div>
-            <div class="text-[9px] uppercase tracking-widest text-zinc-500 mt-1" id="weather-status">Viña del Mar • 18°C ☀️</div>
-        </div>
-    </header>
+    <!-- Capa de Atmósfera (Día/Noche/Lluvia) -->
+    <div id="atmosphere-layer" style="background: linear-gradient(to bottom, rgba(0,10,20,0.8), rgba(0,0,0,0.4));"></div>
 
-    <!-- Terreno Principal (Grid de 5) -->
-    <div class="w-full max-w-4xl grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+    <div class="relative z-10 w-full min-h-screen flex flex-col items-center py-6 px-4 md:px-8">
         
-        <!-- Slot 1 (Activo) -->
-        <div class="garden-slot active col-span-2 md:col-span-2 row-span-2" id="slot-1">
-            <!-- AQUÍ IRÁ TU FOTO HIPERREALISTA EN ALTA RESOLUCIÓN -->
-            <img src="https://images.unsplash.com/photo-1599598425947-33003c1ee5b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tierra" class="realistic-img" id="plant-visual">
+        <!-- Header Ambiental -->
+        <header class="w-full max-w-6xl flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div class="glass-panel px-6 py-4 rounded-2xl flex items-center gap-4">
+                <img src="https://images.unsplash.com/photo-1534080554559-052c1e403d51?w=100&h=100&fit=crop" class="w-12 h-12 rounded-full border border-[#c5a059] object-cover" alt="Perfil">
+                <div>
+                    <h1 class="font-serif text-xl md:text-2xl text-[#c5a059] leading-tight">Jardín de Sebastián</h1>
+                    <p class="text-[10px] uppercase tracking-widest text-zinc-400">Nivel 1 • Tierra Fértil</p>
+                </div>
+            </div>
+
+            <div class="glass-panel px-6 py-4 rounded-2xl text-right flex items-center gap-6">
+                <div>
+                    <div id="real-time" class="text-2xl font-light tracking-widest">00:00</div>
+                    <div id="weather-text" class="text-[9px] uppercase tracking-widest text-zinc-400 mt-1">Viña del Mar • Noche Fría</div>
+                </div>
+                <div class="text-4xl" id="weather-icon">🌙</div>
+            </div>
+        </header>
+
+        <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6">
-                <span class="text-[#c5a059] text-[9px] uppercase tracking-widest font-bold mb-1">Espacio Principal</span>
-                <h2 class="font-serif text-2xl text-white" id="plant-name">Tierra Preparada</h2>
+            <!-- EL TERRENO (La Tierra Virtual de 1 Parcela para el Test) -->
+            <div class="lg:col-span-8 flex flex-col gap-4">
+                
+                <!-- La Parcela -->
+                <div class="plot-area group" id="main-plot">
+                    <!-- Textura base de tierra muerta -->
+                    <img src="https://images.unsplash.com/photo-1588612140417-640a3ebff3b3?auto=format&fit=crop&w=1200&q=80" alt="Tierra Base" class="plot-visual opacity-100" id="visual-tierra-cruda">
+                    
+                    <!-- Textura de tierra trabajada/húmeda (Se muestra al arar) -->
+                    <img src="https://images.unsplash.com/photo-1623192078693-01053c5f2105?auto=format&fit=crop&w=1200&q=80" alt="Tierra Fértil" class="plot-visual opacity-0" id="visual-tierra-fertil">
+                    
+                    <!-- Textura de la Planta (Aparece en fase semilla y crece) -->
+                    <!-- NOTA: Aquí iría tu render PNG con fondo transparente de la semilla/planta -->
+                    <img src="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=1200&q=80" alt="Planta" class="plot-visual opacity-0 scale-75" id="visual-planta">
+                    
+                    <!-- Efectos de Clima (Lluvia/Sol sobre la tierra) -->
+                    <div class="nature-effect" id="effect-rain" style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png');"></div>
+
+                    <!-- HUD Flotante sobre la tierra -->
+                    <div class="absolute top-4 left-4 glass-panel px-4 py-2 rounded-xl">
+                        <span class="text-[9px] uppercase tracking-widest text-[#c5a059] block mb-1">Estado del Suelo</span>
+                        <span class="font-serif text-lg text-white" id="plot-status-name">Tierra Compactada</span>
+                    </div>
+
+                    <div class="absolute top-4 right-4 glass-panel px-4 py-2 rounded-xl flex gap-4">
+                        <div>
+                            <span class="text-[8px] uppercase tracking-widest text-zinc-400 block">Humedad</span>
+                            <div class="font-mono text-sm text-blue-400" id="hud-humedad">10%</div>
+                        </div>
+                        <div>
+                            <span class="text-[8px] uppercase tracking-widest text-zinc-400 block">Nutrientes</span>
+                            <div class="font-mono text-sm text-[#c5a059]" id="hud-nutrientes">5%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL DE HERRAMIENTAS (Lateral) -->
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                
+                <div class="glass-panel p-6 rounded-[2rem]">
+                    <h3 class="font-serif text-xl text-[#c5a059] mb-6 italic border-b border-white/10 pb-4">Herramientas de Jardinería</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        
+                        <!-- 1. Arar Tierra -->
+                        <button onclick="accionArar()" id="btn-arar" class="tool-btn">
+                            <span class="text-3xl mb-1">⛏️</span>
+                            <span class="text-[9px] uppercase tracking-widest font-bold">Oxigenar Suelo</span>
+                        </button>
+
+                        <!-- 2. Inventario/Semillas -->
+                        <button onclick="abrirInventario()" id="btn-inventario" class="tool-btn" disabled>
+                            <span class="text-3xl mb-1">🌱</span>
+                            <span class="text-[9px] uppercase tracking-widest font-bold text-center">Bolsa de Semillas</span>
+                        </button>
+
+                        <!-- 3. Regar -->
+                        <button onclick="accionRegar()" id="btn-regar" class="tool-btn" disabled>
+                            <span class="text-3xl mb-1">🚿</span>
+                            <span class="text-[9px] uppercase tracking-widest font-bold">Hidratar</span>
+                        </button>
+
+                        <!-- 4. Abonar -->
+                        <button onclick="accionAbonar()" id="btn-abonar" class="tool-btn" disabled>
+                            <span class="text-3xl mb-1">🍂</span>
+                            <span class="text-[9px] uppercase tracking-widest font-bold text-center">Aplicar Sustrato</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ecosistema y Amenazas (Análisis) -->
+                <div class="glass-panel p-6 rounded-[2rem] flex-grow">
+                    <h3 class="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mb-4 flex justify-between">
+                        <span>Análisis del Ecosistema</span>
+                        <span class="text-green-400 animate-pulse">● Live</span>
+                    </h3>
+                    
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex justify-between text-[9px] uppercase tracking-widest mb-1">
+                                <span>Salud General de la Planta</span>
+                                <span id="salud-txt" class="text-white">0%</span>
+                            </div>
+                            <div class="health-bar-container"><div class="health-bar" id="salud-bar" style="width: 0%; background: #22c55e;"></div></div>
+                        </div>
+
+                        <div class="bg-black/40 border border-white/5 p-4 rounded-xl text-xs font-light text-zinc-300 leading-relaxed italic" id="ecosystem-log">
+                            Esperando preparación del terreno. La tierra está inactiva y compactada.
+                        </div>
+
+                        <!-- Registro de Eventos -->
+                        <div class="mt-4 pt-4 border-t border-white/5 space-y-2" id="event-log-container">
+                            <span class="text-[8px] uppercase tracking-widest text-[#c5a059] block">Registro Reciente</span>
+                            <!-- Eventos se inyectan aquí -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- Slots Bloqueados -->
-        <div class="garden-slot locked"><span class="text-2xl opacity-50">🔒</span></div>
-        <div class="garden-slot locked"><span class="text-2xl opacity-50">🔒</span></div>
-        <div class="garden-slot locked"><span class="text-2xl opacity-50">🔒</span></div>
     </div>
 
-    <!-- Consola de Cuidados (Dashboard de Acción) -->
-    <div class="w-full max-w-4xl glass-panel rounded-[2rem] p-8 md:p-10 grid grid-cols-1 md:grid-cols-2 gap-10">
-        
-        <!-- Controles -->
-        <div class="space-y-4">
-            <h3 class="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mb-6 border-b border-white/10 pb-2">Panel de Cuidados</h3>
+    <!-- MODAL INVENTARIO DE SEMILLAS -->
+    <div id="inventory-modal" class="fixed inset-0 z-50 bg-black/80 hidden flex justify-center items-center opacity-0 transition-opacity duration-500">
+        <div class="glass-panel w-full max-w-2xl p-8 rounded-[2rem] border border-[#c5a059]/30 transform scale-95 transition-transform duration-500" id="inventory-box">
+            <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-6">
+                <h2 class="font-serif text-3xl italic text-[#c5a059]">Inventario Botánico</h2>
+                <button onclick="cerrarInventario()" class="text-3xl text-zinc-500 hover:text-white">&times;</button>
+            </div>
             
-            <button onclick="accionRegar()" id="btn-regar" class="action-btn w-full py-4 px-6 rounded-xl flex justify-between items-center group">
-                <div class="flex items-center gap-3">
-                    <span class="text-xl group-hover:scale-110 transition-transform">💧</span>
-                    <span class="text-xs uppercase tracking-widest font-medium">Hidratar</span>
-                </div>
-                <span class="text-[9px] text-zinc-500 font-mono" id="water-status">Disponible</span>
-            </button>
+            <p class="text-xs font-light text-zinc-300 mb-6">Selecciona una semilla para plantar en tu tierra oxigenada. Cada especie tiene necesidades climáticas distintas.</p>
 
-            <button onclick="accionTierra()" id="btn-tierra" class="action-btn w-full py-4 px-6 rounded-xl flex justify-between items-center group">
-                <div class="flex items-center gap-3">
-                    <span class="text-xl group-hover:scale-110 transition-transform">🧤</span>
-                    <span class="text-xs uppercase tracking-widest font-medium">Trabajar Suelo</span>
-                </div>
-            </button>
-
-            <button onclick="accionCantar()" id="btn-cantar" class="action-btn w-full py-4 px-6 rounded-xl flex justify-between items-center group">
-                <div class="flex items-center gap-3">
-                    <span class="text-xl group-hover:scale-110 transition-transform">🎵</span>
-                    <span class="text-xs uppercase tracking-widest font-medium">Conexión Auditiva</span>
-                </div>
-            </button>
-        </div>
-
-        <!-- Analíticas y Tips -->
-        <div class="flex flex-col justify-between">
-            <div>
-                <h3 class="text-[10px] uppercase tracking-[0.2em] text-[#c5a059] mb-4">Rendimiento Botánico</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
-                <div class="space-y-4 mb-8">
+                <!-- Semilla 1 -->
+                <button onclick="plantarSemilla('Lisianthus Premium')" class="bg-black/50 border border-white/5 rounded-xl p-4 flex gap-4 text-left hover:border-[#c5a059] hover:bg-white/5 transition group">
+                    <div class="w-16 h-16 bg-zinc-800 rounded-lg flex items-center justify-center text-2xl group-hover:scale-110 transition">🌰</div>
                     <div>
-                        <div class="flex justify-between text-[9px] uppercase tracking-widest mb-1 text-zinc-300">
-                            <span>Belleza Estructural</span>
-                            <span id="stat-belleza-txt">100%</span>
-                        </div>
-                        <div class="stat-bar-bg"><div id="stat-belleza" class="stat-bar-fill fill-gold" style="width: 100%"></div></div>
+                        <h4 class="font-serif text-lg text-white">Lisianthus Premium</h4>
+                        <p class="text-[9px] uppercase tracking-widest text-[#c5a059] mt-1">Dificultad: Media</p>
+                        <p class="text-[10px] text-zinc-400 mt-1 line-clamp-2">Requiere hidratación constante pero sin encharcar. Sensible al sol de mediodía.</p>
                     </div>
-                    <div>
-                        <div class="flex justify-between text-[9px] uppercase tracking-widest mb-1 text-zinc-300">
-                            <span>Frescura / Hidratación</span>
-                            <span id="stat-frescura-txt">50%</span>
-                        </div>
-                        <div class="stat-bar-bg"><div id="stat-frescura" class="stat-bar-fill fill-blue" style="width: 50%"></div></div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-[9px] uppercase tracking-widest mb-1 text-zinc-300">
-                            <span>Vínculo Emocional</span>
-                            <span id="stat-vinculo-txt">0%</span>
-                        </div>
-                        <div class="stat-bar-bg"><div id="stat-vinculo" class="stat-bar-fill fill-green" style="width: 0%"></div></div>
-                    </div>
-                </div>
-            </div>
+                </button>
 
-            <!-- Caja de Tips Profesionales -->
-            <div class="bg-black/30 border border-white/5 rounded-xl p-5 relative overflow-hidden">
-                <div class="absolute left-0 top-0 bottom-0 w-1 bg-[#c5a059]"></div>
-                <h4 class="text-[9px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Consejo del Atelier</h4>
-                <p class="text-xs font-light text-zinc-300 leading-relaxed italic" id="botanical-tip">
-                    El sustrato está crudo. Antes de plantar, oxigena la tierra usando la herramienta de suelo. Las raíces necesitan respirar.
-                </p>
+                <!-- Semilla 2 (Ejemplo Alimento/Huerto que pediste) -->
+                <button onclick="plantarSemilla('Tomate Cherry Reliquia')" class="bg-black/50 border border-white/5 rounded-xl p-4 flex gap-4 text-left hover:border-red-400 hover:bg-white/5 transition group">
+                    <div class="w-16 h-16 bg-zinc-800 rounded-lg flex items-center justify-center text-2xl group-hover:scale-110 transition">🍅</div>
+                    <div>
+                        <h4 class="font-serif text-lg text-white">Tomate Cherry</h4>
+                        <p class="text-[9px] uppercase tracking-widest text-red-400 mt-1">Huerto Urbano</p>
+                        <p class="text-[10px] text-zinc-400 mt-1 line-clamp-2">Amante del sol directo. Exige tierra rica en nutrientes (abono constante).</p>
+                    </div>
+                </button>
             </div>
         </div>
+    </div>
+
+    <!-- TOAST DE EVENTOS (Notificaciones Emergentes) -->
+    <div id="toast" class="event-toast flex flex-col gap-1">
+        <span class="text-[9px] font-bold uppercase tracking-widest text-[#c5a059]" id="toast-title">Alerta Ambiental</span>
+        <span class="text-sm font-light" id="toast-msg">Mensaje aquí</span>
     </div>
 
     <script>
-        // --- 1. RELOJ EN TIEMPO REAL ---
-        function updateClock() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('real-clock').innerText = timeString;
-            
-            // Lógica ambiental basada en la hora real
-            const hour = now.getHours();
-            let weatherText = "18°C 🌤 Templado";
-            if (hour >= 20 || hour < 6) weatherText = "12°C 🌙 Fresco";
-            else if (hour >= 12 && hour <= 16) weatherText = "24°C ☀️ Sol Directo";
-            
-            document.getElementById('weather-status').innerText = `Viña del Mar • ${weatherText}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // --- 2. MOTOR DEL SIMULADOR ---
-        let estadoPlanta = 0; // 0: Tierra Cruda, 1: Tierra Preparada, 2: Semilla, 3: Creciendo, 4: Florecida
+        // --- MOTOR DEL ECOSISTEMA ---
         
-        let stats = {
-            belleza: 100,
-            frescura: 30,
-            vinculo: 0
+        let parcela = {
+            fase: 0, // 0: Compacta, 1: Arada, 2: Plantada (Semilla), 3: Brote, 4: Crecimiento
+            semilla: null,
+            humedad: 10,
+            nutrientes: 5,
+            saludPlanta: 0
         };
 
-        const ui = {
-            img: document.getElementById('plant-visual'),
-            name: document.getElementById('plant-name'),
-            tip: document.getElementById('botanical-tip'),
+        const uis = {
+            plotStatusName: document.getElementById('plot-status-name'),
+            hudHumedad: document.getElementById('hud-humedad'),
+            hudNutrientes: document.getElementById('hud-nutrientes'),
+            
+            imgCruda: document.getElementById('visual-tierra-cruda'),
+            imgFertil: document.getElementById('visual-tierra-fertil'),
+            imgPlanta: document.getElementById('visual-planta'),
+            
+            btnArar: document.getElementById('btn-arar'),
+            btnInv: document.getElementById('btn-inventario'),
             btnRegar: document.getElementById('btn-regar'),
-            btnTierra: document.getElementById('btn-tierra'),
-            btnCantar: document.getElementById('btn-cantar')
+            btnAbonar: document.getElementById('btn-abonar'),
+
+            logText: document.getElementById('ecosystem-log'),
+            saludBar: document.getElementById('salud-bar'),
+            saludTxt: document.getElementById('salud-txt')
         };
 
-        // Base de datos de Imágenes y Textos (AQUÍ PONDRÁS TUS RENDERS HIPERREALISTAS)
-        const fases = [
-            {
-                img: "https://images.unsplash.com/photo-1599598425947-33003c1ee5b7?auto=format&fit=crop&w=800&q=80", // Tierra cruda
-                nombre: "Suelo Virgen",
-                tip: "La tierra está compactada. Usa la acción 'Trabajar Suelo' para crear un lecho aireado y perfecto."
-            },
-            {
-                img: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=800&q=80", // Tierra arada/lista
-                nombre: "Sustrato Oxigenado",
-                tip: "La cama está lista. Ahora planta la semilla y aplica el primer riego de activación."
-            },
-            {
-                img: "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80", // Brote
-                nombre: "Brote de Lisianthus",
-                tip: "¡Ha nacido! Cuidado con el sol del mediodía. Riega preferentemente al atardecer para no hervir las raíces."
-            },
-            {
-                img: "https://images.unsplash.com/photo-1508022057371-4f937727f440?auto=format&fit=crop&w=800&q=80", // Flor perfecta
-                nombre: "Lisianthus Signature",
-                tip: "Obra de arte completada. Su belleza está al máximo. Hablarle fortalecerá su tallo y longevidad."
-            }
-        ];
-
-        function actualizarStats() {
-            document.getElementById('stat-belleza').style.width = stats.belleza + '%';
-            document.getElementById('stat-belleza-txt').innerText = Math.round(stats.belleza) + '%';
+        // --- CLIMA Y HORA REAL ---
+        function updateEnvironment() {
+            // Esta función lee la hora real para cambiar el fondo y la iluminación
+            const now = new Date();
+            const hour = now.getHours();
             
-            document.getElementById('stat-frescura').style.width = stats.frescura + '%';
-            document.getElementById('stat-frescura-txt').innerText = Math.round(stats.frescura) + '%';
+            document.getElementById('real-time').innerText = now.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
             
-            document.getElementById('stat-vinculo').style.width = stats.vinculo + '%';
-            document.getElementById('stat-vinculo-txt').innerText = Math.round(stats.vinculo) + '%';
-        }
+            let bgImage = "";
+            let weatherData = { temp: 0, icon: "", desc: "" };
 
-        function cambiarFase(nuevaFase) {
-            estadoPlanta = nuevaFase;
-            ui.img.style.opacity = '0'; // Fade out
-            
-            setTimeout(() => {
-                ui.img.src = fases[estadoPlanta].img;
-                ui.name.innerText = fases[estadoPlanta].nombre;
-                ui.tip.innerText = fases[estadoPlanta].tip;
-                ui.img.style.opacity = '0.8'; // Fade in
-            }, 500);
-        }
-
-        // --- ACCIONES DEL USUARIO ---
-
-        function accionTierra() {
-            if (estadoPlanta === 0) {
-                ui.btnTierra.disabled = true;
-                cambiarFase(1);
+            if (hour >= 6 && hour < 11) {
+                // Mañana
+                bgImage = "url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80')"; // Bosque amanecer
+                document.getElementById('atmosphere-layer').style.background = "linear-gradient(to bottom, rgba(255,240,200,0.2), rgba(0,0,0,0.1))";
+                weatherData = { temp: 14, icon: "🌅", desc: "Amanecer Húmedo" };
+            } else if (hour >= 11 && hour < 18) {
+                // Día pleno
+                bgImage = "url('https://images.unsplash.com/photo-1587334208465-983196c340ee?auto=format&fit=crop&w=1920&q=80')"; // Jardín día
+                document.getElementById('atmosphere-layer').style.background = "linear-gradient(to bottom, rgba(255,255,255,0.0), rgba(0,0,0,0.2))";
+                weatherData = { temp: 24, icon: "☀️", desc: "Sol Radiante" };
+                
+                // Efecto sequía de día
+                if(parcela.humedad > 10) parcela.humedad -= 0.5; // El sol evapora el agua
+                
+            } else if (hour >= 18 && hour < 20) {
+                // Atardecer
+                bgImage = "url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=1920&q=80')"; // Atardecer jardín
+                document.getElementById('atmosphere-layer').style.background = "linear-gradient(to bottom, rgba(200,100,50,0.3), rgba(0,0,0,0.5))";
+                weatherData = { temp: 18, icon: "🌇", desc: "Atardecer Cálido" };
             } else {
-                alert("La tierra ya está preparada y en uso.");
+                // Noche
+                bgImage = "url('https://images.unsplash.com/photo-1504222490345-c075b6008014?auto=format&fit=crop&w=1920&q=80')"; // Noche oscura
+                document.getElementById('atmosphere-layer').style.background = "linear-gradient(to bottom, rgba(0,10,20,0.8), rgba(0,0,0,0.7))";
+                weatherData = { temp: 12, icon: "🌙", desc: "Noche Fría" };
             }
+
+            document.body.style.backgroundImage = bgImage;
+            document.getElementById('weather-text').innerText = `Viña del Mar • ${weatherData.desc} (${weatherData.temp}°C)`;
+            document.getElementById('weather-icon').innerText = weatherData.icon;
+            
+            actualizarHUD();
+        }
+
+        setInterval(updateEnvironment, 10000); // Chequea entorno cada 10 seg
+        updateEnvironment();
+
+        // --- ACCIONES DE JARDINERÍA ---
+
+        function accionArar() {
+            if (parcela.fase > 0) return;
+            
+            uis.plotStatusName.innerText = "Tierra Oxigenada";
+            uis.imgCruda.style.opacity = '0';
+            uis.imgFertil.style.opacity = '1';
+            
+            uis.btnArar.disabled = true;
+            uis.btnInv.disabled = false;
+            uis.btnRegar.disabled = false;
+            uis.btnAbonar.disabled = false;
+            
+            parcela.fase = 1;
+            agregarLog("Tierra removida exitosamente. El suelo está listo para recibir semillas.");
+            mostrarToast("Labor Completada", "El terreno respira. Selecciona una semilla del inventario.");
+        }
+
+        // Inventario Modal
+        function abrirInventario() {
+            document.getElementById('inventory-modal').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('inventory-modal').classList.add('opacity-100');
+                document.getElementById('inventory-box').classList.remove('scale-95');
+            }, 10);
+        }
+
+        function cerrarInventario() {
+            document.getElementById('inventory-modal').classList.remove('opacity-100');
+            document.getElementById('inventory-box').classList.add('scale-95');
+            setTimeout(() => document.getElementById('inventory-modal').classList.add('hidden'), 500);
+        }
+
+        function plantarSemilla(nombre) {
+            parcela.semilla = nombre;
+            parcela.fase = 2; // Semilla plantada
+            parcela.saludPlanta = 10;
+            
+            cerrarInventario();
+            uis.btnInv.disabled = true;
+            
+            uis.plotStatusName.innerText = `Semilla: ${nombre}`;
+            uis.imgPlanta.style.opacity = '0.5'; // Se ve un bultito
+            uis.imgPlanta.src = "https://images.unsplash.com/photo-1599598425947-33003c1ee5b7?auto=format&fit=crop&w=1200&q=80"; // Imagen de tierra con montículo
+            
+            agregarLog(`Has plantado un [${nombre}]. Requiere humedad mínima del 60% para germinar.`);
+            actualizarHUD();
+            
+            // Iniciar Motor de Vida Aleatorio (Aves, plagas)
+            iniciarEcosistemaVivo();
         }
 
         function accionRegar() {
-            if (estadoPlanta === 0) {
-                alert("Primero debes trabajar la tierra antes de hidratar.");
-                return;
-            }
-
-            const horaActual = new Date().getHours();
+            const hour = new Date().getHours();
             
-            // LÓGICA HIPERREALISTA: Reacción de la planta según la hora
-            if (horaActual >= 11 && horaActual <= 15) {
-                // Regar al mediodía quema las hojas
-                stats.belleza -= 15;
-                stats.frescura += 20;
-                ui.tip.innerText = "⚠️ CUIDADO: Has regado a pleno sol. Las gotas actúan como lupas y han quemado parte del follaje. Belleza reducida.";
-            } else if (horaActual >= 18 || horaActual <= 8) {
-                // Riego perfecto
-                stats.belleza = Math.min(100, stats.belleza + 5);
-                stats.frescura = 100;
-                ui.tip.innerText = "✨ Riego perfecto. El sustrato absorbe la humedad sin evaporación violenta. La planta te lo agradece.";
+            // Reacción climática al agua
+            if (hour >= 11 && hour <= 16) {
+                // Regar con sol evapora rápido y no rinde tanto
+                parcela.humedad = Math.min(100, parcela.humedad + 30);
+                if(parcela.fase > 2) parcela.saludPlanta -= 5; // Quema hojas si ya brotó
+                agregarLog("⚠️ Cuidado: Regaste al mediodía. Alta evaporación y riesgo de quemar follaje.");
             } else {
-                // Riego normal
-                stats.frescura = Math.min(100, stats.frescura + 40);
-                ui.tip.innerText = "Hidratación completada correctamente.";
+                // Riego eficiente
+                parcela.humedad = Math.min(100, parcela.humedad + 50);
+                if(parcela.fase > 1) parcela.saludPlanta += 10;
+                agregarLog("💦 Riego profundo. El suelo absorbe la humedad perfectamente en este horario.");
             }
-
-            // Simulación de paso del tiempo para crecer
-            if (estadoPlanta === 1 && stats.frescura >= 80) {
-                cambiarFase(2); // Pasa a brote
-            } else if (estadoPlanta === 2 && stats.belleza >= 80 && stats.vinculo > 20) {
-                cambiarFase(3); // Pasa a Flor
-            }
-
-            actualizarStats();
             
-            // Cooldown del botón de agua
-            ui.btnRegar.disabled = true;
-            document.getElementById('water-status').innerText = "Absorbiendo...";
-            setTimeout(() => {
-                ui.btnRegar.disabled = false;
-                document.getElementById('water-status').innerText = "Disponible";
-            }, 5000); // En la realidad, esto sería horas
+            efectoVisualLluviaLocal();
+            evaluarCrecimiento();
+            actualizarHUD();
         }
 
-        function accionCantar() {
-            if (estadoPlanta < 2) {
-                alert("Aún no hay una planta que pueda escucharte.");
-                return;
-            }
-
-            stats.vinculo = Math.min(100, stats.vinculo + 25);
-            stats.belleza = Math.min(100, stats.belleza + 2); // Cantar le da un boost de belleza
+        function accionAbonar() {
+            parcela.nutrientes = Math.min(100, parcela.nutrientes + 40);
+            if(parcela.fase > 1) parcela.saludPlanta += 15;
             
-            ui.tip.innerText = "🎵 Las vibraciones sonoras de tu voz estimulan los estomas de las hojas. La planta ha mejorado su estructura celular.";
-            
-            actualizarStats();
+            agregarLog("🍂 Sustrato premium aplicado. Riqueza orgánica aumentada.");
+            evaluarCrecimiento();
+            actualizarHUD();
+        }
 
-            // Si llegamos a floración perfecta
-            if (estadoPlanta === 2 && stats.belleza >= 80 && stats.vinculo > 20) {
-                setTimeout(() => cambiarFase(3), 2000);
+        // --- MOTOR DE CRECIMIENTO Y AMENAZAS (El "Juego" real) ---
+        function evaluarCrecimiento() {
+            if (parcela.fase === 2 && parcela.humedad >= 60 && parcela.nutrientes >= 40) {
+                // Germinación!
+                parcela.fase = 3;
+                parcela.saludPlanta += 20;
+                
+                uis.plotStatusName.innerText = `Brote: ${parcela.semilla}`;
+                // CAMBIO VISUAL HIPERREALISTA AL BROTE (Tu PNG iría aquí)
+                uis.imgPlanta.src = "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=1200&q=80"; 
+                uis.imgPlanta.style.opacity = '1';
+                uis.imgPlanta.style.transform = 'scale(1)'; // Crece visualmente
+                
+                mostrarToast("¡Milagro de la Vida!", "La semilla ha roto la tierra. Tienes un nuevo brote.");
             }
         }
 
-        // Iniciar valores visuales
-        actualizarStats();
-        ui.tip.innerText = fases[0].tip;
+        function iniciarEcosistemaVivo() {
+            // Cada 15 segundos ocurre un evento aleatorio de la naturaleza
+            setInterval(() => {
+                const prob = Math.random();
+                
+                if (prob < 0.15) {
+                    // Evento Positivo: Pájaro poliniza/limpia
+                    parcela.saludPlanta = Math.min(100, parcela.saludPlanta + 5);
+                    agregarLog("🐦 Un colibrí visitó tu parcela. Ecosistema equilibrado.");
+                    mostrarToast("Visita Silvestre", "Un ave ha descansado en tu parcela, controlando pequeños insectos.");
+                } 
+                else if (prob > 0.85) {
+                    // Evento Negativo: Plaga u hongo
+                    parcela.saludPlanta -= 10;
+                    parcela.nutrientes -= 10;
+                    agregarLog("🐛 Alerta de pulgones. Han drenado algunos nutrientes.");
+                    mostrarToast("Amenaza Detectada", "Pequeños insectos están atacando el brote. Aplica nutrientes para fortalecerlo.", true);
+                    
+                    // Efecto visual: la tierra se ve más gris/enferma
+                    uis.imgPlanta.style.filter = 'sepia(30%) hue-rotate(-10deg)';
+                    setTimeout(() => uis.imgPlanta.style.filter = 'none', 5000); // Pasa tras 5 seg
+                }
+                
+                // Consumo natural de recursos
+                parcela.humedad = Math.max(0, parcela.humedad - 2);
+                parcela.nutrientes = Math.max(0, parcela.nutrientes - 1);
+                
+                actualizarHUD();
+
+            }, 15000); 
+        }
+
+        // --- UTILIDADES UI ---
+        function actualizarHUD() {
+            uis.hudHumedad.innerText = Math.round(parcela.humedad) + "%";
+            uis.hudNutrientes.innerText = Math.round(parcela.nutrientes) + "%";
+            
+            // Color de Salud
+            let saludColor = "#22c55e"; // Verde
+            if (parcela.saludPlanta < 40) saludColor = "#eab308"; // Amarillo
+            if (parcela.saludPlanta < 20) saludColor = "#ef4444"; // Rojo
+            
+            uis.saludBar.style.width = Math.min(100, Math.max(0, parcela.saludPlanta)) + '%';
+            uis.saludBar.style.backgroundColor = saludColor;
+            uis.saludTxt.innerText = Math.min(100, Math.max(0, parcela.saludPlanta)) + '%';
+        }
+
+        function agregarLog(texto) {
+            const time = new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+            uis.logText.innerHTML = `<strong>[${time}]</strong> ${texto}`;
+            
+            // Añadir al mini historial (Solo guarda los últimos 2)
+            const container = document.getElementById('event-log-container');
+            const newLog = document.createElement('div');
+            newLog.className = "text-[9px] text-zinc-400 font-mono border-l-2 border-white/20 pl-2";
+            newLog.innerText = `> ${texto}`;
+            
+            container.appendChild(newLog);
+            if(container.children.length > 3) container.removeChild(container.children[1]); // Mantiene max 2 logs + el título
+        }
+
+        function mostrarToast(titulo, mensaje, esPeligro = false) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = titulo;
+            document.getElementById('toast-title').style.color = esPeligro ? '#ef4444' : '#c5a059';
+            toast.style.borderLeftColor = esPeligro ? '#ef4444' : '#c5a059';
+            document.getElementById('toast-msg').innerText = mensaje;
+            
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 5000);
+        }
+
+        function efectoVisualLluviaLocal() {
+            const plot = document.getElementById('main-plot');
+            // Oscurecer tierra temporalmente simulando agua
+            plot.style.filter = 'brightness(0.7) contrast(1.2)';
+            setTimeout(() => plot.style.filter = 'none', 2000);
+        }
+
     </script>
 </body>
 </html>
