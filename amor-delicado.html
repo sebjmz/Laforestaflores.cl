@@ -12,9 +12,9 @@
     <link rel="icon" type="image/png" href="/img/favicon.png">
 
     <!-- OPTIMIZACIÓN SAFARI / IOS -->
-    <meta name="theme-color" content="#fcfaf7">
+    <meta name="theme-color" content="#0a1f1c">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Amor Delicado">
 
     <!-- OPEN GRAPH -->
@@ -158,35 +158,46 @@
             color: var(--forest-green);
         }
         .glass-nav {
-            background: rgba(252, 250, 247, 0.95);
+            background: rgba(10, 31, 28, 0.92);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            color: var(--gold-leaf);
         }
     </style>
 </head>
 <body>
 
-    <!-- Navegación Principal (Adaptada al index) -->
-    <nav class="fixed w-full z-50 glass-nav px-6 md:px-12 py-5 flex justify-between items-center border-b border-[#0a1f1c]/5">
-        <div class="flex items-center space-x-8 md:space-x-12 min-w-0">
-            <a href="/index.html" class="cursor-pointer flex-shrink-0 flex items-center" aria-label="Volver al inicio">
-                <img src="img/logo-menu.png" alt="La Foresta Flores Logo" class="h-6 md:h-8 w-auto object-contain">
-            </a>
-            <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap items-center text-[#0a1f1c]">
-                <a href="/index.html#vault" class="hover:text-[#c5a059] transition-colors duration-300">Colección</a>
-                <a href="/index.html#privilege" class="hover:text-[#c5a059] transition-colors duration-300">Suscripción</a>
-                <a href="/index.html#garden" class="hover:text-[#c5a059] transition-colors duration-300">Jardinería</a>
+    <!-- Navegación Principal Idéntica al Index (Enlaces adaptados) -->
+    <nav class="fixed w-full z-[100] glass-nav px-6 md:px-12 py-5 flex justify-between items-center">
+        <div class="flex items-center space-x-12 min-w-0">
+            <div class="cursor-pointer flex-shrink-0 flex items-center" onclick="window.location.href='/index.html'">
+                <img src="img/logo-menu.png" alt="La Foresta Flores" class="h-6 md:h-8 w-auto object-contain brightness-0 invert">
+            </div>
+            <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap items-center text-white/80">
+                <a href="/index.html#vault" class="hover:text-white transition-colors duration-300">Colección</a>
+                <a href="/index.html#privilege" class="hover:text-white transition-colors duration-300">Suscripción & B2B</a>
+                <a href="/index.html#garden" class="hover:text-white transition-colors duration-300">Jardinería</a>
+                <a href="/index.html#faq" class="hover:text-white transition-colors duration-300">Preguntas</a>
+                <a href="/index.html#testimonios" class="hover:text-white transition-colors duration-300 flex items-center gap-1.5 group">
+                    Testimonios
+                    <svg class="w-3.5 h-3.5 text-[#c5a059] group-hover:text-white transition-colors duration-300 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                    </svg>
+                </a>
             </div>
         </div>
         
-        <div class="flex items-center space-x-6 flex-shrink-0">
-            <a href="javascript:void(0)" onclick="volverInteligente()" class="hidden md:block text-[10px] font-bold uppercase tracking-widest text-[#0a1f1c]/50 hover:text-[#c5a059] transition-colors">Volver Atrás</a>
+        <div class="flex items-center space-x-4 md:space-x-6 flex-shrink-0 text-white/80">
+            <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Reñaca, Chile</div>
+            <a href="javascript:void(0)" onclick="volverInteligente()" class="hidden md:block text-[10px] font-bold uppercase tracking-widest text-[#c5a059] hover:text-white transition-colors">Volver Atrás</a>
             
-            <!-- Botón de carrito que redirige al index para abrir el drawer -->
+            <!-- Botón interactivo para el carrito que redirige al index -->
             <button onclick="window.location.href='/index.html?action=open_cart';" class="relative group flex items-center hover:scale-110 transition-transform duration-300">
-                <svg class="w-5 h-5 text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 text-[#c5a059] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                 </svg>
+                <span id="cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2.5 py-1 rounded-full text-[10px] font-bold shadow-sm">0</span>
             </button>
         </div>
     </nav>
@@ -205,7 +216,7 @@
             </ol>
         </nav>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 w-full mt-4 md:mt-0">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 w-full mt-8 md:mt-0">
             
             <figure class="relative bg-zinc-100 aspect-[4/5] overflow-hidden group shadow-sm rounded-xl">
                 <img src="img/RAMOS01.jpeg" alt="Detalle del arreglo floral Amor Delicado con Lisianthus y Lilium" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" fetchpriority="high">
@@ -328,6 +339,12 @@
         document.addEventListener("DOMContentLoaded", function() {
             const yearFooter = document.getElementById("year-footer");
             if (yearFooter) { yearFooter.innerText = new Date().getFullYear(); }
+            
+            // Actualizar número del carrito en el navbar superior
+            const cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
+            const itemsCount = cart.reduce((acc, item) => acc + item.qty, 0);
+            const countBadge = document.getElementById('cart-count');
+            if (countBadge) { countBadge.innerText = itemsCount; }
         });
 
         // Función para agregar al carrito
