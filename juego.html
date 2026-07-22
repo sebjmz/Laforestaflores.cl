@@ -3,380 +3,360 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atelier Botánico Virtual | La Foresta</title>
+    <title>Santuario Botánico | La Foresta</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --forest-green: #0a1f1c;
-            --gold-leaf: #c5a059;
-            --soft-cream: #fcfaf7;
-        }
         body {
-            background-color: var(--soft-cream);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            color: var(--forest-green);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            background-color: #050505; /* Fondo oscuro cinematográfico */
+            background-image: radial-gradient(circle at 50% 0%, #1a2e28 0%, #050505 70%);
+            color: #fcfaf7;
             margin: 0;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
         .font-serif { font-family: 'Playfair Display', serif; }
-        
-        /* Estilo Tarjeta Apple */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 20px 40px rgba(10, 31, 28, 0.08);
-            border-radius: 2rem;
-            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+        /* Panel de Cristal (Estilo VisionOS / Apple) */
+        .glass-panel {
+            background: rgba(20, 25, 23, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
         }
 
-        /* Animación del "Ser Vivo" (La Planta) */
-        .plant-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 0 auto;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #ffffff, #f0ede6);
-            box-shadow: inset 5px 5px 15px rgba(0,0,0,0.05), 
-                        10px 10px 30px rgba(197, 160, 89, 0.1);
+        /* Espacios del Jardín (Slots) */
+        .garden-slot {
+            aspect-ratio: 1 / 1;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(197, 160, 89, 0.1);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 5rem;
-            transition: all 0.8s ease;
-        }
-
-        .breathing {
-            animation: breathe 4s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-            0% { transform: scale(1) translateY(0); box-shadow: 0 10px 30px rgba(197, 160, 89, 0.1); }
-            50% { transform: scale(1.02) translateY(-5px); box-shadow: 0 15px 40px rgba(197, 160, 89, 0.2); }
-            100% { transform: scale(1) translateY(0); box-shadow: 0 10px 30px rgba(197, 160, 89, 0.1); }
-        }
-
-        /* Animaciones de entrada/salida de la planta */
-        .pop-in {
-            animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
-
-        /* Botón Premium Interactivo */
-        .btn-action {
-            background: var(--forest-green);
-            color: var(--gold-leaf);
-            border-radius: 999px;
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
         
-        .btn-action:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(10, 31, 28, 0.2);
+        .garden-slot.active {
+            border-color: rgba(197, 160, 89, 0.6);
+            box-shadow: 0 0 30px rgba(197, 160, 89, 0.15), inset 0 0 40px rgba(0,0,0,0.8);
         }
 
-        .btn-action:active:not(:disabled) {
-            transform: translateY(1px);
-        }
-
-        .btn-action:disabled {
-            background: #e4e4e7;
-            color: #a1a1aa;
+        .garden-slot.locked {
+            opacity: 0.3;
             cursor: not-allowed;
-            transform: none;
+            filter: grayscale(100%);
         }
 
-        /* Barra de progreso estilo iOS */
-        .progress-bg {
-            background-color: #f4f4f5;
-            border-radius: 999px;
-            overflow: hidden;
-            height: 6px;
+        /* Imagen Hiperrealista (Simulación) */
+        .realistic-img {
             width: 100%;
-        }
-
-        .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #c5a059, #e8d09f);
-            width: 0%;
-            transition: width 1s linear;
-            border-radius: 999px;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: opacity 1s ease, transform 2s ease;
         }
         
-        /* Efecto de gotas de agua al regar */
-        .water-drop {
-            position: absolute;
-            font-size: 1.5rem;
-            color: #3b82f6;
-            animation: dropWater 1s forwards ease-in;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 50;
+        .garden-slot.active:hover .realistic-img {
+            opacity: 1;
+            transform: scale(1.05);
         }
 
-        @keyframes dropWater {
-            0% { transform: translateY(-50px) scale(1); opacity: 1; }
-            80% { transform: translateY(50px) scale(0.8); opacity: 0.8; }
-            100% { transform: translateY(60px) scale(0); opacity: 0; }
+        /* Botones Minimalistas */
+        .action-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #e4e4e7;
+            transition: all 0.3s ease;
         }
+        .action-btn:hover:not(:disabled) {
+            background: rgba(197, 160, 89, 0.1);
+            border-color: rgba(197, 160, 89, 0.5);
+            color: #c5a059;
+        }
+        .action-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Barras de Estadísticas */
+        .stat-bar-bg { background: rgba(255,255,255,0.05); height: 4px; border-radius: 4px; overflow: hidden; }
+        .stat-bar-fill { height: 100%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .fill-gold { background: #c5a059; }
+        .fill-green { background: #4ade80; }
+        .fill-blue { background: #60a5fa; }
     </style>
 </head>
-<body>
+<body class="flex flex-col items-center py-10 px-4 md:px-0">
 
-    <div class="glass-card w-full max-w-md p-8 md:p-10 relative text-center">
-        <!-- Encabezado -->
-        <div class="mb-8">
-            <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-[#c5a059] block mb-2">Gemelo Digital</span>
-            <h1 class="font-serif text-3xl italic text-[#0a1f1c]">Mi Jardín Virtual</h1>
-            <p class="text-xs text-[#0a1f1c]/50 uppercase tracking-widest mt-2" id="plant-type">Lisianthus Premium</p>
+    <!-- Header / HUD -->
+    <header class="w-full max-w-4xl flex justify-between items-start mb-10 px-2">
+        <div>
+            <h1 class="font-serif text-3xl md:text-4xl italic text-[#c5a059] tracking-wide">Santuario Personal</h1>
+            <p class="text-[10px] uppercase tracking-[0.3em] text-zinc-400 mt-2 font-medium">Departamento • Balcón Sur</p>
         </div>
+        <div class="text-right glass-panel px-5 py-3 rounded-2xl">
+            <div id="real-clock" class="text-2xl font-light tracking-widest text-zinc-200">00:00</div>
+            <div class="text-[9px] uppercase tracking-widest text-zinc-500 mt-1" id="weather-status">Viña del Mar • 18°C ☀️</div>
+        </div>
+    </header>
 
-        <!-- Contenedor Visual de la Planta -->
-        <div class="plant-container breathing mb-8 relative" id="plant-stage" onclick="crearGotaAgua(event)">
-            <!-- Aquí irán tus PNGs transparentes en el futuro. Por ahora usamos Emojis -->
-            <div id="plant-image" class="pop-in">🌰</div>
-        </div>
-
-        <!-- Información de Estado -->
-        <div class="mb-8 h-20 flex flex-col justify-center">
-            <h2 id="status-title" class="font-bold text-lg text-[#0a1f1c] mb-1">Semilla Latente</h2>
-            <p id="status-desc" class="text-sm font-light text-zinc-500">Esperando su primer riego para activar la germinación.</p>
-        </div>
-
-        <!-- Temporizador y Barra de Progreso -->
-        <div id="timer-section" class="mb-8 opacity-0 transition-opacity duration-500 hidden">
-            <div class="flex justify-between text-[10px] uppercase tracking-widest font-bold text-zinc-400 mb-2">
-                <span>Progreso</span>
-                <span id="time-left" class="text-[#c5a059] font-mono">00:00:00</span>
-            </div>
-            <div class="progress-bg">
-                <div id="progress-fill" class="progress-bar"></div>
-            </div>
-        </div>
-
-        <!-- Botones de Acción -->
-        <div class="space-y-4">
-            <button id="btn-action" onclick="iniciarCrecimiento()" class="btn-action w-full py-4 text-xs font-bold uppercase tracking-[0.2em]">
-                💦 Regar Semilla
-            </button>
-            
-            <button id="btn-shop" class="w-full py-3 text-[10px] font-bold uppercase tracking-widest text-[#0a1f1c]/40 hover:text-[#c5a059] transition-colors border-b border-transparent hover:border-[#c5a059] opacity-0 transition-opacity duration-1000 hidden">
-                Ver Cuidados Recomendados
-            </button>
-        </div>
+    <!-- Terreno Principal (Grid de 5) -->
+    <div class="w-full max-w-4xl grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
         
-        <!-- Clima Local (Simulado) -->
-        <div class="mt-8 pt-6 border-t border-[#0a1f1c]/10 flex items-center justify-center gap-2 opacity-60">
-            <span class="text-sm">🌤</span>
-            <span class="text-[9px] uppercase tracking-widest font-bold">Clima Viña del Mar: 18°C - Humedad Ideal</span>
+        <!-- Slot 1 (Activo) -->
+        <div class="garden-slot active col-span-2 md:col-span-2 row-span-2" id="slot-1">
+            <!-- AQUÍ IRÁ TU FOTO HIPERREALISTA EN ALTA RESOLUCIÓN -->
+            <img src="https://images.unsplash.com/photo-1599598425947-33003c1ee5b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tierra" class="realistic-img" id="plant-visual">
+            
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6">
+                <span class="text-[#c5a059] text-[9px] uppercase tracking-widest font-bold mb-1">Espacio Principal</span>
+                <h2 class="font-serif text-2xl text-white" id="plant-name">Tierra Preparada</h2>
+            </div>
+        </div>
+
+        <!-- Slots Bloqueados -->
+        <div class="garden-slot locked"><span class="text-2xl opacity-50">🔒</span></div>
+        <div class="garden-slot locked"><span class="text-2xl opacity-50">🔒</span></div>
+        <div class="garden-slot locked"><span class="text-2xl opacity-50">🔒</span></div>
+    </div>
+
+    <!-- Consola de Cuidados (Dashboard de Acción) -->
+    <div class="w-full max-w-4xl glass-panel rounded-[2rem] p-8 md:p-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+        
+        <!-- Controles -->
+        <div class="space-y-4">
+            <h3 class="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mb-6 border-b border-white/10 pb-2">Panel de Cuidados</h3>
+            
+            <button onclick="accionRegar()" id="btn-regar" class="action-btn w-full py-4 px-6 rounded-xl flex justify-between items-center group">
+                <div class="flex items-center gap-3">
+                    <span class="text-xl group-hover:scale-110 transition-transform">💧</span>
+                    <span class="text-xs uppercase tracking-widest font-medium">Hidratar</span>
+                </div>
+                <span class="text-[9px] text-zinc-500 font-mono" id="water-status">Disponible</span>
+            </button>
+
+            <button onclick="accionTierra()" id="btn-tierra" class="action-btn w-full py-4 px-6 rounded-xl flex justify-between items-center group">
+                <div class="flex items-center gap-3">
+                    <span class="text-xl group-hover:scale-110 transition-transform">🧤</span>
+                    <span class="text-xs uppercase tracking-widest font-medium">Trabajar Suelo</span>
+                </div>
+            </button>
+
+            <button onclick="accionCantar()" id="btn-cantar" class="action-btn w-full py-4 px-6 rounded-xl flex justify-between items-center group">
+                <div class="flex items-center gap-3">
+                    <span class="text-xl group-hover:scale-110 transition-transform">🎵</span>
+                    <span class="text-xs uppercase tracking-widest font-medium">Conexión Auditiva</span>
+                </div>
+            </button>
+        </div>
+
+        <!-- Analíticas y Tips -->
+        <div class="flex flex-col justify-between">
+            <div>
+                <h3 class="text-[10px] uppercase tracking-[0.2em] text-[#c5a059] mb-4">Rendimiento Botánico</h3>
+                
+                <div class="space-y-4 mb-8">
+                    <div>
+                        <div class="flex justify-between text-[9px] uppercase tracking-widest mb-1 text-zinc-300">
+                            <span>Belleza Estructural</span>
+                            <span id="stat-belleza-txt">100%</span>
+                        </div>
+                        <div class="stat-bar-bg"><div id="stat-belleza" class="stat-bar-fill fill-gold" style="width: 100%"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-[9px] uppercase tracking-widest mb-1 text-zinc-300">
+                            <span>Frescura / Hidratación</span>
+                            <span id="stat-frescura-txt">50%</span>
+                        </div>
+                        <div class="stat-bar-bg"><div id="stat-frescura" class="stat-bar-fill fill-blue" style="width: 50%"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-[9px] uppercase tracking-widest mb-1 text-zinc-300">
+                            <span>Vínculo Emocional</span>
+                            <span id="stat-vinculo-txt">0%</span>
+                        </div>
+                        <div class="stat-bar-bg"><div id="stat-vinculo" class="stat-bar-fill fill-green" style="width: 0%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Caja de Tips Profesionales -->
+            <div class="bg-black/30 border border-white/5 rounded-xl p-5 relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-[#c5a059]"></div>
+                <h4 class="text-[9px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Consejo del Atelier</h4>
+                <p class="text-xs font-light text-zinc-300 leading-relaxed italic" id="botanical-tip">
+                    El sustrato está crudo. Antes de plantar, oxigena la tierra usando la herramienta de suelo. Las raíces necesitan respirar.
+                </p>
+            </div>
         </div>
     </div>
 
     <script>
-        /**
-         * MOTOR DEL JUEGO ESTILO TRAVIAN
-         * Fase 1: Semilla (🌰) - Requiere 5 seg (Para test)
-         * Fase 2: Raíces  (🌱) - Requiere 10 seg (Para test)
-         * Fase 3: Tallo   (🌿) - Requiere 15 seg (Para test)
-         * Fase 4: Flor    (🌸) - Fase Final
-         */
+        // --- 1. RELOJ EN TIEMPO REAL ---
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('real-clock').innerText = timeString;
+            
+            // Lógica ambiental basada en la hora real
+            const hour = now.getHours();
+            let weatherText = "18°C 🌤 Templado";
+            if (hour >= 20 || hour < 6) weatherText = "12°C 🌙 Fresco";
+            else if (hour >= 12 && hour <= 16) weatherText = "24°C ☀️ Sol Directo";
+            
+            document.getElementById('weather-status').innerText = `Viña del Mar • ${weatherText}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- 2. MOTOR DEL SIMULADOR ---
+        let estadoPlanta = 0; // 0: Tierra Cruda, 1: Tierra Preparada, 2: Semilla, 3: Creciendo, 4: Florecida
         
-        // Base de datos de los estados de la planta
+        let stats = {
+            belleza: 100,
+            frescura: 30,
+            vinculo: 0
+        };
+
+        const ui = {
+            img: document.getElementById('plant-visual'),
+            name: document.getElementById('plant-name'),
+            tip: document.getElementById('botanical-tip'),
+            btnRegar: document.getElementById('btn-regar'),
+            btnTierra: document.getElementById('btn-tierra'),
+            btnCantar: document.getElementById('btn-cantar')
+        };
+
+        // Base de datos de Imágenes y Textos (AQUÍ PONDRÁS TUS RENDERS HIPERREALISTAS)
         const fases = [
             {
-                nivel: 0,
-                icono: "🌰", // AQUÍ PONDRÁS: "<img src='semilla.png' class='w-32 object-contain'>"
-                titulo: "Semilla Latente",
-                desc: "Esperando su primer riego para activar la germinación.",
-                accionTexto: "💦 Regar Semilla",
-                tiempoRequerido: 0 // Inicia en 0
+                img: "https://images.unsplash.com/photo-1599598425947-33003c1ee5b7?auto=format&fit=crop&w=800&q=80", // Tierra cruda
+                nombre: "Suelo Virgen",
+                tip: "La tierra está compactada. Usa la acción 'Trabajar Suelo' para crear un lecho aireado y perfecto."
             },
             {
-                nivel: 1,
-                icono: "🌱", // AQUÍ PONDRÁS: "<img src='brote.png' class='w-32 object-contain'>"
-                titulo: "Desarrollo de Raíces",
-                desc: "La semilla ha despertado. Se están formando las raíces primarias.",
-                accionTexto: "🧪 Aplicar Nutrientes",
-                tiempoRequerido: 5 // Segundos (Para un juego real pondrías ej: 86400 para 24hrs)
+                img: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=800&q=80", // Tierra arada/lista
+                nombre: "Sustrato Oxigenado",
+                tip: "La cama está lista. Ahora planta la semilla y aplica el primer riego de activación."
             },
             {
-                nivel: 2,
-                icono: "🌿", // AQUÍ PONDRÁS: "<img src='tallo.png' class='w-32 object-contain'>"
-                titulo: "Crecimiento de Tallo",
-                desc: "Buscando la luz. El tallo principal comienza a estructurarse.",
-                accionTexto: "☀️ Exponer a Luz",
-                tiempoRequerido: 10
+                img: "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80", // Brote
+                nombre: "Brote de Lisianthus",
+                tip: "¡Ha nacido! Cuidado con el sol del mediodía. Riega preferentemente al atardecer para no hervir las raíces."
             },
             {
-                nivel: 3,
-                icono: "🌸", // AQUÍ PONDRÁS: "<img src='flor-lisianthus.png' class='w-40 object-contain'>"
-                titulo: "¡Floración Alcanzada!",
-                desc: "Tu Lisianthus ha florecido maravillosamente. ¡Excelente trabajo botánico!",
-                accionTexto: "🎁 Reclamar Recompensa",
-                tiempoRequerido: 15
+                img: "https://images.unsplash.com/photo-1508022057371-4f937727f440?auto=format&fit=crop&w=800&q=80", // Flor perfecta
+                nombre: "Lisianthus Signature",
+                tip: "Obra de arte completada. Su belleza está al máximo. Hablarle fortalecerá su tallo y longevidad."
             }
         ];
 
-        let faseActual = 0;
-        let temporizador = null;
-        let tiempoRestante = 0;
-        let tiempoTotalFase = 0;
-
-        const ui = {
-            imagen: document.getElementById('plant-image'),
-            titulo: document.getElementById('status-title'),
-            desc: document.getElementById('status-desc'),
-            btnAccion: document.getElementById('btn-action'),
-            btnShop: document.getElementById('btn-shop'),
-            timerSection: document.getElementById('timer-section'),
-            timeLeftTxt: document.getElementById('time-left'),
-            progressFill: document.getElementById('progress-fill'),
-            plantContainer: document.getElementById('plant-stage')
-        };
-
-        function actualizarUI() {
-            const fase = fases[faseActual];
+        function actualizarStats() {
+            document.getElementById('stat-belleza').style.width = stats.belleza + '%';
+            document.getElementById('stat-belleza-txt').innerText = Math.round(stats.belleza) + '%';
             
-            // Animación de cambio de imagen
-            ui.imagen.classList.remove('pop-in');
-            void ui.imagen.offsetWidth; // Forzar reflow para reiniciar animación
+            document.getElementById('stat-frescura').style.width = stats.frescura + '%';
+            document.getElementById('stat-frescura-txt').innerText = Math.round(stats.frescura) + '%';
             
-            ui.imagen.innerHTML = fase.icono;
-            ui.imagen.classList.add('pop-in');
-            
-            ui.titulo.innerText = fase.titulo;
-            ui.desc.innerText = fase.desc;
-            ui.btnAccion.innerText = fase.accionTexto;
+            document.getElementById('stat-vinculo').style.width = stats.vinculo + '%';
+            document.getElementById('stat-vinculo-txt').innerText = Math.round(stats.vinculo) + '%';
+        }
 
-            // Si llegamos al final (Floración)
-            if (faseActual === fases.length - 1) {
-                ui.timerSection.classList.add('hidden');
-                ui.btnAccion.disabled = false;
-                ui.btnAccion.classList.add('bg-gradient-to-r', 'from-[#c5a059]', 'to-[#e8d09f]', 'text-[#0a1f1c]');
-                ui.btnAccion.onclick = reclamarPremio;
-                
-                ui.btnShop.classList.remove('hidden');
-                setTimeout(() => ui.btnShop.classList.remove('opacity-0'), 100);
+        function cambiarFase(nuevaFase) {
+            estadoPlanta = nuevaFase;
+            ui.img.style.opacity = '0'; // Fade out
+            
+            setTimeout(() => {
+                ui.img.src = fases[estadoPlanta].img;
+                ui.name.innerText = fases[estadoPlanta].nombre;
+                ui.tip.innerText = fases[estadoPlanta].tip;
+                ui.img.style.opacity = '0.8'; // Fade in
+            }, 500);
+        }
+
+        // --- ACCIONES DEL USUARIO ---
+
+        function accionTierra() {
+            if (estadoPlanta === 0) {
+                ui.btnTierra.disabled = true;
+                cambiarFase(1);
+            } else {
+                alert("La tierra ya está preparada y en uso.");
             }
         }
 
-        function iniciarCrecimiento() {
-            // Efecto visual de clic (gotas)
-            crearGotaAguaAguaFalsa();
-
-            // Deshabilitar botón
-            ui.btnAccion.disabled = true;
-            ui.btnAccion.innerText = "⏳ Trabajando la tierra...";
-
-            // Mostrar el temporizador
-            ui.timerSection.classList.remove('hidden');
-            setTimeout(() => ui.timerSection.classList.remove('opacity-0'), 100);
-
-            // Calcular siguiente fase
-            const siguienteFase = fases[faseActual + 1];
-            tiempoTotalFase = siguienteFase.tiempoRequerido;
-            tiempoRestante = tiempoTotalFase;
-
-            // Motor del tiempo (Intervalo de 1 segundo)
-            temporizador = setInterval(tick, 1000);
-            tick(); // Ejecutar el primer segundo inmediatamente
-        }
-
-        function tick() {
-            if (tiempoRestante <= 0) {
-                // El tiempo terminó, avanzamos de nivel
-                clearInterval(temporizador);
-                faseActual++;
-                
-                // Ocultar timer
-                ui.timerSection.classList.add('opacity-0');
-                setTimeout(() => {
-                    ui.timerSection.classList.add('hidden');
-                    ui.progressFill.style.width = '0%';
-                }, 500);
-
-                // Reactivar botón y actualizar UI
-                ui.btnAccion.disabled = false;
-                actualizarUI();
+        function accionRegar() {
+            if (estadoPlanta === 0) {
+                alert("Primero debes trabajar la tierra antes de hidratar.");
                 return;
             }
 
-            // Actualizar textos y barra
-            ui.timeLeftTxt.innerText = formatoTiempo(tiempoRestante);
+            const horaActual = new Date().getHours();
             
-            const porcentaje = ((tiempoTotalFase - tiempoRestante) / tiempoTotalFase) * 100;
-            ui.progressFill.style.width = `${porcentaje}%`;
+            // LÓGICA HIPERREALISTA: Reacción de la planta según la hora
+            if (horaActual >= 11 && horaActual <= 15) {
+                // Regar al mediodía quema las hojas
+                stats.belleza -= 15;
+                stats.frescura += 20;
+                ui.tip.innerText = "⚠️ CUIDADO: Has regado a pleno sol. Las gotas actúan como lupas y han quemado parte del follaje. Belleza reducida.";
+            } else if (horaActual >= 18 || horaActual <= 8) {
+                // Riego perfecto
+                stats.belleza = Math.min(100, stats.belleza + 5);
+                stats.frescura = 100;
+                ui.tip.innerText = "✨ Riego perfecto. El sustrato absorbe la humedad sin evaporación violenta. La planta te lo agradece.";
+            } else {
+                // Riego normal
+                stats.frescura = Math.min(100, stats.frescura + 40);
+                ui.tip.innerText = "Hidratación completada correctamente.";
+            }
 
-            tiempoRestante--;
+            // Simulación de paso del tiempo para crecer
+            if (estadoPlanta === 1 && stats.frescura >= 80) {
+                cambiarFase(2); // Pasa a brote
+            } else if (estadoPlanta === 2 && stats.belleza >= 80 && stats.vinculo > 20) {
+                cambiarFase(3); // Pasa a Flor
+            }
+
+            actualizarStats();
+            
+            // Cooldown del botón de agua
+            ui.btnRegar.disabled = true;
+            document.getElementById('water-status').innerText = "Absorbiendo...";
+            setTimeout(() => {
+                ui.btnRegar.disabled = false;
+                document.getElementById('water-status').innerText = "Disponible";
+            }, 5000); // En la realidad, esto sería horas
         }
 
-        function reclamarPremio() {
-            alert("¡Felicidades! Has cultivado con éxito tu planta virtual. Tienes un 15% de descuento en tu próxima compra física usando el código: BOTANICA15");
+        function accionCantar() {
+            if (estadoPlanta < 2) {
+                alert("Aún no hay una planta que pueda escucharte.");
+                return;
+            }
+
+            stats.vinculo = Math.min(100, stats.vinculo + 25);
+            stats.belleza = Math.min(100, stats.belleza + 2); // Cantar le da un boost de belleza
+            
+            ui.tip.innerText = "🎵 Las vibraciones sonoras de tu voz estimulan los estomas de las hojas. La planta ha mejorado su estructura celular.";
+            
+            actualizarStats();
+
+            // Si llegamos a floración perfecta
+            if (estadoPlanta === 2 && stats.belleza >= 80 && stats.vinculo > 20) {
+                setTimeout(() => cambiarFase(3), 2000);
+            }
         }
 
-        // Formateador HH:MM:SS
-        function formatoTiempo(segundosTotales) {
-            const h = Math.floor(segundosTotales / 3600);
-            const m = Math.floor((segundosTotales % 3600) / 60);
-            const s = Math.floor(segundosTotales % 60);
-            
-            return [h, m, s]
-                .map(val => val < 10 ? '0' + val : val)
-                .join(':');
-        }
-
-        // --- EFECTOS VISUALES (Polvo de Hadas / Agua) ---
-        function crearGotaAgua(e) {
-            if(faseActual === fases.length - 1) return; // Si ya floreció, no hacemos gotas
-            
-            const gota = document.createElement('div');
-            gota.classList.add('water-drop');
-            gota.innerText = "✨"; // Puedes cambiarlo por 💧
-            
-            // Posición basada en el clic dentro del contenedor
-            const rect = ui.plantContainer.getBoundingClientRect();
-            const x = e.clientX - rect.left - 10;
-            const y = e.clientY - rect.top - 10;
-            
-            gota.style.left = `${x}px`;
-            gota.style.top = `${y}px`;
-            
-            ui.plantContainer.appendChild(gota);
-            
-            // Eliminar elemento del DOM tras la animación
-            setTimeout(() => { gota.remove(); }, 1000);
-        }
-
-        // Función para generar gotas desde el centro cuando se presiona el botón principal
-        function crearGotaAguaAguaFalsa() {
-            const rect = ui.plantContainer.getBoundingClientRect();
-            const fakeEvent = {
-                clientX: rect.left + (rect.width / 2) + (Math.random() * 40 - 20),
-                clientY: rect.top + (rect.height / 2) - 40
-            };
-            crearGotaAgua(fakeEvent);
-            setTimeout(() => crearGotaAgua({
-                clientX: fakeEvent.clientX + 30, 
-                clientY: fakeEvent.clientY + 20
-            }), 200);
-        }
-
-        // Iniciar la UI al cargar
-        actualizarUI();
+        // Iniciar valores visuales
+        actualizarStats();
+        ui.tip.innerText = fases[0].tip;
     </script>
 </body>
 </html>
