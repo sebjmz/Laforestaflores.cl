@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arreglos Florales Corporativos y para Empresas | La Foresta Flores</title>
-    <meta name="description" content="Diseño floral de alta gama para espacios corporativos, oficinas, inmobiliarias y eventos institucionales. Suscripciones semanales en Viña del Mar, Reñaca y Concón.">
-    <meta name="keywords" content="flores corporativas, arreglos para oficinas concon, suscripción floral viña del mar, flores empresas reñaca, florería corporativa, ambientación de espacios">
+    
+    <!-- ==========================================
+         SEO DE DOMINACIÓN B2B (Empresas y Suscripciones)
+         ========================================== -->
+    <title>Flores para Empresas y Arreglos Corporativos en Viña del Mar | La Foresta</title>
+    <meta name="description" content="Diseño floral de alta gama para oficinas, hoteles y eventos corporativos. Suscripciones con facturación y despacho en Viña del Mar, Reñaca y Concón.">
+    <meta name="keywords" content="flores corporativas, arreglos para oficinas concon, suscripción floral viña del mar, flores empresas reñaca, florería corporativa, ambientación de eventos, regalos a clientes, facturación empresas">
     <link rel="canonical" href="https://laforestaflores.cl/corporativo.html">
     <link rel="icon" type="image/png" href="/img/favicon.png">
 
@@ -17,25 +21,67 @@
 
     <!-- OPEN GRAPH -->
     <meta property="og:site_name" content="La Foresta Flores">
-    <meta property="og:title" content="Diseño Floral Corporativo | La Foresta Flores">
-    <meta property="og:description" content="Elegancia institucional y curatoría botánica de vanguardia para firmas líderes. Despacho express y suscripciones en la V Región.">
+    <meta property="og:title" content="Diseño Floral Corporativo y B2B | La Foresta Flores">
+    <meta property="og:description" content="Elegancia institucional y curatoría botánica para firmas líderes. Planes de suscripción y facturación electrónica en la V Región.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://laforestaflores.cl/corporativo.html">
     <meta property="og:image" content="https://laforestaflores.cl/img/social-share.jpg">
 
-    <!-- DATOS ESTRUCTURADOS -->
+    <!-- ==========================================
+         DATOS ESTRUCTURADOS DE CATEGORÍA Y FAQ (RICH SNIPPETS)
+         ========================================== -->
     <script type="application/ld+json">
-    {
+    [{
       "@context": "https://schema.org",
       "@type": "CollectionPage",
       "name": "Diseño Floral Corporativo y Suscripciones para Empresas",
       "url": "https://laforestaflores.cl/corporativo.html",
-      "description": "Arreglos florales arquitectónicos e institucionales con despacho en Viña del Mar, Reñaca y Concón.",
+      "description": "Arreglos florales para oficinas, regalos corporativos y suscripciones empresariales en Viña del Mar y Concón.",
       "publisher": {
         "@type": "Organization",
         "name": "La Foresta Flores"
       }
-    }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "¿Tienen planes de suscripción floral para oficinas o consultas?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí, diseñamos planes semanales o quincenales totalmente a medida. Nos encargamos de llevar y renovar los arreglos para que tu recepción, hotel o espacio de trabajo siempre luzca fresco e impecable, sin que tengas que preocuparte de nada."
+        }
+      }, {
+        "@type": "Question",
+        "name": "¿Emiten factura por las compras corporativas?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Por supuesto. Emitimos factura electrónica para todos los servicios B2B, ya sea por una suscripción mensual, un evento corporativo puntual o envíos de regalos a tus clientes y colaboradores."
+        }
+      }, {
+        "@type": "Question",
+        "name": "¿Pueden hacer arreglos usando los colores de nuestra marca?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "¡Claro que sí! Nos encanta trabajar con la identidad visual de tu empresa. Cuéntanos tus colores corporativos y seleccionaremos la paleta botánica perfecta para que las flores transmitan los valores y la estética de tu marca."
+        }
+      }, {
+        "@type": "Question",
+        "name": "¿Tienen cobertura para empresas en Concón, Reñaca y Viña del Mar?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí, nuestro equipo logístico despacha de forma directa a centros de negocios, clínicas, inmobiliarias, restaurantes y oficinas en toda la V Región costa, garantizando puntualidad y cuidado en la entrega."
+        }
+      }, {
+        "@type": "Question",
+        "name": "¿Hacen arreglos para eventos de fin de año o inauguraciones?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sí, ofrecemos ambientación botánica para seminarios, lanzamientos, almuerzos de directorio y celebraciones corporativas. Te asesoramos desde el centro de mesa hasta arreglos de gran escala para dar un impacto visual de alto nivel."
+        }
+      }]
+    }]
     </script>
 
     <!-- Tailwind y Fuentes -->
@@ -58,39 +104,27 @@
         }
         ::-webkit-scrollbar { display: none; }
         .font-serif { font-family: 'Playfair Display', serif; }
-        .product-card {
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .product-card:hover {
-            transform: translateY(-8px);
-        }
-        .img-zoom-container {
-            overflow: hidden;
-            background-color: #f4f4f5;
-        }
-        .img-zoom-container img {
-            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-            filter: grayscale(0%) !important;
-        }
-        .product-card:hover .img-zoom-container img {
-            transform: scale(1.05);
-        }
+        .product-card { transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+        .product-card:hover { transform: translateY(-8px); }
+        .img-zoom-container { overflow: hidden; background-color: #f4f4f5; }
+        .img-zoom-container img { transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); filter: grayscale(0%) !important; }
+        .product-card:hover .img-zoom-container img { transform: scale(1.05); }
         .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
         .hide-scroll::-webkit-scrollbar { display: none; }
-
-        /* ==========================================
-           Efecto de Texto Hundido (Letterpress)
-           ========================================== */
+        
         .text-encrusted {
             color: rgba(10, 31, 28, 0.18); 
             text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.9), -1px -1px 1px rgba(10, 31, 28, 0.05);
             mix-blend-mode: multiply; 
         }
+
+        /* Ocultar el marcador nativo del details */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
     </style>
 </head>
 <body>
 
-    <!-- Navegación Idéntica al Index para mantener la inmersión -->
     <nav class="fixed w-full z-[100] bg-[rgba(10,31,28,0.92)] backdrop-blur-[15px] border-b border-[rgba(197,160,89,0.2)] px-6 md:px-12 py-5 flex justify-between items-center text-[#c5a059]">
         <div class="flex items-center space-x-12 min-w-0">
             <a href="/index.html" class="cursor-pointer flex-shrink-0 flex items-center">
@@ -111,14 +145,25 @@
         </div>
     </nav>
 
-    <!-- Sección Principal Estilo "Vault" del Index -->
     <section id="vault" class="bg-white pt-32 pb-6">
         <div class="w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-16">
             
-            <!-- Ilusión de Filtros en la misma página -->
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-4 pb-4 border-b border-[#0a1f1c]/5 mb-6">
                 <div class="w-full md:w-auto overflow-hidden">
-                    <h1 class="text-4xl md:text-7xl font-serif italic text-[#0a1f1c] mb-3 mt-2 md:mt-0">Colección</h1>
+                    
+                    <!-- Título con Ícono Ginkgo Biloba (Símbolo de Diseño Interior y Solidez) -->
+                    <h1 class="text-4xl md:text-7xl font-serif italic text-[#0a1f1c] mb-3 mt-2 md:mt-0 flex flex-wrap items-center gap-3 md:gap-4">
+                        Diseño Corporativo
+                        
+                        <!-- Ícono SVG: Hoja de Ginkgo elegante -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 md:w-[4.5rem] md:h-[4.5rem] text-[#c5a059] flex-shrink-0 drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22v-7" />
+                            <path d="M12 15C6 15 3 10 5 6c2-4 6-4 7-2 1-2 5-2 7 2 2 4-1 9-7 9z" fill="currentColor" fill-opacity="0.2"/>
+                            <path d="M12 15c-1.5-3-3.5-5-5-7" />
+                            <path d="M12 15c1.5-3 3.5-5 5-7" />
+                        </svg>
+                    </h1>
+                    
                     <div class="w-full overflow-x-auto pb-1 hide-scroll">
                         <nav aria-label="Filtros de colección" class="flex items-center space-x-6 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 whitespace-nowrap min-w-max">
                             <a href="/index.html#vault" class="hover:text-[#c5a059] transition-all pb-1">Todos</a>
@@ -141,17 +186,16 @@
                 </div>
             </div>
 
-            <!-- Grilla Curada Alta Densidad -->
+            <!-- Grilla de Productos -->
             <div id="category-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-12 md:gap-y-16">
                 <!-- Los ramos se inyectarán aquí mediante JS -->
             </div>
 
-            <!-- Cita Elegante Encrustada en el Papel -->
+            <!-- Cita Elegante -->
             <div class="mt-28 mb-12 text-center max-w-4xl mx-auto px-6">
                 <p class="font-serif italic text-3xl md:text-5xl text-encrusted leading-snug">
                     "La simplicidad es la máxima sofisticación."
                 </p>
-                <!-- Linea separadora tenue -->
                 <div class="w-12 h-px bg-zinc-200 mx-auto mt-8 mb-6 shadow-[0_1px_0_white]"></div>
                 <span class="block text-[9px] md:text-[10px] font-bold uppercase tracking-[0.4em] text-encrusted">— Leonardo da Vinci</span>
             </div>
@@ -159,9 +203,85 @@
         </div>
     </section>
 
-    <!-- Footer Simple -->
-    <footer class="bg-[#0a1f1c] text-[#fcfaf7] py-12 px-6 border-t border-[#c5a059]/20 text-center">
-        <p class="text-[9px] uppercase tracking-widest opacity-40">La Foresta Flores & Garden. Alianza Comercial Corporativa.</p>
+    <!-- ==========================================
+         SECCIÓN FAQ B2B (Corporativo)
+         ========================================== -->
+    <section class="bg-[#fcfaf7] py-12 md:py-16 px-6 md:px-12 border-t border-[#0a1f1c]/5">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-8 md:mb-12">
+                <h2 class="font-serif italic text-2xl md:text-4xl text-[#0a1f1c] mb-2 md:mb-3">Suscripciones y Empresas</h2>
+                <p class="text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold text-[#c5a059]">Preguntas Frecuentes</p>
+            </div>
+            
+            <div class="bg-white rounded-2xl border border-[#0a1f1c]/10 shadow-sm overflow-hidden">
+                
+                <!-- FAQ 1 -->
+                <details class="group border-b border-[#0a1f1c]/10 last:border-0 transition-all duration-300">
+                    <summary class="flex justify-between items-center cursor-pointer p-4 md:p-6 font-serif text-base md:text-lg text-[#0a1f1c] outline-none">
+                        ¿Tienen planes de suscripción para oficinas o consultas?
+                        <span class="text-[#c5a059] transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
+                    </summary>
+                    <div class="px-4 md:px-6 pb-4 md:pb-6 text-[13px] md:text-sm text-zinc-600 leading-relaxed font-light">
+                        Sí, diseñamos planes semanales o quincenales totalmente a medida. Nos encargamos de llevar y renovar los arreglos para que tu recepción, hotel o espacio de trabajo siempre luzca impecable, sin que tengas que preocuparte de nada.
+                    </div>
+                </details>
+
+                <!-- FAQ 2 -->
+                <details class="group border-b border-[#0a1f1c]/10 last:border-0 transition-all duration-300">
+                    <summary class="flex justify-between items-center cursor-pointer p-4 md:p-6 font-serif text-base md:text-lg text-[#0a1f1c] outline-none">
+                        ¿Emiten factura por las compras de la empresa?
+                        <span class="text-[#c5a059] transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
+                    </summary>
+                    <div class="px-4 md:px-6 pb-4 md:pb-6 text-[13px] md:text-sm text-zinc-600 leading-relaxed font-light">
+                        Por supuesto. <strong>Emitimos factura electrónica</strong> para todos los servicios B2B, ya sea por una suscripción mensual recurrente, un evento corporativo puntual o para envíos de regalos a tus clientes y colaboradores.
+                    </div>
+                </details>
+
+                <!-- FAQ 3 -->
+                <details class="group border-b border-[#0a1f1c]/10 last:border-0 transition-all duration-300">
+                    <summary class="flex justify-between items-center cursor-pointer p-4 md:p-6 font-serif text-base md:text-lg text-[#0a1f1c] outline-none">
+                        ¿Pueden hacer arreglos usando los colores de nuestra marca?
+                        <span class="text-[#c5a059] transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
+                    </summary>
+                    <div class="px-4 md:px-6 pb-4 md:pb-6 text-[13px] md:text-sm text-zinc-600 leading-relaxed font-light">
+                        ¡Claro que sí! Nos encanta trabajar con la identidad visual de tu empresa. Solo cuéntanos cuáles son tus colores corporativos y seleccionaremos la paleta botánica perfecta para transmitir tus valores de marca.
+                    </div>
+                </details>
+
+                <!-- FAQ 4 -->
+                <details class="group border-b border-[#0a1f1c]/10 last:border-0 transition-all duration-300">
+                    <summary class="flex justify-between items-center cursor-pointer p-4 md:p-6 font-serif text-base md:text-lg text-[#0a1f1c] outline-none">
+                        ¿Tienen cobertura de entrega en Concón y alrededores?
+                        <span class="text-[#c5a059] transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
+                    </summary>
+                    <div class="px-4 md:px-6 pb-4 md:pb-6 text-[13px] md:text-sm text-zinc-600 leading-relaxed font-light">
+                        Sí, nuestro equipo logístico despacha de forma directa a <strong>centros de negocios, clínicas, inmobiliarias, restaurantes y oficinas</strong> en todo Viña del Mar, Reñaca y Concón, garantizando puntualidad.
+                    </div>
+                </details>
+
+                <!-- FAQ 5 -->
+                <details class="group border-b border-[#0a1f1c]/10 last:border-0 transition-all duration-300">
+                    <summary class="flex justify-between items-center cursor-pointer p-4 md:p-6 font-serif text-base md:text-lg text-[#0a1f1c] outline-none">
+                        ¿Hacen ambientaciones para inauguraciones o eventos?
+                        <span class="text-[#c5a059] transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
+                    </summary>
+                    <div class="px-4 md:px-6 pb-4 md:pb-6 text-[13px] md:text-sm text-zinc-600 leading-relaxed font-light">
+                        Sí, ofrecemos asesoría y ambientación botánica para seminarios, lanzamientos, desayunos de directorio y celebraciones de fin de año. Diseñamos desde el centro de mesa hasta arreglos de bienvenida de gran escala.
+                    </div>
+                </details>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Corporativo -->
+    <footer class="bg-[#0a1f1c] text-[#fcfaf7] py-12 px-6 border-t border-[#c5a059]/20 text-center flex flex-col items-center">
+        <p class="text-[10px] uppercase tracking-widest font-bold text-[#c5a059] mb-3">Alianza Comercial Corporativa</p>
+        <p class="text-[9px] uppercase tracking-widest opacity-60 max-w-2xl mx-auto leading-relaxed">
+            Mejoramos la percepción de tu espacio de trabajo. Suscripciones florales con facturación para hoteles, clínicas y empresas en Viña del Mar, Reñaca y Concón.
+        </p>
+        <div class="w-8 h-px bg-[#c5a059]/30 mx-auto mt-6 mb-6"></div>
+        <p class="text-[8px] uppercase tracking-widest opacity-40">La Foresta Flores & Garden © 2024</p>
     </footer>
 
     <script>
@@ -175,7 +295,6 @@
         grid.innerHTML = categoryCatalog.map(product => `
             <div class="product-card group flex flex-col h-full">
                 <a href="${product.url}" class="block">
-                    <!-- Agregado 'rounded-xl' para igualar al index -->
                     <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center rounded-xl">
                         <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
                         <img src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" loading="lazy">
@@ -194,7 +313,7 @@
                 </div>
                 
                 <div class="mt-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-                    <span class="font-serif text-base md:text-xl text-[#0a1f1c]">$${product.price.toLocaleString()}</span>
+                    <span class="font-serif text-base md:text-xl text-[#0a1f1c]">$${product.price.toLocaleString('es-CL')}</span>
                     <button onclick="agregarYVolver(${product.id}, '${product.name}', ${product.price}, '${product.img}')" 
                             class="w-full md:w-auto px-4 py-3 border border-[#0a1f1c] text-[#0a1f1c] text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors duration-300 text-center">
                         Añadir
