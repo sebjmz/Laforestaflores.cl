@@ -508,7 +508,7 @@
 
     <nav class="fixed w-full z-[100] glass-nav px-6 md:px-12 py-5 flex justify-between items-center">
         <div class="flex items-center space-x-12 min-w-0">
-            <div class="cursor-pointer flex-shrink-0 flex items-center" onclick="window.scrollTo(0,0)">
+            <div class="cursor-pointer flex-shrink-0 flex items-center" onclick="window.scrollTo(0,0)" role="button" tabindex="0" aria-label="Volver al inicio">
                 <img src="img/logo-menu.png" alt="La Foresta Flores" class="h-6 md:h-8 w-auto object-contain brightness-0 invert">
             </div>
             <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap items-center">
@@ -529,7 +529,7 @@
     <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Reñaca, Chile</div>
     
         <!-- Botón interactivo para el carrito con icono de bolsa -->
-    <button onclick="toggleCart()" class="relative group flex items-center hover:scale-110 transition-transform duration-300">
+    <button onclick="toggleCart()" aria-label="Ver carrito de compras" class="relative group flex items-center hover:scale-110 transition-transform duration-300">
         <svg class="w-5 h-5 text-[#c5a059] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
         </svg>
@@ -538,7 +538,7 @@
 </div>
     </nav>
 
-    <div id="mobile-sticky-cart" class="fixed bottom-0 left-0 w-full bg-[#0a1f1c] text-[#c5a059] p-5 z-[90] flex justify-between items-center md:hidden transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.25)] border-t border-[#c5a059]/20" onclick="toggleCart()">
+    <div id="mobile-sticky-cart" role="button" tabindex="0" aria-label="Ver carrito de compras" class="fixed bottom-0 left-0 w-full bg-[#0a1f1c] text-[#c5a059] p-5 z-[90] flex justify-between items-center md:hidden transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.25)] border-t border-[#c5a059]/20" onclick="toggleCart()">
         <div class="flex items-center space-x-4">
             <span class="text-[10px] font-bold uppercase tracking-widest text-white">Ver Carrito</span>
             <span id="sticky-cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2.5 py-1 rounded-full text-[10px] font-bold">0</span>
@@ -553,7 +553,7 @@
     <div id="atelier-bag" class="fixed top-0 right-0 h-full w-full md:w-[500px] bg-white z-[120] shadow-2xl flex flex-col">
         <div class="p-8 border-b flex justify-between items-center">
             <h2 class="font-serif text-3xl italic">Su Selección</h2>
-            <button onclick="toggleCart()" class="text-3xl font-light hover:text-gold-leaf">×</button>
+            <button onclick="toggleCart()" aria-label="Cerrar carrito de compras" class="text-3xl font-light hover:text-gold-leaf">×</button>
         </div>
         <div id="cart-items-container" class="flex-grow overflow-y-auto p-8 space-y-8">
             <div class="text-center py-20 opacity-40">
@@ -575,7 +575,7 @@
                 </span>
             </div>
 
-            <button onclick="openCheckout()" class="w-full btn-premium uppercase text-xs tracking-[0.2em] mb-6">Proceder al Checkout</button>
+            <button onclick="openCheckout()" aria-label="Proceder al Checkout" class="w-full btn-premium uppercase text-xs tracking-[0.2em] mb-6">Proceder al Checkout</button>
             
             <div class="flex justify-center items-center mb-6 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
                 <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
@@ -618,7 +618,7 @@
                             </p>
                         </div>
                         <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <button onclick="scrollToVault()" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Explorar colección</button>
+                            <button onclick="scrollToVault()" aria-label="Explorar colección de flores" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Explorar colección</button>
                         </div>
                     </div>
                 </div>
@@ -639,7 +639,7 @@
                             Cuidamos cada detalle para que tu sorpresa llegue impecable y a tiempo, desde Reñaca hasta Curauma.
                         </p>
                         <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <button onclick="openCoverageModal()" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver zonas de cobertura</button>
+                            <button onclick="openCoverageModal()" aria-label="Ver mapa de zonas de cobertura" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver zonas de cobertura</button>
                         </div>
                     </div>
                 </div>
@@ -660,7 +660,7 @@
                             Recibe la frescura de nuestro atelier regularmente. Planes diseñados para llenar de vida tu hogar o espacio de trabajo.
                         </p>
                         <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <button onclick="openB2BFlow()" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Elige el plan para ti</button>
+                            <button onclick="openB2BFlow()" aria-label="Elegir plan de suscripción B2B" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Elige el plan para ti</button>
                         </div>
                     </div>
                 </div>
@@ -668,10 +668,10 @@
 
         </div> 
         
-        <button onclick="prevHeroSlide(true)" class="hidden lg:block absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+        <button onclick="prevHeroSlide(true)" aria-label="Ver imagen anterior" class="hidden lg:block absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
             <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
         </button>
-        <button onclick="nextHeroSlide(true)" class="hidden lg:block absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+        <button onclick="nextHeroSlide(true)" aria-label="Ver imagen siguiente" class="hidden lg:block absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
             <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
         </button>
 
@@ -770,7 +770,7 @@
                 <img src="img/mujer2.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
                 <div class="collage-content">
                     <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Gracias por embellecer mis días. Las flores son hermosas y la combinación de texturas es arte puro... realmente logran plasmar la vida en colores. 100% recomendados."</p>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Gracias por embellecer mis días. Las flores son hermosas y la combination de texturas es arte puro... realmente logran plasmar la vida en colores. 100% recomendados."</p>
                     <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— María J.</p>
                 </div>
             </div>
@@ -950,7 +950,7 @@
                         Solicitud de Membresía
                     </div>
                     <div class="mt-8">
-                        <button onclick="openB2BFlow()" class="w-full py-5 bg-transparent border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] transition-all duration-500 shadow-[0_0_15px_rgba(197,160,89,0.1)] hover:shadow-[0_0_25px_rgba(197,160,89,0.3)]">
+                        <button onclick="openB2BFlow()" aria-label="Abrir formulario de suscripción B2B" class="w-full py-5 bg-transparent border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] transition-all duration-500 shadow-[0_0_15px_rgba(197,160,89,0.1)] hover:shadow-[0_0_25px_rgba(197,160,89,0.3)]">
                             Conversemos sobre tu espacio
                         </button>
                         <p class="text-[9px] text-center mt-6 text-white/30 italic uppercase tracking-widest">
@@ -966,7 +966,7 @@
     <div id="b2b-flow" class="fixed inset-0 bg-[#0a1f1c] text-[#fcfaf7] z-[200] flex flex-col hidden opacity-0 transition-opacity duration-500 backdrop-blur-xl">
     <div class="px-8 py-6 flex justify-between items-center border-b border-[#c5a059]/10 shrink-0">
         <h2 class="font-serif text-xl tracking-widest uppercase text-[#c5a059]">Portal B2B</h2>
-        <button onclick="closeB2BFlow()" class="text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors">×</button>
+        <button onclick="closeB2BFlow()" aria-label="Cerrar portal B2B" class="text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors">×</button>
     </div>
 
     <div class="flex-grow flex flex-col justify-start items-center p-6 relative overflow-y-auto w-full pb-20">
@@ -997,13 +997,13 @@
     <input type="hidden" id="b2b-selected-segment" name="Segmento">
     
     <div>
-        <input type="text" id="b2b-empresa" name="Empresa_o_Familia" required placeholder="Nombre Empresa o Dirección (Opcional)" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+        <input type="text" id="b2b-empresa" aria-label="Nombre de Empresa o Dirección" name="Empresa_o_Familia" required placeholder="Nombre Empresa o Dirección (Opcional)" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
     </div>
     
     <div class="grid grid-cols-2 gap-4">
-        <input type="text" id="b2b-nombre" name="Nombre" required placeholder="Su Nombre" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+        <input type="text" id="b2b-nombre" aria-label="Su Nombre" name="Nombre" required placeholder="Su Nombre" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
         
-        <select id="b2b-cargo" name="Cargo" required class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] transition-colors cursor-pointer outline-none">
+        <select id="b2b-cargo" aria-label="Seleccione su rol o cargo" name="Cargo" required class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] transition-colors cursor-pointer outline-none">
             <option value="" disabled selected class="bg-[#0a1f1c] text-white/50">Seleccione su rol</option>
             <option value="Propietario / Dueño" class="bg-[#0a1f1c] text-[#fcfaf7]">Propietario / Dueño</option>
             <option value="Gerencia / Dirección" class="bg-[#0a1f1c] text-[#fcfaf7]">Gerencia / Dirección</option>
@@ -1013,8 +1013,8 @@
     </div>
     
     <div class="grid grid-cols-2 gap-4">
-        <input type="email" id="b2b-email" name="Email" required placeholder="Correo de contacto" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
-        <input type="tel" id="b2b-whatsapp" name="WhatsApp" required placeholder="WhatsApp" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+        <input type="email" id="b2b-email" aria-label="Correo de contacto" name="Email" required placeholder="Correo de contacto" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+        <input type="tel" id="b2b-whatsapp" aria-label="Número de WhatsApp" name="WhatsApp" required placeholder="WhatsApp" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
     </div>
 
     <div class="pt-4 flex justify-center w-full">
@@ -1035,7 +1035,7 @@
             </div>
             <h3 class="font-serif text-4xl italic mb-4">Solicitud Recibida.</h3>
             <p class="text-white/60 font-light leading-relaxed">Nuestra dirección ejecutiva evaluará su perfil y nos pondremos en contacto a la brevedad para agendar una reunión privada.</p>
-            <button type="button" onclick="closeB2BFlow()" class="mt-12 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] hover:text-white border-b border-[#c5a059] pb-1 transition-colors">Volver a La Foresta</button>
+            <button type="button" onclick="closeB2BFlow()" aria-label="Cerrar portal B2B" class="mt-12 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] hover:text-white border-b border-[#c5a059] pb-1 transition-colors">Volver a La Foresta</button>
         </div>
     </div>
 </div>
@@ -1043,7 +1043,7 @@
     <section id="garden" class="py-32 px-6 md:px-12 bg-zinc-50 border-t border-zinc-100">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
             <div class="w-full lg:w-1/2">
-                <div onclick="toggleGardenImage()" class="overflow-hidden aspect-[4/5] bg-zinc-200 relative cursor-pointer group">
+                <div onclick="toggleGardenImage()" role="button" tabindex="0" aria-label="Alternar vista del jardín" class="overflow-hidden aspect-[4/5] bg-zinc-200 relative cursor-pointer group">
                     <img id="garden-img-1" src="img/garden-2.jpg" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-100" alt="Vista Principal" loading="lazy">
                     <img id="garden-img-2" src="img/garden-1.jpg" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-0" alt="Vista Secundaria" loading="lazy">
                     <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md px-3 py-1 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">Cambiar Vista</div>
@@ -1058,7 +1058,7 @@
                     Llevamos nuestra pasión por la naturaleza a tu hogar. Diseñamos terrazas y jardines creados para que respires tranquilidad y armonía todos los días.
                 </p>
                 <div class="pt-6">
-                    <button onclick="openGardenFlow()" class="btn-premium !bg-transparent !text-forest-green !border-forest-green hover:!bg-forest-green hover:!text-gold-leaf uppercase text-xs tracking-widest font-bold px-10 py-4 transition-all duration-300">
+                    <button onclick="openGardenFlow()" aria-label="Comenzar proyecto de jardinería" class="btn-premium !bg-transparent !text-forest-green !border-forest-green hover:!bg-forest-green hover:!text-gold-leaf uppercase text-xs tracking-widest font-bold px-10 py-4 transition-all duration-300">
                         Comienza tu proyecto hoy
                     </button>
                 </div>
@@ -1069,7 +1069,7 @@
     <div id="garden-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden opacity-0 transition-opacity duration-500">
         <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
             <h2 class="font-serif text-xl tracking-widest uppercase text-gold-leaf">Garden Selection</h2>
-            <button onclick="closeGardenFlow()" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
+            <button onclick="closeGardenFlow()" aria-label="Cerrar formulario de jardinería" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
         </div>
         <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
             <div id="g-step-1" class="garden-step active flex-col items-center w-full max-w-md text-center">
@@ -1084,15 +1084,15 @@
             <div id="g-step-3" class="garden-step flex-col items-center w-full max-w-md text-center hidden">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2 de 2</span>
                 <h3 class="font-serif text-3xl italic mb-8">Detalles del Proyecto</h3>
-                <input type="text" id="g-name" placeholder="Su Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <input type="tel" id="g-phone" placeholder="Teléfono (+56 9...)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <textarea id="g-details" placeholder="Detalles de su idea o medidas del espacio..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-28 mb-8"></textarea>
+                <input type="text" id="g-name" aria-label="Su Nombre y Apellido" placeholder="Su Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <input type="tel" id="g-phone" aria-label="Teléfono de contacto" placeholder="Teléfono (+56 9...)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <textarea id="g-details" aria-label="Detalles de su idea o medidas del espacio" placeholder="Detalles de su idea o medidas del espacio..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-28 mb-8"></textarea>
                 <div class="mb-8 flex justify-center w-full">
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAAD6y4OVRCN5aeJKh" data-callback="onGardenTurnstileSuccess" data-theme="light"></div>
                 </div>
 
-                <button onclick="sendGardenConsultation()" class="w-full btn-premium">Enviar Consulta</button>
-                <button onclick="nextGardenStep(1)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+                <button onclick="sendGardenConsultation()" aria-label="Enviar Consulta de Jardinería" class="w-full btn-premium">Enviar Consulta</button>
+                <button onclick="nextGardenStep(1)" aria-label="Volver al paso anterior" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
         </div>
     </div>
@@ -1100,7 +1100,7 @@
     <div id="coverage-modal" class="fixed inset-0 bg-[#0a1f1c]/95 backdrop-blur-xl z-[200] hidden opacity-0 transition-opacity duration-500 flex flex-col justify-center items-center p-4 sm:p-6 md:p-12">
         <div class="w-full max-w-6xl bg-transparent flex flex-col lg:flex-row gap-8 lg:gap-12 relative text-[#fcfaf7] h-full lg:h-auto max-h-full">
             
-            <button onclick="closeCoverageModal()" class="absolute -top-10 lg:-top-12 right-0 text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors z-20">×</button>
+            <button onclick="closeCoverageModal()" aria-label="Cerrar mapa de cobertura" class="absolute -top-10 lg:-top-12 right-0 text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors z-20">×</button>
             
             <div class="w-full lg:w-1/2 flex items-center justify-center relative h-[35vh] md:h-[45vh] lg:h-[600px] bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] shrink-0 mb-6 lg:mb-0 mt-6 lg:mt-0">
                 <div id="coverage-map" class="w-full h-full z-10"></div>
@@ -1348,14 +1348,14 @@
     <div id="checkout-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden">
         <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
             <img src="img/logo-menu.png" alt="La Foresta" class="h-8 w-auto object-contain">
-            <button onclick="closeCheckout()" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
+            <button onclick="closeCheckout()" aria-label="Cerrar proceso de pago" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
         </div>
 
         <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
             <div id="step-1" class="checkout-step active flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1</span>
                 <h3 class="font-serif text-4xl italic mb-12">¡Qué hermoso detalle! ¿Quién envía esta sorpresa?</h3>
-                <input type="text" id="sender-name" oninput="guardarProgresoCheckout()" placeholder="Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <input type="text" id="sender-name" aria-label="Nombre de quien envía" oninput="guardarProgresoCheckout()" placeholder="Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
                 <button onclick="goToStep('step-buyer-email')" class="mt-12 btn-premium w-full">Siguiente</button>
             </div>
 
@@ -1363,7 +1363,7 @@
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Contacto</span>
                 <h3 class="font-serif text-4xl italic mb-12">¿A qué correo te enviamos el comprobante?</h3>
                 <p class="text-[10px] uppercase tracking-widest opacity-60 mb-6">Para enviar el comprobante digital de su pedido</p>
-                <input type="email" id="buyer-email" oninput="guardarProgresoCheckout()" placeholder="su-correo@ejemplo.com" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <input type="email" id="buyer-email" aria-label="Correo electrónico para el comprobante" oninput="guardarProgresoCheckout()" placeholder="su-correo@ejemplo.com" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
                 <button onclick="validarEmailYContinuar()" class="mt-12 btn-premium w-full">Siguiente</button>
                 <button onclick="goToStep(1)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
@@ -1371,7 +1371,7 @@
             <div id="step-2" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2</span>
                 <h3 class="font-serif text-4xl italic mb-12">¿A quién vamos a emocionar hoy?</h3>
-                <input type="text" id="receiver-name" oninput="guardarProgresoCheckout()" placeholder="Nombre de esa persona especial" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <input type="text" id="receiver-name" aria-label="Nombre de quien recibe" oninput="guardarProgresoCheckout()" placeholder="Nombre de esa persona especial" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
                 <button onclick="goToStep('step-palette')" class="mt-12 btn-premium w-full">Siguiente</button>
                 <button onclick="goToStep('step-buyer-email')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
@@ -1455,7 +1455,7 @@
             <div id="step-direccion" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
                 <h3 class="font-serif text-3xl italic mb-6">¿A qué dirección llevaremos esta alegría?</h3>
-                <input type="text" id="address" oninput="guardarProgresoCheckout()" placeholder="Calle, número, departamento o casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
+                <input type="text" id="address" aria-label="Dirección de entrega" oninput="guardarProgresoCheckout()" placeholder="Calle, número, departamento o casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
                 <button onclick="confirmarDireccion()" class="btn-premium w-full">Confirmar dirección</button>
                 <button onclick="goToStep('step-zona')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
@@ -1463,7 +1463,7 @@
             <div id="step-quien-retira" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
                 <h3 class="font-serif text-3xl italic mb-6">¿Quién pasará a buscar esta belleza al atelier?</h3>
-                <input type="text" id="pickup-name" oninput="guardarProgresoCheckout()" placeholder="Nombre y apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
+                <input type="text" id="pickup-name" aria-label="Nombre de quien retira" oninput="guardarProgresoCheckout()" placeholder="Nombre y apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
                 <button onclick="goToStep('step-fecha')" class="btn-premium w-full">Confirmar</button>
                 <button onclick="goToStep(3)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
@@ -1482,9 +1482,9 @@
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Calendario</span>
                 <h3 class="font-serif text-3xl italic mb-6">Elige el día perfecto</h3>
                 <div class="flex justify-between items-center w-full mb-6 px-2">
-                    <button onclick="cambiarMesCalendario(-1)" id="cal-prev" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Anterior</button>
+                    <button onclick="cambiarMesCalendario(-1)" id="cal-prev" aria-label="Ver mes anterior" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Anterior</button>
                     <span id="cal-month-title" class="text-xs uppercase tracking-widest font-bold text-gold-leaf"></span>
-                    <button onclick="cambiarMesCalendario(1)" id="cal-next" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Siguiente</button>
+                    <button onclick="cambiarMesCalendario(1)" id="cal-next" aria-label="Ver mes siguiente" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Siguiente</button>
                 </div>
                 <div class="grid grid-cols-7 gap-2 w-full text-center text-[9px] uppercase font-bold tracking-wider opacity-40 mb-2">
                     <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div>
@@ -1506,7 +1506,7 @@
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 7</span>
                 <h3 class="font-serif text-4xl italic mb-6">Las palabras que acompañarán tus flores</h3>
                 
-                <textarea id="card-message" oninput="guardarProgresoCheckout()" placeholder="Escriba su dedicatoria aquí..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-32 mb-4"></textarea>
+                <textarea id="card-message" aria-label="Mensaje para la tarjeta" oninput="guardarProgresoCheckout()" placeholder="Escriba su dedicatoria aquí..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-32 mb-4"></textarea>
                 
                 <div class="w-full">
                     <p class="text-[9px] uppercase tracking-widest opacity-40 mb-3 text-left">¿Necesita inspiración?</p>
@@ -1525,7 +1525,7 @@
             <div id="step-5" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 8</span>
                 <h3 class="font-serif text-4xl italic mb-12">¿A qué número llamamos si necesitamos ayuda al entregar?</h3>
-                <input type="tel" id="receiver-phone" oninput="guardarProgresoCheckout()" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <input type="tel" id="receiver-phone" aria-label="Teléfono de quien recibe" oninput="guardarProgresoCheckout()" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
                 <button onclick="goToStep(6)" class="mt-12 btn-premium w-full">Siguiente</button>
                 <button onclick="goToStep(4)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
@@ -2098,9 +2098,9 @@ function onGardenTurnstileSuccess(token) { gardenTurnstileToken = token; }
                         <p class="text-[#0a1f1c] text-sm font-bold">$${(item.price).toLocaleString()}</p>
                         <div class="flex items-center space-x-6 mt-3">
                             <div class="flex items-center space-x-3 border border-zinc-200 px-2 py-1 bg-white rounded">
-                                <button onclick="updateQty(${item.id}, -1)" class="hover:text-[#c5a059] transition-colors">-</button>
+                                <button onclick="updateQty(${item.id}, -1)" aria-label="Disminuir cantidad" class="hover:text-[#c5a059] transition-colors">-</button>
                                 <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
-                                <button onclick="updateQty(${item.id}, 1)" class="hover:text-[#c5a059] transition-colors">+</button>
+                                <button onclick="updateQty(${item.id}, 1)" aria-label="Aumentar cantidad" class="hover:text-[#c5a059] transition-colors">+</button>
                             </div>
                             <button onclick="removeFromCart(${item.id})" class="text-[9px] uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity">Eliminar</button>
                         </div>
@@ -2123,7 +2123,7 @@ function onGardenTurnstileSuccess(token) { gardenTurnstileToken = token; }
                                 ${availableUpsells.map(u => {
                                     const uFileName = u.img.split('/').pop();
                                     return `
-                                    <div class="w-[110px] flex-shrink-0 group cursor-pointer" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, 'img/${uFileName}')">
+                                    <div class="w-[110px] flex-shrink-0 group cursor-pointer" role="button" tabindex="0" aria-label="Agregar ${u.name} por $${u.price}" onclick="addToCart(${u.id}, '${u.name}', ${u.price}, 'img/${uFileName}')">
                                         <div class="w-[110px] h-[110px] bg-white border border-zinc-200 mb-2 flex items-center justify-center relative overflow-hidden transition-all group-hover:border-[#c5a059] rounded-md shadow-sm p-2">
                                             <span class="font-serif italic text-[#c5a059] text-3xl opacity-20 group-hover:opacity-100 transition-all absolute z-0">+</span>
                                             <img src="img/${uFileName}" loading="lazy" class="w-full h-full object-contain relative z-10 transition-transform duration-500 group-hover:scale-105" alt="${u.name}">
@@ -2381,7 +2381,7 @@ function onGardenTurnstileSuccess(token) { gardenTurnstileToken = token; }
                 grid.innerHTML += `<div class="py-3 text-zinc-300 font-serif text-sm cursor-not-allowed">${d}</div>`;
             } else {
                 const fechaStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-                grid.innerHTML += `<button onclick="seleccionarDiaCalendario('${fechaStr}')" class="py-3 font-serif text-sm hover:text-gold-leaf transition font-bold text-[#0a1f1c]">${d}</button>`;
+                grid.innerHTML += `<button onclick="seleccionarDiaCalendario('${fechaStr}')" aria-label="Seleccionar el ${d} de este mes" class="py-3 font-serif text-sm hover:text-gold-leaf transition font-bold text-[#0a1f1c]">${d}</button>`;
             }
         }
     }
@@ -2904,6 +2904,7 @@ function onGardenTurnstileSuccess(token) { gardenTurnstileToken = token; }
                 }
                 if (heroDotsContainer) {
                     const dot = document.createElement('button');
+                    dot.setAttribute('aria-label', 'Ver diapositiva ' + (index + 1));
                     dot.className = `w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-300 border border-[#c5a059] ${index === 0 ? 'bg-[#c5a059] scale-125' : 'bg-transparent hover:bg-[#c5a059]/50'}`;
                     dot.onclick = () => {
                         if(isAnimating || currentHeroSlide === index) return;
@@ -3169,7 +3170,7 @@ updateCountdown();
     </div>
 
     <!-- Botón "Ver" base -->
-    <button onclick="toggleFabMenu()" class="pointer-events-auto relative bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
+    <button onclick="toggleFabMenu()" aria-label="Menú rápido" class="pointer-events-auto relative bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
         <svg id="fab-icon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
