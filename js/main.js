@@ -1,4 +1,3 @@
-<script>
     // Corrección para scope: Haciendo `stopAutoPlay` global para que otros modales puedan usarla sin arrojar error
     window.stopAutoPlay = null;
 
@@ -1541,4 +1540,3 @@ updateCountdown();
             icon.style.transform = 'rotate(0deg)';
         }
     }
-    </script>
