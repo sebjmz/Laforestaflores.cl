@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9NDEELWEK"></script>
     <script>
@@ -121,10 +121,13 @@
     }
     </script>
 
+    <!-- ARCHIVOS EXTERNOS OPTIMIZADOS -->
     <link rel="stylesheet" href="css/tailwind-final.css">
     <link rel="stylesheet" href="css/estilos.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
     
+    <script src="https://sdk.mercadopago.com/js/v2" defer></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AbfBLeAuXrylWnzDIOQcvpfJwrzBAy0N8281_ip4dFmH1k6H8kW70tPOE_IH6sc05OafIHHfe1PE1Mv1&currency=USD" defer></script>
 </head>
 <body>
 
@@ -392,7 +395,7 @@
                 <img src="img/mujer2.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
                 <div class="collage-content">
                     <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Gracias por embellecer mis días. Las flores son hermosas y la combination de texturas es arte puro... realmente logran plasmar la vida en colores. 100% recomendados."</p>
+                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Gracias por embellecer mis días. Las flores son hermosas y la combinacion de texturas es arte puro... realmente logran plasmar la vida en colores. 100% recomendados."</p>
                     <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— María J.</p>
                 </div>
             </div>
@@ -698,9 +701,9 @@
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1 de 2</span>
                 <h3 class="font-serif text-4xl italic mb-12">¿Qué espacio desea intervenir?</h3>
                 <div class="space-y-4 w-full">
-                    <button onclick="selectGardenOption(this, 'Terraza o Balcón')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Terraza o Balcón</button>
-                    <button onclick="selectGardenOption(this, 'Jardín Exterior')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Jardín Exterior</button>
-                    <button onclick="selectGardenOption(this, 'Interior / Corporativo')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Interior / Corporativo</button>
+                    <button onclick="selectGardenOption(this, 'Terraza o Balcón')" aria-label="terraza o balcon" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Terraza o Balcón</button>
+                    <button onclick="selectGardenOption(this, 'Jardín Exterior')" aria-label="jardin exterior" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Jardín Exterior</button>
+                    <button onclick="selectGardenOption(this, 'Interior / Corporativo')" aria-label="interior o corporativo" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Interior / Corporativo</button>
                 </div>
             </div>
             <div id="g-step-3" class="garden-step flex-col items-center w-full max-w-md text-center hidden">
