@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Foresta Flores - Jardín Digital</title>
+    <style>
+        /* Diseño Minimalista - Estilo Apple / Mac */
+        :root {
+            --bg-color: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent: #0071e3;
+            --border: #d2d2d7;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+        h2 {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+        }
+        .image-container {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 40px auto;
+            background-color: #f5f5f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
+            transition: opacity 0.5s ease;
+        }
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.95;
+        }
+        .story-text {
+            font-size: 17px;
+            line-height: 1.5;
+            color: var(--text-primary);
+            margin-bottom: 40px;
+            min-height: 80px;
+            transition: opacity 0.5s ease;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        button {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: 980px;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            border-color: var(--text-primary);
+        }
+        button:active {
+            background-color: #f5f5f7;
+        }
+        .btn-primary {
+            background-color: var(--text-primary);
+            color: white;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #000;
+            border-color: #000;
+        }
+        .diary {
+            text-align: left;
+            background-color: #fbfbfd;
+            border-radius: 18px;
+            padding: 24px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        .diary h3 {
+            color: var(--text-primary);
+            font-size: 16px;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+        .day-badge {
+            font-size: 12px;
+            background-color: #f5f5f7;
+            padding: 4px 12px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>La Foresta Flores</h2>
+    <h1 id="greeting">Bienvenido. Hoy comienza la historia de tu Lisianthus.</h1>
+    <div class="day-badge" id="day-counter">Día 1</div>
+
+    <div class="image-container" id="img-wrapper">
+        <img id="plant-image" src="https://images.unsplash.com/photo-1599421487847-0683050c952b?auto=format&fit=crop&q=80&w=600" alt="Semilla en tierra">
+    </div>
+
+    <div class="story-text" id="story">
+        La tierra aún conserva el calor de tus manos. Hoy tu semilla comenzó a absorber agua. Todavía no hay nada visible. Pero bajo la superficie ya comenzó la vida.
+    </div>
+
+    <div class="controls">
+        <button onclick="hydrate()">💧 Hidratar (Riego Capilar)</button>
+        <button onclick="checkLight()">☀️ Proveer Luz</button>
+        <button onclick="openDiary()">📖 Leer Diario Botánico</button>
+        <button class="btn-primary" onclick="nextDay()">Avanzar Tiempo ⏳</button>
+    </div>
+
+    <div class="diary" id="diary-section">
+        <h3>Herbario: Notas de Cultivo del Lisianthus</h3>
+        <p><strong>Fase 1 (Días 1-14): Germinación</strong></p>
+        <ul id="diary-notes">
+            <li><strong>Luz:</strong> A diferencia de otras flores, la semilla de Lisianthus <em>no debe cubrirse</em>, ya que requiere hasta 27.000 lux de luz para germinar adecuadamente.</li>
+            <li><strong>Agua:</strong> Requiere humedad constante. Se recomienda riego capilar para simular los pequeños charcos de su hábitat nativo y disolver lentamente el pellet.</li>
+            <li><strong>Tierra:</strong> El pH ideal de la tierra debe estar entre 6.2 y 6.5.</li>
+            <li><strong>Temperatura:</strong> La temperatura óptima es de 20-21°C. Si el ambiente es demasiado caluroso, la planta entra en "rosetamiento" (un letargo natural) y detiene su crecimiento.</li>
+        </ul>
+        <p><em>Tu objetivo en esta sesión es simplemente observar, mantener la humedad y dejar que el tiempo haga su trabajo.</em></p>
+    </div>
+</div>
+
+<script>
+    // Lógica sencilla de progresión de tiempo y estados
+    let currentDay = 1;
+
+    const storyData = {
+        1: {
+            text: "La tierra aún conserva el calor de tus manos. Hoy tu semilla comenzó a absorber agua. Todavía no hay nada visible. Pero bajo la superficie ya comenzó la vida.",
+            image: "https://images.unsplash.com/photo-1599421487847-0683050c952b?auto=format&fit=crop&q=80&w=600"
+        },
+        2: {
+            text: "Las primeras células empezaron a dividirse. Las raíces buscan la gravedad. El pellet que recubre la semilla se disuelve lentamente. Todavía duerme.",
+            image: "https://images.unsplash.com/photo-1615555469446-24e0b04e2862?auto=format&fit=crop&q=80&w=600"
+        },
+        5: {
+            text: "La primera raíz principal alcanzó 2 centímetros. Se ancla firmemente al sustrato para absorber nutrientes. Muy pronto romperá la tierra.",
+            image: "https://images.unsplash.com/photo-1416879598555-520f9f1b9dc7?auto=format&fit=crop&q=80&w=600" 
+        },
+        14: {
+            text: "¡Ha brotado! Los pequeños cotiledones verdes asoman a la luz. Ha completado su primera etapa. Ahora comenzará el desarrollo de sus verdaderas hojas.",
+            image: "https://images.unsplash.com/photo-1590680424564-96860e0a5e2f?auto=format&fit=crop&q=80&w=600"
+        }
+    };
+
+    function hydrate() {
+        alert("Has aplicado riego capilar. La humedad de la tierra es óptima para disolver el pellet sin ahogar la semilla.");
+    }
+
+    function checkLight() {
+        alert("La semilla está recibiendo luz indirecta adecuada (aprox 21,000 lux). Has tomado la excelente decisión de NO cubrirla con tierra.");
+    }
+
+    function openDiary() {
+        const diary = document.getElementById('diary-section');
+        if (diary.style.display === 'block') {
+            diary.style.display = 'none';
+        } else {
+            diary.style.display = 'block';
+        }
+    }
+
+    // Botón de prueba para avanzar el tiempo de forma manual (luego estará atado al tiempo real)
+    function nextDay() {
+        if (currentDay === 1) currentDay = 2;
+        else if (currentDay === 2) currentDay = 5;
+        else if (currentDay === 5) currentDay = 14;
+        else {
+            alert("El tiempo es perfecto. El Lisianthus ha completado su Fase 1 de germinación. Cierra la página y vuelve otro día para seguir su evolución.");
+            return;
+        }
+        
+        // Animación suave de transición
+        const wrapper = document.getElementById('img-wrapper');
+        const textStory = document.getElementById('story');
+        
+        wrapper.style.opacity = 0;
+        textStory.style.opacity = 0;
+        
+        setTimeout(() => {
+            document.getElementById('day-counter').innerText = 'Día ' + currentDay;
+            document.getElementById('story').innerText = storyData[currentDay].text;
+            document.getElementById('plant-image').src = storyData[currentDay].image;
+            
+            wrapper.style.opacity = 1;
+            textStory.style.opacity = 1;
+        }, 500);
+    }
+</script>
+</body>
+</html>
