@@ -8,8 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+    <!-- Cloudflare y Google Analytics -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9NDEELWEK"></script>
     <script>
@@ -121,13 +120,12 @@
     }
     </script>
 
-    <!-- ARCHIVOS EXTERNOS OPTIMIZADOS -->
-    <link rel="stylesheet" href="css/tailwind-final.css">
-    <link rel="stylesheet" href="css/estilos.css">
+    <!-- FUENTES DE GOOGLE -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
     
-    <script src="https://sdk.mercadopago.com/js/v2" defer></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=AbfBLeAuXrylWnzDIOQcvpfJwrzBAy0N8281_ip4dFmH1k6H8kW70tPOE_IH6sc05OafIHHfe1PE1Mv1&currency=USD" defer></script>
+    <!-- ARCHIVOS EXTERNOS OPTIMIZADOS (CON v=3) -->
+    <link rel="stylesheet" href="css/tailwind-final.css?v=3">
+    <link rel="stylesheet" href="css/estilos.css?v=3">
 </head>
 <body>
 
@@ -142,25 +140,24 @@
                 <a href="#garden" class="hover:text-white transition-colors duration-300">Jardinería</a>
                 <a href="#faq" onclick="document.getElementById('faq').scrollIntoView({behavior: 'smooth'});" class="hover:text-white transition-colors duration-300">Preguntas</a>
                 <a href="#testimonios" class="hover:text-white transition-colors duration-300 flex items-center gap-1.5 group">
-        Testimonios
-        <svg class="w-3.5 h-3.5 text-[#c5a059] group-hover:text-white transition-colors duration-300 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-        </svg>
-    </a>
-</div>
+                    Testimonios
+                    <svg class="w-3.5 h-3.5 text-[#c5a059] group-hover:text-white transition-colors duration-300 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                    </svg>
+                </a>
+            </div>
         </div>
         
         <div class="flex items-center space-x-4 md:space-x-6 flex-shrink-0">
-    <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Reñaca, Chile</div>
-    
-        <!-- Botón interactivo para el carrito con icono de bolsa -->
-    <button onclick="toggleCart()" aria-label="Ver carrito de compras" class="relative group flex items-center hover:scale-110 transition-transform duration-300">
-        <svg class="w-5 h-5 text-[#c5a059] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-        </svg>
-        <span id="cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2.5 py-1 rounded-full text-[10px] font-bold shadow-sm">0</span>
-    </button>
-</div>
+            <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Reñaca, Chile</div>
+            
+            <button onclick="toggleCart()" aria-label="Ver carrito de compras" class="relative group flex items-center hover:scale-110 transition-transform duration-300">
+                <svg class="w-5 h-5 text-[#c5a059] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                </svg>
+                <span id="cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2.5 py-1 rounded-full text-[10px] font-bold shadow-sm">0</span>
+            </button>
+        </div>
     </nav>
 
     <div id="mobile-sticky-cart" role="button" tabindex="0" aria-label="Ver carrito de compras" class="fixed bottom-0 left-0 w-full bg-[#0a1f1c] text-[#c5a059] p-5 z-[90] flex justify-between items-center md:hidden transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.25)] border-t border-[#c5a059]/20" onclick="toggleCart()">
@@ -175,6 +172,7 @@
     </div>
     
     <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/40 z-[110] hidden opacity-0 transition-opacity duration-500"></div>
+    
     <div id="atelier-bag" class="fixed top-0 right-0 h-full w-full md:w-[500px] bg-white z-[120] shadow-2xl flex flex-col">
         <div class="p-8 border-b flex justify-between items-center">
             <h2 class="font-serif text-3xl italic">Su Selección</h2>
@@ -200,7 +198,8 @@
                 </span>
             </div>
 
-            <button onclick="openCheckout()" aria-label="Proceder al Checkout" class="w-full btn-premium uppercase text-xs tracking-[0.2em] mb-6">Proceder al Checkout</button>
+            <!-- AQUÍ CARGAMOS LAS PASARELAS DINÁMICAMENTE -->
+            <button onclick="cargarPasarelasYAbrirCheckout()" aria-label="Proceder al Checkout" class="w-full btn-premium uppercase text-xs tracking-[0.2em] mb-6">Proceder al Checkout</button>
             
             <div class="flex justify-center items-center mb-6 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
                 <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
@@ -264,7 +263,8 @@
                             Cuidamos cada detalle para que tu sorpresa llegue impecable y a tiempo, desde Reñaca hasta Curauma.
                         </p>
                         <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <button onclick="openCoverageModal()" aria-label="Ver mapa de zonas de cobertura" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver zonas de cobertura</button>
+                            <!-- AQUÍ CARGAMOS LOS MAPAS DINÁMICAMENTE -->
+                            <button onclick="cargarMapasYAbrirModal()" aria-label="Ver mapa de zonas de cobertura" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver zonas de cobertura</button>
                         </div>
                     </div>
                 </div>
@@ -345,176 +345,160 @@
     </div>
 
     <section id="testimonios" class="py-24 bg-[#0a1f1c] text-[#fcfaf7] border-t border-[#c5a059]/20 overflow-hidden w-full">
-    <div class="w-full max-w-full mx-auto px-0">
-        <div class="text-center mb-12 px-6">
-            <span class="text-[#c5a059] text-2xl tracking-widest block mb-4">★★★★★</span>
-            <h2 class="font-serif text-4xl md:text-5xl italic mb-4 flex justify-center items-center gap-3">
-            Historias que Florecen.
-            <svg class="w-8 h-8 md:w-10 md:h-10 text-[#c5a059]" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-    </svg>
-</h2>
-            <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#c5a059]">4.9/5 en +100 Evaluaciones de Google</p>
-        </div>
-
-        <!-- ACORDEÓN 3D DE 13 CLIENTES -->
-        <div class="collage-container border-b border-[#c5a059]/20 pb-24 mb-16">
-            
-            <!-- 1. GARANTÍA DEL FUNDADOR -->
-            <div class="collage-page">
-                <img src="img/garantia-fundador.jpg" alt="Fundador La Foresta" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">LUIS JIMÉNEZ R.</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Casi una década de devoción floral. Desde 2018, nuestra promesa ha sido inquebrantable: llevar la frescura absoluta y el diseño vanguardista a cada rincón de la V Región. Cada tallo guarda nuestra garantía de excelencia."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Fundador, La Foresta Flores.</p>
-                </div>
+        <div class="w-full max-w-full mx-auto px-0">
+            <div class="text-center mb-12 px-6">
+                <span class="text-[#c5a059] text-2xl tracking-widest block mb-4">★★★★★</span>
+                <h2 class="font-serif text-4xl md:text-5xl italic mb-4 flex justify-center items-center gap-3">
+                Historias que Florecen.
+                <svg class="w-8 h-8 md:w-10 md:h-10 text-[#c5a059]" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+        </svg>
+    </h2>
+                <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#c5a059]">4.9/5 en +100 Evaluaciones de Google</p>
             </div>
 
-            <!-- 2. HOMBRE CORPORATIVO / OFICINA -->
-            <div class="collage-page">
-                <img src="img/oficina.jpg" alt="Cliente Corporativo" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"La Foresta ofrece una experiencia excepcional de principio a fin. El nivel de decoro, la armonía y la puntualidad corporativa son impecables. Un estándar de calidad que eleva cualquier espacio."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Pablo S.</p>
+            <div class="collage-container border-b border-[#c5a059]/20 pb-24 mb-16">
+                
+                <div class="collage-page">
+                    <img src="img/garantia-fundador.jpg" alt="Fundador La Foresta" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">LUIS JIMÉNEZ R.</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Casi una década de devoción floral. Desde 2018, nuestra promesa ha sido inquebrantable: llevar la frescura absoluta y el diseño vanguardista a cada rincón de la V Región. Cada tallo guarda nuestra garantía de excelencia."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Fundador, La Foresta Flores.</p>
+                    </div>
                 </div>
+
+                <div class="collage-page">
+                    <img src="img/oficina.jpg" alt="Cliente Corporativo" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"La Foresta ofrece una experiencia excepcional de principio a fin. El nivel de decoro, la armonía y la puntualidad corporativa son impecables. Un estándar de calidad que eleva cualquier espacio."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Pablo S.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer1.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Se nota la inspiración y el amor en cada tallo seleccionado. La frescura es innegable y la atención es simplemente maravillosa, un verdadero lujo visual y humano."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Lorena S.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer2.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Gracias por embellecer mis días. Las flores son hermosas y la combinacion de texturas es arte puro... realmente logran plasmar la vida en colores. 100% recomendados."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— María J.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/hombre1.jpg" alt="Cliente Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Quedé como rey. La asesoría experta y las flores frescas son fundamentales para lograr el arreglo perfecto. Un servicio de primer nivel para sorprender a quien amas."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Cristhian G.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer3.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Atención excelente. Las flores son preciosas, y con los consejos expertos que te entregan en el atelier, los arreglos pueden durar intactos más de un mes. Calidad superior."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Mónica V.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer4.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El equilibrio perfecto entre diseño premium y un valor accesible. Las flores más hermosas y frescas de la Quinta Región, con un estándar visual inigualable."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Magdalena.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer5.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Vivo fuera del país y quería enviar un detalle especial; la confianza y puntualidad logística que brindan es invaluable. Acortan distancias con muchísima belleza."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Ale C.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/hombre2.jpg" alt="Cliente Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Compré flores para una celebración de cumpleaños y el ramo quedó simplemente espectacular. La atención fue impecable y su puntualidad en la entrega aún mejor."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Matías C.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer6.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Tienen una sensibilidad artística única. Sus creaciones para bodas y eventos importantes respiran elegancia. Me fascinó absolutamente la propuesta estética de mi arreglo."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Belén N.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer7.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El bouquet resultó ser aún más impresionante en persona que en las fotos. Flores frescas, atención de primerísimo nivel y entrega exacta. Definitivamente mi florería de confianza."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Soulfia.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer8.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"La experiencia de compra es fabulosa. La asesoría es detallista y los ramos del día son sencillamente bellísimos. Tienen un gusto exquisito para armar las paletas de color."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Claudia F.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer9.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El servicio es tremendamente profesional. Cada encargo llega a tiempo y la presentación es impecable. Para mí, es por lejos la florería más distinguida de la V Región."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Irene V.</p>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- 3. MUJER 1 -->
-            <div class="collage-page">
-                <img src="img/mujer1.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Se nota la inspiración y el amor en cada tallo seleccionado. La frescura es innegable y la atención es simplemente maravillosa, un verdadero lujo visual y humano."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Lorena S.</p>
+            <div class="text-center px-6">
+                <span class="text-[9px] font-bold uppercase tracking-[0.4em] opacity-40 block mb-10">SOCIOS EN LA EXCELENCIA</span>
+                <div class="flex flex-wrap justify-center items-center gap-16 opacity-50 grayscale">
+                    <img src="img/carmine.png" class="h-8 object-contain" alt="Restaurant Carmine" loading="lazy">
+                    <img src="img/san-marinos.svg" class="h-8 object-contain" alt="San Marino" loading="lazy">
                 </div>
-            </div>
-
-            <!-- 4. MUJER 2 -->
-            <div class="collage-page">
-                <img src="img/mujer2.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Gracias por embellecer mis días. Las flores son hermosas y la combinacion de texturas es arte puro... realmente logran plasmar la vida en colores. 100% recomendados."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— María J.</p>
-                </div>
-            </div>
-
-            <!-- 5. HOMBRE (CRISTHIAN) -->
-            <div class="collage-page">
-                <img src="img/hombre1.jpg" alt="Cliente Feliz" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Quedé como rey. La asesoría experta y las flores frescas son fundamentales para lograr el arreglo perfecto. Un servicio de primer nivel para sorprender a quien amas."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Cristhian G.</p>
-                </div>
-            </div>
-
-            <!-- 6. MUJER 3 -->
-            <div class="collage-page">
-                <img src="img/mujer3.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Atención excelente. Las flores son preciosas, y con los consejos expertos que te entregan en el atelier, los arreglos pueden durar intactos más de un mes. Calidad superior."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Mónica V.</p>
-                </div>
-            </div>
-
-            <!-- 7. MUJER 4 (MAGDALENA) -->
-            <div class="collage-page">
-                <img src="img/mujer4.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El equilibrio perfecto entre diseño premium y un valor accesible. Las flores más hermosas y frescas de la Quinta Región, con un estándar visual inigualable."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Magdalena.</p>
-                </div>
-            </div>
-
-            <!-- 8. MUJER 5 -->
-            <div class="collage-page">
-                <img src="img/mujer5.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Vivo fuera del país y quería enviar un detalle especial; la confianza y puntualidad logística que brindan es invaluable. Acortan distancias con muchísima belleza."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Ale C.</p>
-                </div>
-            </div>
-
-            <!-- 9. HOMBRE (MATÍAS) -->
-            <div class="collage-page">
-                <img src="img/hombre2.jpg" alt="Cliente Feliz" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Compré flores para una celebración de cumpleaños y el ramo quedó simplemente espectacular. La atención fue impecable y su puntualidad en la entrega aún mejor."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Matías C.</p>
-                </div>
-            </div>
-
-            <!-- 10. MUJER 6 -->
-            <div class="collage-page">
-                <img src="img/mujer6.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Tienen una sensibilidad artística única. Sus creaciones para bodas y eventos importantes respiran elegancia. Me fascinó absolutamente la propuesta estética de mi arreglo."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Belén N.</p>
-                </div>
-            </div>
-
-            <!-- 11. MUJER 7 -->
-            <div class="collage-page">
-                <img src="img/mujer7.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El bouquet resultó ser aún más impresionante en persona que en las fotos. Flores frescas, atención de primerísimo nivel y entrega exacta. Definitivamente mi florería de confianza."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Soulfia.</p>
-                </div>
-            </div>
-
-            <!-- 12. MUJER 8 -->
-            <div class="collage-page">
-                <img src="img/mujer8.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"La experiencia de compra es fabulosa. La asesoría es detallista y los ramos del día son sencillamente bellísimos. Tienen un gusto exquisito para armar las paletas de color."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Claudia F.</p>
-                </div>
-            </div>
-
-            <!-- 13. MUJER 9 -->
-            <div class="collage-page">
-                <img src="img/mujer9.jpg" alt="Clienta Feliz" class="collage-img" loading="lazy">
-                <div class="collage-content">
-                    <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
-                    <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El servicio es tremendamente profesional. Cada encargo llega a tiempo y la presentación es impecable. Para mí, es por lejos la florería más distinguida de la V Región."</p>
-                    <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Irene V.</p>
-                </div>
-            </div>
-
-        </div>
-        <!-- FIN ACORDEÓN 3D -->
-
-        <div class="text-center px-6">
-            <span class="text-[9px] font-bold uppercase tracking-[0.4em] opacity-40 block mb-10">SOCIOS EN LA EXCELENCIA</span>
-            <div class="flex flex-wrap justify-center items-center gap-16 opacity-50 grayscale">
-                <img src="img/carmine.png" class="h-8 object-contain" alt="Restaurant Carmine" loading="lazy">
-                <img src="img/san-marinos.svg" class="h-8 object-contain" alt="San Marino" loading="lazy">
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <section id="vault" class="bg-white pt-6 pb-12 border-t border-zinc-100">
         <div class="w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-16">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-4 pb-4 border-b border-[#0a1f1c]/5 mb-6">
                 <div class="w-full md:w-auto overflow-hidden">
                     <h2 class="text-4xl md:text-7xl font-serif italic text-[#0a1f1c] mb-3 mt-2 md:mt-0 flex items-center gap-3 md:gap-4">
-    Nuestra Colección
-    <!-- Icono Destellos Cute (Estático) -->
-    <svg class="w-8 h-8 md:w-12 md:h-12 text-[#c5a059] opacity-80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/>
-        <path d="M19 4L20 7L23 8L20 9L19 12L18 9L15 8L18 7L19 4Z" fill="currentColor"/>
-    </svg>
-</h2>
+                        Nuestra Colección
+                        <svg class="w-8 h-8 md:w-12 md:h-12 text-[#c5a059] opacity-80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/>
+                            <path d="M19 4L20 7L23 8L20 9L19 12L18 9L15 8L18 7L19 4Z" fill="currentColor"/>
+                        </svg>
+                    </h2>
 
                     <div class="w-full overflow-x-auto pb-1 hide-scroll">
                         <nav aria-label="Filtros de colección" class="flex items-center space-x-6 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 whitespace-nowrap min-w-max">
@@ -589,81 +573,74 @@
     </section>
 
     <div id="b2b-flow" class="fixed inset-0 bg-[#0a1f1c] text-[#fcfaf7] z-[200] flex flex-col hidden opacity-0 transition-opacity duration-500 backdrop-blur-xl">
-    <div class="px-8 py-6 flex justify-between items-center border-b border-[#c5a059]/10 shrink-0">
-        <h2 class="font-serif text-xl tracking-widest uppercase text-[#c5a059]">Portal B2B</h2>
-        <button onclick="closeB2BFlow()" aria-label="Cerrar portal B2B" class="text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors">×</button>
-    </div>
-
-    <div class="flex-grow flex flex-col justify-start items-center p-6 relative overflow-y-auto w-full pb-20">
-        
-        <div id="b2b-step-1" class="b2b-step active flex-col items-center w-full max-w-lg text-center transition-all duration-500 transform my-auto">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block mt-4">Paso 1 de 2</span>
-            <h3 class="font-serif text-4xl md:text-5xl italic mb-12">Cuéntanos sobre tu proyecto</h3>
-            
-            <div class="space-y-4 w-full">
-    <button type="button" onclick="selectB2BSegment('Inmobiliarias & Propiedades')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Inmobiliarias & Propiedades</button>
-    <button type="button" onclick="selectB2BSegment('Boutiques & Espacios de Autor')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Boutiques & Espacios de Autor</button>
-    <button type="button" onclick="selectB2BSegment('Oficinas Corporativas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Oficinas Corporativas</button>
-    <button type="button" onclick="selectB2BSegment('Eventos & Galas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Eventos Privados & Galas</button>
-    <button type="button" onclick="selectB2BSegment('Hogar & Jardín')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Hogar y Jardín</button>
-</div>
+        <div class="px-8 py-6 flex justify-between items-center border-b border-[#c5a059]/10 shrink-0">
+            <h2 class="font-serif text-xl tracking-widest uppercase text-[#c5a059]">Portal B2B</h2>
+            <button onclick="closeB2BFlow()" aria-label="Cerrar portal B2B" class="text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors">×</button>
         </div>
 
-        <div id="b2b-step-2" class="b2b-step hidden flex-col items-center w-full max-w-md text-center transition-all duration-500 transform translate-x-8 opacity-0 my-auto">
-            <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block mt-4">Paso 2 de 2</span>
-            <h3 class="font-serif text-3xl md:text-4xl italic mb-6">Credenciales de la Firma</h3>
-            
-            <div id="b2b-dynamic-testimonial" class="mb-10 p-5 border-l border-[#c5a059]/50 bg-[#c5a059]/5 text-left transition-opacity duration-[800ms] opacity-0 shadow-sm w-full">
-                <p id="b2b-testimonial-text" class="font-light text-sm italic text-[#fcfaf7]/80 leading-relaxed"></p>
-                <p id="b2b-testimonial-author" class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059] mt-3"></p>
-            </div>
-            
-            <form id="b2b-final-form" class="w-full space-y-6" onsubmit="sendB2BConsultation(event)">
-    <input type="hidden" id="b2b-selected-segment" name="Segmento">
-    
-    <div>
-        <input type="text" id="b2b-empresa" aria-label="Nombre de Empresa o Dirección" name="Empresa_o_Familia" required placeholder="Nombre Empresa o Dirección (Opcional)" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
-    </div>
-    
-    <div class="grid grid-cols-2 gap-4">
-        <input type="text" id="b2b-nombre" aria-label="Su Nombre" name="Nombre" required placeholder="Su Nombre" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
-        
-        <select id="b2b-cargo" aria-label="Seleccione su rol o cargo" name="Cargo" required class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] transition-colors cursor-pointer outline-none">
-            <option value="" disabled selected class="bg-[#0a1f1c] text-white/50">Seleccione su rol</option>
-            <option value="Propietario / Dueño" class="bg-[#0a1f1c] text-[#fcfaf7]">Propietario / Dueño</option>
-            <option value="Gerencia / Dirección" class="bg-[#0a1f1c] text-[#fcfaf7]">Gerencia / Dirección</option>
-            <option value="Productor / Eventos" class="bg-[#0a1f1c] text-[#fcfaf7]">Productor / Eventos</option>
-            <option value="Asistente / Otro" class="bg-[#0a1f1c] text-[#fcfaf7]">Asistente / Otro</option>
-        </select>
-    </div>
-    
-    <div class="grid grid-cols-2 gap-4">
-        <input type="email" id="b2b-email" aria-label="Correo de contacto" name="Email" required placeholder="Correo de contacto" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
-        <input type="tel" id="b2b-whatsapp" aria-label="Número de WhatsApp" name="WhatsApp" required placeholder="WhatsApp" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
-    </div>
-
-    <div class="pt-4 flex justify-center w-full">
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAAD6y4OVRCN5aeJKh" data-callback="onB2BTurnstileSuccess" data-theme="dark"></div>
-    </div>
+        <div class="flex-grow flex flex-col justify-start items-center p-6 relative overflow-y-auto w-full pb-20">
+            <div id="b2b-step-1" class="b2b-step active flex-col items-center w-full max-w-lg text-center transition-all duration-500 transform my-auto">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block mt-4">Paso 1 de 2</span>
+                <h3 class="font-serif text-4xl md:text-5xl italic mb-12">Cuéntanos sobre tu proyecto</h3>
                 
-    <div class="pt-8">
-        <button type="submit" id="b2b-submit-btn" class="w-full py-5 bg-[#c5a059] text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors">Solicitar Membresía</button>
-    </div>
-</form>
-            
-            <button type="button" onclick="backToB2BStep1()" class="mt-8 text-[9px] uppercase tracking-[0.3em] text-white/40 hover:text-[#c5a059] transition-colors border-b border-transparent hover:border-[#c5a059] pb-1">← Cambiar Segmento</button>
-        </div>
-
-        <div id="b2b-success" class="hidden flex-col items-center w-full max-w-md text-center my-auto">
-            <div class="w-20 h-20 border border-[#c5a059] rounded-full flex items-center justify-center mb-8 mx-auto text-[#c5a059]">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path></svg>
+                <div class="space-y-4 w-full">
+                    <button type="button" onclick="selectB2BSegment('Inmobiliarias & Propiedades')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Inmobiliarias & Propiedades</button>
+                    <button type="button" onclick="selectB2BSegment('Boutiques & Espacios de Autor')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Boutiques & Espacios de Autor</button>
+                    <button type="button" onclick="selectB2BSegment('Oficinas Corporativas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Oficinas Corporativas</button>
+                    <button type="button" onclick="selectB2BSegment('Eventos & Galas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Eventos Privados & Galas</button>
+                    <button type="button" onclick="selectB2BSegment('Hogar & Jardín')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Hogar y Jardín</button>
+                </div>
             </div>
-            <h3 class="font-serif text-4xl italic mb-4">Solicitud Recibida.</h3>
-            <p class="text-white/60 font-light leading-relaxed">Nuestra dirección ejecutiva evaluará su perfil y nos pondremos en contacto a la brevedad para agendar una reunión privada.</p>
-            <button type="button" onclick="closeB2BFlow()" aria-label="Cerrar portal B2B" class="mt-12 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] hover:text-white border-b border-[#c5a059] pb-1 transition-colors">Volver a La Foresta</button>
+
+            <div id="b2b-step-2" class="b2b-step hidden flex-col items-center w-full max-w-md text-center transition-all duration-500 transform translate-x-8 opacity-0 my-auto">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block mt-4">Paso 2 de 2</span>
+                <h3 class="font-serif text-3xl md:text-4xl italic mb-6">Credenciales de la Firma</h3>
+                
+                <div id="b2b-dynamic-testimonial" class="mb-10 p-5 border-l border-[#c5a059]/50 bg-[#c5a059]/5 text-left transition-opacity duration-[800ms] opacity-0 shadow-sm w-full">
+                    <p id="b2b-testimonial-text" class="font-light text-sm italic text-[#fcfaf7]/80 leading-relaxed"></p>
+                    <p id="b2b-testimonial-author" class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059] mt-3"></p>
+                </div>
+                
+                <form id="b2b-final-form" class="w-full space-y-6" onsubmit="sendB2BConsultation(event)">
+                    <input type="hidden" id="b2b-selected-segment" name="Segmento">
+                    <div>
+                        <input type="text" id="b2b-empresa" aria-label="Nombre de Empresa o Dirección" name="Empresa_o_Familia" required placeholder="Nombre Empresa o Dirección (Opcional)" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="b2b-nombre" aria-label="Su Nombre" name="Nombre" required placeholder="Su Nombre" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+                        <select id="b2b-cargo" aria-label="Seleccione su rol o cargo" name="Cargo" required class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] transition-colors cursor-pointer outline-none">
+                            <option value="" disabled selected class="bg-[#0a1f1c] text-white/50">Seleccione su rol</option>
+                            <option value="Propietario / Dueño" class="bg-[#0a1f1c] text-[#fcfaf7]">Propietario / Dueño</option>
+                            <option value="Gerencia / Dirección" class="bg-[#0a1f1c] text-[#fcfaf7]">Gerencia / Dirección</option>
+                            <option value="Productor / Eventos" class="bg-[#0a1f1c] text-[#fcfaf7]">Productor / Eventos</option>
+                            <option value="Asistente / Otro" class="bg-[#0a1f1c] text-[#fcfaf7]">Asistente / Otro</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="email" id="b2b-email" aria-label="Correo de contacto" name="Email" required placeholder="Correo de contacto" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+                        <input type="tel" id="b2b-whatsapp" aria-label="Número de WhatsApp" name="WhatsApp" required placeholder="WhatsApp" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+                    </div>
+                    <div class="pt-4 flex justify-center w-full">
+                        <div class="cf-turnstile" data-sitekey="0x4AAAAAAD6y4OVRCN5aeJKh" data-callback="onB2BTurnstileSuccess" data-theme="dark"></div>
+                    </div>
+                    <div class="pt-8">
+                        <button type="submit" id="b2b-submit-btn" class="w-full py-5 bg-[#c5a059] text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors">Solicitar Membresía</button>
+                    </div>
+                </form>
+                
+                <button type="button" onclick="backToB2BStep1()" class="mt-8 text-[9px] uppercase tracking-[0.3em] text-white/40 hover:text-[#c5a059] transition-colors border-b border-transparent hover:border-[#c5a059] pb-1">← Cambiar Segmento</button>
+            </div>
+
+            <div id="b2b-success" class="hidden flex-col items-center w-full max-w-md text-center my-auto">
+                <div class="w-20 h-20 border border-[#c5a059] rounded-full flex items-center justify-center mb-8 mx-auto text-[#c5a059]">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h3 class="font-serif text-4xl italic mb-4">Solicitud Recibida.</h3>
+                <p class="text-white/60 font-light leading-relaxed">Nuestra dirección ejecutiva evaluará su perfil y nos pondremos en contacto a la brevedad para agendar una reunión privada.</p>
+                <button type="button" onclick="closeB2BFlow()" aria-label="Cerrar portal B2B" class="mt-12 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] hover:text-white border-b border-[#c5a059] pb-1 transition-colors">Volver a La Foresta</button>
+            </div>
         </div>
     </div>
-</div>
     
     <section id="garden" class="py-32 px-6 md:px-12 bg-zinc-50 border-t border-zinc-100">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
@@ -1221,45 +1198,44 @@
 
     <div class="fixed bottom-24 right-6 md:right-12 z-[90] pointer-events-none flex flex-col items-end">
     
-    <div id="fab-menu" class="absolute bottom-[calc(100%+12px)] right-0 flex flex-col gap-3 items-end opacity-0 invisible pointer-events-none translate-y-4 transition-all duration-300 w-max">
-        
-        <button onclick="scrollToVault(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
-            <span class="text-[9px] font-bold uppercase tracking-widest">Colección Floral</span>
-        </button>
-        
-        <button onclick="document.getElementById('privilege').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
-            <span class="text-[9px] font-bold uppercase tracking-widest">Suscripciones</span>
-        </button>
-        
-        <button onclick="document.getElementById('garden').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
-            <span class="text-[9px] font-bold uppercase tracking-widest">Jardinería</span>
-        </button>
-        
-        <button onclick="document.getElementById('faq').scrollIntoView({behavior: 'smooth', block: 'start'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
-            <span class="text-[9px] font-bold uppercase tracking-widest">Preguntas</span>
-        </button>
-        
-        <button onclick="document.querySelector('.collage-container').closest('section').scrollIntoView({behavior: 'smooth', block: 'start'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300 group">
-            <div class="flex items-center gap-1.5">
-                <span class="text-[9px] font-bold uppercase tracking-widest">Testimonios</span>
-                <svg class="w-3.5 h-3.5 text-[#c5a059] animate-pulse group-hover:text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-                </svg>
-            </div>
+        <div id="fab-menu" class="absolute bottom-[calc(100%+12px)] right-0 flex flex-col gap-3 items-end opacity-0 invisible pointer-events-none translate-y-4 transition-all duration-300 w-max">
+            <button onclick="scrollToVault(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Colección Floral</span>
+            </button>
+            
+            <button onclick="document.getElementById('privilege').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Suscripciones</span>
+            </button>
+            
+            <button onclick="document.getElementById('garden').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Jardinería</span>
+            </button>
+            
+            <button onclick="document.getElementById('faq').scrollIntoView({behavior: 'smooth', block: 'start'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Preguntas</span>
+            </button>
+            
+            <button onclick="document.querySelector('.collage-container').closest('section').scrollIntoView({behavior: 'smooth', block: 'start'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300 group">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-[9px] font-bold uppercase tracking-widest">Testimonios</span>
+                    <svg class="w-3.5 h-3.5 text-[#c5a059] animate-pulse group-hover:text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                    </svg>
+                </div>
+            </button>
+        </div>
+
+        <button onclick="toggleFabMenu()" aria-label="Menú rápido" class="pointer-events-auto relative bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
+            <svg id="fab-icon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+            </svg>
+            <span class="text-[10px] font-bold uppercase tracking-widest">Ver</span>
         </button>
     </div>
 
-    <!-- Botón "Ver" base -->
-    <button onclick="toggleFabMenu()" aria-label="Menú rápido" class="pointer-events-auto relative bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
-        <svg id="fab-icon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-        </svg>
-        <span class="text-[10px] font-bold uppercase tracking-widest">Ver</span>
-    </button>
-</div>
-
-<script src="js/main.js" defer></script>
+    <!-- EL JAVASCRIPT AHORA ESTÁ AL FINAL, SEPARADO Y NO BLOQUEA -->
+    <script src="js/main.js?v=3" defer></script>
     
 </body>
 </html>
