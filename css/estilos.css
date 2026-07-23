@@ -374,3 +374,22 @@
                 font-size: 0.8rem !important;
             }
         }
+
+        /* --- CLASES INYECTADAS POR JAVASCRIPT --- */
+        .aspect-square { aspect-ratio: 1 / 1; }
+        .w-4 { width: 1rem; }
+        .w-24 { width: 6rem; }
+        .h-24 { height: 6rem; }
+        .w-\[110px\] { width: 110px; }
+        .h-\[110px\] { height: 110px; }
+        .scale-150 { transform: scale(1.5); }
+        .rounded { border-radius: 0.25rem; }
+        .duration-700 { transition-duration: 700ms; }
+        .cursor-grab { cursor: grab; }
+        .active\:cursor-grabbing:active { cursor: grabbing; }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
