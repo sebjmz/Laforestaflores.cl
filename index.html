@@ -234,19 +234,27 @@
         }
 
         .urgency-tag {
-            background-color: #991b1b;
-            color: white;
-            padding: 4px 8px;
-            font-size: 9px;
-            font-weight: bold;
+            background-color: rgba(252, 250, 247, 0.95); /* Color soft-cream de tu paleta */
+            color: #0a1f1c; /* Tu color forest-green */
+            border: 1px solid rgba(197, 160, 89, 0.5); /* Borde gold-leaf sutil */
+            padding: 5px 10px;
+            font-size: 8px;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.15em;
             position: absolute;
-            top: 10px;
-            left: 10px;
+            bottom: 12px; /* Queda mejor abajo que arriba compitiendo con el badge de Más Vendidos */
+            left: 12px;
             z-index: 20;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            animation: pulse-soft 2s infinite;
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            animation: fade-in-up 1s ease-out; /* Una animación más sutil que el pulso constante */
+        }
+
+            @keyframes fade-in-up {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
         
         @keyframes pulse-soft {
