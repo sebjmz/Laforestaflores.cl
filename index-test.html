@@ -1211,14 +1211,14 @@
         <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
             <div id="step-1" class="checkout-step active flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1</span>
-                <h3 class="font-serif text-4xl italic mb-12">Nombre de quien envía</h3>
+                <h3 class="font-serif text-4xl italic mb-12">Quién envía?</h3>
                 <input type="text" id="sender-name" aria-label="Nombre de quien envía" oninput="guardarProgresoCheckout()" placeholder="Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
                 <button onclick="goToStep('step-buyer-email')" class="mt-12 btn-premium w-full">Siguiente</button>
             </div>
 
             <div id="step-buyer-email" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Contacto</span>
-                <h3 class="font-serif text-4xl italic mb-12">Correo electrónico de quien envía</h3>
+                <h3 class="font-serif text-4xl italic mb-12">Correo electrónico</h3>
                 <p class="text-[10px] uppercase tracking-widest opacity-60 mb-6">Para enviar el comprobante digital de su pedido</p>
                 <input type="email" id="buyer-email" aria-label="Correo electrónico para el comprobante" oninput="guardarProgresoCheckout()" placeholder="su-correo@ejemplo.com" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
                 <button onclick="validarEmailYContinuar()" class="mt-12 btn-premium w-full">Siguiente</button>
@@ -1227,7 +1227,7 @@
 
             <div id="step-2" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2</span>
-                <h3 class="font-serif text-4xl italic mb-12">Nombre de quien recibe</h3>
+                <h3 class="font-serif text-4xl italic mb-12">Quién recibe?</h3>
                 <input type="text" id="receiver-name" aria-label="Nombre de quien recibe" oninput="guardarProgresoCheckout()" placeholder="Nombre de esa persona especial" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
                 <button onclick="goToStep('step-palette')" class="mt-12 btn-premium w-full">Siguiente</button>
                 <button onclick="goToStep('step-buyer-email')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
@@ -1235,7 +1235,7 @@
 
             <div id="step-palette" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 3</span>
-                <h3 class="font-serif text-4xl italic mb-12">Selección de tonos</h3>
+                <h3 class="font-serif text-4xl italic mb-12">Tonos</h3>
                 <div class="space-y-4 w-full">
                     <button onclick="selectOption(this, 'palette'); setPalette('Tonos Pasteles & Calma')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Pasteles & Calma</button>
                     <button onclick="selectOption(this, 'palette'); setPalette('Tonos Vibrantes & Coloridos')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Vibrantes & Coloridos</button>
@@ -1245,7 +1245,7 @@
             
             <div id="step-3" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 4</span>
-                <h3 class="font-serif text-3xl italic mb-12">Seleccionar modalidad</h3>
+                <h3 class="font-serif text-3xl italic mb-12">Modalidad</h3>
                 <div class="space-y-4 w-full">
                     <button onclick="seleccionarModalidad('envio')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Envío a domicilio</button>
                     <button onclick="seleccionarModalidad('retiro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Retiro en tienda</button>
@@ -1311,7 +1311,7 @@
 
             <div id="step-direccion" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-                <h3 class="font-serif text-3xl italic mb-6">¿A qué dirección llevaremos esta alegría?</h3>
+                <h3 class="font-serif text-3xl italic mb-6">Dirección de entrega</h3>
                 <input type="text" id="address" aria-label="Dirección de entrega" oninput="guardarProgresoCheckout()" placeholder="Calle, número, departamento o casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
                 <button onclick="confirmarDireccion()" class="btn-premium w-full">Confirmar dirección</button>
                 <button onclick="goToStep('step-zona')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
@@ -1327,7 +1327,7 @@
 
             <div id="step-fecha" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 5</span>
-                <h3 class="font-serif text-3xl italic mb-12">Agendamiento</h3>
+                <h3 class="font-serif text-3xl italic mb-12">Seleccionar fecha</h3>
                 <div class="space-y-4 w-full">
                     <button onclick="seleccionarFecha('hoy')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Hoy</button>
                     <button onclick="seleccionarFecha('futuro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Fecha futura</button>
@@ -1352,7 +1352,7 @@
 
             <div id="step-time" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 6</span>
-                <h3 class="font-serif text-3xl italic mb-2">¿En qué momento prefieres que lleguemos?</h3>
+                <h3 class="font-serif text-3xl italic mb-2">Horario de entrega</h3>
                 <h4 id="time-step-chosen-date" class="text-[10px] uppercase tracking-[0.2em] text-[#0a1f1c]/60 mb-8 font-bold"></h4>
                 
                 <div id="time-slots-container" class="space-y-4 w-full mb-6"></div>
@@ -1389,7 +1389,7 @@
 
             <div id="step-6" class="checkout-step flex-col items-center w-full max-w-md text-center">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Paso Final</span>
-                <h3 class="font-serif text-4xl italic mb-4">último paso</h3>
+                <h3 class="font-serif text-4xl italic mb-4">Confirmar y Pagar</h3>
                 
                 <p class="text-[9px] uppercase tracking-widest opacity-60 mb-6 leading-loose">
                     Al confirmar tu pago, te enviaremos un correo con todos los detalles de tu compra para tu total tranquilidad. (Recuerda revisar tu carpeta de Spam por si acaso)
