@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Optimización CRO: Preload de imagen LCP -->
+    <link rel="preload" as="image" href="img/slide1-pc.jpg" fetchpriority="high">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Florería en Viña del Mar y Reñaca | Flores a Domicilio Hoy | La Foresta</title>
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+    <meta name="description" content="La mejor florería en Viña del Mar y Reñaca. Especialistas en arreglos florales, ramos de rosas y flores a domicilio en Viña, Concón, Valparaíso y Quilpué. Despacho Express el mismo día.">
+    <link rel="canonical" href="https://laforestaflores.cl/">
+    <meta name="theme-color" content="#0a1f1c">
+
+    <!-- TAILWIND COMPILADO Y PURGADO (reemplaza al script cdn.tailwindcss.com que compilaba
+         CSS en el navegador — ver css/styles.min.css, generado con `npx tailwindcss --minify`) -->
+    <link rel="stylesheet" href="css/styles.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        .-tooltip.atelier-tooltip {
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            color: #c5a059;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 0px 2px 5px rgba(0,0,0,0.8);
+        }
+        :root {
+            --forest-green: #0a1f1c;
+            --gold-leaf: #c5a059;
+            --soft-cream: #fcfaf7;
+            --deep-black: #050505;
+        }
+
+        body {
+            background-color: var(--soft-cream);
+            color: var(--forest-green);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        input, textarea, select {
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 0; 
+        }
+
+        .glass-nav {
+            background: rgba(10, 31, 28, 0.92);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            color: var(--gold-leaf);
+        }
+
+        .hero-video-container {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--deep-black);
+        }
+
+        .hero-overlay {
+            background: radial-gradient(circle, rgba(5, 15, 13, 0.4) 0%, rgba(10, 31, 28, 0.7) 100%);
+            z-index: 10;
+        }
+
+        .btn-premium {
+            position: relative;
+            padding: 1rem 2.5rem;
+            background: var(--forest-green);
+            color: var(--gold-leaf);
+            font-weight: 700;
+            overflow: hidden;
+            transition: 0.4s;
+            border: 1px solid var(--forest-green);
+        }
+        
+        .btn-premium:hover {
+            background: transparent;
+            color: var(--forest-green);
+        }
+
+        .btn-gold-outline {
+            border: 1px solid var(--gold-leaf);
+            color: var(--gold-leaf);
+            padding: 0.8rem 2rem;
+            transition: 0.3s;
+        }
+        
+        .btn-gold-outline:hover {
+            background: var(--gold-leaf);
+            color: var(--forest-green);
+        }
+
+        #atelier-bag {
+            transform: translateX(100%);
+            transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+        
+        #atelier-bag.open { transform: translateX(0); }
+
+        .product-card {
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .img-zoom-container {
+            overflow: hidden;
+            background-color: #f4f4f5;
+        }
+        
+        .img-zoom-container img {
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: grayscale(0%) !important;
+        }
+        
+        .product-card:hover .img-zoom-container img {
+            transform: scale(1.05);
+        }
+
+        .b2b-portal {
+            background-color: var(--forest-green);
+            color: var(--soft-cream);
+        }
+
+        ::-webkit-scrollbar { display: none; }
+
+        #checkout-flow, #garden-flow {
+            transform: translateY(100%);
+            transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease;
+        }
+        
+        #checkout-flow.open, #garden-flow.open { transform: translateY(0); }
+        
+        .checkout-step, .garden-step {
+            display: none;
+            animation: fadeInStep 0.6s ease forwards;
+        }
+        
+        .checkout-step.active, .garden-step.active { display: flex; }
+        
+        @keyframes fadeInStep {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-option {
+            border: 1px solid rgba(10, 31, 28, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .step-option:hover, .step-option.selected {
+            border-color: var(--gold-leaf);
+            background: rgba(197, 160, 89, 0.05);
+        }
+
+        #payment-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        #paypal-container {
+            display: none; 
+            margin-top: 20px; 
+            width: 100%; 
+            max-width: 400px; 
+            margin-inline: auto;
+            min-height: 150px;
+        }
+
+        .checkout-step {
+            max-height: 85vh;
+            overflow-y: auto;
+            padding-bottom: calc(30px + env(safe-area-inset-bottom));
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch; 
+        }
+        
+        .checkout-step::-webkit-scrollbar { display: none; }
+
+        #time-slots-container {
+            max-height: 45vh;
+            overflow-y: auto;
+            padding-right: 5px;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @keyframes marquee-infinite {
+            0% { transform: translate3d(0%, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        .animate-marquee {
+            display: flex;
+            min-width: 100%;
+            animation: marquee-infinite 30s linear infinite;
+        }
+        
+        .hide-scroll { 
+            scrollbar-width: none; 
+            -ms-overflow-style: none; 
+            -webkit-overflow-scrolling: touch;
+        }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+
+        #mobile-sticky-cart {
+            padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
+        }
+        #cart-items-container {
+            -webkit-overflow-scrolling: touch;
+        }
+        #atelier-bag .bg-zinc-50 {
+            padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+        }
+
+        .urgency-tag {
+            background-color: #991b1b;
+            color: white;
+            padding: 4px 8px;
+            font-size: 9px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 20;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            animation: pulse-soft 2s infinite;
+        }
+        
+        @keyframes pulse-soft {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .collage-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            max-width: 100%;
+            height: 580px;
+            perspective: 2000px;
+            overflow: hidden; 
+            padding: 40px 0;
+            margin: 0 auto;
+        }
+
+        .collage-page {
+            position: relative;
+            width: 260px;
+            height: 420px;
+            background-color: var(--forest-green);
+            margin-left: -160px; 
+            border-radius: 10px;
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            box-shadow: -20px 0 40px rgba(0,0,0,0.7);
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        margin 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-origin: left center;
+            transform: rotateY(35deg) scale(0.95);
+            overflow: hidden;
+            cursor: pointer;
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+            will-change: transform, margin;
+        }
+
+        .collage-page:first-child { margin-left: 0; }
+
+        .collage-page:hover, .collage-page.active-page {
+            transform: rotateY(0deg) scale(1.05) translateZ(40px);
+            margin-right: 150px;
+            z-index: 20;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9);
+            border-color: var(--gold-leaf);
+        }
+
+        .collage-page:hover ~ .collage-page, .collage-page.active-page ~ .collage-page {
+            transform: rotateY(45deg) scale(0.9) translateZ(-20px);
+        }
+
+        .collage-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            transition: opacity 0.5s ease, filter 0.5s ease;
+            filter: grayscale(100%);
+        }
+
+        .collage-page:hover .collage-img, .collage-page.active-page .collage-img {
+            opacity: 1;
+            filter: grayscale(0%);
+        }
+
+        .collage-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 20px;
+            background: linear-gradient(to top, rgba(10,31,28,0.98) 0%, rgba(10,31,28,0.85) 55%, transparent 100%);
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            opacity: 0;
+        }
+
+        .collage-page:hover .collage-content, .collage-page.active-page .collage-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 1024px) {
+            .collage-container {
+                flex-direction: column;
+                height: auto; 
+                padding: 40px 20px;
+                perspective: none; 
+                width: 100%;
+                gap: 30px; 
+                overflow: visible;
+            }
+            .collage-page {
+                width: 100%;
+                max-width: 340px;
+                height: 420px; 
+                margin: 0 auto !important; 
+                transform-origin: center center;
+                transform: scale(0.95) !important;
+                transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+            }
+            .collage-page:hover, .collage-page.active-page {
+                transform: scale(1.02) !important; 
+                margin: 0 auto !important; 
+                box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+                border-color: var(--gold-leaf);
+                z-index: 20;
+            }
+            .collage-page:hover ~ .collage-page, .collage-page.active-page ~ .collage-page {
+                transform: scale(0.95) !important;
+                margin: 0 auto !important;
+            }
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            #hero-slider .hero-title { font-size: 2.5rem !important; margin-bottom: 0.5rem !important; }
+            #hero-slider .hero-eyebrow { margin-bottom: 0.5rem !important; }
+            #hero-slider p { font-size: 0.9rem !important; margin-bottom: 1rem !important; }
+            #hero-slider .btn-premium { padding: 0.6rem 1.5rem !important; font-size: 0.8rem !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed w-full z-[100] glass-nav px-6 md:px-12 py-5 flex justify-between items-center">
+        <div class="flex items-center space-x-12 min-w-0">
+            <div class="cursor-pointer flex-shrink-0 flex items-center" onclick="window.scrollTo(0,0)" role="button" tabindex="0" aria-label="Volver al inicio">
+                <img src="img/logo-menu.png" width="130" height="42" alt="La Foresta Flores" class="h-6 md:h-8 w-auto object-contain brightness-0 invert">
+            </div>
+            <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap items-center">
+                <a href="#vault" onclick="scrollToVault()" class="hover:text-white transition-colors duration-300">Colección</a>
+                <a href="#privilege" class="hover:text-white transition-colors duration-300">Suscripción & B2B</a>
+                <a href="#garden" class="hover:text-white transition-colors duration-300">Jardinería</a>
+                <a href="#faq" onclick="document.getElementById('faq').scrollIntoView({behavior: 'smooth'});" class="hover:text-white transition-colors duration-300">Preguntas</a>
+                <a href="#testimonios" class="hover:text-white transition-colors duration-300 flex items-center gap-1.5 group">
+                    Testimonios
+                    <svg class="w-3.5 h-3.5 text-[#c5a059] group-hover:text-white transition-colors duration-300 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        
+        <div class="flex items-center space-x-4 md:space-x-6 flex-shrink-0">
+            <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Reñaca, Chile</div>
+            <button onclick="toggleCart()" aria-label="Ver carrito de compras" class="relative group flex items-center hover:scale-110 transition-transform duration-300">
+                <svg class="w-5 h-5 text-[#c5a059] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                </svg>
+                <span id="cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2.5 py-1 rounded-full text-[10px] font-bold shadow-sm">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-sticky-cart" role="button" tabindex="0" aria-label="Ver carrito de compras" class="fixed bottom-0 left-0 w-full bg-[#0a1f1c] text-[#c5a059] p-5 z-[90] flex justify-between items-center md:hidden transform translate-y-full transition-transform duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.25)] border-t border-[#c5a059]/20" onclick="toggleCart()">
+        <div class="flex items-center space-x-4">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-white">Ver Carrito</span>
+            <span id="sticky-cart-count" class="bg-[#c5a059] text-[#0a1f1c] px-2.5 py-1 rounded-full text-[10px] font-bold">0</span>
+        </div>
+        <div class="flex items-center space-x-3">
+            <span id="sticky-cart-total" class="font-serif text-xl font-bold text-white">$0</span>
+            <span class="text-xs text-[#c5a059]">→</span>
+        </div>
+    </div>
+    
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/40 z-[110] hidden opacity-0 transition-opacity duration-500"></div>
+    <div id="atelier-bag" class="fixed top-0 right-0 h-full w-full md:w-[500px] bg-white z-[120] shadow-2xl flex flex-col">
+        <div class="p-8 border-b flex justify-between items-center">
+            <h2 class="font-serif text-3xl italic">Su Selección</h2>
+            <button onclick="toggleCart()" aria-label="Cerrar carrito de compras" class="text-3xl font-light hover:text-gold-leaf">×</button>
+        </div>
+        <div id="cart-items-container" class="flex-grow overflow-y-auto p-8 space-y-8">
+            <div class="text-center py-20 opacity-40">
+                <p class="uppercase tracking-widest text-xs">Su bolsa está vacía</p>
+            </div>
+        </div>
+        <div class="p-8 bg-zinc-50 border-t">
+            <div class="flex justify-between items-start mb-6">
+                <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c] mt-1">Total Estimado</span>
+                <div class="text-right">
+                    <span id="cart-total" class="text-2xl font-serif text-[#0a1f1c] block">$0</span>
+                    <span id="cart-shipping-notice" class="text-[9px] uppercase tracking-[0.2em] font-bold text-[#0a1f1c] block mt-1 transition-all duration-300" style="opacity: 0; transform: translateY(4px);"></span>
+                </div>
+            </div>
+            
+            <div class="flex justify-center items-center gap-4 mb-4 text-[#0a1f1c] opacity-60">
+                <span class="text-[8px] uppercase tracking-widest font-bold flex items-center">
+                    <svg class="w-3 h-3 mr-1 text-[#c5a059]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg> Frescura y Calidad Garantizada
+                </span>
+            </div>
+
+            <!-- AQUÍ CARGAMOS LAS PASARELAS DINÁMICAMENTE -->
+            <button onclick="cargarPasarelasYAbrirCheckout()" aria-label="Proceder al Checkout" class="w-full btn-premium uppercase text-xs tracking-[0.2em] mb-6">Proceder al Checkout</button>
+            
+            <div class="flex justify-center items-center mb-6 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
+                <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
+            </div>
+            
+            <div class="flex justify-center items-center space-x-5 opacity-60 grayscale mb-4">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" alt="Mercado Pago" class="h-5 w-auto object-contain">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" alt="PayPal" class="h-5 w-auto object-contain">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="Visa" class="h-5 w-auto object-contain">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" alt="Mastercard" class="h-4 w-auto object-contain">
+            </div>
+            <p class="text-[8px] flex items-center justify-center gap-1.5 uppercase tracking-widest opacity-40 pb-2 text-zinc-500">
+                <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+                Transaccion protegida por encriptación bancaria
+            </p>
+        </div>
+    </div>
+
+    <section class="relative w-full h-screen h-[100dvh] min-h-[450px] md:min-h-[600px] overflow-hidden bg-[#0a1f1c]" id="hero-slider">
+        <div id="slider-wrapper" class="relative w-full h-full overflow-hidden">
+            
+            <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
+                <div class="absolute inset-0 bg-gradient-to-r from-[#0a1f1c]/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
+                <img src="img/slide1-pc.jpg" alt="Familia La Foresta" fetchpriority="high" class="absolute inset-0 w-full h-full object-cover object-center z-0">
+                <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
+                    <div class="md:w-1/2 lg:w-[40%] mr-auto text-left">
+    <!-- H1 visible de inmediato -->
+    <h1 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6">
+        Florería en Viña del Mar • Flores a domicilio
+    </h1>
+    <!-- LCP TEXT visible de inmediato -->
+    <div class="text-white text-6xl md:text-[6.5rem] font-serif leading-none mb-8 italic">
+        Tradición<br>familiar.
+    </div>
+    <!-- Elementos visibles de inmediato -->
+    <div class="mb-10">
+        <div class="flex items-center gap-3 mb-1">
+            <span class="text-[#c5a059] text-xl md:text-2xl tracking-wider drop-shadow-md">★★★★★</span> 
+            <span class="text-white font-medium text-base md:text-xl drop-shadow-md">4.9/5 en Google.</span>
+        </div>
+        <p class="text-white/80 font-light text-sm md:text-lg leading-snug m-0">
+            Envíos de cortesía en compras sobre $69.990.
+        </p>
+    </div>
+    <div>
+        <button onclick="scrollToVault()" aria-label="Explorar colección de flores" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Explorar colección</button>
+    </div>
+</div>
+                </div>
+            </div>
+
+            <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
+                <div class="absolute inset-0 bg-gradient-to-l from-black/90 via-black/40 to-transparent z-10 w-full md:w-3/4 ml-auto"></div>
+                <img src="img/slide2-pc.jpg" alt="Logística y Servicio Express" class="absolute inset-0 w-full h-full object-cover object-right z-0">
+                <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
+                    <div class="md:w-1/2 lg:w-[42%] ml-auto text-left md:text-right">
+                        <h2 class="hero-eyebrow text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
+                            Nuestro Compromiso
+                        </h2>
+                        <h3 class="hero-title text-white text-6xl md:text-[5rem] lg:text-[7rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
+                            Llegamos<br>por ti.
+                        </h3>
+                        <p class="text-white/90 font-light text-base md:text-xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 leading-relaxed md:ml-auto">
+                            Cuidamos cada detalle para que tu sorpresa llegue impecable y a tiempo, desde Quintero y Concón hasta Curauma.
+                        </p>
+                        <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
+                            <!-- AQUÍ CARGAMOS LOS MAPAS DINÁMICAMENTE -->
+                            <button onclick="cargarMapasYAbrirModal()" aria-label="Ver mapa de zonas de cobertura" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver zonas de cobertura</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute inset-0 w-full h-full slide-item bg-[#0a1f1c]">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent z-10 w-full md:w-3/4"></div>
+                <img src="img/slide5-pc.jpg" alt="Suscripciones B2B" class="absolute inset-0 w-full h-full object-cover object-center z-0">
+                <div class="relative z-20 h-full flex flex-col justify-center w-full px-10 md:px-[10%] lg:px-[12%]">
+                    <div class="md:w-1/2 lg:w-[42%] mr-auto text-left">
+                        <h4 class="text-[#c5a059] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6 slide-anim opacity-0 translate-y-4 transition-all duration-1000">
+                            Suscripciones prioritarias
+                        </h4>
+                        <h2 class="text-white text-6xl md:text-[5rem] lg:text-[7rem] font-serif leading-none mb-8 italic slide-anim opacity-0 translate-y-8 transition-all duration-1000 delay-200">
+                            Ambientes<br>con vida.
+                        </h2>
+                        <p class="text-white/90 font-light text-base md:text-xl mb-10 slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-300 leading-relaxed">
+                            Recibe la frescura de nuestro atelier regularmente. Planes diseñados para llenar de vida tu hogar o espacio de trabajo.
+                        </p>
+                        <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
+                            <button onclick="openB2BFlow()" aria-label="Elegir plan de suscripción B2B" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Elige el plan para ti</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div> 
+        
+        <button onclick="prevHeroSlide(true)" aria-label="Ver imagen anterior" class="hidden lg:block absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+            <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <button onclick="nextHeroSlide(true)" aria-label="Ver imagen siguiente" class="hidden lg:block absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+            <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+
+        <div class="absolute bottom-10 right-10 md:bottom-12 md:right-16 z-50 flex space-x-3 items-center" id="hero-dots"></div>
+
+        <div class="absolute bottom-12 left-12 z-40 hidden lg:block">
+            <p class="text-white/60 text-[10px] uppercase tracking-[0.4em] leading-relaxed drop-shadow-md">
+                Av. Borgoño 14.580, Local 7 <br> 2520000 Viña del Mar
+            </p>
+        </div>
+    </section>
+
+    <div class="bg-forest-green py-4 border-y border-gold-leaf/20 overflow-hidden flex flex-nowrap whitespace-nowrap">
+        <div class="animate-marquee flex shrink-0 min-w-full">
+            <div class="font-serif italic text-xl text-gold-leaf/40 flex shrink-0 items-center justify-around w-full">
+                <span class="mx-4">Entregamos emociones todos los días</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Acompañamos tus sorpresas hasta las 21:00 hrs</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Cuidando cada detalle, los 7 días de la semana</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Selección fresca para momentos inolvidables</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Viña / Reñaca / Concón / Quintero / Quilpué / Valparaíso</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Abierto de 10:30 a 19:00 hrs</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Entregamos emociones todos los días</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Acompañamos tus sorpresas hasta las 21:00 hrs</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Cuidando cada detalle, los 7 días de la semana</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Selección fresca para momentos inolvidables</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Viña / Reñaca / Concón / Quintero / Quilpué / Valparaíso</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Abierto de 10:30 a 19:00 hrs</span><span class="text-gold-leaf/60">•</span>
+            </div>
+        </div>
+        <div class="animate-marquee flex shrink-0 min-w-full" aria-hidden="true">
+            <div class="font-serif italic text-xl text-gold-leaf/40 flex shrink-0 items-center justify-around w-full">
+                <span class="mx-4">Entregamos emociones todos los días</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Acompañamos tus sorpresas hasta las 21:00 hrs</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Cuidando cada detalle, los 7 días de la semana</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Selección fresca para momentos inolvidables</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Viña / Reñaca / Concón / Quintero / Quilpué / Valparaíso</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Abierto de 10:30 a 19:00 hrs</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Entregamos emociones todos los días</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Acompañamos tus sorpresas hasta las 21:00 hrs</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Cuidando cada detalle, los 7 días de la semana</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Selección fresca para momentos inolvidables</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Viña / Reñaca / Concón / Quintero / Quilpué / Valparaíso</span><span class="text-gold-leaf/60">•</span>
+                <span class="mx-4">Abierto de 10:30 a 19:00 hrs</span><span class="text-gold-leaf/60">•</span>
+            </div>
+        </div>
+    </div>
+
+    <section id="testimonios" class="py-24 bg-[#0a1f1c] text-[#fcfaf7] border-t border-[#c5a059]/20 overflow-hidden w-full">
+        <div class="w-full max-w-full mx-auto px-0">
+            <div class="text-center mb-12 px-6">
+                <span class="text-[#c5a059] text-2xl tracking-widest block mb-4">★★★★★</span>
+                <h2 class="font-serif text-4xl md:text-5xl italic mb-4 flex justify-center items-center gap-3">
+                Historias que Florecen.
+                <svg class="w-8 h-8 md:w-10 md:h-10 text-[#c5a059]" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+        </svg>
+    </h2>
+                <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#c5a059]">4.9/5 en +100 Evaluaciones de Google</p>
+            </div>
+
+            <div class="collage-container border-b border-[#c5a059]/20 pb-24 mb-16">
+                
+                <div class="collage-page">
+                    <img src="img/garantia-fundador.jpg" width="614" height="732" alt="Fundador La Foresta" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">LUIS JIMÉNEZ R.</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Casi una década de devoción floral. Desde 2018, nuestra promesa ha sido inquebrantable: llevar la frescura absoluta y el diseño vanguardista a cada rincón de la V Región. Cada tallo guarda nuestra garantía de excelencia."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Fundador, La Foresta Flores.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/oficina.jpg" width="592" height="789" alt="Cliente Corporativo" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"La Foresta ofrece una experiencia excepcional de principio a fin. El nivel de decoro, la armonía y la puntualidad corporativa son impecables. Un estándar de calidad que eleva cualquier espacio."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Pablo S.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer1.jpg" width="592" height="789" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Se nota la inspiración y el amor en cada tallo seleccionado. La frescura es innegable y la atención es simplemente maravillosa, un verdadero lujo visual y humano."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Lorena S.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer2.jpg" width="592" height="789" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Gracias por embellecer mis días. Las flores son hermosas y la combinacion de texturas es arte puro... realmente logran plasmar la vida en colores. 100% recomendados."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— María J.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/hombre1.jpg" width="592" height="789" alt="Cliente Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Quedé como rey. La asesoría experta y las flores frescas son fundamentales para lograr el arreglo perfecto. Un servicio de primer nivel para sorprender a quien amas."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Cristhian G.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer3.jpg" width="592" height="789" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Atención excelente. Las flores son preciosas, y con los consejos expertos que te entregan en el atelier, los arreglos pueden durar intactos más de un mes. Calidad superior."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Mónica V.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer4.jpg" width="592" height="789" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El equilibrio perfecto entre diseño premium y un valor accesible. Las flores más hermosas y frescas de la Quinta Región, con un estándar visual inigualable."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Magdalena.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer5.jpg" width="592" height="789" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Vivo fuera del país y quería enviar un detalle especial; la confianza y puntualidad logística que brindan es invaluable. Acortan distancias con muchísima belleza."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Ale C.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/hombre2.jpg" width="592" height="789" alt="Cliente Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Compré flores para una celebración de cumpleaños y el ramo quedó simplemente espectacular. La atención fue impecable y su puntualidad en la entrega aún mejor."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Matías C.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer6.jpg" width="592" height="789" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"Tienen una sensibilidad artística única. Sus creaciones para bodas y eventos importantes respiran elegancia. Me fascinó absolutamente la propuesta estética de mi arreglo."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Belén N.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer7.jpg" width="592" height="789" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El bouquet resultó ser aún más impresionante en persona que en las fotos. Flores frescas, atención de primerísimo nivel y entrega exacta. Definitivamente mi florería de confianza."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Soulfia.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer8.jpg" width="592" height="789" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"La experiencia de compra es fabulosa. La asesoría es detallista y los ramos del día son sencillamente bellísimos. Tienen un gusto exquisito para armar las paletas de color."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Claudia F.</p>
+                    </div>
+                </div>
+
+                <div class="collage-page">
+                    <img src="img/mujer9.jpg" width="592" height="789" alt="Clienta Feliz" class="collage-img" loading="lazy">
+                    <div class="collage-content">
+                        <span class="text-[#c5a059] text-xs tracking-widest block mb-2">★★★★★</span>
+                        <p class="font-light text-[11px] opacity-90 leading-relaxed mb-2">"El servicio es tremendamente profesional. Cada encargo llega a tiempo y la presentación es impecable. Para mí, es por lejos la florería más distinguida de la V Región."</p>
+                        <p class="text-[8px] uppercase tracking-widest font-bold text-[#c5a059]">— Irene V.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center px-6">
+                <span class="text-[9px] font-bold uppercase tracking-[0.4em] opacity-70 block mb-10">SOCIOS EN LA EXCELENCIA</span>
+                <div class="flex flex-wrap justify-center items-center gap-16 opacity-50 grayscale">
+                    <img src="img/carmine.png" class="h-8 object-contain" alt="Restaurant Carmine" loading="lazy">
+                    <img src="img/san-marinos.svg" class="h-8 object-contain" alt="San Marino" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="vault" class="bg-white pt-6 pb-12 border-t border-zinc-100">
+        <div class="w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-16">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-4 pb-4 border-b border-[#0a1f1c]/5 mb-6">
+                <div class="w-full md:w-auto overflow-hidden">
+                    <h2 class="text-4xl md:text-7xl font-serif italic text-[#0a1f1c] mb-3 mt-2 md:mt-0 flex items-center gap-3 md:gap-4">
+                        Nuestra Colección
+                        <svg class="w-8 h-8 md:w-12 md:h-12 text-[#c5a059] opacity-80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/>
+                            <path d="M19 4L20 7L23 8L20 9L19 12L18 9L15 8L18 7L19 4Z" fill="currentColor"/>
+                        </svg>
+                    </h2>
+
+                    <div class="w-full overflow-x-auto pb-1 hide-scroll">
+                        <nav aria-label="Filtros de colección" class="flex items-center space-x-6 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 whitespace-nowrap min-w-max">
+                            <a href="#vault" class="text-[#0a1f1c] border-b-2 border-[#0a1f1c] pb-1 transition-all">Todos</a>
+                            <a href="/romance-aniversario.html" class="hover:text-[#c5a059] transition-all pb-1">Romance</a>
+                            <a href="/condolencias.html" class="hover:text-[#c5a059] transition-all pb-1">Condolencias</a>
+                            <a href="/celebraciones.html" class="hover:text-[#c5a059] transition-all pb-1">Celebraciones</a>
+                            <a href="/corporativo.html" class="hover:text-[#c5a059] transition-all pb-1">Corporativo</a>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="bg-[#fcfaf7] border border-[#0a1f1c]/10 px-4 py-2.5 rounded-full inline-flex items-center gap-3 shadow-sm self-start md:self-auto shrink-0 mt-1 md:mt-0">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span id="countdown-timer" class="text-[9px] uppercase tracking-widest font-bold text-[#0a1f1c] flex items-center gap-1.5">
+                        Verificando calidad y frescura...
+                    </span>
+                </div>
+            </div>
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-10 md:gap-y-12 pb-20"></div>
+        </div>
+    </section>
+
+    <section id="privilege" class="b2b-portal py-32 min-h-screen flex items-center border-b border-[#c5a059]/20">
+        <div class="max-w-7xl mx-auto px-6 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+                <div class="space-y-12">
+                    <span class="text-gold-leaf text-xs font-bold uppercase tracking-[0.5em]">Alianzas con Propósito</span>
+                    <h2 class="text-6xl md:text-8xl font-serif italic leading-none">Espacios que<br>Inspiran.</h2>
+                    <p class="text-soft-cream/60 text-lg font-light leading-relaxed">
+                        Ayudamos a que tu marca transmita elegancia y calidez. Únete a las empresas que confían en nosotros para transformar sus espacios y cautivar a sus clientes.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-12">
+                        <div class="border-l border-gold-leaf/30 pl-6">
+                            <h3 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Inmobiliarias & Propiedades</h3>
+                            <p class="text-xs opacity-50">Atenciones de cortesía para cierres de negocios y ambientación de espacios piloto.</p>
+                        </div>
+                        <div class="border-l border-gold-leaf/30 pl-6">
+                            <h3 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Boutiques & Espacios de Autor</h3>
+                            <p class="text-xs opacity-50">Suscripciones editoriales semanales y mensuales para mantener un estándar visual para su firma.</p>
+                        </div>
+                        <div class="border-l border-gold-leaf/30 pl-6">
+                            <h3 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Oficinas Corporativas</h3>
+                            <p class="text-xs opacity-50">Ambientes laborales ejemplares que inspiran excelencia.</p>
+                        </div>
+                        <div class="border-l border-gold-leaf/30 pl-6">
+                            <h3 class="text-gold-leaf font-bold uppercase text-[10px] tracking-widest mb-2">Eventos Privados</h3>
+                            <p class="text-xs opacity-50">Diseño floral escenográfico para galas y lanzamientos de marca.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white/5 backdrop-blur-md p-12 border border-white/10 relative">
+                    <div class="text-center w-full bg-[#c5a059]/10 border border-[#c5a059]/20 text-gold-leaf py-3 px-4 font-bold text-[10px] uppercase tracking-[0.25em] mb-8">
+                        Solicitud de Membresía
+                    </div>
+                    <div class="mt-8">
+                        <button onclick="openB2BFlow()" aria-label="Abrir formulario de suscripción B2B" class="w-full py-5 bg-transparent border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] transition-all duration-500 shadow-[0_0_15px_rgba(197,160,89,0.1)] hover:shadow-[0_0_25px_rgba(197,160,89,0.3)]">
+                            Conversemos sobre tu espacio
+                        </button>
+                        <p class="text-[9px] text-center mt-6 text-white/70 italic uppercase tracking-widest">
+                            Proceso de postulación confidencial · 2 Pasos
+                        </p>
+                    </div>
+                    <p class="text-[9px] text-center mt-8 opacity-70 italic uppercase tracking-widest">Al suscribirse, acepta los términos de envío prioritario gratuito en Reñaca.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="b2b-flow" class="fixed inset-0 bg-[#0a1f1c] text-[#fcfaf7] z-[200] flex flex-col hidden opacity-0 transition-opacity duration-500 backdrop-blur-xl">
+        <div class="px-8 py-6 flex justify-between items-center border-b border-[#c5a059]/10 shrink-0">
+            <h2 class="font-serif text-xl tracking-widest uppercase text-[#c5a059]">Portal B2B</h2>
+            <button onclick="closeB2BFlow()" aria-label="Cerrar portal B2B" class="text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors">×</button>
+        </div>
+
+        <div class="flex-grow flex flex-col justify-start items-center p-6 relative overflow-y-auto w-full pb-20">
+            <div id="b2b-step-1" class="b2b-step active flex-col items-center w-full max-w-lg text-center transition-all duration-500 transform my-auto">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block mt-4">Paso 1 de 2</span>
+                <h3 class="font-serif text-4xl md:text-5xl italic mb-12">Cuéntanos sobre tu proyecto</h3>
+                
+                <div class="space-y-4 w-full">
+                    <button type="button" onclick="selectB2BSegment('Inmobiliarias & Propiedades')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Inmobiliarias & Propiedades</button>
+                    <button type="button" onclick="selectB2BSegment('Boutiques & Espacios de Autor')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Boutiques & Espacios de Autor</button>
+                    <button type="button" onclick="selectB2BSegment('Oficinas Corporativas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Oficinas Corporativas</button>
+                    <button type="button" onclick="selectB2BSegment('Eventos & Galas')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Eventos Privados & Galas</button>
+                    <button type="button" onclick="selectB2BSegment('Hogar & Jardín')" class="w-full py-6 border border-white/10 hover:border-[#c5a059] bg-white/5 hover:bg-[#c5a059]/10 text-xs uppercase tracking-widest font-bold transition-all duration-300">Hogar y Jardín</button>
+                </div>
+            </div>
+
+            <div id="b2b-step-2" class="b2b-step hidden flex-col items-center w-full max-w-md text-center transition-all duration-500 transform translate-x-8 opacity-0 my-auto">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6 block mt-4">Paso 2 de 2</span>
+                <h3 class="font-serif text-3xl md:text-4xl italic mb-6">Credenciales de la Firma</h3>
+                
+                <div id="b2b-dynamic-testimonial" class="mb-10 p-5 border-l border-[#c5a059]/50 bg-[#c5a059]/5 text-left transition-opacity duration-[800ms] opacity-0 shadow-sm w-full">
+                    <p id="b2b-testimonial-text" class="font-light text-sm italic text-[#fcfaf7]/80 leading-relaxed"></p>
+                    <p id="b2b-testimonial-author" class="text-[9px] uppercase tracking-widest font-bold text-[#c5a059] mt-3"></p>
+                </div>
+                
+                <form id="b2b-final-form" class="w-full space-y-6" onsubmit="sendB2BConsultation(event)">
+                    <input type="hidden" id="b2b-selected-segment" name="Segmento">
+                    <div>
+                        <input type="text" id="b2b-empresa" aria-label="Nombre de Empresa o Dirección" name="Empresa_o_Familia" required placeholder="Nombre Empresa o Dirección (Opcional)" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="b2b-nombre" aria-label="Su Nombre" name="Nombre" required placeholder="Su Nombre" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+                        <select id="b2b-cargo" aria-label="Seleccione su rol o cargo" name="Cargo" required class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] transition-colors cursor-pointer outline-none">
+                            <option value="" disabled selected class="bg-[#0a1f1c] text-white/50">Seleccione su rol</option>
+                            <option value="Propietario / Dueño" class="bg-[#0a1f1c] text-[#fcfaf7]">Propietario / Dueño</option>
+                            <option value="Gerencia / Dirección" class="bg-[#0a1f1c] text-[#fcfaf7]">Gerencia / Dirección</option>
+                            <option value="Productor / Eventos" class="bg-[#0a1f1c] text-[#fcfaf7]">Productor / Eventos</option>
+                            <option value="Asistente / Otro" class="bg-[#0a1f1c] text-[#fcfaf7]">Asistente / Otro</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="email" id="b2b-email" aria-label="Correo de contacto" name="Email" required placeholder="Correo de contacto" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+                        <input type="tel" id="b2b-whatsapp" aria-label="Número de WhatsApp" name="WhatsApp" required placeholder="WhatsApp" class="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#fcfaf7] placeholder-white/20 transition-colors">
+                    </div>
+                    <div class="pt-4 flex justify-center w-full">
+                        <div class="cf-turnstile" data-sitekey="0x4AAAAAAD6y4OVRCN5aeJKh" data-callback="onB2BTurnstileSuccess" data-theme="dark"></div>
+                    </div>
+                    <div class="pt-8">
+                        <button type="submit" id="b2b-submit-btn" class="w-full py-5 bg-[#c5a059] text-[#0a1f1c] font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors">Solicitar Membresía</button>
+                    </div>
+                </form>
+                
+                <button type="button" onclick="backToB2BStep1()" class="mt-8 text-[9px] uppercase tracking-[0.3em] text-white/40 hover:text-[#c5a059] transition-colors border-b border-transparent hover:border-[#c5a059] pb-1">← Cambiar Segmento</button>
+            </div>
+
+            <div id="b2b-success" class="hidden flex-col items-center w-full max-w-md text-center my-auto">
+                <div class="w-20 h-20 border border-[#c5a059] rounded-full flex items-center justify-center mb-8 mx-auto text-[#c5a059]">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h3 class="font-serif text-4xl italic mb-4">Solicitud Recibida.</h3>
+                <p class="text-white/60 font-light leading-relaxed">Nuestra dirección ejecutiva evaluará su perfil y nos pondremos en contacto a la brevedad para agendar una reunión privada.</p>
+                <button type="button" onclick="closeB2BFlow()" aria-label="Cerrar portal B2B" class="mt-12 text-[10px] uppercase tracking-[0.2em] text-[#c5a059] hover:text-white border-b border-[#c5a059] pb-1 transition-colors">Volver a La Foresta</button>
+            </div>
+        </div>
+    </div>
+    
+    <section id="garden" class="py-32 px-6 md:px-12 bg-zinc-50 border-t border-zinc-100">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
+            <div class="w-full lg:w-1/2">
+                <div onclick="toggleGardenImage()" role="button" tabindex="0" aria-label="Alternar vista del jardín" class="overflow-hidden aspect-[4/5] bg-zinc-200 relative cursor-pointer group">
+                    <img id="garden-img-1" src="img/garden-2.jpg" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-100" alt="Vista Principal" loading="lazy">
+                    <img id="garden-img-2" src="img/garden-1.jpg" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out transform group-hover:scale-105 opacity-0" alt="Vista Secundaria" loading="lazy">
+                    <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur-md px-3 py-1 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">Cambiar Vista</div>
+                </div>
+            </div>
+            <div class="w-full lg:w-1/2 space-y-10 text-left lg:pl-8">
+                <div class="space-y-4">
+                    <span class="text-gold-leaf text-xs font-bold uppercase tracking-[0.4em] block">Paisajismo con Alma</span>
+                    <h2 class="text-4xl md:text-6xl font-serif italic leading-tight text-[#0a1f1c]">Transformamos <br>tus espacios.</h2>
+                </div>
+                <p class="text-zinc-600 font-light text-lg leading-relaxed max-w-xl">
+                    Llevamos nuestra pasión por la naturaleza a tu hogar. Diseñamos terrazas y jardines creados para que respires tranquilidad y armonía todos los días.
+                </p>
+                <div class="pt-6">
+                    <button onclick="openGardenFlow()" aria-label="Comenzar proyecto de jardinería" class="btn-premium !bg-transparent !text-forest-green !border-forest-green hover:!bg-forest-green hover:!text-gold-leaf uppercase text-xs tracking-widest font-bold px-10 py-4 transition-all duration-300">
+                        Comienza tu proyecto hoy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="garden-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden opacity-0 transition-opacity duration-500">
+        <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
+            <h2 class="font-serif text-xl tracking-widest uppercase text-gold-leaf">Garden Selection</h2>
+            <button onclick="closeGardenFlow()" aria-label="Cerrar formulario de jardinería" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
+        </div>
+        <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
+            <div id="g-step-1" class="garden-step active flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1 de 2</span>
+                <h3 class="font-serif text-4xl italic mb-12">¿Qué espacio desea intervenir?</h3>
+                <div class="space-y-4 w-full">
+                    <button onclick="selectGardenOption(this, 'Terraza o Balcón')" aria-label="terraza o balcon" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Terraza o Balcón</button>
+                    <button onclick="selectGardenOption(this, 'Jardín Exterior')" aria-label="jardin exterior" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Jardín Exterior</button>
+                    <button onclick="selectGardenOption(this, 'Interior / Corporativo')" aria-label="interior o corporativo" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Interior / Corporativo</button>
+                </div>
+            </div>
+            <div id="g-step-3" class="garden-step flex-col items-center w-full max-w-md text-center hidden">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2 de 2</span>
+                <h3 class="font-serif text-3xl italic mb-8">Detalles del Proyecto</h3>
+                <input type="text" id="g-name" aria-label="Su Nombre y Apellido" placeholder="Su Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <input type="tel" id="g-phone" aria-label="Teléfono de contacto" placeholder="Teléfono (+56 9...)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <textarea id="g-details" aria-label="Detalles de su idea o medidas del espacio" placeholder="Detalles de su idea o medidas del espacio..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-28 mb-8"></textarea>
+                <div class="mb-8 flex justify-center w-full">
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAAD6y4OVRCN5aeJKh" data-callback="onGardenTurnstileSuccess" data-theme="light"></div>
+                </div>
+
+                <button onclick="sendGardenConsultation()" aria-label="Enviar Consulta de Jardinería" class="w-full btn-premium">Enviar Consulta</button>
+                <button onclick="nextGardenStep(1)" aria-label="Volver al paso anterior" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="coverage-modal" class="fixed inset-0 bg-[#0a1f1c]/95 backdrop-blur-xl z-[200] hidden opacity-0 transition-opacity duration-500 flex flex-col justify-center items-center p-4 sm:p-6 md:p-12">
+        <div class="w-full max-w-6xl bg-transparent flex flex-col lg:flex-row gap-8 lg:gap-12 relative text-[#fcfaf7] h-full lg:h-auto max-h-full">
+            
+            <button onclick="closeCoverageModal()" aria-label="Cerrar mapa de cobertura" class="absolute -top-10 lg:-top-12 right-0 text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors z-20">×</button>
+            
+            <div class="w-full lg:w-1/2 flex items-center justify-center relative h-[35vh] md:h-[45vh] lg:h-[600px] bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] shrink-0 mb-6 lg:mb-0 mt-6 lg:mt-0">
+                <div id="coverage-map" class="w-full h-full z-10"></div>
+            </div>
+
+            <div class="w-full lg:w-1/2 flex flex-col lg:justify-center py-2 overflow-y-auto hide-scroll pb-24 lg:pb-0 min-h-0">
+                <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-[#c5a059] mb-4 block">Nuestro Compromiso</span>
+                <h3 class="font-serif text-4xl md:text-5xl italic mb-8">Zonas de Despacho</h3>
+                
+                <div class="space-y-4">
+                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(1)" onmouseleave="resetZone(1)">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">1. Central</h4>
+                            <span class="text-xs text-[#c5a059] font-serif">+$3.500</span>
+                        </div>
+                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Reñaca Centro, Los Almendros, Clínica Reñaca, Jardín del Mar, Los Pinos.</p>
+                    </div>
+
+                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(2)" onmouseleave="resetZone(2)">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">2. Local</h4>
+                            <span class="text-xs text-[#c5a059] font-serif">+$5.000</span>
+                        </div>
+                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Reñaca Norte, Montemar, Higuerillas, Gómez Carreño, Hospital Naval, Glorias Navales.</p>
+                    </div>
+
+                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(3)" onmouseleave="resetZone(3)">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">3. Intermedia</h4>
+                            <span class="text-xs text-[#c5a059] font-serif">+$7.500</span>
+                        </div>
+                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Viña Centro, Clínica Ciudad del Mar, Cerros de Viña, Chorrillos, Concón Los Romeros.</p>
+                    </div>
+
+                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(4)" onmouseleave="resetZone(4)">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">4. Extendida</h4>
+                            <span class="text-xs text-[#c5a059] font-serif">+$12.000</span>
+                        </div>
+                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Mantagua (Las Gaviotas), Valparaíso Plan y Cerros, Quilpué Centro, Paso Hondo.</p>
+                    </div>
+
+                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(5)" onmouseleave="resetZone(5)">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">5. Extendida+</h4>
+                            <span class="text-xs text-[#c5a059] font-serif">+$18.000</span>
+                        </div>
+                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Quintero, Curauma, Placilla de Peñuelas, El Belloto.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-[#c5a059]/10 border border-[#c5a059]/30 p-4 text-left flex items-start gap-3 rounded-lg">
+                    <span class="text-[#c5a059] text-xs">⚠</span>
+                    <p class="text-[9px] uppercase tracking-widest leading-relaxed text-white/80">
+                        <strong>Beneficio Exclusivo:</strong> Envíos gratis o bonificados sobre $69.990. Pase el cursor sobre cada zona para visualizar el área en el mapa.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN PREGUNTAS FRECUENTES -->
+    <section id="faq" class="py-24 bg-[#fcfaf7] border-t border-[#0a1f1c]/10 text-[#0a1f1c]">
+        <div class="max-w-4xl mx-auto px-6 md:px-12">
+            
+            <div class="text-center mb-16">
+                <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-[#c5a059] block mb-4">Información Útil</span>
+                <h2 class="font-serif text-4xl md:text-5xl italic text-[#0a1f1c]">Preguntas Frecuentes</h2>
+            </div>
+
+            <div class="space-y-1">
+                <!-- FAQ 1 -->
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿Hacen entregas el mismo día en Viña del Mar y alrededores?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        Sí. Entregamos el mismo día de lunes a domingo. Contamos con franjas de entrega estándar e incluso un <strong>Servicio Express</strong> de despacho entre 1 a 2 horas, disponible para compras realizadas antes de las 18:00 hrs.
+                    </div>
+                </details>
+
+                <!-- FAQ 2 -->
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿En qué comunas hacen despacho a domicilio?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        Cubrimos gran parte de la Quinta Región con logística propia. Llegamos a Reñaca, Viña del Mar, Concón, Valparaíso, Quilpué, Quintero, Curauma, Placilla y El Belloto.
+                    </div>
+                </details>
+
+                <!-- FAQ 3 -->
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿Cuánto cuesta el despacho a domicilio?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        <p class="mb-3">¡Tenemos beneficio exclusivo! El envío es <strong>gratis o bonificado</strong> para compras sobre $69.990. Para montos menores, el valor depende de la zona:</p>
+                        <ul class="space-y-2 pl-4">
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Central (Reñaca):</strong> $3.500</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Local (Viña, Concón, Reñaca Norte):</strong> $5.000</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Intermedia (Cerros de Viña, Chorrillos):</strong> $7.500</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Extendida (Valparaíso, Quilpué):</strong> $12.000</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Extendida+ (Quintero, Curauma, El Belloto):</strong> $18.000</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- FAQ 4 -->
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿Cuáles son los horarios de entrega?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        <p class="mb-3">Repartimos los 7 días de la semana en tres bloques principales:</p>
+                        <ul class="space-y-2 pl-4">
+                            <li><span class="text-[#c5a059] mr-2">✦</span>Mañana (11:00 a 13:00 hrs)</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span>Medio día (14:00 a 17:00 hrs)</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span>Tarde (18:00 a 21:00 hrs)</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- FAQ 5 -->
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿Puedo retirar mi pedido en tienda?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        Sí, sin costo alguno. Puedes retirar tu arreglo floral directamente en nuestro Atelier ubicado en <strong>Av. Borgoño 14.580, Local 7, Reñaca, Viña del Mar</strong>. Nuestro horario de atención es de 10:30 a 19:00 hrs.
+                    </div>
+                </details>
+
+                <!-- FAQ 6 -->
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿Qué pasa si las flores llegan en mal estado?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        Contamos con una política de "Frescura y calidad garantizada". Si tu pedido no cumple con nuestros altos estándares, nos contactas y lo solucionamos de inmediato para asegurar la perfección visual de tu arreglo.
+                    </div>
+                </details>
+
+                <!-- FAQ 7 -->
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿Puedo enviar una tarjeta con un mensaje?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        Por supuesto. Al momento del checkout, puedes escribir una dedicatoria personalizada que imprimiremos e incluiremos junto a tu ramo, sin costo adicional. Incluso contamos con mensajes predeterminados si necesitas inspiración para romance, condolencias o cumpleaños.
+                    </div>
+                </details>
+
+                <!-- FAQ 8 -->
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿Qué tipos de flores puedo encontrar?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        Trabajamos con flores premium seleccionadas diariamente. Nuestro catálogo incluye rosas de exportación, liliums, gerberas, lisianthus, girasoles, astromelias y tulipanes, diseñados por expertos floristas en formatos de ramos, cajas y canastos.
+                    </div>
+                </details>
+            </div>
+
+        </div>
+    </section>
+    <!-- FIN SECCIÓN PREGUNTAS FRECUENTES -->
+
+    <footer class="bg-forest-green text-soft-cream py-24 px-6 border-t border-gold-leaf/20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
+            <div class="md:col-span-4">
+                <h3 class="text-4xl font-serif font-bold italic mb-8">La Foresta</h3>
+                <p class="text-soft-cream/40 text-sm leading-relaxed mb-8 max-w-xs">
+                    Más que una floristería, somos tu cómplice para crear momentos inolvidables. Diseño floral con alma y entregas llenas de cariño en Reñaca y Viña del Mar.
+                </p>
+                <div class="flex space-x-6 text-gold-leaf">
+                    <a href="https://www.instagram.com/laforestaflores/" target="_blank" class="hover:text-white transition uppercase text-[10px] font-bold tracking-widest">Instagram</a>
+                    <a href="#" class="hover:text-white transition uppercase text-[10px] font-bold tracking-widest">WhatsApp</a>
+                </div>
+            </div>
+            <div class="md:col-span-2">
+                <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Información Legal</h4>
+                <ul class="space-y-4 text-sm opacity-80">
+                    <li><a href="/privacidad.html" class="hover:text-gold-leaf">Política de Privacidad</a></li>
+                    <li><a href="/terminos.html" class="hover:text-gold-leaf">Términos de Servicio</a></li>
+                    <li><a href="/devoluciones.html" class="hover:text-gold-leaf">Políticas de Devolución</a></li>
+                    <li><a href="#vault" onclick="scrollToVault()" class="hover:text-gold-leaf">Colecciones</a></li>
+                </ul>
+            </div>
+            <div class="md:col-span-3">
+                <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Ubicación</h4>
+                <p class="text-sm opacity-80 leading-relaxed mb-4">
+                    Av. Borgoño 14.580, Local 7<br>
+                    2520000 Viña del Mar<br>
+                    Valparaíso, Chile.
+                </p>
+                <a href="https://www.google.com/maps/search/?api=1&query=La+Foresta+Flores+Av.+Borgo%C3%B1o+14580+Vi%C3%B1a+del+Mar" target="_blank" class="text-gold-leaf text-[10px] font-bold uppercase tracking-widest border-b border-gold-leaf pb-1">Ver en Google Maps</a>            
+            </div>
+            <div class="md:col-span-3">
+                <h4 class="text-gold-leaf text-[10px] font-bold uppercase tracking-[0.4em] mb-8">Atención VIP</h4>
+                <p class="text-sm opacity-80 mb-4">Lunes a Sábado: 10:00 - 20:00</p>
+                <p class="text-sm opacity-80 italic">"Entregamos más que flores, entregamos un legado visual."</p>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto mt-12 px-6">
+            <p class="text-[9px] uppercase tracking-widest text-soft-cream/40 text-center leading-relaxed font-bold">
+                Áreas de Despacho en la Región de Valparaíso:
+            </p>
+            <p class="text-[9px] uppercase tracking-widest text-soft-cream/40 text-center mt-2 leading-relaxed">
+                Viña del Mar • Reñaca • Concón • Valparaíso • Quilpué • Quintero • Curauma • Placilla de Peñuelas • El Belloto • Mantagua • Gómez Carreño • Los Pinos
+            </p>
+        </div>
+
+        <div class="max-w-7xl mx-auto border-t border-white/5 mt-20 pt-10 flex flex-col md:flex-row justify-between items-center opacity-30">
+            <p class="text-[9px] uppercase tracking-widest">© <span id="year-footer">2026</span> La Foresta Flores & Garden. Todos los derechos reservados.</p>
+            <p class="text-[9px] uppercase tracking-widest mt-4 md:mt-0 italic">World Class Florist - Reñaca Distinction</p>
+        </div>
+    </footer>
+
+    <div id="checkout-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden">
+        <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
+            <img src="img/logo-menu.png" width="130" height="42" alt="La Foresta" class="h-8 w-auto object-contain">
+            <button onclick="closeCheckout()" aria-label="Cerrar proceso de pago" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
+        </div>
+
+        <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
+            <div id="step-1" class="checkout-step active flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1</span>
+                <h3 class="font-serif text-4xl italic mb-12">Quién envía?</h3>
+                <input type="text" id="sender-name" aria-label="Nombre de quien envía" oninput="guardarProgresoCheckout()" placeholder="Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <button onclick="goToStep('step-buyer-email')" class="mt-12 btn-premium w-full">Siguiente</button>
+            </div>
+
+            <div id="step-buyer-email" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Contacto</span>
+                <h3 class="font-serif text-4xl italic mb-12">Correo electrónico</h3>
+                <p class="text-[10px] uppercase tracking-widest opacity-60 mb-6">Para enviar el comprobante digital de su pedido</p>
+                <input type="email" id="buyer-email" aria-label="Correo electrónico para el comprobante" oninput="guardarProgresoCheckout()" placeholder="su-correo@ejemplo.com" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <button onclick="validarEmailYContinuar()" class="mt-12 btn-premium w-full">Siguiente</button>
+                <button onclick="goToStep(1)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-2" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2</span>
+                <h3 class="font-serif text-4xl italic mb-12">Quién recibe?</h3>
+                <input type="text" id="receiver-name" aria-label="Nombre de quien recibe" oninput="guardarProgresoCheckout()" placeholder="Nombre de esa persona especial" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <button onclick="goToStep('step-palette')" class="mt-12 btn-premium w-full">Siguiente</button>
+                <button onclick="goToStep('step-buyer-email')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-palette" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 3</span>
+                <h3 class="font-serif text-4xl italic mb-12">Tono de Selección</h3>
+                <div class="space-y-4 w-full">
+                    <button onclick="selectOption(this, 'palette'); setPalette('Tonos Pasteles & Calma')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Pasteles & Calma</button>
+                    <button onclick="selectOption(this, 'palette'); setPalette('Tonos Vibrantes & Coloridos')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Vibrantes & Coloridos</button>
+                </div>
+                <button onclick="goToStep(2)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+            
+            <div id="step-3" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 4</span>
+                <h3 class="font-serif text-3xl italic mb-12">Modalidad</h3>
+                <div class="space-y-4 w-full">
+                    <button onclick="seleccionarModalidad('envio')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Envío a domicilio</button>
+                    <button onclick="seleccionarModalidad('retiro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Retiro en tienda</button>
+                </div>
+                <button onclick="goToStep('step-palette')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-zona" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Logística</span>
+                <h3 class="font-serif text-3xl italic mb-4">Seleccionar Zona</h3>
+                
+                <div class="w-full bg-[#c5a059]/10 border border-[#c5a059]/30 p-3 mb-6 text-left flex items-start gap-2 shadow-sm">
+                    <span class="text-[#c5a059] text-[10px] mt-0.5">⚠</span>
+                    <p class="text-[8px] uppercase tracking-widest leading-relaxed text-[#0a1f1c] opacity-80">
+                        <strong>Queremos que todo salga perfecto.</strong> Asegurate de eligir correctamente la zona para que nuestra ruta llegue a tiempo y sin inconvenientes.
+                    </p>
+                </div>
+                
+                <div class="space-y-3 w-full text-left">
+                    <button onclick="seleccionarZona(3500, 'Zona 1: Central (Reñaca/Jardín del Mar)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+                        <div class="flex justify-between items-center w-full">
+                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">1. Zona Central</span>
+                            <span class="text-[11px] font-bold text-[#c5a059]">+$3.500</span>
+                        </div>
+                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Reñaca Centro, Los Almendros, Clínica Reñaca, Jardín del Mar, Los Pinos (Reñaca).</span>
+                    </button>
+
+                    <button onclick="seleccionarZona(5000, 'Zona 2: Local (Viña/Concón/Reñaca Norte)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+                        <div class="flex justify-between items-center w-full">
+                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">2. Zona Local</span>
+                            <span class="text-[11px] font-bold text-[#c5a059]">+$5.000</span>
+                        </div>
+                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Reñaca Norte, Montemar, Higuerillas, Gómez Carreño, Hospital Naval, Glorias Navales, Santa Julia, Achupallas.</span>
+                    </button>
+
+                    <button onclick="seleccionarZona(7500, 'Zona 3: Intermedia (Viña Centro/Concón Alto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+                        <div class="flex justify-between items-center w-full">
+                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">3. Zona Intermedia</span>
+                            <span class="text-[11px] font-bold text-[#c5a059]">+$7.500</span>
+                        </div>
+                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Viña Centro/Poniente, Clínica Ciudad del Mar, Hospital Gustavo Fricke, Cerros de Viña, Chorrillos, Miraflores, Cementerio Parque del Mar, Concón Los Romeros, Costa de Montemar, Lomas de Montemar.</span>
+                    </button>
+
+                    <button onclick="seleccionarZona(12000, 'Zona 4: Extendida (Quilpué/Valparaíso)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+                        <div class="flex justify-between items-center w-full">
+                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">4. Zona Extendida</span>
+                            <span class="text-[11px] font-bold text-[#c5a059]">+$12.000</span>
+                        </div>
+                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Mantagua (Las Gaviotas), Valparaíso Plan y Cerros, Hospital Carlos Van Buren, Quilpué Centro, Paso Hondo, Los Pinos.</span>
+                    </button>
+
+                    <button onclick="seleccionarZona(18000, 'Zona 5: Extendida+ (Quintero/Curauma/Belloto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
+                        <div class="flex justify-between items-center w-full">
+                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">5. Zona Extendida+</span>
+                            <span class="text-[11px] font-bold text-[#c5a059]">+$18.000</span>
+                        </div>
+                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Quintero, Curauma, Cementerio Parque del Sendero, Placilla de Peñuelas, El Belloto.</span>
+                    </button>
+                </div>
+                
+                <button onclick="goToStep(3)" class="mt-10 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black transition-opacity">Volver</button>
+            </div>
+
+            <div id="step-direccion" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
+                <h3 class="font-serif text-3xl italic mb-6">Dirección de entrega</h3>
+                <input type="text" id="address" aria-label="Dirección de entrega" oninput="guardarProgresoCheckout()" placeholder="Calle, número, departamento o casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
+                <button onclick="confirmarDireccion()" class="btn-premium w-full">Confirmar dirección</button>
+                <button onclick="goToStep('step-zona')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-quien-retira" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
+                <h3 class="font-serif text-3xl italic mb-6">¿Quién pasará a retirar?</h3>
+                <input type="text" id="pickup-name" aria-label="Nombre de quien retira" oninput="guardarProgresoCheckout()" placeholder="Nombre y apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
+                <button onclick="goToStep('step-fecha')" class="btn-premium w-full">Confirmar</button>
+                <button onclick="goToStep(3)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-fecha" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 5</span>
+                <h3 class="font-serif text-3xl italic mb-12">Seleccionar fecha</h3>
+                <div class="space-y-4 w-full">
+                    <button onclick="seleccionarFecha('hoy')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Hoy</button>
+                    <button onclick="seleccionarFecha('futuro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Fecha futura</button>
+                </div>
+                <button onclick="regresarDesdeFecha()" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-calendario" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Calendario</span>
+                <h3 class="font-serif text-3xl italic mb-6">Elige el día</h3>
+                <div class="flex justify-between items-center w-full mb-6 px-2">
+                    <button onclick="cambiarMesCalendario(-1)" id="cal-prev" aria-label="Ver mes anterior" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Anterior</button>
+                    <span id="cal-month-title" class="text-xs uppercase tracking-widest font-bold text-gold-leaf"></span>
+                    <button onclick="cambiarMesCalendario(1)" id="cal-next" aria-label="Ver mes siguiente" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Siguiente</button>
+                </div>
+                <div class="grid grid-cols-7 gap-2 w-full text-center text-[9px] uppercase font-bold tracking-wider opacity-40 mb-2">
+                    <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div>
+                </div>
+                <div id="calendar-grid" class="grid grid-cols-7 gap-2 w-full"></div>
+                <button onclick="goToStep('step-fecha')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-time" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 6</span>
+                <h3 class="font-serif text-3xl italic mb-2">Horario de entrega</h3>
+                <h4 id="time-step-chosen-date" class="text-[10px] uppercase tracking-[0.2em] text-[#0a1f1c]/60 mb-8 font-bold"></h4>
+                
+                <div id="time-slots-container" class="space-y-4 w-full mb-6"></div>
+                <button onclick="regresarDesdeTime()" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-4" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 7</span>
+                <h3 class="font-serif text-4xl italic mb-6">Mensaje en la tarjeta</h3>
+                
+                <textarea id="card-message" aria-label="Mensaje para la tarjeta" oninput="guardarProgresoCheckout()" placeholder="Escriba su dedicatoria aquí..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-32 mb-4"></textarea>
+                
+                <div class="w-full">
+                    <p class="text-[9px] uppercase tracking-widest opacity-40 mb-3 text-left">¿Necesita inspiración?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="escribirMensaje('romance')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Romance</button>
+                        <button onclick="escribirMensaje('condolencias')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Condolencias</button>
+                        <button onclick="escribirMensaje('agradecimiento')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Agradecimiento</button>
+                        <button onclick="escribirMensaje('cumpleanos')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Cumpleaños</button>
+                    </div>
+                </div>
+
+                <button onclick="goToStep(5)" class="mt-12 btn-premium w-full">Siguiente</button>
+                <button onclick="goToStep('step-time')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-5" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 8</span>
+                <h3 class="font-serif text-4xl italic mb-12">Teléfono de quien recibe</h3>
+                <input type="tel" id="receiver-phone" aria-label="Teléfono de quien recibe" oninput="guardarProgresoCheckout()" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <button onclick="goToStep(6)" class="mt-12 btn-premium w-full">Siguiente</button>
+                <button onclick="goToStep(4)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+
+            <div id="step-6" class="checkout-step flex-col items-center w-full max-w-md text-center">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Paso Final</span>
+                <h3 class="font-serif text-4xl italic mb-4">Confirmar y Pagar</h3>
+                
+                <p class="text-[9px] uppercase tracking-widest opacity-60 mb-6 leading-loose">
+                    Al confirmar tu pago, te enviaremos un correo con todos los detalles de tu compra para tu total tranquilidad. (Recuerda revisar tu carpeta de Spam por si acaso)
+                </p>
+                
+                <div class="w-full mb-6 flex flex-col gap-3 text-left pl-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-green-600 font-bold text-xs">✓</span>
+                        <span class="text-[10px] uppercase tracking-widest font-bold text-[#0a1f1c]">Frescura y calidad garantizada</span>
+                    </div>
+                </div>
+
+                <div id="checkout-summary" class="w-full bg-zinc-50 border border-[#0a1f1c]/10 p-5 mb-8 text-left shadow-sm">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[10px] uppercase tracking-widest text-zinc-500">Subtotal</span>
+                        <span id="checkout-subtotal" class="font-serif text-sm text-[#0a1f1c]">$0</span>
+                    </div>
+                    <div class="flex justify-between items-start mb-4 border-b border-[#0a1f1c]/10 pb-4">
+                        <span id="checkout-shipping-label" class="text-[10px] uppercase tracking-widest text-zinc-500">Logística</span>
+                        <div class="text-right">
+                            <span id="checkout-shipping" class="font-serif text-sm text-[#0a1f1c]">$0</span>
+                            <span id="checkout-shipping-notice" class="text-[8px] uppercase tracking-[0.2em] font-bold text-[#0a1f1c] block mt-1 hidden"></span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-end mt-2">
+                        <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Total a Pagar</span>
+                        <span id="checkout-final-total" class="font-serif text-2xl text-[#0a1f1c]">$0</span>
+                    </div>
+                </div>
+                <div id="payment-selector" class="w-full flex flex-col items-center gap-4">
+                    <button class="w-full py-4 border border-[#0a1f1c] bg-[#0a1f1c] text-[#c5a059] text-[12px] uppercase tracking-[0.2em] font-bold hover:bg-transparent hover:text-[#0a1f1c] transition-colors" onclick="iniciarMercadoPago()">
+                        Pagar con MercadoPago
+                    </button>
+                    <button class="w-full py-4 border border-[#0a1f1c] text-[#0a1f1c] text-[12px] uppercase tracking-[0.2em] font-bold hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors" onclick="iniciarPayPal()">
+                        Pagar con PayPal
+                    </button>
+                </div>
+
+                <div id="loading-payment" style="display: none;" class="mt-6 w-full text-center">
+                    <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Procesando Pasarela...</p>
+                </div>
+
+                <div class="mt-8 flex justify-center items-center mb-4 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
+                    <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
+                </div>
+                
+                <div class="flex justify-center items-center space-x-4 opacity-60 grayscale mb-8">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" alt="Mercado Pago" class="h-5 w-auto object-contain">
+                    <span class="text-xs font-light text-zinc-300">|</span>
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" alt="PayPal" class="h-4 w-auto object-contain">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="Visa" class="h-4 w-auto object-contain">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" alt="Mastercard" class="h-4 w-auto object-contain">
+                </div>
+
+                <div id="paypal-container" class="w-full mb-4 hidden min-h-[150px]"></div>
+
+                <button onclick="goToStep(5)" id="btn-volver-pago" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed bottom-24 right-6 md:right-12 z-[90] pointer-events-none flex flex-col items-end">
+    
+        <div id="fab-menu" class="absolute bottom-[calc(100%+12px)] right-0 flex flex-col gap-3 items-end opacity-0 invisible pointer-events-none translate-y-4 transition-all duration-300 w-max">
+            <button onclick="scrollToVault(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Colección Floral</span>
+            </button>
+            
+            <button onclick="document.getElementById('privilege').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Suscripciones</span>
+            </button>
+            
+            <button onclick="document.getElementById('garden').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Jardinería</span>
+            </button>
+            
+            <button onclick="document.getElementById('faq').scrollIntoView({behavior: 'smooth', block: 'start'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Preguntas</span>
+            </button>
+            
+            <button onclick="document.querySelector('.collage-container').closest('section').scrollIntoView({behavior: 'smooth', block: 'start'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300 group">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-[9px] font-bold uppercase tracking-widest">Testimonios</span>
+                    <svg class="w-3.5 h-3.5 text-[#c5a059] animate-pulse group-hover:text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                    </svg>
+                </div>
+            </button>
+        </div>
+
+        <button onclick="toggleFabMenu()" aria-label="Menú rápido" class="pointer-events-auto relative bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
+            <svg id="fab-icon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+            </svg>
+            <span class="text-[10px] font-bold uppercase tracking-widest">Ver</span>
+        </button>
+    </div>
+
+    <!-- EL JAVASCRIPT AHORA ESTÁ AL FINAL, SEPARADO Y NO BLOQUEA -->
+    <script src="js/main.js?v=4" defer></script>
+
+    <!-- Google Tag Manager: se carga en cuanto el navegador está inactivo o tras la primera
+         interacción del usuario, lo que ocurra primero, para no competir con el render inicial -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-K9NDEELWEK');
+
+        function loadGTM() {
+            if (window.__gtmLoaded) return;
+            window.__gtmLoaded = true;
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-K9NDEELWEK';
+            document.head.appendChild(s);
+        }
+        var gtmEvents = ['scroll', 'mousemove', 'keydown', 'touchstart', 'click'];
+        gtmEvents.forEach(function (evt) {
+            window.addEventListener(evt, loadGTM, { once: true, passive: true });
+        });
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(loadGTM, { timeout: 4000 });
+        } else {
+            setTimeout(loadGTM, 4000);
+        }
+    </script>
+
+    <!-- Cloudflare Turnstile: solo se necesita al enviar un formulario, así que se carga
+         cuando el usuario abre el flujo de compra/postulación en vez de en cada carga de página -->
+    <script>
+        function loadTurnstile() {
+            if (window.__turnstileLoaded) return;
+            window.__turnstileLoaded = true;
+            var s = document.createElement('script');
+            s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+            s.async = true;
+            s.defer = true;
+            document.head.appendChild(s);
+        }
+        document.querySelectorAll('form, [onclick*="openGardenFlow"], [onclick*="Cart"], [onclick*="Checkout"]')
+            .forEach(function (el) {
+                el.addEventListener('click', loadTurnstile, { once: true });
+                el.addEventListener('focusin', loadTurnstile, { once: true });
+            });
+    </script>
+
+</body>
+</html>
