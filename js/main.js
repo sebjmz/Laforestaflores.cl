@@ -330,38 +330,38 @@ function closeCoverageModal() {
 }
 
 const catalog = [
-    { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.jpeg", desc: "Lisianthus, lilium, limonium y astromelias.", url: "amor-delicado.html" },
-    { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.jpeg", desc: "Lilium, rosas, gypso y maule.", url: "susurro-de-amor.html" },
-    { id: 3, name: "Amor Eterno", price: 230900, img: "img/RAMOS03.jpeg", desc: "Arreglo de 70 rosas premium seleccionadas.", url: "amor-eterno.html" },
-    { id: 4, name: "Pasión de Sol", price: 45900, img: "img/RAMOS04.jpeg", desc: "Girasoles, rosas, gypso y maule.", url: "pasion-de-sol.html" },
-    { id: 5, name: "Monte Mar Signature", price: 31900, img: "img/RAMOS05.jpeg", desc: "Gerberas, rosas, maules y gypso.", url: "monte-mar-signature.html" },
-    { id: 6, name: "Brisa de Primavera", price: 36900, img: "img/RAMOS06.jpeg", desc: "Gerberas, astromelias, lisianthus y ruscus.", url: "brisa-de-primavera.html" },
-    { id: 7, name: "Golden Bloom", price: 47900, img: "img/RAMOS07.jpeg", desc: "Girasoles, lisianthus, maule, astromelias, gypso y clavelinas.", url: "golden-bloom.html" },
-    { id: 8, name: "Suave Amanecer", price: 37900, img: "img/RAMOS08.jpeg", desc: "Lisianthus, rosas, maules y gypso.", url: "suave-amanecer.html" },
-    { id: 9, name: "Jardin de Verano", price: 28900, img: "img/RAMOS09.jpeg", desc: "Astromelias, gerberas, lilium y limonium.", url: "jardin-de-verano.html" },
-    { id: 10, name: "Susurro Rosé", price: 48900, img: "img/RAMOS10.jpeg", desc: "Tulipanes y limonium.", url: "susurro-rose.html" },
-    { id: 11, name: "Luz de Atardecer", price: 42900, img: "img/RAMOS11.jpeg", desc: "Rosas, astromelias y limonium.", url: "luz-de-atardecer.html" },
-    { id: 12, name: "Encanto Vivo", price: 37900, img: "img/RAMOS12.jpeg", desc: "Astromelias, lisianthus, gypso, gerberas, maules y ruscus.", url: "encanto-vivo.html" },
-    { id: 13, name: "Luz Infinita", price: 45900, img: "img/luz-infinita.jpeg", desc: "Ramo de rosas blancas.", url: "luz-infinita.html" },
-    { id: 14, name: "Luz del Alba", price: 68900, img: "img/luz-del-alba.jpeg", desc: "Lirios blancos y alstroemerias amarillas en cesto.", url: "luz-del-alba.html" },
-    { id: 15, name: "Sereno", price: 59900, img: "img/sereno.jpeg", desc: "Rosas y lirios blancos en caja gris.", url: "sereno.html" },
-    { id: 16, name: "Dulce Amor", price: 48900, img: "img/dulce-amor.jpeg", desc: "Selección de flores en tonos rosados y blancos.", url: "dulce-amor.html" },
-    { id: 17, name: "Esperanza", price: 138900, img: "img/esperanza.jpeg", desc: "Cesto de lirios y rosas blancas.", url: "esperanza.html" },
-    { id: 201, name: "Cubre Urna Sublime", price: 129900, img: "img/cubre-urna.jpg", desc: "Delicado homenaje en tonos blancos y crema.", url: "cubre-urna-sublime.html" },
-    { id: 202, name: "Cojín de Condolencias", price: 58900, img: "img/cojin.jpg", desc: "Composición sobria en rosas y astromelias.", url: "cojin-de-condolencias.html" }
+    { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.webp", desc: "Lisianthus, lilium, limonium y astromelias.", url: "amor-delicado.html" },
+    { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.webp", desc: "Lilium, rosas, gypso y maule.", url: "susurro-de-amor.html" },
+    { id: 3, name: "Amor Eterno", price: 230900, img: "img/RAMOS03.webp", desc: "Arreglo de 70 rosas premium seleccionadas.", url: "amor-eterno.html" },
+    { id: 4, name: "Pasión de Sol", price: 45900, img: "img/RAMOS04.webp", desc: "Girasoles, rosas, gypso y maule.", url: "pasion-de-sol.html" },
+    { id: 5, name: "Monte Mar Signature", price: 31900, img: "img/RAMOS05.webp", desc: "Gerberas, rosas, maules y gypso.", url: "monte-mar-signature.html" },
+    { id: 6, name: "Brisa de Primavera", price: 36900, img: "img/RAMOS06.webp", desc: "Gerberas, astromelias, lisianthus y ruscus.", url: "brisa-de-primavera.html" },
+    { id: 7, name: "Golden Bloom", price: 47900, img: "img/RAMOS07.webp", desc: "Girasoles, lisianthus, maule, astromelias, gypso y clavelinas.", url: "golden-bloom.html" },
+    { id: 8, name: "Suave Amanecer", price: 37900, img: "img/RAMOS08.webp", desc: "Lisianthus, rosas, maules y gypso.", url: "suave-amanecer.html" },
+    { id: 9, name: "Jardin de Verano", price: 28900, img: "img/RAMOS09.webp", desc: "Astromelias, gerberas, lilium y limonium.", url: "jardin-de-verano.html" },
+    { id: 10, name: "Susurro Rosé", price: 48900, img: "img/RAMOS10.webp", desc: "Tulipanes y limonium.", url: "susurro-rose.html" },
+    { id: 11, name: "Luz de Atardecer", price: 42900, img: "img/RAMOS11.webp", desc: "Rosas, astromelias y limonium.", url: "luz-de-atardecer.html" },
+    { id: 12, name: "Encanto Vivo", price: 37900, img: "img/RAMOS12.webp", desc: "Astromelias, lisianthus, gypso, gerberas, maules y ruscus.", url: "encanto-vivo.html" },
+    { id: 13, name: "Luz Infinita", price: 45900, img: "img/luz-infinita.webp", desc: "Ramo de rosas blancas.", url: "luz-infinita.html" },
+    { id: 14, name: "Luz del Alba", price: 68900, img: "img/luz-del-alba.webp", desc: "Lirios blancos y alstroemerias amarillas en cesto.", url: "luz-del-alba.html" },
+    { id: 15, name: "Sereno", price: 59900, img: "img/sereno.webp", desc: "Rosas y lirios blancos en caja gris.", url: "sereno.html" },
+    { id: 16, name: "Dulce Amor", price: 48900, img: "img/dulce-amor.webp", desc: "Selección de flores en tonos rosados y blancos.", url: "dulce-amor.html" },
+    { id: 17, name: "Esperanza", price: 138900, img: "img/esperanza.webp", desc: "Cesto de lirios y rosas blancas.", url: "esperanza.html" },
+    { id: 201, name: "Cubre Urna Sublime", price: 129900, img: "img/cubre-urna.webp", desc: "Delicado homenaje en tonos blancos y crema.", url: "cubre-urna-sublime.html" },
+    { id: 202, name: "Cojín de Condolencias", price: 58900, img: "img/cojin.webp", desc: "Composición sobria en rosas y astromelias.", url: "cojin-de-condolencias.html" }
 ];
 
 const upsellsCatalog = [
-    { id: 101, name: "Bombón Sin Azucar - Entrelagos (180g)", price: 16890, img: "img/upsell-choco.png" },
-    { id: 102, name: "Bombón Ferrero Rocher (150g)", price: 15890, img: "img/upsell-ferrero.jpg" },
-    { id: 103, name: "Bombón Chocolate Seashells (250g)", price: 18190, img: "img/upsell-seashells.jpg" },
-    { id: 104, name: "Perrito de Peluche - Bulldog", price: 12900, img: "img/bulldog-frances.jpeg" },
-    { id: 105, name: "Perrito de Peluche - Corgi", price: 12900, img: "img/corgi-gales.jpeg" },
-    { id: 106, name: "Osito de Peluche - Graduación", price: 12900, img: "img/osito-graduacion.jpeg" },
-    { id: 107, name: "Perrito de Peluche - Pastor Alemán", price: 12900, img: "img/pastor-aleman.jpeg" },
-    { id: 108, name: "Perrito de Peluche - Salchicha", price: 12900, img: "img/salchicha.jpeg" },
-    { id: 109, name: "Globo Metalizado Helio - Te Amo", price: 6900, img: "img/globo-te-amo.jpeg" },
-    { id: 110, name: "Globo Metalizado Helio - Feliz Cumpleaños", price: 6900, img: "img/globo-feliz-cumpleaños.jpeg" }
+    { id: 101, name: "Bombón Sin Azucar - Entrelagos (180g)", price: 16890, img: "img/upsell-choco.webp" },
+    { id: 102, name: "Bombón Ferrero Rocher (150g)", price: 15890, img: "img/upsell-ferrero.webp" },
+    { id: 103, name: "Bombón Chocolate Seashells (250g)", price: 18190, img: "img/upsell-seashells.webp" },
+    { id: 104, name: "Perrito de Peluche - Bulldog", price: 12900, img: "img/bulldog-frances.webp" },
+    { id: 105, name: "Perrito de Peluche - Corgi", price: 12900, img: "img/corgi-gales.webp" },
+    { id: 106, name: "Osito de Peluche - Graduación", price: 12900, img: "img/osito-graduacion.webp" },
+    { id: 107, name: "Perrito de Peluche - Pastor Alemán", price: 12900, img: "img/pastor-aleman.webp" },
+    { id: 108, name: "Perrito de Peluche - Salchicha", price: 12900, img: "img/salchicha.webp" },
+    { id: 109, name: "Globo Metalizado Helio - Te Amo", price: 6900, img: "img/globo-te-amo.webp" },
+    { id: 110, name: "Globo Metalizado Helio - Feliz Cumpleaños", price: 6900, img: "img/globo-feliz-cumpleaños.webp" }
 ];
 
 function getLuxuryBadge(id) {
