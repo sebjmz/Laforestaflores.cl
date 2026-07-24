@@ -125,12 +125,7 @@
         .product-card:hover .img-zoom-container img { transform: scale(1.05); }
         .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
         .hide-scroll::-webkit-scrollbar { display: none; }
-        .text-encrusted {
-            color: rgba(10, 31, 28, 0.18); 
-            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.9), -1px -1px 1px rgba(10, 31, 28, 0.05);
-            mix-blend-mode: multiply; 
-        }
-
+        
         /* Utilidad para el acordeón de FAQ */
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
@@ -157,35 +152,26 @@
         </div>
     </nav>
 
-    <section id="vault" class="bg-white pt-32 pb-6">
+    <section id="vault" class="bg-white pt-32 pb-16">
         <div class="w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-16">
             
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-4 pb-4 border-b border-[#0a1f1c]/5 mb-6">
                 <div class="w-full md:w-auto overflow-hidden">
                     
-                    <!-- Título con Ícono Botánico Elegante (Loto/Tulipán) -->
-<h1 class="text-4xl md:text-7xl font-serif italic text-[#0a1f1c] mb-3 mt-2 md:mt-0 flex flex-wrap items-center gap-3 md:gap-4">
-    Condolencias y Homenajes
-    
-    <!-- Ícono SVG: Flor solemne de cristal -->
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 md:w-[4.5rem] md:h-[4.5rem] text-[#c5a059] flex-shrink-0 drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Pétalo Central (Transparencia media) -->
-        <path d="M12 15c-2-3-2-7 0-10 2 3 2 7 0 10z" fill="currentColor" fill-opacity="0.4"/>
-        
-        <!-- Pétalo Izquierdo (Transparencia suave) -->
-        <path d="M12 15C8 15 4 12 4 7c0-3 3-4 5-2 2 2 3 5 3 10z" fill="currentColor" fill-opacity="0.2"/>
-        
-        <!-- Pétalo Derecho (Transparencia suave) -->
-        <path d="M12 15c4 0 8-3 8-8 0-3-3-4-5-2-2 2-3 5-3 10z" fill="currentColor" fill-opacity="0.2"/>
-        
-        <!-- Tallo elegante -->
-        <path d="M12 15v7" stroke-width="1.5"/>
-        
-        <!-- Hojas sutiles en el tallo -->
-        <path d="M12 19c-2-1-4-1-5 1" />
-        <path d="M12 17c2-1 4-1 5 1" />
-    </svg>
-</h1>
+                    <!-- Título con Ícono Botánico Elegante -->
+                    <h1 class="text-4xl md:text-7xl font-serif italic text-[#0a1f1c] mb-3 mt-2 md:mt-0 flex flex-wrap items-center gap-3 md:gap-4">
+                        Condolencias y Homenajes
+                        
+                        <!-- Ícono SVG: Flor solemne de cristal -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 md:w-[4.5rem] md:h-[4.5rem] text-[#c5a059] flex-shrink-0 drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 15c-2-3-2-7 0-10 2 3 2 7 0 10z" fill="currentColor" fill-opacity="0.4"/>
+                            <path d="M12 15C8 15 4 12 4 7c0-3 3-4 5-2 2 2 3 5 3 10z" fill="currentColor" fill-opacity="0.2"/>
+                            <path d="M12 15c4 0 8-3 8-8 0-3-3-4-5-2-2 2-3 5-3 10z" fill="currentColor" fill-opacity="0.2"/>
+                            <path d="M12 15v7" stroke-width="1.5"/>
+                            <path d="M12 19c-2-1-4-1-5 1" />
+                            <path d="M12 17c2-1 4-1 5 1" />
+                        </svg>
+                    </h1>
                     
                     <div class="w-full overflow-x-auto pb-1 hide-scroll">
                         <nav aria-label="Filtros de colección" class="flex items-center space-x-6 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 whitespace-nowrap min-w-max">
@@ -209,112 +195,96 @@
                 </div>
             </div>
 
-            <div id="category-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-12 md:gap-y-16">
+            <div id="category-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-12 md:gap-y-16 mt-8">
                 <!-- Inyectado por JS -->
-            </div>
-
-            <!-- CITA ELEGANTE -->
-            <div class="mt-24 text-center max-w-4xl mx-auto px-6">
-                <p class="font-serif italic text-3xl md:text-5xl text-encrusted leading-snug">
-                    "Las flores son el abrazo silencioso que el alma ofrece cuando las palabras ya no alcanzan."
-                </p>
-                <div class="w-12 h-px bg-zinc-200 mx-auto mt-8 mb-6 shadow-[0_1px_0_white]"></div>
             </div>
 
         </div>
     </section>
 
     <!-- ==========================================
-         SECCIÓN FAQ (PREGUNTAS FRECUENTES PARA SEO)
-         Diseño minimalista y continuo
+         SECCIÓN PREGUNTAS FRECUENTES (ADAPTADA A CONDOLENCIAS)
          ========================================== -->
-    <section class="bg-[#fcfaf7] py-12 md:py-16 px-6 md:px-12 border-t border-[#0a1f1c]/5">
-        <div class="max-w-3xl mx-auto">
-            <div class="text-center mb-8 md:mb-12">
-                <h2 class="font-serif italic text-2xl md:text-4xl text-[#0a1f1c] mb-2 md:mb-3">Preguntas Frecuentes</h2>
-                <p class="text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold text-[#c5a059]">Despachos en Viña del Mar y Concón</p>
-            </div>
+    <section id="faq" class="py-24 bg-[#fcfaf7] border-t border-[#0a1f1c]/10 text-[#0a1f1c]">
+        <div class="max-w-4xl mx-auto px-6 md:px-12">
             
-            <!-- Contenedor único para el acordeón (elimina el exceso de bordes) -->
-            <div class="bg-white rounded-2xl border border-[#0a1f1c]/10 shadow-sm overflow-hidden">
-                
+            <div class="text-center mb-16">
+                <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-[#c5a059] block mb-4">Información Útil</span>
+                <h2 class="font-serif text-4xl md:text-5xl italic text-[#0a1f1c]">Preguntas Frecuentes</h2>
+            </div>
+
+            <div class="space-y-1">
                 <!-- FAQ 1 -->
-                <details class="group border-b border-[#0a1f1c]/10 last:border-0 transition-all duration-300">
-                    <summary class="flex justify-between items-center cursor-pointer p-4 md:p-6 font-serif text-base md:text-lg text-[#0a1f1c] outline-none">
-                        ¿Hacen entregas al Cementerio Parque del Mar y Santa Inés?
-                        <span class="text-[#c5a059] transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿Hacen entregas urgentes a cementerios y velatorios en Viña del Mar y alrededores?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
                     </summary>
-                    <div class="px-4 md:px-6 pb-4 md:pb-6 text-[13px] md:text-sm text-zinc-600 leading-relaxed font-light">
-                        Absolutamente. Contamos con logística de entrega directa y urgente al <strong>Cementerio Parque del Mar en Concón</strong> y al <strong>Cementerio Santa Inés en Viña del Mar</strong>. Coordinamos los horarios para asegurar que su homenaje floral llegue con absoluta puntualidad.
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        Sí, entendemos la sensibilidad de estos momentos. Ofrecemos <strong>despacho prioritario el mismo día</strong> y entregas directas al Cementerio Parque del Mar (Concón), Cementerio Santa Inés (Viña del Mar), y a todas las parroquias y salas velatorias de la Quinta Región.
                     </div>
                 </details>
 
                 <!-- FAQ 2 -->
-                <details class="group border-b border-[#0a1f1c]/10 last:border-0 transition-all duration-300">
-                    <summary class="flex justify-between items-center cursor-pointer p-4 md:p-6 font-serif text-base md:text-lg text-[#0a1f1c] outline-none">
-                        ¿Realizan despachos express de coronas fúnebres?
-                        <span class="text-[#c5a059] transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿Cuánto cuesta el despacho de coronas y arreglos fúnebres?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
                     </summary>
-                    <div class="px-4 md:px-6 pb-4 md:pb-6 text-[13px] md:text-sm text-zinc-600 leading-relaxed font-light">
-                        Sí, entendemos la sensibilidad de estos momentos. Ofrecemos <strong>despacho express y prioritario el mismo día</strong> para coronas fúnebres, pedestales, cubre urnas y arreglos de condolencia en todo Viña del Mar, Reñaca, Concón y alrededores.
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        <p class="mb-3">¡Tenemos un beneficio exclusivo! El envío es <strong>gratis o bonificado</strong> para compras sobre $69.990. Para montos menores, el valor depende de la zona del velatorio:</p>
+                        <ul class="space-y-2 pl-4">
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Central (Reñaca):</strong> $3.500</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Local (Viña, Concón, Reñaca Norte):</strong> $5.000</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Intermedia (Cerros de Viña, Chorrillos):</strong> $7.500</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Extendida (Valparaíso, Quilpué):</strong> $12.000</li>
+                        </ul>
                     </div>
                 </details>
 
                 <!-- FAQ 3 -->
-                <details class="group border-b border-[#0a1f1c]/10 last:border-0 transition-all duration-300">
-                    <summary class="flex justify-between items-center cursor-pointer p-4 md:p-6 font-serif text-base md:text-lg text-[#0a1f1c] outline-none">
-                        ¿Entregan flores en parroquias e iglesias locales?
-                        <span class="text-[#c5a059] transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿Cuáles son los horarios de entrega para ceremonias programadas?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
                     </summary>
-                    <div class="px-4 md:px-6 pb-4 md:pb-6 text-[13px] md:text-sm text-zinc-600 leading-relaxed font-light">
-                        Sí, realizamos despachos puntuales a todas las iglesias, parroquias y capillas de la V Región donde se estén realizando velatorios (como la Parroquia San Expedito, Parroquia de Reñaca, entre otras).
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        Aunque contamos con bloques de entrega estándar, los arreglos de condolencia y coronas fúnebres <strong>tienen despacho prioritario</strong>. Coordinamos directamente con los horarios de la misa o ceremonia para garantizar que el homenaje floral llegue con absoluta puntualidad, sin importar la hora estipulada.
                     </div>
                 </details>
 
                 <!-- FAQ 4 -->
-                <details class="group border-b border-[#0a1f1c]/10 last:border-0 transition-all duration-300">
-                    <summary class="flex justify-between items-center cursor-pointer p-4 md:p-6 font-serif text-base md:text-lg text-[#0a1f1c] outline-none">
-                        ¿Qué tipo de arreglo floral es más adecuado?
-                        <span class="text-[#c5a059] transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿Puedo incluir una cinta con mensaje o dedicatoria?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
                     </summary>
-                    <div class="px-4 md:px-6 pb-4 md:pb-6 text-[13px] md:text-sm text-zinc-600 leading-relaxed font-light">
-                        Las <strong>coronas fúnebres premium y pedestales</strong> son el estándar para instituciones, empresas o familiares directos. Si busca un gesto más íntimo y personal, recomendamos nuestros cojines de condolencias o arreglos sobrios de rosas blancas y lirios.
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        Por supuesto. Todos nuestros arreglos fúnebres mayores (coronas, pedestales y cubre urnas) incluyen una cinta dedicatoria impresa de forma elegante y sin costo adicional, ideal para representar instituciones, empresas o familiares directos. Para los arreglos más íntimos, adjuntamos una tarjeta de condolencias sellada con su mensaje personal.
                     </div>
                 </details>
 
                 <!-- FAQ 5 -->
-                <details class="group border-b border-[#0a1f1c]/10 last:border-0 transition-all duration-300">
-                    <summary class="flex justify-between items-center cursor-pointer p-4 md:p-6 font-serif text-base md:text-lg text-[#0a1f1c] outline-none">
-                        ¿Puedo incluir una cinta con mensaje o dedicatoria?
-                        <span class="text-[#c5a059] transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
+                <details class="group border-b border-[#0a1f1c]/10 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-serif text-lg md:text-xl cursor-pointer list-none hover:text-[#c5a059] transition-colors duration-300">
+                        <span>¿Qué flores son las más apropiadas para expresar luto?</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180 text-[#c5a059] shrink-0 ml-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
                     </summary>
-                    <div class="px-4 md:px-6 pb-4 md:pb-6 text-[13px] md:text-sm text-zinc-600 leading-relaxed font-light">
-                        Sí. Todos nuestros arreglos fúnebres mayores (coronas, pedestales y cubre urnas) <strong>incluyen una cinta dedicatoria impresa</strong> de forma elegante. Para los arreglos menores, incluimos una tarjeta de condolencias sellada.
+                    <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
+                        Trabajamos con flores premium y de alta gama. Tradicionalmente, los <strong>lirios blancos, rosas blancas, lisianthus y astromelias claras</strong> son los más indicados, ya que simbolizan profunda paz, pureza y respeto hacia la familia.
                     </div>
                 </details>
 
-                <!-- FAQ 6 -->
-                <details class="group border-b border-[#0a1f1c]/10 last:border-0 transition-all duration-300">
-                    <summary class="flex justify-between items-center cursor-pointer p-4 md:p-6 font-serif text-base md:text-lg text-[#0a1f1c] outline-none">
-                        ¿Cuánto tiempo demora en llegar una corona fúnebre?
-                        <span class="text-[#c5a059] transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
-                    </summary>
-                    <div class="px-4 md:px-6 pb-4 md:pb-6 text-[13px] md:text-sm text-zinc-600 leading-relaxed font-light">
-                        Los arreglos estándar se despachan en pocas horas. Las coronas fúnebres y pedestales requieren preparación prioritaria, pero <strong>garantizamos su entrega a tiempo</strong> para ceremonias programadas el mismo día.
-                    </div>
-                </details>
-
-                <!-- FAQ 7 -->
-                <details class="group border-b border-[#0a1f1c]/10 last:border-0 transition-all duration-300">
-                    <summary class="flex justify-between items-center cursor-pointer p-4 md:p-6 font-serif text-base md:text-lg text-[#0a1f1c] outline-none">
-                        ¿Cuáles son las mejores flores para expresar luto?
-                        <span class="text-[#c5a059] transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
-                    </summary>
-                    <div class="px-4 md:px-6 pb-4 md:pb-6 text-[13px] md:text-sm text-zinc-600 leading-relaxed font-light">
-                        Tradicionalmente, los <strong>lirios blancos, rosas blancas, lisianthus y astromelias claras</strong> son los más apropiados, ya que simbolizan paz, pureza y respeto. Trabajamos solo con tallos frescos de alta gama para asegurar un homenaje solemne.
-                    </div>
-                </details>
-                
             </div>
         </div>
     </section>
@@ -340,8 +310,8 @@
             { id: 16, name: "Dulce Amor", price: 48900, img: "img/dulce-amor.jpeg", desc: "Delicada selección en tonos rosados y blancos, un homenaje lleno de ternura.", url: "dulce-amor.html" },
             { id: 17, name: "Esperanza", price: 138900, img: "img/esperanza.jpeg", desc: "Majestuoso cesto de abundantes lirios y rosas blancas que transmite profunda paz y consuelo.", url: "esperanza.html" },
             { id: 201, name: "Cubre Urna Sublime", price: 104900, img: "img/cubre-urna.jpg", desc: "Delicado homenaje en tonos blancos y crema, diseñado cuidadosamente para brindar un mensaje de paz y acompañamiento.", url: "cubre-urna-sublime.html" },
-            { id: 202, name: "Cojín de Condolencias", price: 58900, img: "img/cojin.jpg", desc: "Composición sobria en rosas y astromelias, elaborada con delicadeza para ofrecer consuelo y afecto perdurable a la familia.", url: "cojin-de-condolencias.html" },
-                    ];
+            { id: 202, name: "Cojín de Condolencias", price: 58900, img: "img/cojin.jpg", desc: "Composición sobria en rosas y astromelias, elaborada con delicadeza para ofrecer consuelo y afecto perdurable a la familia.", url: "cojin-de-condolencias.html" }
+        ];
 
         const grid = document.getElementById('category-grid');
         grid.innerHTML = categoryCatalog.map(product => `
