@@ -371,6 +371,36 @@ function getLuxuryBadge(id) {
     }
 }
 
+function obtenerRamosEscasos(catalogo) {
+    // Obtenemos la fecha actual en la zona horaria de Chile
+    const hoy = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"})).toLocaleDateString('es-CL');
+    const dataGuardada = JSON.parse(localStorage.getItem('laforesta_escasez_diaria')) || {};
+
+    // Si ya elegimos los ramos para el día de hoy, los devolvemos
+    if (dataGuardada.fecha === hoy && dataGuardada.ids) {
+        return dataGuardada.ids;
+    }
+
+    // Si es un día nuevo, elegimos aleatoriamente 2 o 3 ramos
+    const cantidad = Math.floor(Math.random() * 2) + 2; 
+    
+    // Mezclamos el catálogo de flores y extraemos los IDs
+    const idsAleatorios = [...catalogo]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, cantidad)
+        .map(producto => producto.id);
+
+    // Guardamos la selección en el navegador atada a la fecha de hoy
+    localStorage.setItem('laforesta_escasez_diaria', JSON.stringify({
+        fecha: hoy,
+        ids: idsAleatorios
+    }));
+
+    return idsAleatorios;
+}
+
+const ramosEscasosDelDia = obtenerRamosEscasos(catalog);
+
 const grid = document.getElementById('product-grid');
 if (grid) {
     grid.innerHTML = catalog.map(product => {
@@ -378,8 +408,16 @@ if (grid) {
         const badgeHTML = badgeText 
             ? `<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm">${badgeText}</div>` 
             : '';
-        const scarcityHTML = (product.id === 3 || product.id === 5) 
-            ? `<div class="urgency-tag">Últimas 2 unidades</div>` 
+        
+        // Verificamos si este ramo fue seleccionado hoy
+        const esEscaso = ramosEscasosDelDia.includes(product.id);
+        
+        // Rotamos entre un par de frases elegantes para que se vea más humano y menos robotizado
+        const frasesEscasez = ["Últimas 2 disponibles", "Solo 2 unidades"];
+        const fraseElegida = frasesEscasez[product.id % 2]; 
+
+        const scarcityHTML = esEscaso 
+            ? `<div class="urgency-tag">${fraseElegida}</div>` 
             : '';
 
         return `
