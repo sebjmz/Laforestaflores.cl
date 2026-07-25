@@ -26,7 +26,7 @@
 
     <!-- TAILWIND COMPILADO Y PURGADO (reemplaza al script cdn.tailwindcss.com que compilaba
          CSS en el navegador — ver css/styles.min.css, generado con `npx tailwindcss --minify`) -->
-    <link rel="stylesheet" href="css/styles.min.css">
+    <link rel="stylesheet" href="css/styles.min.css?v=2">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet"></noscript>
     
@@ -60,6 +60,21 @@
         }
 
         .font-serif { font-family: Georgia, 'Times New Roman', Times, serif; }
+        /* Estas clases se usan en ~82 elementos del sitio pero no son utilidades reales de
+           Tailwind (no hay theme.colors configurado para "gold-leaf"/"forest-green"), así que
+           sin estas reglas no reciben NINGÚN color. Se restauran aquí para que todo el sitio
+           se vea como fue diseñado, y de paso se corrigen los 2 fallos de contraste reportados
+           (el texto quedaba en el dorado claro por defecto de .btn-premium en vez del color
+           oscuro/dorado intencionado). */
+        .text-gold-leaf { color: var(--gold-leaf); }
+        .text-gold-leaf\/40 { color: rgba(197, 160, 89, 0.4); }
+        .text-gold-leaf\/60 { color: rgba(197, 160, 89, 0.6); }
+        .border-gold-leaf\/20 { border-color: rgba(197, 160, 89, 0.2); }
+        .border-gold-leaf\/30 { border-color: rgba(197, 160, 89, 0.3); }
+        .bg-forest-green { background-color: var(--forest-green); }
+        .border-forest-green { border-color: var(--forest-green); }
+        .text-forest-green { color: var(--forest-green); }
+        .hover\:text-gold-leaf:hover { color: var(--gold-leaf); }
 
         input, textarea, select {
             -webkit-appearance: none;
@@ -977,7 +992,7 @@
             </div>
 
             <div class="w-full lg:w-1/2 flex flex-col lg:justify-center py-2 overflow-y-auto hide-scroll pb-24 lg:pb-0 min-h-0">
-                <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-[#c5a059] mb-4 block">Nuestro Compromiso</span>
+                <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-[#8a6d3d] mb-4 block">Nuestro Compromiso</span>
                 <h3 class="font-serif text-4xl md:text-5xl italic mb-8">Zonas de Despacho</h3>
                 
                 <div class="space-y-4">
@@ -1037,7 +1052,7 @@
         <div class="max-w-4xl mx-auto px-6 md:px-12">
             
             <div class="text-center mb-16">
-                <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-[#c5a059] block mb-4">Información Útil</span>
+                <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-[#8a6d3d] block mb-4">Información Útil</span>
                 <h2 class="font-serif text-4xl md:text-5xl italic text-[#0a1f1c]">Preguntas Frecuentes</h2>
             </div>
 
@@ -1503,7 +1518,7 @@
     </div>
 
     <!-- EL JAVASCRIPT AHORA ESTÁ AL FINAL, SEPARADO Y NO BLOQUEA -->
-    <script src="js/main.js?v=5" defer></script>
+    <script src="js/main.js?v=6" defer></script>
 
     <!-- Google Tag Manager: se carga en cuanto el navegador está inactivo o tras la primera
          interacción del usuario, lo que ocurra primero, para no competir con el render inicial -->
