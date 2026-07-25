@@ -1,4 +1,4 @@
-   window.stopAutoPlay = null;
+window.stopAutoPlay = null;
 let mapasCargados = false;
 let pasarelasCargadas = false;
 
