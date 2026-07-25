@@ -371,36 +371,6 @@ function getLuxuryBadge(id) {
     }
 }
 
-function obtenerRamosEscasos(catalogo) {
-    // Obtenemos la fecha actual en la zona horaria de Chile
-    const hoy = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Santiago"})).toLocaleDateString('es-CL');
-    const dataGuardada = JSON.parse(localStorage.getItem('laforesta_escasez_diaria')) || {};
-
-    // Si ya elegimos los ramos para el día de hoy, los devolvemos
-    if (dataGuardada.fecha === hoy && dataGuardada.ids) {
-        return dataGuardada.ids;
-    }
-
-    // Si es un día nuevo, elegimos aleatoriamente 2 o 3 ramos
-    const cantidad = Math.floor(Math.random() * 2) + 2; 
-    
-    // Mezclamos el catálogo de flores y extraemos los IDs
-    const idsAleatorios = [...catalogo]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, cantidad)
-        .map(producto => producto.id);
-
-    // Guardamos la selección en el navegador atada a la fecha de hoy
-    localStorage.setItem('laforesta_escasez_diaria', JSON.stringify({
-        fecha: hoy,
-        ids: idsAleatorios
-    }));
-
-    return idsAleatorios;
-}
-
-const ramosEscasosDelDia = obtenerRamosEscasos(catalog);
-
 const grid = document.getElementById('product-grid');
 if (grid) {
     grid.innerHTML = catalog.map(product => {
@@ -408,16 +378,8 @@ if (grid) {
         const badgeHTML = badgeText 
             ? `<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm">${badgeText}</div>` 
             : '';
-        
-        // Verificamos si este ramo fue seleccionado hoy
-        const esEscaso = ramosEscasosDelDia.includes(product.id);
-        
-        // Rotamos entre un par de frases elegantes para que se vea más humano y menos robotizado
-        const frasesEscasez = ["Últimas 2 disponibles", "Solo 2 unidades"];
-        const fraseElegida = frasesEscasez[product.id % 2]; 
-
-        const scarcityHTML = esEscaso 
-            ? `<div class="urgency-tag">${fraseElegida}</div>` 
+        const scarcityHTML = (product.id === 3 || product.id === 5) 
+            ? `<div class="urgency-tag">Últimas 2 unidades</div>` 
             : '';
 
         return `
@@ -431,7 +393,7 @@ if (grid) {
                 </div>
             </a>
             <div class="flex flex-col flex-grow mb-3 md:mb-4">
-                <a href="${product.url || '#'}" class="hover:text-[#c5a059] transition-colors">
+                <a href="${product.url || '#'}" class="hover:text-[#c5a059] transition-colors inline-block py-1">
                     <h3 class="font-serif text-sm md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${product.name}</h3>
                 </a>
                 <p class="text-[8px] md:text-[10px] uppercase tracking-widest opacity-70 mt-1 line-clamp-2"><span class="text-[#c5a059] mr-1">★★★★★</span> ${product.desc}</p>
@@ -1508,7 +1470,7 @@ function updateCountdown() {
 
         const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-        timerEl.innerHTML = `<span class="opacity-60 hidden md:inline">Envío Express (1-2h) cierra en:</span><span class="opacity-60 md:hidden">Express cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
+        timerEl.innerHTML = `<span class="opacity-80 hidden md:inline">Envío Express (1-2h) cierra en:</span><span class="opacity-80 md:hidden">Express cierra en:</span> <span class="ml-1 font-mono text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${timeString}</span>`;
 
     } catch(e) {
         console.warn("Contador visual desactivado", e);
