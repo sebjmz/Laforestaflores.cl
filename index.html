@@ -1521,15 +1521,12 @@
             s.src = 'https://www.googletagmanager.com/gtag/js?id=G-K9NDEELWEK';
             document.head.appendChild(s);
         }
+        
+        // Solo cargamos cuando hay interacción humana real
         var gtmEvents = ['scroll', 'mousemove', 'keydown', 'touchstart', 'click'];
         gtmEvents.forEach(function (evt) {
             window.addEventListener(evt, loadGTM, { once: true, passive: true });
         });
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(loadGTM, { timeout: 4000 });
-        } else {
-            setTimeout(loadGTM, 4000);
-        }
     </script>
 
     <!-- Cloudflare Turnstile: solo se necesita al enviar un formulario, así que se carga
