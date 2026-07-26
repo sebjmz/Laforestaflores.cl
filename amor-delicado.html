@@ -373,41 +373,5 @@
             }
         }
     </script>
-
-    <!-- Google Analytics (Lazy Load) + Evento View Item -->
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-
-    // 1. Registramos que el cliente vio este producto específico
-    gtag('event', 'view_item', {
-        currency: 'CLP',
-        value: 28900,
-        items: [{
-            item_id: '1', // El mismo ID que usas en tu función agregarYVolver
-            item_name: 'Amor Delicado',
-            price: 28900,
-            quantity: 1,
-            item_category: 'Ramos Florales'
-        }]
-    });
-
-    // 2. Script de carga diferida (Lazy Load)
-    function loadGTM() {
-        if (window.__gtmLoaded) return;
-        window.__gtmLoaded = true;
-        gtag('js', new Date());
-        gtag('config', 'G-K9NDEELWEK');
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-K9NDEELWEK';
-        document.head.appendChild(s);
-    }
-    
-    var gtmEvents = ['scroll', 'mousemove', 'keydown', 'touchstart', 'click'];
-    gtmEvents.forEach(function (evt) {
-        window.addEventListener(evt, loadGTM, { once: true, passive: true });
-    });
-</script>
 </body>
 </html>
