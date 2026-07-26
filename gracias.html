@@ -4,7 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orden Confirmada | La Foresta Flores</title>
-    
+
+    <!-- Google tag (gtag.js) — antes esta página no lo tenía, por eso no se registraba
+         ninguna venta de MercadoPago en Analytics una vez que el checkout empezó a
+         redirigir aquí en vez de volver al home. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9NDEELWEK"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-K9NDEELWEK');
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
@@ -97,7 +108,6 @@
 
         <!-- Columna Derecha: Imagen de Confianza con bordes redondeados -->
         <div class="w-full h-[400px] lg:h-[650px] relative hidden md:block">
-            <!-- Utiliza img/gracias.webp o img/garantia-fundador.webp -->
             <img src="img/gracias.webp" alt="Familia La Foresta" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-10">
             
             <!-- Etiqueta superpuesta (Trust Badge) -->
@@ -115,16 +125,59 @@
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const paymentId = urlParams.get('payment_id') || urlParams.get('token') || 'LF-' + Math.floor(Math.random() * 1000000);
-            
+
             const refElement = document.getElementById('order-reference');
             if (refElement) {
                 refElement.innerText = `REF: ${paymentId}`;
             }
 
+            // --- TRACKING DE COMPRA (MercadoPago) ---
+            // MercadoPago agrega automáticamente sus propios parámetros a la URL de
+            // vuelta (status/collection_status, payment_id, external_reference, etc.),
+            // aunque tú le hayas pasado una URL "limpia" como back_url. Los usamos aquí
+            // para confirmar la aprobación y disparar el evento 'purchase' ANTES de
+            // limpiar el localStorage — que es justo lo que se estaba perdiendo.
+            //
+            // Si en cambio llegaste desde PayPal, la URL solo trae "payment_id" (sin
+            // status/collection_status), y ese flujo ya dispara su propio evento
+            // 'purchase' en main.js antes de redirigir aquí — así que esta condición
+            // no se cumple y evitamos contar la venta dos veces.
+            const mpStatus = urlParams.get('collection_status') || urlParams.get('status');
+            const cartRaw = localStorage.getItem('laforesta_cart');
+
+            if (mpStatus === 'approved' && cartRaw) {
+                try {
+                    const cart = JSON.parse(cartRaw);
+                    const shipping = parseInt(localStorage.getItem('laforesta_shippingCost') || '0');
+                    const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+                    const total = subtotal + shipping;
+                    const transactionId = urlParams.get('payment_id') || urlParams.get('external_reference') || paymentId;
+
+                    if (typeof gtag === 'function') {
+                        gtag('event', 'purchase', {
+                            transaction_id: transactionId,
+                            currency: 'CLP',
+                            value: total,
+                            shipping: shipping,
+                            items: cart.map(item => ({
+                                item_id: String(item.id),
+                                item_name: item.name,
+                                price: item.price,
+                                quantity: item.qty,
+                                item_category: 'Ramos Florales'
+                            }))
+                        });
+                    }
+                } catch (err) {
+                    console.error('Error al registrar la compra en Analytics:', err);
+                }
+            }
+
             const keysToRemove = [
-                'laforesta_cart', 'laforesta_checkout_inputs', 'laforesta_shippingCost', 
-                'laforesta_selectedZoneName', 'laforesta_selectedLogistics', 'laforesta_selectedDate', 
-                'laforesta_selectedTimeSlot', 'laforesta_isExpressDelivery', 'laforesta_selectedPalette'
+                'laforesta_cart', 'laforesta_checkout_inputs', 'laforesta_shippingCost',
+                'laforesta_selectedZoneName', 'laforesta_selectedLogistics', 'laforesta_selectedDate',
+                'laforesta_selectedTimeSlot', 'laforesta_isExpressDelivery', 'laforesta_selectedPalette',
+                'pending_laforesta_order', 'laforesta_checkout_abierto'
             ];
             keysToRemove.forEach(key => localStorage.removeItem(key));
         });
