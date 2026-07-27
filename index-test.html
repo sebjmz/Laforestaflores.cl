@@ -417,27 +417,56 @@
             if (ref) localStorage.setItem('laforesta_referral_code', ref);
         })();
 
-        // Si el visitante tiene sesión iniciada en Mi Club, precarga su correo en el
-        // campo de checkout ("Correo electrónico" del paso de contacto) — así los
-        // puntos se acreditan automáticamente sin que tenga que acordarse de escribir
-        // el mismo correo con el que se registró. Sigue siendo editable a mano.
-        (async function prellenarCorreoClub(){
+        // Sincroniza el estado de "Mi Club" en el nav (Iniciar Sesión <-> nombre del
+        // cliente) y, si hay sesión válida, precarga su correo en el checkout — todo
+        // con una sola llamada a /api/me para no duplicar peticiones.
+        (async function sincronizarClub(){
+            function conDom(fn){
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', fn);
+                } else {
+                    fn();
+                }
+            }
+
+            function setLabelNav(texto){
+                conDom(() => {
+                    const label = document.getElementById('club-nav-label');
+                    if (label) label.textContent = texto;
+                });
+            }
+
             const token = localStorage.getItem('laforesta_club_token');
-            if (!token) return;
+            if (!token) {
+                setLabelNav('Iniciar Sesión');
+                return;
+            }
+
             try {
                 const res = await fetch('https://club-laforesta.sebjmz.workers.dev/api/me', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                if (!res.ok) return;
+
+                if (!res.ok) {
+                    // Token vencido o inválido: se limpia y vuelve a "Iniciar Sesión"
+                    localStorage.removeItem('laforesta_club_token');
+                    setLabelNav('Iniciar Sesión');
+                    return;
+                }
+
                 const { customer } = await res.json();
-                document.addEventListener('DOMContentLoaded', () => {
+                const primerNombre = (customer.full_name || '').trim().split(' ')[0];
+                setLabelNav(primerNombre || 'Mi Perfil');
+
+                conDom(() => {
                     const emailInput = document.getElementById('buyer-email');
                     if (emailInput && customer.email && !emailInput.value) {
                         emailInput.value = customer.email;
                     }
                 });
             } catch (e) {
-                console.warn('No se pudo precargar el correo de Mi Club:', e);
+                console.warn('No se pudo sincronizar la sesión de Mi Club:', e);
+                setLabelNav('Iniciar Sesión');
             }
         })();
     </script>
@@ -464,7 +493,7 @@
         <div class="flex items-center space-x-4 md:space-x-6 flex-shrink-0">
             <a href="club.html" aria-label="Mi Club La Foresta" class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#c5a059] hover:text-white transition-colors duration-300">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                <span class="hidden md:inline">Mi Club</span>
+                <span id="club-nav-label" class="hidden md:inline">Iniciar Sesión</span>
             </a>
             <button onclick="toggleCart()" aria-label="Ver carrito de compras" class="relative group flex items-center hover:scale-110 transition-transform duration-300">
                 <svg class="w-5 h-5 text-[#c5a059] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
