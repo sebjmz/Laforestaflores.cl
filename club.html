@@ -26,13 +26,9 @@
 <body class="min-h-screen p-6 md:p-12">
 
 <div class="max-w-3xl mx-auto">
-  <div class="flex justify-between items-center mb-10">
-    <!-- ⚙️ AJUSTAR cuando pases a producción: cambiar "index-test.html" por "/" -->
-    <a href="index-test.html" class="inline-block">
-      <img src="img/logo-menu.webp" alt="La Foresta Flores" class="h-8 w-auto brightness-0 invert opacity-80 hover:opacity-100 transition">
-    </a>
-    <a href="index-test.html" class="btn-outline px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest">Ir a Comprar</a>
-  </div>
+  <a href="/" class="inline-block mb-10">
+    <img src="img/logo-menu.webp" alt="La Foresta Flores" class="h-8 w-auto brightness-0 invert opacity-80 hover:opacity-100 transition">
+  </a>
 
   <h1 class="font-serif text-4xl md:text-5xl italic mb-2">Mi Club La Foresta</h1>
   <p class="text-white/50 text-sm mb-10">Tu cuenta, tus puntos, tus fechas importantes — todo en un solo lugar.</p>
@@ -47,7 +43,7 @@
     <form id="login-form" class="space-y-4" onsubmit="return doLogin(event)">
       <input required type="email" id="login-email" placeholder="Correo electrónico" class="w-full px-4 py-3 rounded-lg text-sm">
       <input required type="password" id="login-password" placeholder="Contraseña" class="w-full px-4 py-3 rounded-lg text-sm">
-      <div class="cf-turnstile" data-sitekey="TU_TURNSTILE_SITE_KEY" data-callback="onLoginTurnstile"></div>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAD-wcXesUkoXYuPR" data-callback="onLoginTurnstile"></div>
       <button class="btn-gold w-full py-3 rounded-lg text-xs uppercase tracking-widest">Ingresar</button>
       <p id="login-error" class="text-red-400 text-xs"></p>
     </form>
@@ -58,7 +54,7 @@
       <input required type="password" id="reg-password" placeholder="Contraseña (mínimo 8 caracteres)" minlength="8" class="w-full px-4 py-3 rounded-lg text-sm">
       <input id="reg-phone" placeholder="Teléfono (+56 9 ...)" class="w-full px-4 py-3 rounded-lg text-sm">
       <input id="reg-referral" placeholder="Código de referido (opcional)" class="w-full px-4 py-3 rounded-lg text-sm">
-      <div class="cf-turnstile" data-sitekey="TU_TURNSTILE_SITE_KEY" data-callback="onRegisterTurnstile"></div>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAD-wcXesUkoXYuPR" data-callback="onRegisterTurnstile"></div>
       <button class="btn-gold w-full py-3 rounded-lg text-xs uppercase tracking-widest">Crear cuenta</button>
       <p id="register-error" class="text-red-400 text-xs"></p>
       <p id="register-success" class="text-green-400 text-xs"></p>
@@ -149,7 +145,7 @@
 
 <script>
 // ⚙️ AJUSTAR: la URL de tu worker una vez lo despliegues
-const CLUB_API = 'https://club-laforesta.TU-SUBDOMINIO.workers.dev';
+const CLUB_API = 'https://club-laforesta.sebjmz.workers.dev';
 
 let pendingRegisterEmail = '';
 let loginTurnstileToken = null, registerTurnstileToken = null;
