@@ -72,7 +72,7 @@
       --input-border: rgba(10, 31, 28, 0.2);
     }
 
-    /* Variables de alto contraste para Noche (Oscuro) basadas en el club original */
+    /* Variables de alto contraste para Noche (Oscuro) */
     .dark {
       --bg-color: #0a1f1c;
       --text-color: #fcfaf7;
@@ -84,10 +84,7 @@
     }
 
     body {
-      background-color: var(--theme-bg);
-      color: var(--theme-text);
       font-family: 'Plus Jakarta Sans', sans-serif;
-      transition: background-color 0.4s ease, color 0.4s ease;
       -webkit-font-smoothing: antialiased;
     }
     
@@ -95,20 +92,21 @@
       font-family: Georgia, 'Times New Roman', Times, serif;
     }
 
+    /* Usamos las variables correctamente aquí */
     .glass-card {
-      background: var(--theme-card);
-      border: 1px solid var(--theme-border);
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 1rem;
       box-shadow: 0 4px 25px rgba(0,0,0,0.03);
+      transition: background-color 0.4s ease, border-color 0.4s ease;
     }
 
-    /* Arreglo de contraste en inputs */
     .glass-input {
-      background: var(--theme-input);
+      background-color: var(--input-bg);
       border: 1px solid var(--input-border);
-      color: var(--theme-text);
+      color: var(--text-color);
       transition: all 0.3s ease;
-      border-radius: 0.5rem; /* Bordes suaves clásicos */
+      border-radius: 0.5rem;
     }
 
     .glass-input:focus {
@@ -117,22 +115,22 @@
       box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.2);
     }
 
-    .glass-input::placeholder { color: var(--theme-muted); opacity: 0.6; }
+    .glass-input::placeholder { color: var(--text-muted); opacity: 0.6; }
 
-    /* Arreglo vital para que las opciones del <select> se vean en modo nocturno en Safari/Chrome */
+    /* Arreglo para que las opciones del <select> se vean siempre bien */
     select.glass-input option {
       background-color: var(--bg-color);
-      color: var(--theme-text);
+      color: var(--text-color);
     }
 
     .btn-gold {
-      background: #c5a059;
+      background-color: #c5a059;
       color: #0a1f1c;
       font-weight: 700;
       transition: all 0.3s ease;
       border-radius: 0.5rem;
     }
-    .btn-gold:hover { background: #ffffff; color: #0a1f1c; box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3); }
+    .btn-gold:hover { background-color: #ffffff; color: #0a1f1c; box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3); }
 
     .btn-outline {
       border: 1px solid #c5a059;
@@ -141,14 +139,15 @@
       transition: all 0.3s ease;
       border-radius: 0.5rem;
     }
-    .btn-outline:hover { background: #c5a059; color: #0a1f1c; }
+    .btn-outline:hover { background-color: #c5a059; color: #0a1f1c; }
 
     .hidden-panel { display: none !important; }
     
     ::-webkit-scrollbar { display: none; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-6 md:p-12 selection:bg-gold selection:text-[#0a1f1c]">
+<!-- Aquí aplicamos los colores de Tailwind directamente al body para asegurar la visibilidad del fondo -->
+<body class="bg-theme-bg text-theme-text min-h-screen flex flex-col justify-between p-6 md:p-12 selection:bg-gold selection:text-[#0a1f1c] transition-colors duration-500">
 
   <!-- Header con Toggle de Iluminación -->
   <header class="max-w-3xl w-full mx-auto flex items-center justify-between mb-8">
@@ -161,7 +160,7 @@
         Volver a la Tienda
       </a>
       
-      <!-- Botón de Iluminación Cuidadoso -->
+      <!-- Botón de Iluminación -->
       <button onclick="toggleTheme()" class="p-2.5 rounded-full border border-theme-border text-theme-muted hover:text-gold hover:border-gold transition-all" aria-label="Ajustar luz de la pantalla" title="Cambiar luz de pantalla">
         <svg id="theme-icon-sun" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
         <svg id="theme-icon-moon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
@@ -344,10 +343,12 @@
         <h3 class="font-serif text-2xl italic text-theme-text mb-2">Comparte el cariño y gana</h3>
         <p class="text-theme-muted text-sm mb-6 font-light">Envíale tu enlace a un amigo para que tenga $5.000 de regalo. Cuando haga su compra, nosotros te regalaremos $5.000 a ti también. ¡Todos ganan!</p>
         
-        <div class="flex items-center gap-4 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center gap-4 mb-6">
           <span id="referral-code" class="font-serif text-3xl italic text-gold">—</span>
-          <button onclick="copyReferralLink()" class="btn-outline px-4 py-2 text-[10px] font-bold uppercase tracking-widest">Copiar enlace</button>
-          <a id="referral-wa" target="_blank" class="btn-outline px-4 py-2 text-[10px] font-bold uppercase tracking-widest">Invitar por WhatsApp</a>
+          <div class="flex gap-3">
+            <button onclick="copyReferralLink()" class="btn-outline px-4 py-2 text-[10px] font-bold uppercase tracking-widest">Copiar enlace</button>
+            <a id="referral-wa" target="_blank" class="btn-outline px-4 py-2 text-[10px] font-bold uppercase tracking-widest">Invitar por WhatsApp</a>
+          </div>
         </div>
 
         <h4 class="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-3">Amigos invitados:</h4>
@@ -363,7 +364,7 @@
     </div>
   </main>
 
-  <footer class="max-w-3xl w-full mx-auto text-center pt-8 border-t border-theme-border opacity-70">
+  <footer class="max-w-3xl w-full mx-auto text-center pt-8 border-t border-theme-border opacity-70 mt-12">
     <p class="text-[9px] text-theme-text uppercase tracking-widest font-bold">© 2026 La Foresta Flores & Garden.</p>
   </footer>
 
