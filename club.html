@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Club | La Foresta Flores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<style>
+  :root{--forest-green:#0a1f1c;--gold-leaf:#c5a059;--soft-cream:#fcfaf7;}
+  body{background:var(--forest-green);color:var(--soft-cream);font-family:'Plus Jakarta Sans',sans-serif;}
+  .font-serif{font-family:'Playfair Display',serif;}
+  .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:1rem;}
+  input, select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#fcfaf7;}
+  input::placeholder{color:rgba(255,255,255,.35);}
+  .btn-gold{background:var(--gold-leaf);color:var(--forest-green);font-weight:700;transition:.3s;}
+  .btn-gold:hover{background:#fff;}
+  .btn-outline{border:1px solid var(--gold-leaf);color:var(--gold-leaf);transition:.3s;}
+  .btn-outline:hover{background:var(--gold-leaf);color:var(--forest-green);}
+  .hidden-panel{display:none;}
+</style>
+</head>
+<body class="min-h-screen p-6 md:p-12">
+
+<div class="max-w-3xl mx-auto">
+  <a href="/" class="inline-block mb-10">
+    <img src="img/logo-menu.webp" alt="La Foresta Flores" class="h-8 w-auto brightness-0 invert opacity-80 hover:opacity-100 transition">
+  </a>
+
+  <h1 class="font-serif text-4xl md:text-5xl italic mb-2">Mi Club La Foresta</h1>
+  <p class="text-white/50 text-sm mb-10">Tu cuenta, tus puntos, tus fechas importantes — todo en un solo lugar.</p>
+
+  <!-- ================= AUTH: REGISTRO / LOGIN ================= -->
+  <div id="auth-section" class="card p-8 mb-8">
+    <div class="flex gap-6 mb-6 text-xs font-bold uppercase tracking-widest">
+      <button onclick="showAuthTab('login')" id="tab-login" class="pb-2 border-b-2 border-[#c5a059] text-white">Ingresar</button>
+      <button onclick="showAuthTab('register')" id="tab-register" class="pb-2 border-b-2 border-transparent text-white/40">Crear cuenta</button>
+    </div>
+
+    <form id="login-form" class="space-y-4" onsubmit="return doLogin(event)">
+      <input required type="email" id="login-email" placeholder="Correo electrónico" class="w-full px-4 py-3 rounded-lg text-sm">
+      <input required type="password" id="login-password" placeholder="Contraseña" class="w-full px-4 py-3 rounded-lg text-sm">
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAD-wcXesUkoXYuPR" data-callback="onLoginTurnstile"></div>
+      <button class="btn-gold w-full py-3 rounded-lg text-xs uppercase tracking-widest">Ingresar</button>
+      <p id="login-error" class="text-red-400 text-xs"></p>
+    </form>
+
+    <form id="register-form" class="space-y-4 hidden-panel" onsubmit="return doRegister(event)">
+      <input required id="reg-name" placeholder="Nombre completo" class="w-full px-4 py-3 rounded-lg text-sm">
+      <input required type="email" id="reg-email" placeholder="Correo electrónico" class="w-full px-4 py-3 rounded-lg text-sm">
+      <input required type="password" id="reg-password" placeholder="Contraseña (mínimo 8 caracteres)" minlength="8" class="w-full px-4 py-3 rounded-lg text-sm">
+      <input id="reg-phone" placeholder="Teléfono (+56 9 ...)" class="w-full px-4 py-3 rounded-lg text-sm">
+      <input id="reg-referral" placeholder="Código de referido (opcional)" class="w-full px-4 py-3 rounded-lg text-sm">
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAD-wcXesUkoXYuPR" data-callback="onRegisterTurnstile"></div>
+      <button class="btn-gold w-full py-3 rounded-lg text-xs uppercase tracking-widest">Crear cuenta</button>
+      <p id="register-error" class="text-red-400 text-xs"></p>
+      <p id="register-success" class="text-green-400 text-xs"></p>
+    </form>
+  </div>
+
+  <!-- ================= VERIFICACIÓN DE CORREO ================= -->
+  <div id="verify-email-section" class="card p-8 mb-8 hidden-panel">
+    <h3 class="font-serif text-xl italic mb-3">Verifica tu correo</h3>
+    <p class="text-white/50 text-xs uppercase tracking-widest mb-4">Te enviamos un código de 6 dígitos</p>
+    <form class="flex gap-3" onsubmit="return doVerifyEmail(event)">
+      <input required id="email-code" maxlength="6" placeholder="000000" class="flex-1 px-4 py-3 rounded-lg text-center tracking-[0.5em] text-lg">
+      <button class="btn-gold px-6 rounded-lg text-xs uppercase tracking-widest">Verificar</button>
+    </form>
+    <button onclick="resendEmailCode()" class="text-[#c5a059] text-[10px] uppercase tracking-widest mt-3">Reenviar código</button>
+  </div>
+
+  <!-- ================= DASHBOARD ================= -->
+  <div id="dashboard-section" class="hidden-panel space-y-8">
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="card p-6">
+        <span class="text-[9px] uppercase tracking-widest text-white/40">Puntos disponibles</span>
+        <p class="font-serif text-3xl italic mt-1" id="dash-points">0</p>
+      </div>
+      <div class="card p-6">
+        <span class="text-[9px] uppercase tracking-widest text-white/40">Nivel</span>
+        <p class="font-serif text-3xl italic mt-1" id="dash-tier">Semilla</p>
+      </div>
+      <div class="card p-6">
+        <span class="text-[9px] uppercase tracking-widest text-white/40">Comprado en flores</span>
+        <p class="font-serif text-3xl italic mt-1" id="dash-lifetime">$0</p>
+      </div>
+    </div>
+
+    <!-- Verificación de teléfono -->
+    <div class="card p-8" id="phone-verify-card">
+      <h3 class="font-serif text-xl italic mb-3">Verifica tu teléfono <span class="text-xs text-white/30">(gratis, vía WhatsApp)</span></h3>
+      <div id="phone-not-verified">
+        <input id="phone-input" placeholder="+56 9 ..." class="px-4 py-3 rounded-lg text-sm mr-3">
+        <button onclick="requestPhoneOtp()" class="btn-outline px-6 py-3 rounded-lg text-xs uppercase tracking-widest">Generar código</button>
+        <div id="phone-otp-box" class="mt-4 hidden-panel">
+          <p class="text-white/60 text-sm mb-3">Aprieta el botón, se abrirá WhatsApp con tu código ya escrito. Solo debes enviarlo.</p>
+          <a id="phone-wa-link" target="_blank" class="btn-gold inline-block px-6 py-3 rounded-lg text-xs uppercase tracking-widest">Verificar por WhatsApp</a>
+          <p class="text-white/30 text-[10px] mt-3">Esperando confirmación...</p>
+        </div>
+      </div>
+      <p id="phone-verified-msg" class="text-green-400 text-sm hidden-panel">✅ Teléfono verificado</p>
+    </div>
+
+    <!-- Fechas importantes -->
+    <div class="card p-8">
+      <h3 class="font-serif text-xl italic mb-1">Fechas importantes</h3>
+      <p class="text-white/40 text-xs uppercase tracking-widest mb-5">Te avisamos antes para que nunca se te olvide un regalo</p>
+      <form class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6" onsubmit="return addDate(event)">
+        <input required id="date-label" placeholder="Ej: Aniversario con Javiera" class="px-4 py-3 rounded-lg text-sm">
+        <input required id="date-monthday" type="date" placeholder="Fecha" class="px-4 py-3 rounded-lg text-sm">
+        <select id="date-relation" class="px-4 py-3 rounded-lg text-sm">
+          <option value="">Relación (opcional)</option>
+          <option>Pareja</option><option>Mamá</option><option>Papá</option>
+          <option>Amiga/o</option><option>Familiar</option><option>Otro</option>
+        </select>
+        <select id="date-days" class="px-4 py-3 rounded-lg text-sm">
+          <option value="3">Avisar 3 días antes</option>
+          <option value="5" selected>Avisar 5 días antes</option>
+          <option value="7">Avisar 7 días antes</option>
+        </select>
+        <button class="btn-gold md:col-span-2 py-3 rounded-lg text-xs uppercase tracking-widest">Agregar fecha</button>
+      </form>
+      <div id="dates-list" class="space-y-2"></div>
+    </div>
+
+    <!-- Referidos -->
+    <div class="card p-8">
+      <h3 class="font-serif text-xl italic mb-1">Regala $5.000, obtén $5.000</h3>
+      <p class="text-white/40 text-xs uppercase tracking-widest mb-5">Comparte tu código. Cuando tu invitado complete su primera compra, ambos ganan.</p>
+      <div class="flex items-center gap-3 mb-4">
+        <span id="referral-code" class="font-serif text-2xl italic text-[#c5a059]">—</span>
+        <button onclick="copyReferralLink()" class="btn-outline px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest">Copiar link</button>
+        <a id="referral-wa" target="_blank" class="btn-outline px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest">Enviar por WhatsApp</a>
+      </div>
+      <div id="referrals-list" class="text-white/50 text-xs space-y-1"></div>
+    </div>
+
+    <button onclick="logout()" class="text-white/30 hover:text-white/60 text-[10px] uppercase tracking-widest">Cerrar sesión</button>
+  </div>
+</div>
+
+<script>
+// ⚙️ AJUSTAR: la URL de tu worker una vez lo despliegues
+const CLUB_API = 'https://club-laforesta.sebjmz.workers.dev';
+
+let pendingRegisterEmail = '';
+let loginTurnstileToken = null, registerTurnstileToken = null;
+function onLoginTurnstile(t){ loginTurnstileToken = t; }
+function onRegisterTurnstile(t){ registerTurnstileToken = t; }
+
+function showAuthTab(tab){
+  document.getElementById('login-form').classList.toggle('hidden-panel', tab !== 'login');
+  document.getElementById('register-form').classList.toggle('hidden-panel', tab !== 'register');
+  document.getElementById('tab-login').classList.toggle('border-[#c5a059]', tab === 'login');
+  document.getElementById('tab-login').classList.toggle('text-white/40', tab !== 'login');
+  document.getElementById('tab-register').classList.toggle('border-[#c5a059]', tab === 'register');
+  document.getElementById('tab-register').classList.toggle('text-white/40', tab !== 'register');
+}
+
+async function doRegister(e){
+  e.preventDefault();
+  const full_name = document.getElementById('reg-name').value;
+  const email = document.getElementById('reg-email').value;
+  const password = document.getElementById('reg-password').value;
+  const phone = document.getElementById('reg-phone').value;
+  const referral_code = document.getElementById('reg-referral').value || undefined;
+  const errEl = document.getElementById('register-error'), okEl = document.getElementById('register-success');
+  errEl.textContent = ''; okEl.textContent = '';
+  try{
+    const res = await fetch(`${CLUB_API}/api/register`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password, full_name, phone, referral_code, turnstileToken: registerTurnstileToken })
+    });
+    const data = await res.json();
+    if(!res.ok) { errEl.textContent = data.error; return false; }
+    pendingRegisterEmail = email;
+    okEl.textContent = data.message;
+    document.getElementById('auth-section').classList.add('hidden-panel');
+    document.getElementById('verify-email-section').classList.remove('hidden-panel');
+  }catch(err){ errEl.textContent = 'Error de conexión.'; }
+  return false;
+}
+
+async function doVerifyEmail(e){
+  e.preventDefault();
+  const code = document.getElementById('email-code').value;
+  const res = await fetch(`${CLUB_API}/api/verify-email`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email: pendingRegisterEmail, code })
+  });
+  const data = await res.json();
+  if(res.ok){
+    alert('Correo verificado. Ahora inicia sesión.');
+    document.getElementById('verify-email-section').classList.add('hidden-panel');
+    document.getElementById('auth-section').classList.remove('hidden-panel');
+    showAuthTab('login');
+  } else alert(data.error);
+  return false;
+}
+
+function resendEmailCode(){
+  fetch(`${CLUB_API}/api/resend-email-code`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email: pendingRegisterEmail })
+  });
+}
+
+async function doLogin(e){
+  e.preventDefault();
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+  try{
+    const res = await fetch(`${CLUB_API}/api/login`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password, turnstileToken: loginTurnstileToken })
+    });
+    const data = await res.json();
+    if(!res.ok){ errEl.textContent = data.error; return false; }
+    localStorage.setItem('laforesta_club_token', data.token);
+    loadDashboard();
+  }catch(err){ errEl.textContent = 'Error de conexión.'; }
+  return false;
+}
+
+function logout(){
+  localStorage.removeItem('laforesta_club_token');
+  location.reload();
+}
+
+async function authedFetch(path, options={}){
+  const token = localStorage.getItem('laforesta_club_token');
+  options.headers = Object.assign({}, options.headers, { 'Authorization': `Bearer ${token}` });
+  return fetch(`${CLUB_API}${path}`, options);
+}
+
+async function loadDashboard(){
+  const res = await authedFetch('/api/me');
+  if(!res.ok){ return; }
+  const { customer } = await res.json();
+
+  document.getElementById('auth-section').classList.add('hidden-panel');
+  document.getElementById('verify-email-section').classList.add('hidden-panel');
+  document.getElementById('dashboard-section').classList.remove('hidden-panel');
+
+  document.getElementById('dash-points').textContent = customer.points_balance.toLocaleString('es-CL');
+  document.getElementById('dash-tier').textContent = ({semilla:'🌱 Semilla', brote:'🌿 Brote', flor_eterna:'🌸 Flor Eterna'})[customer.tier] || customer.tier;
+  document.getElementById('dash-lifetime').textContent = '$' + customer.lifetime_flowers_clp.toLocaleString('es-CL');
+
+  if(customer.phone_verified){
+    document.getElementById('phone-not-verified').classList.add('hidden-panel');
+    document.getElementById('phone-verified-msg').classList.remove('hidden-panel');
+  }
+
+  document.getElementById('referral-code').textContent = customer.referral_code;
+  const link = `${location.origin}/?ref=${customer.referral_code}`;
+  document.getElementById('referral-wa').href = `https://wa.me/?text=${encodeURIComponent('Te regalo $5.000 en tu primera compra de flores en La Foresta: ' + link)}`;
+
+  loadDates();
+  loadReferrals();
+}
+
+function copyReferralLink(){
+  const code = document.getElementById('referral-code').textContent;
+  navigator.clipboard.writeText(`${location.origin}/?ref=${code}`);
+  alert('Link copiado');
+}
+
+let phonePoll;
+async function requestPhoneOtp(){
+  const phone = document.getElementById('phone-input').value;
+  const token = localStorage.getItem('laforesta_club_token');
+  const meRes = await authedFetch('/api/me');
+  const { customer } = await meRes.json();
+  const res = await fetch(`${CLUB_API}/api/request-phone-otp`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email: customer.email, phone })
+  });
+  const data = await res.json();
+  if(!res.ok){ alert(data.error); return; }
+  document.getElementById('phone-wa-link').href = data.wa_link;
+  document.getElementById('phone-otp-box').classList.remove('hidden-panel');
+  clearInterval(phonePoll);
+  phonePoll = setInterval(async () => {
+    const check = await authedFetch('/api/me');
+    const { customer: c2 } = await check.json();
+    if(c2.phone_verified){
+      clearInterval(phonePoll);
+      document.getElementById('phone-not-verified').classList.add('hidden-panel');
+      document.getElementById('phone-verified-msg').classList.remove('hidden-panel');
+    }
+  }, 3000);
+}
+
+async function addDate(e){
+  e.preventDefault();
+  const label = document.getElementById('date-label').value;
+  const raw = document.getElementById('date-monthday').value; // YYYY-MM-DD
+  const month_day = raw.slice(5); // MM-DD
+  const relation = document.getElementById('date-relation').value;
+  const notify_days_before = parseInt(document.getElementById('date-days').value, 10);
+  const res = await authedFetch('/api/dates', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ label, month_day, relation, notify_days_before })
+  });
+  if(res.ok){ e.target.reset(); loadDates(); } else { alert('Error al guardar la fecha.'); }
+  return false;
+}
+
+async function loadDates(){
+  const res = await authedFetch('/api/dates');
+  const { dates } = await res.json();
+  const list = document.getElementById('dates-list');
+  list.innerHTML = dates.map(d => `
+    <div class="flex justify-between items-center border-t border-white/10 pt-2">
+      <span class="text-sm">${d.label} <span class="text-white/30 text-xs">(${d.month_day} · ${d.relation||'—'})</span></span>
+      <button onclick="deleteDate(${d.id})" class="text-white/30 hover:text-red-400 text-xs">Eliminar</button>
+    </div>`).join('') || '<p class="text-white/30 text-xs">Aún no agregas fechas.</p>';
+}
+
+async function deleteDate(id){
+  await authedFetch(`/api/dates/${id}`, { method:'DELETE' });
+  loadDates();
+}
+
+async function loadReferrals(){
+  const res = await authedFetch('/api/referral');
+  const data = await res.json();
+  const list = document.getElementById('referrals-list');
+  list.innerHTML = (data.referrals||[]).map(r =>
+    `<p>${r.referred_email} — ${({pending:'Pendiente',completed:'Completado',rewarded:'Premiado ✅'})[r.status]}</p>`
+  ).join('') || '<p>Aún no invitas a nadie.</p>';
+}
+
+// Prellenar código de referido si el visitante vino de un link compartido (index.html lo guarda en localStorage)
+const savedRef = localStorage.getItem('laforesta_referral_code');
+if(savedRef){ document.getElementById('reg-referral').value = savedRef; showAuthTab('register'); }
+
+// Al cargar la página: si ya hay sesión guardada, ir directo al dashboard
+if(localStorage.getItem('laforesta_club_token')){ loadDashboard(); }
+</script>
+</body>
+</html>
