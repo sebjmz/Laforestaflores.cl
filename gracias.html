@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orden Confirmada | La Foresta Flores</title>
 
-    <!-- Google tag (gtag.js) — antes esta página no lo tenía, por eso no se registraba
-         ninguna venta de MercadoPago en Analytics una vez que el checkout empezó a
-         redirigir aquí en vez de volver al home. -->
+    <!-- Google tag (gtag.js) — se mantiene para métricas generales de la página
+         (pageview, engagement, etc.), pero el evento 'purchase' YA NO se dispara
+         desde aquí: ahora se envía server-side desde old-brook-bf01 vía GA4
+         Measurement Protocol, apenas MercadoPago/PayPal confirman el pago, sin
+         depender de que el comprador llegue a esta página. -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9NDEELWEK"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -131,47 +133,12 @@
                 refElement.innerText = `REF: ${paymentId}`;
             }
 
-            // --- TRACKING DE COMPRA (MercadoPago) ---
-            // MercadoPago agrega automáticamente sus propios parámetros a la URL de
-            // vuelta (status/collection_status, payment_id, external_reference, etc.),
-            // aunque tú le hayas pasado una URL "limpia" como back_url. Los usamos aquí
-            // para confirmar la aprobación y disparar el evento 'purchase' ANTES de
-            // limpiar el localStorage — que es justo lo que se estaba perdiendo.
-            //
-            // Si en cambio llegaste desde PayPal, la URL solo trae "payment_id" (sin
-            // status/collection_status), y ese flujo ya dispara su propio evento
-            // 'purchase' en main.js antes de redirigir aquí — así que esta condición
-            // no se cumple y evitamos contar la venta dos veces.
-            const mpStatus = urlParams.get('collection_status') || urlParams.get('status');
-            const cartRaw = localStorage.getItem('laforesta_cart');
-
-            if (mpStatus === 'approved' && cartRaw) {
-                try {
-                    const cart = JSON.parse(cartRaw);
-                    const shipping = parseInt(localStorage.getItem('laforesta_shippingCost') || '0');
-                    const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-                    const total = subtotal + shipping;
-                    const transactionId = urlParams.get('payment_id') || urlParams.get('external_reference') || paymentId;
-
-                    if (typeof gtag === 'function') {
-                        gtag('event', 'purchase', {
-                            transaction_id: transactionId,
-                            currency: 'CLP',
-                            value: total,
-                            shipping: shipping,
-                            items: cart.map(item => ({
-                                item_id: String(item.id),
-                                item_name: item.name,
-                                price: item.price,
-                                quantity: item.qty,
-                                item_category: 'Ramos Florales'
-                            }))
-                        });
-                    }
-                } catch (err) {
-                    console.error('Error al registrar la compra en Analytics:', err);
-                }
-            }
+            // NOTA: el bloque que antes disparaba gtag('event','purchase', ...) se
+            // quitó de aquí. Esa venta ahora se registra server-side (worker
+            // old-brook-bf01 -> GA4 Measurement Protocol) apenas se confirma el pago,
+            // sin depender de que el comprador llegue hasta esta página. Si lo
+            // dejábamos acá también, cualquier venta que sí completara este último
+            // paso quedaría contada dos veces en Analytics.
 
             const keysToRemove = [
                 'laforesta_cart', 'laforesta_checkout_inputs', 'laforesta_shippingCost',
