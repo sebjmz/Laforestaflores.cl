@@ -1,150 +1,360 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi Club | La Foresta Flores</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-<style>
-  :root{--forest-green:#0a1f1c;--gold-leaf:#c5a059;--soft-cream:#fcfaf7;}
-  body{background:var(--forest-green);color:var(--soft-cream);font-family:'Plus Jakarta Sans',sans-serif;}
-  .font-serif{font-family:'Playfair Display',serif;}
-  .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:1rem;}
-  input, select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:#fcfaf7;}
-  input::placeholder{color:rgba(255,255,255,.35);}
-  .btn-gold{background:var(--gold-leaf);color:var(--forest-green);font-weight:700;transition:.3s;}
-  .btn-gold:hover{background:#fff;}
-  .btn-outline{border:1px solid var(--gold-leaf);color:var(--gold-leaf);transition:.3s;}
-  .btn-outline:hover{background:var(--gold-leaf);color:var(--forest-green);}
-  .hidden-panel{display:none;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Mi Club | La Foresta Flores</title>
+  
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: {
+              DEFAULT: '#0a1f1c',
+              deep: '#050f0e',
+              light: '#13302c'
+            },
+            gold: {
+              DEFAULT: '#c5a059',
+              hover: '#dbb56f',
+              muted: 'rgba(197, 160, 89, 0.15)'
+            },
+            cream: '#fcfaf7'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  
+  <style>
+    /* Estilos personalizados ultra-pulidos */
+    body {
+      background-color: #0a1f1c;
+      color: #fcfaf7;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1.25rem;
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fcfaf7;
+      transition: all 0.2s ease;
+    }
+
+    .glass-input:focus {
+      outline: none;
+      border-color: #c5a059;
+      background: rgba(255, 255, 255, 0.07);
+      box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15);
+    }
+
+    .btn-gold {
+      background: #c5a059;
+      color: #0a1f1c;
+      font-weight: 600;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-gold:hover {
+      background: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      border: 1px solid rgba(197, 160, 89, 0.4);
+      color: #c5a059;
+      transition: all 0.25s ease;
+    }
+
+    .btn-outline:hover {
+      background: #c5a059;
+      color: #0a1f1c;
+      border-color: #c5a059;
+    }
+
+    .hidden-panel { display: none !important; }
+    
+    /* Smooth Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a1f1c; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+  </style>
 </head>
-<body class="min-h-screen p-6 md:p-12">
+<body class="min-h-screen flex flex-col justify-between p-4 sm:p-6 md:p-12 selection:bg-gold selection:text-forest">
 
-<div class="max-w-3xl mx-auto">
-  <a href="/" class="inline-block mb-10">
-    <img src="img/logo-menu.webp" alt="La Foresta Flores" class="h-8 w-auto brightness-0 invert opacity-80 hover:opacity-100 transition">
-  </a>
+  <!-- Header Nav Minimalista -->
+  <header class="max-w-4xl w-full mx-auto flex items-center justify-between mb-10 pt-2">
+    <a href="/" class="group flex items-center gap-2 transition-opacity hover:opacity-80">
+      <img src="img/logo-menu.webp" alt="La Foresta Flores" class="h-7 md:h-8 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition">
+    </a>
+    <a href="/" class="text-[11px] font-semibold uppercase tracking-widest text-white/40 hover:text-gold transition">
+      ← Volver a la Tienda
+    </a>
+  </header>
 
-  <h1 class="font-serif text-4xl md:text-5xl italic mb-2">Mi Club La Foresta</h1>
-  <p class="text-white/50 text-sm mb-10">Tu cuenta, tus puntos, tus fechas importantes — todo en un solo lugar.</p>
-
-  <!-- ================= AUTH: REGISTRO / LOGIN ================= -->
-  <div id="auth-section" class="card p-8 mb-8">
-    <div class="flex gap-6 mb-6 text-xs font-bold uppercase tracking-widest">
-      <button onclick="showAuthTab('login')" id="tab-login" class="pb-2 border-b-2 border-[#c5a059] text-white">Ingresar</button>
-      <button onclick="showAuthTab('register')" id="tab-register" class="pb-2 border-b-2 border-transparent text-white/40">Crear cuenta</button>
+  <main class="max-w-4xl w-full mx-auto flex-grow">
+    
+    <!-- Hero Title -->
+    <div class="mb-8 text-center sm:text-left">
+      <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-gold block mb-2">Programa de Fidelización</span>
+      <h1 class="font-serif text-3xl sm:text-5xl italic text-cream font-normal">Mi Club La Foresta</h1>
+      <p class="text-white/50 text-xs sm:text-sm mt-2 max-w-lg leading-relaxed">Gestione sus beneficios exclusivos, acumule puntos por sus compras y mantenga sus fechas especiales siempre recordadas.</p>
     </div>
 
-    <form id="login-form" class="space-y-4" onsubmit="return doLogin(event)">
-      <input required type="email" id="login-email" placeholder="Correo electrónico" class="w-full px-4 py-3 rounded-lg text-sm">
-      <input required type="password" id="login-password" placeholder="Contraseña" class="w-full px-4 py-3 rounded-lg text-sm">
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAAD-wcXesUkoXYuPR" data-callback="onLoginTurnstile"></div>
-      <button class="btn-gold w-full py-3 rounded-lg text-xs uppercase tracking-widest">Ingresar</button>
-      <p id="login-error" class="text-red-400 text-xs"></p>
-    </form>
-
-    <form id="register-form" class="space-y-4 hidden-panel" onsubmit="return doRegister(event)">
-      <input required id="reg-name" placeholder="Nombre completo" class="w-full px-4 py-3 rounded-lg text-sm">
-      <input required type="email" id="reg-email" placeholder="Correo electrónico" class="w-full px-4 py-3 rounded-lg text-sm">
-      <input required type="password" id="reg-password" placeholder="Contraseña (mínimo 8 caracteres)" minlength="8" class="w-full px-4 py-3 rounded-lg text-sm">
-      <input id="reg-phone" placeholder="Teléfono (+56 9 ...)" class="w-full px-4 py-3 rounded-lg text-sm">
-      <input id="reg-referral" placeholder="Código de referido (opcional)" class="w-full px-4 py-3 rounded-lg text-sm">
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAAD-wcXesUkoXYuPR" data-callback="onRegisterTurnstile"></div>
-      <button class="btn-gold w-full py-3 rounded-lg text-xs uppercase tracking-widest">Crear cuenta</button>
-      <p id="register-error" class="text-red-400 text-xs"></p>
-      <p id="register-success" class="text-green-400 text-xs"></p>
-    </form>
-  </div>
-
-  <!-- ================= VERIFICACIÓN DE CORREO ================= -->
-  <div id="verify-email-section" class="card p-8 mb-8 hidden-panel">
-    <h3 class="font-serif text-xl italic mb-3">Verifica tu correo</h3>
-    <p class="text-white/50 text-xs uppercase tracking-widest mb-4">Te enviamos un código de 6 dígitos</p>
-    <form class="flex gap-3" onsubmit="return doVerifyEmail(event)">
-      <input required id="email-code" maxlength="6" placeholder="000000" class="flex-1 px-4 py-3 rounded-lg text-center tracking-[0.5em] text-lg">
-      <button class="btn-gold px-6 rounded-lg text-xs uppercase tracking-widest">Verificar</button>
-    </form>
-    <button onclick="resendEmailCode()" class="text-[#c5a059] text-[10px] uppercase tracking-widest mt-3">Reenviar código</button>
-  </div>
-
-  <!-- ================= DASHBOARD ================= -->
-  <div id="dashboard-section" class="hidden-panel space-y-8">
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="card p-6">
-        <span class="text-[9px] uppercase tracking-widest text-white/40">Puntos disponibles</span>
-        <p class="font-serif text-3xl italic mt-1" id="dash-points">0</p>
+    <!-- ================= AUTH: REGISTRO / LOGIN ================= -->
+    <div id="auth-section" class="glass-card p-6 sm:p-10 mb-8 max-w-lg mx-auto sm:mx-0 shadow-2xl">
+      
+      <!-- Selector Tabs Apple Style -->
+      <div class="flex p-1 bg-black/20 rounded-xl mb-8 border border-white/5">
+        <button onclick="showAuthTab('login')" id="tab-login" class="flex-1 py-2.5 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all duration-300 bg-gold text-forest shadow-md">Ingresar</button>
+        <button onclick="showAuthTab('register')" id="tab-register" class="flex-1 py-2.5 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all duration-300 text-white/40 hover:text-white">Crear cuenta</button>
       </div>
-      <div class="card p-6">
-        <span class="text-[9px] uppercase tracking-widest text-white/40">Nivel</span>
-        <p class="font-serif text-3xl italic mt-1" id="dash-tier">Semilla</p>
-      </div>
-      <div class="card p-6">
-        <span class="text-[9px] uppercase tracking-widest text-white/40">Comprado en flores</span>
-        <p class="font-serif text-3xl italic mt-1" id="dash-lifetime">$0</p>
-      </div>
+
+      <!-- Form Login -->
+      <form id="login-form" class="space-y-4" onsubmit="return doLogin(event)">
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5">Correo Electrónico</label>
+          <input required type="email" id="login-email" placeholder="ejemplo@correo.com" class="glass-input w-full px-4 py-3.5 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5">Contraseña</label>
+          <input required type="password" id="login-password" placeholder="••••••••" class="glass-input w-full px-4 py-3.5 rounded-xl text-sm">
+        </div>
+        <div class="pt-2 flex justify-center">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAD-wcXesUkoXYuPR" data-callback="onLoginTurnstile" data-theme="dark"></div>
+        </div>
+        <button class="btn-gold w-full py-3.5 rounded-xl text-xs uppercase tracking-widest mt-2">Iniciar Sesión</button>
+        <p id="login-error" class="text-red-400 text-xs text-center font-medium pt-1"></p>
+      </form>
+
+      <!-- Form Registro -->
+      <form id="register-form" class="space-y-4 hidden-panel" onsubmit="return doRegister(event)">
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5">Nombre Completo</label>
+          <input required id="reg-name" placeholder="Tu nombre" class="glass-input w-full px-4 py-3.5 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5">Correo Electrónico</label>
+          <input required type="email" id="reg-email" placeholder="ejemplo@correo.com" class="glass-input w-full px-4 py-3.5 rounded-xl text-sm">
+        </div>
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5">Contraseña</label>
+          <input required type="password" id="reg-password" placeholder="Mínimo 8 caracteres" minlength="8" class="glass-input w-full px-4 py-3.5 rounded-xl text-sm">
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5">Teléfono</label>
+            <input id="reg-phone" placeholder="+56 9 1234 5678" class="glass-input w-full px-4 py-3.5 rounded-xl text-sm">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5">Código Referido</label>
+            <input id="reg-referral" placeholder="Opcional" class="glass-input w-full px-4 py-3.5 rounded-xl text-sm">
+          </div>
+        </div>
+        <div class="pt-2 flex justify-center">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAD-wcXesUkoXYuPR" data-callback="onRegisterTurnstile" data-theme="dark"></div>
+        </div>
+        <button class="btn-gold w-full py-3.5 rounded-xl text-xs uppercase tracking-widest mt-2">Crear mi Cuenta</button>
+        <p id="register-error" class="text-red-400 text-xs text-center font-medium pt-1"></p>
+        <p id="register-success" class="text-emerald-400 text-xs text-center font-medium pt-1"></p>
+      </form>
     </div>
 
-    <!-- Verificación de teléfono -->
-    <div class="card p-8" id="phone-verify-card">
-      <h3 class="font-serif text-xl italic mb-3">Verifica tu teléfono <span class="text-xs text-white/30">(gratis, vía WhatsApp)</span></h3>
-      <div id="phone-not-verified">
-        <input id="phone-input" placeholder="+56 9 ..." class="px-4 py-3 rounded-lg text-sm mr-3">
-        <button onclick="requestPhoneOtp()" class="btn-outline px-6 py-3 rounded-lg text-xs uppercase tracking-widest">Generar código</button>
-        <div id="phone-otp-box" class="mt-4 hidden-panel">
-          <p class="text-white/60 text-sm mb-3">Aprieta el botón, se abrirá WhatsApp con tu código ya escrito. Solo debes enviarlo.</p>
-          <a id="phone-wa-link" target="_blank" class="btn-gold inline-block px-6 py-3 rounded-lg text-xs uppercase tracking-widest">Verificar por WhatsApp</a>
-          <p class="text-white/30 text-[10px] mt-3">Esperando confirmación...</p>
+    <!-- ================= VERIFICACIÓN DE CORREO ================= -->
+    <div id="verify-email-section" class="glass-card p-8 mb-8 max-w-md mx-auto hidden-panel text-center">
+      <div class="w-12 h-12 rounded-full bg-gold/10 text-gold flex items-center justify-center mx-auto mb-4 border border-gold/20">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      </div>
+      <h3 class="font-serif text-2xl italic mb-2">Verifica tu correo</h3>
+      <p class="text-white/50 text-xs mb-6">Hemos enviado un código de 6 dígitos a tu dirección de correo electrónico.</p>
+      
+      <form class="space-y-4" onsubmit="return doVerifyEmail(event)">
+        <input required id="email-code" maxlength="6" placeholder="0 0 0 0 0 0" class="glass-input w-full py-3.5 text-center text-xl font-mono tracking-[0.5em] rounded-xl">
+        <button class="btn-gold w-full py-3.5 rounded-xl text-xs uppercase tracking-widest">Verificar Código</button>
+      </form>
+      
+      <button onclick="resendEmailCode()" class="text-gold/80 hover:text-gold text-[11px] uppercase tracking-wider font-semibold mt-6 block mx-auto transition">
+        ¿No recibiste el código? Reenviar
+      </button>
+    </div>
+
+    <!-- ================= DASHBOARD PRINCIPAL ================= -->
+    <div id="dashboard-section" class="hidden-panel space-y-8">
+
+      <!-- Métricas / Status Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- Puntos -->
+        <div class="glass-card p-6 relative overflow-hidden group">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-white/40">Puntos Club</span>
+            <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+          </div>
+          <p class="font-serif text-4xl italic mt-3 text-gold" id="dash-points">0</p>
+          <p class="text-[10px] text-white/30 mt-2">Canjeables en tus próximas compras</p>
+        </div>
+
+        <!-- Tier / Nivel de Cliente con Progresión Classica -->
+        <div class="glass-card p-6 relative overflow-hidden">
+          <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-white/40">Nivel de Membresía</span>
+          <p class="font-serif text-3xl italic mt-3 text-cream flex items-center gap-2" id="dash-tier">
+            <span>🌱 Semilla</span>
+          </p>
+
+          <!-- Barra de Progresión de Niveles (Growth Engine Visual) -->
+          <div class="mt-4">
+            <div class="flex justify-between text-[9px] uppercase tracking-wider text-white/40 mb-1">
+              <span id="tier-progress-label">Beneficio Acumulado</span>
+              <span id="tier-discount-badge" class="text-gold font-bold">Hasta 10% OFF</span>
+            </div>
+            <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+              <div id="tier-progress-bar" class="bg-gold h-full rounded-full transition-all duration-1000" style="width: 25%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Comprado -->
+        <div class="glass-card p-6">
+          <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-white/40">Histórico de Flores</span>
+          <p class="font-serif text-4xl italic mt-3 text-cream" id="dash-lifetime">$0</p>
+          <p class="text-[10px] text-white/30 mt-2">Acumulado total en La Foresta</p>
         </div>
       </div>
-      <p id="phone-verified-msg" class="text-green-400 text-sm hidden-panel">✅ Teléfono verificado</p>
-    </div>
 
-    <!-- Fechas importantes -->
-    <div class="card p-8">
-      <h3 class="font-serif text-xl italic mb-1">Fechas importantes</h3>
-      <p class="text-white/40 text-xs uppercase tracking-widest mb-5">Te avisamos antes para que nunca se te olvide un regalo</p>
-      <form class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6" onsubmit="return addDate(event)">
-        <input required id="date-label" placeholder="Ej: Aniversario con Javiera" class="px-4 py-3 rounded-lg text-sm">
-        <input required id="date-monthday" type="date" placeholder="Fecha" class="px-4 py-3 rounded-lg text-sm">
-        <select id="date-relation" class="px-4 py-3 rounded-lg text-sm">
-          <option value="">Relación (opcional)</option>
-          <option>Pareja</option><option>Mamá</option><option>Papá</option>
-          <option>Amiga/o</option><option>Familiar</option><option>Otro</option>
-        </select>
-        <select id="date-days" class="px-4 py-3 rounded-lg text-sm">
-          <option value="3">Avisar 3 días antes</option>
-          <option value="5" selected>Avisar 5 días antes</option>
-          <option value="7">Avisar 7 días antes</option>
-        </select>
-        <button class="btn-gold md:col-span-2 py-3 rounded-lg text-xs uppercase tracking-widest">Agregar fecha</button>
-      </form>
-      <div id="dates-list" class="space-y-2"></div>
-    </div>
+      <!-- Verificación de WhatsApp -->
+      <div class="glass-card p-6 sm:p-8" id="phone-verify-card">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="font-serif text-xl italic text-cream">Verificación por WhatsApp</h3>
+            <p class="text-white/40 text-xs mt-0.5">Activa notificaciones prioritarias y soporte directo.</p>
+          </div>
+          <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-medium">Gratis</span>
+        </div>
 
-    <!-- Referidos -->
-    <div class="card p-8">
-      <h3 class="font-serif text-xl italic mb-1">Regala $5.000, obtén $5.000</h3>
-      <p class="text-white/40 text-xs uppercase tracking-widest mb-5">Comparte tu código. Cuando tu invitado complete su primera compra, ambos ganan.</p>
-      <div class="flex items-center gap-3 mb-4">
-        <span id="referral-code" class="font-serif text-2xl italic text-[#c5a059]">—</span>
-        <button onclick="copyReferralLink()" class="btn-outline px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest">Copiar link</button>
-        <a id="referral-wa" target="_blank" class="btn-outline px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest">Enviar por WhatsApp</a>
+        <div id="phone-not-verified">
+          <div class="flex flex-col sm:flex-row gap-3">
+            <input id="phone-input" placeholder="+56 9 1234 5678" class="glass-input px-4 py-3 rounded-xl text-sm flex-1">
+            <button onclick="requestPhoneOtp()" class="btn-outline px-6 py-3 rounded-xl text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Generar Código</button>
+          </div>
+
+          <div id="phone-otp-box" class="mt-6 p-4 rounded-xl bg-black/20 border border-white/5 hidden-panel">
+            <p class="text-white/70 text-xs mb-3">Haz clic en el siguiente botón para abrir WhatsApp con tu código listo para enviar:</p>
+            <a id="phone-wa-link" target="_blank" class="btn-gold inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs uppercase tracking-wider font-bold">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+              Verificar por WhatsApp
+            </a>
+            <p class="text-white/30 text-[10px] mt-3 animate-pulse">Esperando confirmación automática...</p>
+          </div>
+        </div>
+
+        <p id="phone-verified-msg" class="text-emerald-400 text-sm font-medium flex items-center gap-2 hidden-panel">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Teléfono verificado exitosamente
+        </p>
       </div>
-      <div id="referrals-list" class="text-white/50 text-xs space-y-1"></div>
+
+      <!-- Fechas importantes -->
+      <div class="glass-card p-6 sm:p-8">
+        <div class="mb-6">
+          <h3 class="font-serif text-2xl italic text-cream">Fechas Importantes</h3>
+          <p class="text-white/40 text-xs mt-1">Le avisaremos anticipadamente para que sorprenda a tiempo en cada celebración.</p>
+        </div>
+
+        <form class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8" onsubmit="return addDate(event)">
+          <input required id="date-label" placeholder="Ej: Aniversario con Javiera" class="glass-input px-4 py-3 rounded-xl text-sm">
+          <input required id="date-monthday" type="date" class="glass-input px-4 py-3 rounded-xl text-sm">
+          
+          <select id="date-relation" class="glass-input px-4 py-3 rounded-xl text-sm text-white/80">
+            <option value="" class="bg-forest">Relación (opcional)</option>
+            <option class="bg-forest">Pareja</option>
+            <option class="bg-forest">Mamá</option>
+            <option class="bg-forest">Papá</option>
+            <option class="bg-forest">Amiga/o</option>
+            <option class="bg-forest">Familiar</option>
+            <option class="bg-forest">Otro</option>
+          </select>
+          
+          <select id="date-days" class="glass-input px-4 py-3 rounded-xl text-sm text-white/80">
+            <option value="3" class="bg-forest">Avisar 3 días antes</option>
+            <option value="5" selected class="bg-forest">Avisar 5 días antes</option>
+            <option value="7" class="bg-forest">Avisar 7 días antes</option>
+          </select>
+          
+          <button class="btn-gold sm:col-span-2 py-3 rounded-xl text-xs uppercase tracking-widest font-bold">Guardar Fecha Especial</button>
+        </form>
+
+        <div id="dates-list" class="space-y-3">
+          <!-- Fechas dinámicas -->
+        </div>
+      </div>
+
+      <!-- Sistema de Referidos (Growth engine) -->
+      <div class="glass-card p-6 sm:p-8 border-gold/20">
+        <div class="mb-6">
+          <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold block mb-1">Programa de Invitación</span>
+          <h3 class="font-serif text-2xl italic text-cream">Regala $5.000, Obtén $5.000</h3>
+          <p class="text-white/40 text-xs mt-1">Comparta su código único. Cuando su invitado realice su primera compra, ambos recibirán el beneficio.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center gap-4 bg-black/20 p-4 rounded-xl border border-white/5 mb-6">
+          <div class="text-center sm:text-left flex-1">
+            <span class="text-[9px] uppercase tracking-wider text-white/40 block">Tu código personal</span>
+            <span id="referral-code" class="font-serif text-2xl italic text-gold tracking-wider">—</span>
+          </div>
+          
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button onclick="copyReferralLink()" class="btn-outline flex-1 sm:flex-none px-4 py-2.5 rounded-lg text-[10px] font-semibold uppercase tracking-wider">Copiar Enlace</button>
+            <a id="referral-wa" target="_blank" class="btn-gold flex-1 sm:flex-none px-4 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider text-center">WhatsApp</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-3">Mis Invitaciones</h4>
+          <div id="referrals-list" class="text-white/50 text-xs space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- Footer Dashboard -->
+      <div class="pt-4 text-center">
+        <button onclick="logout()" class="text-white/30 hover:text-red-400 text-[11px] font-semibold uppercase tracking-widest transition">
+          Cerrar Sesión
+        </button>
+      </div>
+
     </div>
 
-    <button onclick="logout()" class="text-white/30 hover:text-white/60 text-[10px] uppercase tracking-widest">Cerrar sesión</button>
-  </div>
-</div>
+  </main>
+
+  <!-- Footer Simple -->
+  <footer class="max-w-4xl w-full mx-auto text-center pt-12 pb-6 border-t border-white/5 mt-12">
+    <p class="text-[10px] text-white/30 uppercase tracking-widest">© 2026 La Foresta Flores & Garden. Todos los derechos reservados.</p>
+  </footer>
 
 <script>
-// ⚙️ AJUSTAR: la URL de tu worker una vez lo despliegues
+// ⚙️ URL Worker Backend
 const CLUB_API = 'https://club-laforesta.sebjmz.workers.dev';
 
 let pendingRegisterEmail = '';
@@ -153,12 +363,20 @@ function onLoginTurnstile(t){ loginTurnstileToken = t; }
 function onRegisterTurnstile(t){ registerTurnstileToken = t; }
 
 function showAuthTab(tab){
-  document.getElementById('login-form').classList.toggle('hidden-panel', tab !== 'login');
-  document.getElementById('register-form').classList.toggle('hidden-panel', tab !== 'register');
-  document.getElementById('tab-login').classList.toggle('border-[#c5a059]', tab === 'login');
-  document.getElementById('tab-login').classList.toggle('text-white/40', tab !== 'login');
-  document.getElementById('tab-register').classList.toggle('border-[#c5a059]', tab === 'register');
-  document.getElementById('tab-register').classList.toggle('text-white/40', tab !== 'register');
+  const isLogin = tab === 'login';
+  document.getElementById('login-form').classList.toggle('hidden-panel', !isLogin);
+  document.getElementById('register-form').classList.toggle('hidden-panel', isLogin);
+  
+  const tabLogin = document.getElementById('tab-login');
+  const tabRegister = document.getElementById('tab-register');
+  
+  if(isLogin) {
+    tabLogin.className = "flex-1 py-2.5 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all duration-300 bg-gold text-forest shadow-md";
+    tabRegister.className = "flex-1 py-2.5 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all duration-300 text-white/40 hover:text-white";
+  } else {
+    tabRegister.className = "flex-1 py-2.5 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all duration-300 bg-gold text-forest shadow-md";
+    tabLogin.className = "flex-1 py-2.5 text-xs font-semibold uppercase tracking-wider rounded-lg transition-all duration-300 text-white/40 hover:text-white";
+  }
 }
 
 async function doRegister(e){
@@ -194,7 +412,7 @@ async function doVerifyEmail(e){
   });
   const data = await res.json();
   if(res.ok){
-    alert('Correo verificado. Ahora inicia sesión.');
+    alert('Correo verificado exitosamente. Ya puede iniciar sesión.');
     document.getElementById('verify-email-section').classList.add('hidden-panel');
     document.getElementById('auth-section').classList.remove('hidden-panel');
     showAuthTab('login');
@@ -249,7 +467,19 @@ async function loadDashboard(){
   document.getElementById('dashboard-section').classList.remove('hidden-panel');
 
   document.getElementById('dash-points').textContent = customer.points_balance.toLocaleString('es-CL');
-  document.getElementById('dash-tier').textContent = ({semilla:'🌱 Semilla', brote:'🌿 Brote', flor_eterna:'🌸 Flor Eterna'})[customer.tier] || customer.tier;
+  
+  // Render de Tiers
+  const tierMap = {
+    semilla: { label: '🌱 Semilla', pct: 33, badge: '5% OFF' },
+    brote: { label: '🌿 Brote', pct: 66, badge: '7% OFF' },
+    flor_eterna: { label: '🌸 Flor Eterna', pct: 100, badge: '10% OFF' }
+  };
+  const tierData = tierMap[customer.tier] || { label: customer.tier, pct: 10, badge: 'Descuento Activo' };
+  
+  document.getElementById('dash-tier').textContent = tierData.label;
+  document.getElementById('tier-progress-bar').style.width = `${tierData.pct}%`;
+  document.getElementById('tier-discount-badge').textContent = tierData.badge;
+  
   document.getElementById('dash-lifetime').textContent = '$' + customer.lifetime_flowers_clp.toLocaleString('es-CL');
 
   if(customer.phone_verified){
@@ -268,13 +498,12 @@ async function loadDashboard(){
 function copyReferralLink(){
   const code = document.getElementById('referral-code').textContent;
   navigator.clipboard.writeText(`${location.origin}/?ref=${code}`);
-  alert('Link copiado');
+  alert('Enlace de referido copiado al portapapeles');
 }
 
 let phonePoll;
 async function requestPhoneOtp(){
   const phone = document.getElementById('phone-input').value;
-  const token = localStorage.getItem('laforesta_club_token');
   const meRes = await authedFetch('/api/me');
   const { customer } = await meRes.json();
   const res = await fetch(`${CLUB_API}/api/request-phone-otp`, {
@@ -317,10 +546,13 @@ async function loadDates(){
   const { dates } = await res.json();
   const list = document.getElementById('dates-list');
   list.innerHTML = dates.map(d => `
-    <div class="flex justify-between items-center border-t border-white/10 pt-2">
-      <span class="text-sm">${d.label} <span class="text-white/30 text-xs">(${d.month_day} · ${d.relation||'—'})</span></span>
-      <button onclick="deleteDate(${d.id})" class="text-white/30 hover:text-red-400 text-xs">Eliminar</button>
-    </div>`).join('') || '<p class="text-white/30 text-xs">Aún no agregas fechas.</p>';
+    <div class="flex justify-between items-center p-3.5 rounded-xl bg-black/20 border border-white/5">
+      <div>
+        <span class="text-sm font-medium text-cream block">${d.label}</span>
+        <span class="text-white/40 text-[10px] uppercase tracking-wider">${d.month_day} · Relación: ${d.relation||'—'}</span>
+      </div>
+      <button onclick="deleteDate(${d.id})" class="text-white/30 hover:text-red-400 text-xs transition p-1">Eliminar</button>
+    </div>`).join('') || '<p class="text-white/30 text-xs italic">Aún no ha agregado fechas especiales.</p>';
 }
 
 async function deleteDate(id){
@@ -333,15 +565,18 @@ async function loadReferrals(){
   const data = await res.json();
   const list = document.getElementById('referrals-list');
   list.innerHTML = (data.referrals||[]).map(r =>
-    `<p>${r.referred_email} — ${({pending:'Pendiente',completed:'Completado',rewarded:'Premiado ✅'})[r.status]}</p>`
-  ).join('') || '<p>Aún no invitas a nadie.</p>';
+    `<div class="flex justify-between items-center p-2.5 rounded-lg bg-black/10 border border-white/5">
+      <span class="font-mono text-xs">${r.referred_email}</span>
+      <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-gold/10 text-gold">${{pending:'Pendiente',completed:'Completado',rewarded:'Premiado ✅'}[r.status]}</span>
+    </div>`
+  ).join('') || '<p class="italic text-white/30">Aún no ha invitado a nadie.</p>';
 }
 
-// Prellenar código de referido si el visitante vino de un link compartido (index.html lo guarda en localStorage)
+// Prellenar código de referido si vino con link
 const savedRef = localStorage.getItem('laforesta_referral_code');
 if(savedRef){ document.getElementById('reg-referral').value = savedRef; showAuthTab('register'); }
 
-// Al cargar la página: si ya hay sesión guardada, ir directo al dashboard
+// Autologin si existe token activo
 if(localStorage.getItem('laforesta_club_token')){ loadDashboard(); }
 </script>
 </body>
