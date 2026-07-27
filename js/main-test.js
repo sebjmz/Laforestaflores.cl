@@ -330,7 +330,7 @@ function closeCoverageModal() {
 }
 
 const catalog = [
-    { id: 1, name: "Amor Delicado", price: 28900, img: "img/RAMOS01.webp", desc: "Lisianthus, lilium, limonium y astromelias.", url: "amor-delicado.html" },
+    { id: 1, name: "Amor Delicado", price: 100, img: "img/RAMOS01.webp", desc: "Lisianthus, lilium, limonium y astromelias.", url: "amor-delicado.html" },
     { id: 2, name: "Susurro de Amor", price: 28900, img: "img/RAMOS02.webp", desc: "Lilium, rosas, gypso y maule.", url: "susurro-de-amor.html" },
     { id: 3, name: "Amor Eterno", price: 230900, img: "img/RAMOS03.webp", desc: "Arreglo de 70 rosas premium seleccionadas.", url: "amor-eterno.html" },
     { id: 4, name: "Pasión de Sol", price: 45900, img: "img/RAMOS04.webp", desc: "Girasoles, rosas, gypso y maule.", url: "pasion-de-sol.html" },
