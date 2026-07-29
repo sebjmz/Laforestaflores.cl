@@ -5,20 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Tu Espacio | La Foresta Flores</title>
   
-  <!-- Tipografías EXACTAS del Index de La Foresta -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Script súper rápido para modo Día/Noche automático según la hora (Evita parpadeos) -->
+  <!-- 1. Lógica del Tema Primero (Evita parpadeos) -->
   <script>
     function initTheme() {
       const savedTheme = localStorage.getItem('laforesta_theme');
       const hour = new Date().getHours();
-      // Entre las 7 AM y las 19:00 hrs será modo claro, de noche será oscuro
       const isNight = hour < 7 || hour >= 19;
       
       if (savedTheme === 'dark' || (!savedTheme && isNight)) {
@@ -30,38 +25,43 @@
     initTheme();
   </script>
 
+  <!-- 2. Configuración de Tailwind SEGUNDO (Obligatorio antes del CDN) -->
   <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            gold: {
-              DEFAULT: '#c5a059',
-              hover: '#dbb56f',
+    tailwind = {
+      config: {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              gold: {
+                DEFAULT: '#c5a059',
+                hover: '#dbb56f',
+              },
+              theme: {
+                bg: 'var(--bg-color)',
+                text: 'var(--text-color)',
+                muted: 'var(--text-muted)',
+                card: 'var(--card-bg)',
+                border: 'var(--card-border)',
+                input: 'var(--input-bg)'
+              }
             },
-            theme: {
-              bg: 'var(--bg-color)',
-              text: 'var(--text-color)',
-              muted: 'var(--text-muted)',
-              card: 'var(--card-bg)',
-              border: 'var(--card-border)',
-              input: 'var(--input-bg)'
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+              serif: ['Georgia', '"Times New Roman"', 'Times', 'serif']
             }
-          },
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            serif: ['Georgia', '"Times New Roman"', 'Times', 'serif']
           }
         }
       }
     }
   </script>
   
+  <!-- 3. CDN de Tailwind TERCERO (Lee la configuración ya establecida) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   
   <style>
-    /* Variables de alto contraste para Día (Claro) */
     :root {
       --bg-color: #fcfaf7;
       --text-color: #0a1f1c;
@@ -72,8 +72,8 @@
       --input-border: rgba(10, 31, 28, 0.2);
     }
 
-    /* Variables de alto contraste para Noche (Oscuro) */
-    .dark {
+    /* Uso de html.dark para garantizar máxima especificidad en motores WebKit/iOS */
+    html.dark {
       --bg-color: #0a1f1c;
       --text-color: #fcfaf7;
       --text-muted: rgba(252, 250, 247, 0.7);
@@ -92,7 +92,6 @@
       font-family: Georgia, 'Times New Roman', Times, serif;
     }
 
-    /* Usamos las variables correctamente aquí */
     .glass-card {
       background-color: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -117,7 +116,6 @@
 
     .glass-input::placeholder { color: var(--text-muted); opacity: 0.6; }
 
-    /* Arreglo para que las opciones del <select> se vean siempre bien */
     select.glass-input option {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -130,7 +128,12 @@
       transition: all 0.3s ease;
       border-radius: 0.5rem;
     }
-    .btn-gold:hover { background-color: #ffffff; color: #0a1f1c; box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3); }
+    
+    .btn-gold:hover { 
+      background-color: #ffffff; 
+      color: #0a1f1c; 
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3); 
+    }
 
     .btn-outline {
       border: 1px solid #c5a059;
@@ -139,7 +142,11 @@
       transition: all 0.3s ease;
       border-radius: 0.5rem;
     }
-    .btn-outline:hover { background-color: #c5a059; color: #0a1f1c; }
+    
+    .btn-outline:hover { 
+      background-color: #c5a059; 
+      color: #0a1f1c; 
+    }
 
     .hidden-panel { display: none !important; }
     
