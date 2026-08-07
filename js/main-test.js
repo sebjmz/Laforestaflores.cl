@@ -354,7 +354,7 @@ const catalog = [
 const upsellsCatalog = [
     { id: 101, name: "Bombón Sin Azucar - Entrelagos (180g)", price: 16890, img: "img/upsell-choco.webp" },
     { id: 102, name: "Bombón Ferrero Rocher (150g)", price: 15890, img: "img/upsell-ferrero.webp" },
-    { id: 103, name: "Bombón Chocolate Seashells (250g)", price: 18190, img: "img/upsell-seashells.webp" },
+    { id: 103, name: "Bombón Chocolate Seashells (195g)", price: 18190, img: "img/upsell-seashells.webp" },
     { id: 104, name: "Perrito de Peluche - Bulldog", price: 12900, img: "img/bulldog-frances.webp" },
     { id: 105, name: "Perrito de Peluche - Corgi", price: 12900, img: "img/corgi-gales.webp" },
     { id: 106, name: "Osito de Peluche - Graduación", price: 12900, img: "img/osito-graduacion.webp" },
