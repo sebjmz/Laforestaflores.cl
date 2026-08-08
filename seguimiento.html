@@ -98,6 +98,7 @@
 
       <!-- Paso 3 -->
       <div class="timeline-step inactive" id="step-entregado">
+        <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
         <h3 class="font-serif text-xl italic mb-1">¡Entregado con éxito! 🌸</h3>
         <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-entregado">PENDIENTE</p>
@@ -107,11 +108,11 @@
 
       <!-- Botones de Navegación Inferiores -->
       <div class="border-t border-white/10 mt-6 pt-6 flex justify-between items-center text-xs">
-        <a href="/seguimiento.html" class="text-white/60 hover:text-[#c5a059] transition flex items-center gap-1">
-          🔍 Revisa otro pedido
-        </a>
         <a href="/" class="text-[#c5a059] font-bold hover:underline transition flex items-center gap-1">
-          Volver a la Tienda →
+          ← Volver a la Tienda
+        </a>
+        <a href="/seguimiento.html" class="text-white/60 hover:text-[#c5a059] transition flex items-center gap-1">
+          Revisa otro pedido 🔍
         </a>
       </div>
 
@@ -120,8 +121,8 @@
     <div id="error-msg" class="text-center hidden mt-10">
       <p class="text-red-400 font-bold mb-4">No dimos con este pedido. Revisa bien el enlace o el número ingresado.</p>
       <div class="flex justify-center gap-4 text-xs">
-        <a href="/seguimiento.html" class="text-white/60 hover:text-white underline">Revisar otro pedido</a>
         <a href="/" class="text-[#c5a059] underline font-bold">Volver a la tienda</a>
+        <a href="/seguimiento.html" class="text-white/60 hover:text-white underline">Revisar otro pedido</a>
       </div>
     </div>
   </div>
