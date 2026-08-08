@@ -1,0 +1,132 @@
+<!-- seguimiento.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seguimiento | La Foresta Flores</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{--forest-green:#0a1f1c;--gold-leaf:#c5a059;--soft-cream:#fcfaf7;}
+  body{background:var(--forest-green);color:var(--soft-cream);font-family:'Plus Jakarta Sans',sans-serif;}
+  .font-serif{font-family:'Playfair Display',serif;}
+  .timeline-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--gold-leaf); position: absolute; left: -8px; top: 0; box-shadow: 0 0 10px rgba(197,160,89,0.5); }
+  .timeline-line { position: absolute; left: 0; top: 16px; bottom: -30px; width: 2px; background: rgba(197,160,89,0.3); }
+  .timeline-step { position: relative; padding-left: 30px; padding-bottom: 40px; }
+  .timeline-step:last-child .timeline-line { display: none; }
+  .timeline-step.inactive { opacity: 0.4; }
+  .timeline-step.inactive .timeline-dot { background: rgba(255,255,255,0.2); box-shadow: none; }
+</style>
+</head>
+<body class="p-6 md:p-12 min-h-screen flex items-center justify-center">
+  <div class="max-w-md w-full">
+    <div class="text-center mb-10">
+      <h1 class="font-serif text-3xl italic text-[#c5a059] mb-2">Tu pedido viaja seguro</h1>
+      <p class="text-white/60 text-sm" id="order-subtitle">Pedido #<span id="order-id-display">...</span></p>
+    </div>
+
+    <!-- Contenedor del Buscador Manual -->
+    <div id="manual-search-container" class="bg-white/5 border border-white/10 p-8 rounded-2xl hidden text-center">
+        <p class="text-sm opacity-80 mb-6 text-left">Ingresa el número de tu pedido para consultar el estado en tiempo real. Lo encuentras en tu comprobante de compra.</p>
+        <input type="text" id="manual-id" placeholder="Ej: 12345" class="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white mb-4 focus:outline-none focus:border-[#c5a059]">
+        <button onclick="buscarManual()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-3 rounded-lg uppercase tracking-wider">Buscar Pedido</button>
+    </div>
+
+    <!-- Contenedor de la Línea de Tiempo -->
+    <div id="tracking-container" class="bg-white/5 border border-white/10 p-8 rounded-2xl hidden">
+      
+      <!-- Paso 1: Recibido -->
+      <div class="timeline-step" id="step-recibido">
+        <div class="timeline-line"></div>
+        <div class="timeline-dot"></div>
+        <h3 class="font-serif text-xl italic mb-1">Orden Preparándose</h3>
+        <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-recibido">...</p>
+        <p class="text-sm text-white/80">Estamos seleccionando las flores más frescas para armar tu arreglo con el mayor cuidado y cariño.</p>
+      </div>
+
+      <!-- Paso 2: En tránsito -->
+      <div class="timeline-step inactive" id="step-transito">
+        <div class="timeline-line"></div>
+        <div class="timeline-dot"></div>
+        <h3 class="font-serif text-xl italic mb-1">En Tránsito 🚚</h3>
+        <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-transito">Pendiente</p>
+        <p class="text-sm text-white/80 mb-3">El arreglo ya salió de nuestro taller y va camino a su destino. ¡Qué emoción!</p>
+        <img id="img-transito" src="" class="hidden w-full h-40 object-cover rounded-lg border border-white/20">
+      </div>
+
+      <!-- Paso 3: Entregado -->
+      <div class="timeline-step inactive" id="step-entregado">
+        <div class="timeline-dot"></div>
+        <h3 class="font-serif text-xl italic mb-1">Entregado 🌸</h3>
+        <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-entregado">Pendiente</p>
+        <p class="text-sm text-white/80 mb-3">El arreglo llegó a manos de su destinatario. Misión cumplida.</p>
+        <img id="img-entregado" src="" class="hidden w-full h-40 object-cover rounded-lg border border-white/20">
+      </div>
+
+    </div>
+
+    <div id="error-msg" class="text-center text-red-400 hidden mt-10">
+      No pudimos encontrar este pedido. Verifica el enlace.
+    </div>
+  </div>
+
+<script>
+  const API_URL = 'https://club-laforesta.sebjmz.workers.dev';
+  const urlParams = new URLSearchParams(window.location.search);
+  const orderId = urlParams.get('id');
+
+  function buscarManual() {
+      const id = document.getElementById('manual-id').value.trim();
+      if (id) {
+          window.location.href = `/seguimiento.html?id=${encodeURIComponent(id)}`;
+      }
+  }
+
+  async function loadTracking() {
+    if (!orderId) {
+      document.getElementById('order-subtitle').textContent = 'Consulta de estado';
+      document.getElementById('manual-search-container').classList.remove('hidden');
+      return;
+    }
+
+    document.getElementById('order-id-display').textContent = orderId;
+
+    try {
+      const res = await fetch(`${API_URL}/api/tracking?id=${orderId}`);
+      if (!res.ok) throw new Error();
+      
+      const data = await res.json();
+      document.getElementById('tracking-container').classList.remove('hidden');
+      
+      const formatTime = (iso) => new Date(iso).toLocaleString('es-CL', { hour: '2-digit', minute:'2-digit', day: 'numeric', month: 'short' }).toUpperCase();
+
+      document.getElementById('time-recibido').textContent = formatTime(data.created_at);
+
+      if (data.transito_at) {
+        document.getElementById('step-transito').classList.remove('inactive');
+        document.getElementById('time-transito').textContent = formatTime(data.transito_at);
+        if (data.transito_img) {
+          document.getElementById('img-transito').src = data.transito_img;
+          document.getElementById('img-transito').classList.remove('hidden');
+        }
+      }
+
+      if (data.entregado_at) {
+        document.getElementById('step-entregado').classList.remove('inactive');
+        document.getElementById('time-entregado').textContent = formatTime(data.entregado_at);
+        if (data.entregado_img) {
+          document.getElementById('img-entregado').src = data.entregado_img;
+          document.getElementById('img-entregado').classList.remove('hidden');
+        }
+      }
+
+    } catch (e) {
+      document.getElementById('error-msg').classList.remove('hidden');
+    }
+  }
+
+  loadTracking();
+</script>
+</body>
+</html>
