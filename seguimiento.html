@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Seguimiento | La Foresta Flores</title>
 
-<!-- Favicon para profesionalismo -->
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 
@@ -16,13 +15,11 @@
   body { background: var(--forest-green); color: var(--soft-cream); font-family: 'Plus Jakarta Sans', sans-serif; }
   .font-serif { font-family: 'Playfair Display', serif; }
   
-  /* Estructura de Línea de Tiempo */
   .timeline-step { position: relative; padding-left: 32px; padding-bottom: 40px; }
   .timeline-step:last-child { padding-bottom: 0; }
   .timeline-line { position: absolute; left: 0; top: 16px; bottom: -30px; width: 2px; background: rgba(197, 160, 89, 0.2); }
   .timeline-step:last-child .timeline-line { display: none; }
 
-  /* Punto Estándar / Inactivo */
   .timeline-dot {
     width: 16px;
     height: 16px;
@@ -34,7 +31,6 @@
     transition: all 0.3s ease;
   }
 
-  /* Animación Punto GPS Pulsante (Activo) */
   @keyframes gps-ring {
     0% { transform: scale(0.8); opacity: 0.8; }
     100% { transform: scale(2.4); opacity: 0; }
@@ -81,9 +77,9 @@
       <div class="timeline-step active" id="step-recibido">
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
-        <h3 class="font-serif text-xl italic mb-1">Orden Preparándose</h3>
+        <h3 class="font-serif text-xl italic mb-1">Pedido Confirmado en Atelier</h3>
         <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-recibido">PROCESANDO...</p>
-        <p class="text-sm text-white/80">Estamos seleccionando las flores más frescas para armar tu arreglo con el mayor cuidado y cariño.</p>
+        <p class="text-sm text-white/80">Hemos registrado tu solicitud y tu cupo de entrega queda agendado. Prepararemos tu diseño con flores frescas respetando la fecha y horario solicitados.</p>
       </div>
 
       <!-- Paso 2: En tránsito -->
@@ -91,7 +87,7 @@
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
         <h3 class="font-serif text-xl italic mb-1">En Tránsito 🚚</h3>
-        <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-transito">Pendiente</p>
+        <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-transito">PENDIENTE</p>
         <p class="text-sm text-white/80 mb-3">El arreglo ya salió de nuestro taller y va camino a su destino. ¡Qué emoción!</p>
         <img id="img-transito" src="" class="hidden w-full h-40 object-cover rounded-lg border border-white/20">
       </div>
@@ -100,7 +96,7 @@
       <div class="timeline-step inactive" id="step-entregado">
         <div class="timeline-dot"></div>
         <h3 class="font-serif text-xl italic mb-1">Entregado 🌸</h3>
-        <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-entregado">Pendiente</p>
+        <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-entregado">PENDIENTE</p>
         <p class="text-sm text-white/80 mb-3">El arreglo llegó a manos de su destinatario. Misión cumplida.</p>
         <img id="img-entregado" src="" class="hidden w-full h-40 object-cover rounded-lg border border-white/20">
       </div>
@@ -124,6 +120,20 @@
       }
   }
 
+  function formatTime(iso) {
+      return new Date(iso).toLocaleString('es-CL', { hour: '2-digit', minute:'2-digit', day: 'numeric', month: 'short' }).toUpperCase();
+  }
+
+  function getOrSetFirstVisitTime(id) {
+      const key = `lf_time_${id}`;
+      let storedTime = localStorage.getItem(key);
+      if (!storedTime) {
+          storedTime = new Date().toISOString();
+          localStorage.setItem(key, storedTime);
+      }
+      return storedTime;
+  }
+
   async function loadTracking() {
     if (!orderId) {
       document.getElementById('order-subtitle').textContent = 'Consulta de estado';
@@ -136,12 +146,11 @@
     try {
       const res = await fetch(`${API_URL}/api/tracking?id=${orderId}`);
       
-      // LÓGICA MÁGICA: Si el backend dice "No encontrado" (404), asumimos que es una compra 
-      // recién hecha que el Admin aún no procesa. Mostramos el Paso 1 en lugar del error.
       if (!res.ok) {
         if (res.status === 404) {
             document.getElementById('tracking-container').classList.remove('hidden');
-            document.getElementById('time-recibido').textContent = 'PEDIDO CONFIRMADO';
+            const initialTime = getOrSetFirstVisitTime(orderId);
+            document.getElementById('time-recibido').textContent = formatTime(initialTime);
             return;
         }
         throw new Error();
@@ -150,9 +159,8 @@
       const data = await res.json();
       document.getElementById('tracking-container').classList.remove('hidden');
       
-      const formatTime = (iso) => new Date(iso).toLocaleString('es-CL', { hour: '2-digit', minute:'2-digit', day: 'numeric', month: 'short' }).toUpperCase();
-
-      document.getElementById('time-recibido').textContent = formatTime(data.created_at);
+      const timeRecibido = data.created_at || getOrSetFirstVisitTime(orderId);
+      document.getElementById('time-recibido').textContent = formatTime(timeRecibido);
 
       const stepRecibido = document.getElementById('step-recibido');
       const stepTransito = document.getElementById('step-transito');
