@@ -1,0 +1,140 @@
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin | La Foresta</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background: #0a1f1c; color: #fcfaf7; font-family: sans-serif; }
+  .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+  input, select { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px; border-radius: 6px; width: 100%; margin-bottom: 15px; }
+  button { background: #c5a059; color: #0a1f1c; font-weight: bold; padding: 10px 15px; border-radius: 6px; width: 100%; text-transform: uppercase; letter-spacing: 1px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body class="p-6 max-w-md mx-auto">
+  <h1 class="text-2xl font-bold mb-6 text-[#c5a059]">Operaciones La Foresta</h1>
+
+  <div class="card" id="config-section">
+    <h2 class="font-bold mb-2">Clave Interna (X-Internal-Secret)</h2>
+    <input type="password" id="secret-key" placeholder="Pega tu INTERNAL_SECRET aquí">
+    <button onclick="guardarSecret()">Guardar en dispositivo</button>
+  </div>
+
+  <div class="card">
+    <h2 class="font-bold mb-2">Verificar WhatsApp Manual</h2>
+    <input type="text" id="wa-code" placeholder="Ej: LF-7583">
+    <button onclick="verificarWA()">Confirmar Código</button>
+    <p id="wa-status" class="text-xs mt-2 text-green-400"></p>
+  </div>
+
+  <div class="card">
+    <h2 class="font-bold mb-2">Actualizar Seguimiento (Tracking)</h2>
+    <input type="text" id="track-order" placeholder="ID del Pedido (Ej: 987654321)">
+    <select id="track-status">
+      <option value="transito">En Tránsito (Va en camino)</option>
+      <option value="entregado">Entregado</option>
+    </select>
+    <label class="block mb-2 text-sm text-white/70">Foto de respaldo (Opcional):</label>
+    <input type="file" id="track-photo" accept="image/*" capture="environment">
+    <button onclick="actualizarTracking()">Subir y Notificar</button>
+    <p id="track-status-msg" class="text-xs mt-2 text-green-400 break-all"></p>
+  </div>
+
+  <button onclick="borrarSecret()" class="mb-6 text-xs text-white/50 hover:text-white underline">Cambiar Clave Interna</button>
+
+<script>
+  const API_URL = 'https://club-laforesta.sebjmz.workers.dev';
+
+  function checkSecret() {
+    if(localStorage.getItem('lf_admin_secret')) {
+      document.getElementById('config-section').classList.add('hidden');
+    } else {
+      document.getElementById('config-section').classList.remove('hidden');
+    }
+  }
+  checkSecret();
+
+  function guardarSecret() {
+    localStorage.setItem('lf_admin_secret', document.getElementById('secret-key').value);
+    document.getElementById('secret-key').value = '';
+    checkSecret();
+  }
+
+  function borrarSecret() {
+    localStorage.removeItem('lf_admin_secret');
+    checkSecret();
+  }
+
+  async function verificarWA() {
+    const code = document.getElementById('wa-code').value;
+    const secret = localStorage.getItem('lf_admin_secret');
+    
+    document.getElementById('wa-status').textContent = 'Procesando...';
+    document.getElementById('wa-status').className = 'text-xs mt-2 text-yellow-400';
+
+    try {
+      const res = await fetch(`${API_URL}/api/verify-phone`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Internal-Secret': secret },
+        body: JSON.stringify({ message_text: code })
+      });
+      
+      if (res.ok) {
+        document.getElementById('wa-status').textContent = '✅ Verificado con éxito';
+        document.getElementById('wa-status').className = 'text-xs mt-2 text-green-400';
+      } else {
+        const data = await res.json();
+        document.getElementById('wa-status').textContent = '❌ Error: ' + (data.error || 'Error desconocido');
+        document.getElementById('wa-status').className = 'text-xs mt-2 text-red-400';
+      }
+    } catch (err) {
+      document.getElementById('wa-status').textContent = '❌ Error de conexión de red';
+      document.getElementById('wa-status').className = 'text-xs mt-2 text-red-400';
+    }
+  }
+
+  async function actualizarTracking() {
+    const orderId = document.getElementById('track-order').value;
+    const status = document.getElementById('track-status').value;
+    const photoInput = document.getElementById('track-photo');
+    const secret = localStorage.getItem('lf_admin_secret');
+    
+    if(!orderId) return alert('Falta ID del pedido');
+
+    const formData = new FormData();
+    formData.append('order_id', orderId);
+    formData.append('status', status);
+    if(photoInput.files[0]) formData.append('photo', photoInput.files[0]);
+
+    document.getElementById('track-status-msg').textContent = 'Subiendo...';
+    document.getElementById('track-status-msg').className = 'text-xs mt-2 text-yellow-400';
+
+    try {
+      const res = await fetch(`${API_URL}/api/admin/tracking`, {
+        method: 'POST',
+        headers: { 'X-Internal-Secret': secret },
+        body: formData
+      });
+
+      if(res.ok) {
+        const data = await res.json();
+        document.getElementById('track-status-msg').textContent = '✅ Actualizado. Link: ' + data.tracking_link;
+        document.getElementById('track-status-msg').className = 'text-xs mt-2 text-green-400 break-all';
+        document.getElementById('track-order').value = '';
+        photoInput.value = '';
+      } else {
+        const data = await res.json();
+        document.getElementById('track-status-msg').textContent = '❌ Error: ' + (data.error || 'Error al subir');
+        document.getElementById('track-status-msg').className = 'text-xs mt-2 text-red-400';
+      }
+    } catch (err) {
+      document.getElementById('track-status-msg').textContent = '❌ Error de conexión de red';
+      document.getElementById('track-status-msg').className = 'text-xs mt-2 text-red-400';
+    }
+  }
+</script>
+</body>
+</html>
