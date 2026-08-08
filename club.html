@@ -3,22 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Tu Espacio | La Foresta Flores</title>
+  <title>Acceso Privado | La Foresta Flores</title>
   
-  <!-- Tipografías EXACTAS del Index de La Foresta -->
+  <link rel="icon" type="image/webp" href="/img/favicon.webp">
+  <link rel="shortcut icon" type="image/webp" href="/img/favicon.webp">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Script súper rápido para modo Día/Noche automático según la hora (Evita parpadeos) -->
+  <!-- Librería ligera para el efecto Confeti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
   <script>
     function initTheme() {
       const savedTheme = localStorage.getItem('laforesta_theme');
       const hour = new Date().getHours();
-      // Entre las 7 AM y las 19:00 hrs será modo claro, de noche será oscuro
       const isNight = hour < 7 || hour >= 19;
       
       if (savedTheme === 'dark' || (!savedTheme && isNight)) {
@@ -36,10 +38,7 @@
       theme: {
         extend: {
           colors: {
-            gold: {
-              DEFAULT: '#c5a059',
-              hover: '#dbb56f',
-            },
+            gold: { DEFAULT: '#c5a059', hover: '#dbb56f' },
             theme: {
               bg: 'var(--bg-color)',
               text: 'var(--text-color)',
@@ -61,7 +60,6 @@
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   
   <style>
-    /* Variables de alto contraste para Día (Claro) */
     :root {
       --bg-color: #fcfaf7;
       --text-color: #0a1f1c;
@@ -71,8 +69,6 @@
       --input-bg: #ffffff;
       --input-border: rgba(10, 31, 28, 0.2);
     }
-
-    /* Variables de alto contraste para Noche (Oscuro) */
     .dark {
       --bg-color: #0a1f1c;
       --text-color: #fcfaf7;
@@ -82,17 +78,9 @@
       --input-bg: rgba(255, 255, 255, 0.06);
       --input-border: rgba(255, 255, 255, 0.15);
     }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+    .font-serif { font-family: Georgia, 'Times New Roman', Times, serif; }
 
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-    
-    .font-serif {
-      font-family: Georgia, 'Times New Roman', Times, serif;
-    }
-
-    /* Usamos las variables correctamente aquí */
     .glass-card {
       background-color: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -108,20 +96,13 @@
       transition: all 0.3s ease;
       border-radius: 0.5rem;
     }
-
     .glass-input:focus {
       outline: none;
       border-color: #c5a059;
       box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.2);
     }
-
     .glass-input::placeholder { color: var(--text-muted); opacity: 0.6; }
-
-    /* Arreglo para que las opciones del <select> se vean siempre bien */
-    select.glass-input option {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-    }
+    select.glass-input option { background-color: var(--bg-color); color: var(--text-color); }
 
     .btn-gold {
       background-color: #c5a059;
@@ -142,14 +123,11 @@
     .btn-outline:hover { background-color: #c5a059; color: #0a1f1c; }
 
     .hidden-panel { display: none !important; }
-    
     ::-webkit-scrollbar { display: none; }
   </style>
 </head>
-<!-- Aquí aplicamos los colores de Tailwind directamente al body para asegurar la visibilidad del fondo -->
 <body class="bg-theme-bg text-theme-text min-h-screen flex flex-col justify-between p-6 md:p-12 selection:bg-gold selection:text-[#0a1f1c] transition-colors duration-500">
 
-  <!-- Header con Toggle de Iluminación -->
   <header class="max-w-3xl w-full mx-auto flex items-center justify-between mb-8">
     <a href="/" class="group flex items-center gap-2 hover:opacity-80 transition-opacity" aria-label="Volver al inicio">
       <img src="img/logo-menu.webp" alt="La Foresta Flores" class="h-7 md:h-8 w-auto transition-all duration-500 brightness-0 dark:invert opacity-90 group-hover:opacity-100">
@@ -159,9 +137,7 @@
       <a href="/" class="text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-theme-muted hover:text-gold transition">
         Volver a la Tienda
       </a>
-      
-      <!-- Botón de Iluminación -->
-      <button onclick="toggleTheme()" class="p-2.5 rounded-full border border-theme-border text-theme-muted hover:text-gold hover:border-gold transition-all" aria-label="Ajustar luz de la pantalla" title="Cambiar luz de pantalla">
+      <button onclick="toggleTheme()" class="p-2.5 rounded-full border border-theme-border text-theme-muted hover:text-gold hover:border-gold transition-all" aria-label="Ajustar luz de la pantalla">
         <svg id="theme-icon-sun" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
         <svg id="theme-icon-moon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
       </button>
@@ -170,51 +146,50 @@
 
   <main class="max-w-3xl w-full mx-auto flex-grow">
     
-    <!-- Bienvenida Humana y Clara -->
-    <div class="mb-10 text-center md:text-left">
-      <h1 class="font-serif text-4xl md:text-5xl italic text-theme-text mb-3">Qué lindo tenerte aquí.</h1>
-      <p class="text-theme-muted text-sm md:text-base leading-relaxed font-light">Un rincón creado con mucho cariño para agradecer tu preferencia. Aquí podrás ver tus atenciones acumuladas, guardar fechas especiales para que no se te pasen, y gestionar tus regalos de forma súper sencilla.</p>
+    <!-- Título Principal Dinámico -->
+    <div id="welcome-header" class="mb-10 text-center md:text-left">
+      <h1 class="font-serif text-4xl md:text-5xl italic text-theme-text mb-3">La Foresta Privé.</h1>
+      <p class="text-theme-muted text-sm md:text-base leading-relaxed font-light">El círculo íntimo donde guardamos tus beneficios, tus fechas memorables y donde regalamos elegancia. Si dejaste beneficios en pausa, este es el momento de reclamarlos.</p>
     </div>
 
     <!-- ================= AUTH: REGISTRO / LOGIN ================= -->
     <div id="auth-section" class="glass-card p-8 md:p-10 mb-8 max-w-xl mx-auto md:mx-0">
       
-      <!-- Selector Amigable -->
       <div class="flex gap-6 mb-8 border-b border-theme-border pb-1">
-        <button onclick="showAuthTab('login')" id="tab-login" class="pb-2 border-b-2 border-gold text-theme-text text-xs font-bold uppercase tracking-widest transition-all">Ya soy parte</button>
-        <button onclick="showAuthTab('register')" id="tab-register" class="pb-2 border-b-2 border-transparent text-theme-muted hover:text-theme-text text-xs font-bold uppercase tracking-widest transition-all">Crear mi cuenta</button>
+        <button onclick="showAuthTab('login')" id="tab-login" class="pb-2 border-b-2 border-gold text-theme-text text-xs font-bold uppercase tracking-widest transition-all">Acceso Miembros</button>
+        <button onclick="showAuthTab('register')" id="tab-register" class="pb-2 border-b-2 border-transparent text-theme-muted hover:text-theme-text text-xs font-bold uppercase tracking-widest transition-all">Activar Beneficios</button>
       </div>
 
       <!-- Form Login -->
       <form id="login-form" class="space-y-4" onsubmit="return doLogin(event)">
         <div>
-          <label class="block text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-1.5">¿Con qué correo te registraste?</label>
+          <label class="block text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-1.5">Tu correo electrónico</label>
           <input required type="email" id="login-email" placeholder="ejemplo@correo.com" class="glass-input w-full px-4 py-3.5 text-sm">
         </div>
         <div>
-          <label class="block text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-1.5">Tu contraseña secreta</label>
+          <label class="block text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-1.5">Contraseña secreta</label>
           <input required type="password" id="login-password" placeholder="••••••••" class="glass-input w-full px-4 py-3.5 text-sm">
         </div>
         <div class="pt-2 flex justify-center">
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAAD-wcXesUkoXYuPR" data-callback="onLoginTurnstile"></div>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAD6y4OVRCN5aeJKh" data-callback="onLoginTurnstile"></div>
         </div>
-        <button class="btn-gold w-full py-4 text-xs uppercase tracking-widest mt-2">Entrar a mi espacio</button>
+        <button class="btn-gold w-full py-4 text-xs uppercase tracking-widest mt-2">Ingresar a mi bóveda</button>
         <p id="login-error" class="text-red-400 text-xs text-center font-semibold pt-1"></p>
       </form>
 
       <!-- Form Registro -->
       <form id="register-form" class="space-y-4 hidden-panel" onsubmit="return doRegister(event)">
         <div>
-          <label class="block text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-1.5">¿Cómo te llamas?</label>
-          <input required id="reg-name" placeholder="Tu nombre y apellido" class="glass-input w-full px-4 py-3.5 text-sm">
+          <label class="block text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-1.5">Tu nombre y apellido</label>
+          <input required id="reg-name" placeholder="¿Cómo te llamamos?" class="glass-input w-full px-4 py-3.5 text-sm">
         </div>
         <div>
-          <label class="block text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-1.5">¿A qué correo te escribimos?</label>
-          <input required type="email" id="reg-email" placeholder="Te enviaremos tus recibos aquí" class="glass-input w-full px-4 py-3.5 text-sm">
+          <label class="block text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-1.5">Correo electrónico</label>
+          <input required type="email" id="reg-email" placeholder="Para respaldar tus beneficios" class="glass-input w-full px-4 py-3.5 text-sm">
         </div>
         <div>
           <label class="block text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-1.5">Crea una contraseña segura</label>
-          <input required type="password" id="reg-password" placeholder="Mínimo 8 caracteres, por favor" minlength="8" class="glass-input w-full px-4 py-3.5 text-sm">
+          <input required type="password" id="reg-password" placeholder="Mínimo 8 caracteres" minlength="8" class="glass-input w-full px-4 py-3.5 text-sm">
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -222,14 +197,14 @@
             <input id="reg-phone" placeholder="+56 9..." class="glass-input w-full px-4 py-3.5 text-sm">
           </div>
           <div>
-            <label class="block text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-1.5">Código de tu amigo</label>
-            <input id="reg-referral" placeholder="(Opcional)" class="glass-input w-full px-4 py-3.5 text-sm">
+            <label class="block text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-1.5">Código de Referido</label>
+            <input id="reg-referral" placeholder="(Si alguien te invitó)" class="glass-input w-full px-4 py-3.5 text-sm">
           </div>
         </div>
         <div class="pt-2 flex justify-center">
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAAD-wcXesUkoXYuPR" data-callback="onRegisterTurnstile"></div>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAD6y4OVRCN5aeJKh" data-callback="onRegisterTurnstile"></div>
         </div>
-        <button class="btn-gold w-full py-4 text-xs uppercase tracking-widest mt-2">Unirme a la familia</button>
+        <button class="btn-gold w-full py-4 text-xs uppercase tracking-widest mt-2">Activar mis beneficios</button>
         <p id="register-error" class="text-red-400 text-xs text-center font-semibold pt-1"></p>
         <p id="register-success" class="text-emerald-500 text-xs text-center font-semibold pt-1"></p>
       </form>
@@ -237,17 +212,25 @@
 
     <!-- ================= VERIFICACIÓN DE CORREO ================= -->
     <div id="verify-email-section" class="glass-card p-8 md:p-12 mb-8 max-w-lg mx-auto hidden-panel text-center">
-      <h3 class="font-serif text-2xl italic mb-3">Revisa tu bandeja de entrada</h3>
-      <p class="text-theme-muted text-sm mb-6 leading-relaxed">Te acabamos de enviar un mensajito con un código de 6 dígitos. Escríbelo abajo para asegurarnos de que el correo es tuyo. <br><span class="text-xs opacity-80">(A veces se esconde en Spam, échale un ojito por si acaso).</span></p>
+      <h3 class="font-serif text-2xl italic mb-3 text-theme-text">Revisa tu bandeja de entrada</h3>
+      <p class="text-theme-muted text-sm mb-6 leading-relaxed">Hemos enviado una llave temporal de 6 dígitos a tu correo. Ingrésala abajo para validar tu identidad de forma segura. <br><span class="text-xs opacity-80">(Puede haberse colado en la carpeta de Spam).</span></p>
       
       <form class="flex gap-3 mb-6" onsubmit="return doVerifyEmail(event)">
         <input required id="email-code" maxlength="6" placeholder="000000" class="glass-input flex-1 px-4 py-4 text-center tracking-[0.5em] text-xl font-bold">
-        <button class="btn-gold px-8 text-xs uppercase tracking-widest">Verificar</button>
+        <button class="btn-gold px-8 text-xs uppercase tracking-widest">Validar</button>
       </form>
       
       <button onclick="resendEmailCode()" class="text-gold hover:text-theme-text text-[11px] uppercase tracking-widest font-bold transition">
-        ¿No te llegó nada? Toca aquí para reenviarlo
+        ¿No llegó la llave? Solicitar otra vez
       </button>
+    </div>
+
+    <!-- ================= GAMIFICACIÓN (LOADER SYNC) ================= -->
+    <div id="sync-screen" class="hidden-panel flex flex-col items-center justify-center py-20 text-center min-h-[40vh]">
+      <svg class="w-10 h-10 text-gold animate-spin mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+      <h2 class="font-serif text-3xl md:text-4xl italic text-theme-text mb-4">Sincronizando beneficios...</h2>
+      <p class="text-theme-muted text-sm mb-12">Recuperando tus compras anteriores y asignando tu nivel.</p>
+      <div class="text-7xl font-serif text-gold italic" id="sync-countdown">3</div>
     </div>
 
     <!-- ================= DASHBOARD PRINCIPAL ================= -->
@@ -255,69 +238,66 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
         <!-- Puntos -->
-        <div class="glass-card p-6">
-          <span class="text-[9px] uppercase font-bold tracking-[0.2em] text-theme-muted">Tus Puntos Acumulados</span>
-          <p class="font-serif text-4xl italic mt-2 text-gold" id="dash-points">0</p>
-          <p class="text-[11px] text-theme-muted mt-2">Listos para usar en tu próxima sorpresa.</p>
+        <div class="glass-card p-6 border-gold/50 shadow-[0_0_15px_rgba(197,160,89,0.1)]">
+          <span class="text-[9px] uppercase font-bold tracking-[0.2em] text-theme-muted">Tus Puntos / Beneficios</span>
+          <p class="font-serif text-4xl italic mt-2 text-gold font-bold" id="dash-points">0</p>
+          <p class="text-[11px] text-theme-muted mt-2">Deducibles directamente en tu próxima orden.</p>
         </div>
 
         <!-- Tier / Nivel -->
         <div class="glass-card p-6">
-          <span class="text-[9px] uppercase font-bold tracking-[0.2em] text-theme-muted block mb-2">Tu nivel de cercanía</span>
+          <span class="text-[9px] uppercase font-bold tracking-[0.2em] text-theme-muted block mb-2">Estatus de Cliente</span>
           <p class="font-serif text-3xl italic text-theme-text" id="dash-tier">🌱 Semilla</p>
           <div class="mt-4">
             <div class="flex justify-between text-[9px] uppercase tracking-wider text-theme-muted mb-1.5 font-bold">
-              <span id="tier-progress-label">Beneficio alcanzado</span>
-              <span id="tier-discount-badge" class="text-gold">Hasta 10% OFF</span>
+              <span id="tier-progress-label">Privilegio Actual</span>
+              <span id="tier-discount-badge" class="text-gold">Reembolso del 3%</span>
             </div>
             <div class="w-full bg-theme-border h-1.5 rounded-full overflow-hidden">
-              <div id="tier-progress-bar" class="bg-gold h-full rounded-full transition-all duration-1000" style="width: 25%"></div>
+              <div id="tier-progress-bar" class="bg-gold h-full rounded-full transition-all duration-1000" style="width: 33%"></div>
             </div>
           </div>
         </div>
 
         <!-- Total Comprado -->
         <div class="glass-card p-6">
-          <span class="text-[9px] uppercase font-bold tracking-[0.2em] text-theme-muted block mb-2">Flores Regaladas</span>
+          <span class="text-[9px] uppercase font-bold tracking-[0.2em] text-theme-muted block mb-2">Belleza Entregada</span>
           <p class="font-serif text-4xl italic text-theme-text" id="dash-lifetime">$0</p>
-          <p class="text-[11px] text-theme-muted mt-2">Todo el cariño que has enviado.</p>
+          <p class="text-[11px] text-theme-muted mt-2">El valor total del cariño que has enviado.</p>
         </div>
       </div>
 
-      <!-- Verificación de WhatsApp -->
-      <div class="glass-card p-8" id="phone-verify-card">
-        <h3 class="font-serif text-2xl italic text-theme-text mb-2">Conectémonos por WhatsApp <span class="text-[10px] uppercase font-sans font-bold tracking-widest text-emerald-500 border border-emerald-500 px-2 py-0.5 rounded-full ml-2 not-italic">Gratis</span></h3>
-        <p class="text-theme-muted text-sm mb-6 font-light">Valida tu número para avisarte en tiempo real sobre tus entregas y ayudarte súper rápido si lo necesitas.</p>
+      <!-- Sistema de Referidos (Bucle de Crecimiento) -->
+      <div class="glass-card p-8 bg-gold/5 border-gold/30">
+        <h3 class="font-serif text-2xl italic text-theme-text mb-2">Privilegios Compartidos: Regala $3.000, Gana $3.000.</h3>
+        <p class="text-theme-muted text-sm mb-6 font-light">Comparte tu influencia. Envíale tu enlace a un amigo para que tenga <strong>$3.000 de regalo inmediato</strong> en su primer arreglo. Cuando hagan la compra, nuestra bóveda te sumará automáticamente otros <strong>$3.000 extra a ti</strong>.</p>
         
-        <div id="phone-not-verified">
-          <div class="flex flex-col md:flex-row gap-4">
-            <input id="phone-input" placeholder="+56 9..." class="glass-input px-4 py-3.5 text-sm md:w-1/2">
-            <button onclick="requestPhoneOtp()" class="btn-outline px-8 py-3.5 text-xs font-bold uppercase tracking-widest">Generar enlace seguro</button>
-          </div>
-
-          <div id="phone-otp-box" class="mt-6 hidden-panel">
-            <p class="text-theme-text text-sm mb-4">Haz clic en el botón de abajo para abrir WhatsApp. Hemos dejado un mensaje listo, solo envíalo y la magia ocurrirá sola.</p>
-            <a id="phone-wa-link" target="_blank" class="btn-gold inline-block px-8 py-4 text-xs uppercase tracking-widest font-bold">Abrir WhatsApp para verificar</a>
-            <p class="text-theme-muted text-[10px] mt-4 font-bold uppercase tracking-widest animate-pulse">Esperando tu confirmación...</p>
+        <div class="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+          <span id="referral-code" class="font-serif text-3xl italic text-gold font-bold">—</span>
+          <div class="flex gap-3">
+            <button onclick="copyReferralLink()" class="btn-outline bg-theme-bg px-4 py-3 text-[10px] font-bold uppercase tracking-widest">Copiar tu Enlace</button>
+            <a id="referral-wa" target="_blank" class="btn-gold px-4 py-3 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.462 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.822-5.336 11.825-11.893a11.825 11.825 0 00-3.463-8.399"/></svg>
+              Enviar invitación
+            </a>
           </div>
         </div>
 
-        <p id="phone-verified-msg" class="text-emerald-500 text-sm font-bold flex items-center gap-2 hidden-panel">
-          ✓ ¡Súper! Tu número está verificado.
-        </p>
+        <h4 class="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-3">Tus amigos invitados:</h4>
+        <div id="referrals-list" class="text-theme-text text-xs space-y-2"></div>
       </div>
 
       <!-- Fechas importantes -->
       <div class="glass-card p-8">
-        <h3 class="font-serif text-2xl italic text-theme-text mb-2">Tus fechas que no pueden pasar</h3>
-        <p class="text-theme-muted text-sm mb-6 font-light">Déjanos aquí los aniversarios y cumpleaños de quienes amas. Te avisaremos con anticipación para planear algo hermoso sin apuros.</p>
+        <h3 class="font-serif text-2xl italic text-theme-text mb-2">Tus fechas inolvidables</h3>
+        <p class="text-theme-muted text-sm mb-6 font-light">Deja en nuestra memoria los aniversarios y cumpleaños que importan. Nos aseguraremos de recordártelo con tiempo para organizar la sorpresa perfecta.</p>
         
         <form class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" onsubmit="return addDate(event)">
-          <input required id="date-label" placeholder="Ej: Aniversario con Javiera" class="glass-input px-4 py-3.5 text-sm">
+          <input required id="date-label" placeholder="Ej: Aniversario con Catalina" class="glass-input px-4 py-3.5 text-sm">
           <input required id="date-monthday" type="date" class="glass-input px-4 py-3.5 text-sm">
           
           <select id="date-relation" class="glass-input px-4 py-3.5 text-sm cursor-pointer">
-            <option value="">¿Quién es el afortunado/a? (Opcional)</option>
+            <option value="">¿Quién es la persona afortunada? (Opcional)</option>
             <option>Pareja</option>
             <option>Mamá</option>
             <option>Papá</option>
@@ -328,36 +308,42 @@
           
           <select id="date-days" class="glass-input px-4 py-3.5 text-sm cursor-pointer">
             <option value="3">Avisarme 3 días antes</option>
-            <option value="5" selected>Avisarme 5 días antes (Recomendado)</option>
+            <option value="5" selected>Avisarme 5 días antes (Lo ideal)</option>
             <option value="7">Avisarme 1 semana antes</option>
           </select>
           
-          <button class="btn-gold md:col-span-2 py-4 text-xs uppercase tracking-widest font-bold">Guardar este día especial</button>
+          <button class="btn-gold md:col-span-2 py-4 text-xs uppercase tracking-widest font-bold">Resguardar esta fecha en la bóveda</button>
         </form>
 
         <div id="dates-list" class="space-y-2"></div>
       </div>
 
-      <!-- Sistema de Referidos -->
-      <div class="glass-card p-8">
-        <h3 class="font-serif text-2xl italic text-theme-text mb-2">Comparte el cariño y gana</h3>
-        <p class="text-theme-muted text-sm mb-6 font-light">Envíale tu enlace a un amigo para que tenga $5.000 de regalo. Cuando haga su compra, nosotros te regalaremos $5.000 a ti también. ¡Todos ganan!</p>
+      <!-- Verificación de WhatsApp -->
+      <div class="glass-card p-8" id="phone-verify-card">
+        <h3 class="font-serif text-2xl italic text-theme-text mb-2">Línea Directa (WhatsApp)</h3>
+        <p class="text-theme-muted text-sm mb-6 font-light">Enlaza tu número para recibir actualizaciones exclusivas del movimiento de tus despachos en tiempo real.</p>
         
-        <div class="flex flex-col md:flex-row md:items-center gap-4 mb-6">
-          <span id="referral-code" class="font-serif text-3xl italic text-gold">—</span>
-          <div class="flex gap-3">
-            <button onclick="copyReferralLink()" class="btn-outline px-4 py-2 text-[10px] font-bold uppercase tracking-widest">Copiar enlace</button>
-            <a id="referral-wa" target="_blank" class="btn-outline px-4 py-2 text-[10px] font-bold uppercase tracking-widest">Invitar por WhatsApp</a>
+        <div id="phone-not-verified">
+          <div class="flex flex-col md:flex-row gap-4">
+            <input id="phone-input" placeholder="+56 9..." class="glass-input px-4 py-3.5 text-sm md:w-1/2">
+            <button onclick="requestPhoneOtp()" class="btn-outline px-8 py-3.5 text-xs font-bold uppercase tracking-widest">Generar enlace seguro</button>
+          </div>
+
+          <div id="phone-otp-box" class="mt-6 hidden-panel">
+            <p class="text-theme-text text-sm mb-4">Haz clic abajo. Hemos redactado el mensaje de validación por ti, solo debes enviarlo en WhatsApp.</p>
+            <a id="phone-wa-link" target="_blank" class="btn-gold inline-block px-8 py-4 text-xs uppercase tracking-widest font-bold">Validar mi número</a>
+            <p class="text-theme-muted text-[10px] mt-4 font-bold uppercase tracking-widest animate-pulse">Sincronizando respuesta...</p>
           </div>
         </div>
 
-        <h4 class="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-3">Amigos invitados:</h4>
-        <div id="referrals-list" class="text-theme-text text-xs space-y-2"></div>
+        <p id="phone-verified-msg" class="text-emerald-500 text-sm font-bold flex items-center gap-2 hidden-panel">
+          ✓ Canal seguro activado correctamente.
+        </p>
       </div>
 
       <div class="pt-4 pb-2 text-center">
         <button onclick="logout()" class="text-theme-muted hover:text-red-400 text-[10px] font-bold uppercase tracking-widest transition-colors">
-          Cerrar mi sesión
+          Cerrar bóveda de sesión
         </button>
       </div>
 
@@ -369,7 +355,6 @@
   </footer>
 
 <script>
-// Manejo del cambio de luz (Claro/Oscuro) manual
 function toggleTheme() {
   const html = document.documentElement;
   html.classList.toggle('dark');
@@ -377,11 +362,21 @@ function toggleTheme() {
   localStorage.setItem('laforesta_theme', isDark ? 'dark' : 'light');
 }
 
-// ⚙️ URL Worker Backend
-const CLUB_API = 'https://club-laforesta.sebjmz.workers.dev';
+// ⚙️ Captura inteligente del Email en la URL (El truco del correo FOMO)
+const urlParams = new URLSearchParams(window.location.search);
+const prefillEmail = urlParams.get('email');
 
+if (prefillEmail) {
+    document.getElementById('reg-email').value = prefillEmail;
+    document.getElementById('login-email').value = prefillEmail;
+    // Si viene desde un email FOMO, por defecto mostramos el formulario de crear cuenta
+    setTimeout(() => showAuthTab('register'), 100); 
+}
+
+const CLUB_API = 'https://club-laforesta.sebjmz.workers.dev';
 let pendingRegisterEmail = '';
 let loginTurnstileToken = null, registerTurnstileToken = null;
+
 function onLoginTurnstile(t){ loginTurnstileToken = t; }
 function onRegisterTurnstile(t){ registerTurnstileToken = t; }
 
@@ -402,6 +397,56 @@ function showAuthTab(tab){
   }
 }
 
+// ---- LOGICA DE GAMIFICACIÓN (SYNC Y CONFETI) ----
+function playSyncAnimation(targetPoints) {
+    document.getElementById('welcome-header').classList.add('hidden-panel');
+    document.getElementById('auth-section').classList.add('hidden-panel');
+    document.getElementById('verify-email-section').classList.add('hidden-panel');
+    document.getElementById('sync-screen').classList.remove('hidden-panel');
+    
+    let count = 3;
+    const counterEl = document.getElementById('sync-countdown');
+    
+    const interval = setInterval(() => {
+        count--;
+        if(count > 0) {
+            counterEl.textContent = count;
+        } else {
+            clearInterval(interval);
+            triggerConfetti();
+            document.getElementById('sync-screen').classList.add('hidden-panel');
+            renderDashboard(true, targetPoints); 
+        }
+    }, 1000);
+}
+
+function triggerConfetti() {
+    confetti({
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ['#c5a059', '#0a1f1c', '#ffffff'],
+        disableForReducedMotion: true
+    });
+}
+
+function animatePoints(obj, start, end, duration) {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('es-CL');
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        } else {
+            // Asegurar número final exacto
+            obj.innerHTML = end.toLocaleString('es-CL');
+        }
+    };
+    window.requestAnimationFrame(step);
+}
+// ------------------------------------------------
+
 async function doRegister(e){
   e.preventDefault();
   const full_name = document.getElementById('reg-name').value;
@@ -419,16 +464,16 @@ async function doRegister(e){
     });
     const data = await res.json();
     if(!res.ok) { 
-      errEl.textContent = data.error === "Email already exists" ? "Parece que ya tienes una cuenta con este correo. ¡Intenta iniciar sesión!" : data.error; 
+      errEl.textContent = data.error === "Email already exists" ? "Ya existe una bóveda bajo ese correo. Selecciona Acceso Miembros." : data.error; 
       return false; 
     }
     pendingRegisterEmail = email;
-    okEl.textContent = "¡Todo listo! Te estamos redirigiendo...";
+    okEl.textContent = "Preparando la bóveda...";
     setTimeout(() => {
       document.getElementById('auth-section').classList.add('hidden-panel');
       document.getElementById('verify-email-section').classList.remove('hidden-panel');
     }, 800);
-  }catch(err){ errEl.textContent = 'Uy, hubo un problemita de conexión. ¿Intentamos de nuevo?'; }
+  }catch(err){ errEl.textContent = 'Hubo un error de red. ¿Revisamos la conexión?'; }
   return false;
 }
 
@@ -439,13 +484,19 @@ async function doVerifyEmail(e){
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ email: pendingRegisterEmail, code })
   });
-  const data = await res.json();
+  
   if(res.ok){
-    alert('¡Perfecto! Tu correo está confirmado. Ahora ya puedes entrar.');
-    document.getElementById('verify-email-section').classList.add('hidden-panel');
-    document.getElementById('auth-section').classList.remove('hidden-panel');
-    showAuthTab('login');
-  } else alert("Ese código no parece ser el correcto. Verifícalo e intenta otra vez.");
+      // En vez de obligarlos a hacer login manual, idealmente la API debería 
+      // retornar el token en verify, pero asumimos que el usuario inicia sesión rápido.
+      // Ocultamos la verificación y lo obligamos a iniciar sesión:
+      document.getElementById('verify-email-section').classList.add('hidden-panel');
+      document.getElementById('auth-section').classList.remove('hidden-panel');
+      showAuthTab('login');
+      document.getElementById('login-email').value = pendingRegisterEmail;
+      alert("Llave validada. Por seguridad, ingresa tu contraseña secreta.");
+  } else {
+      alert("Llave incorrecta o caducada. Verifícala de nuevo.");
+  }
   return false;
 }
 
@@ -454,7 +505,7 @@ function resendEmailCode(){
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ email: pendingRegisterEmail })
   });
-  alert("Te enviamos un nuevo código. Recuerda revisar la carpeta de Spam.");
+  alert("Hemos generado una nueva llave temporal en tu correo.");
 }
 
 async function doLogin(e){
@@ -469,10 +520,14 @@ async function doLogin(e){
       body: JSON.stringify({ email, password, turnstileToken: loginTurnstileToken })
     });
     const data = await res.json();
-    if(!res.ok){ errEl.textContent = "Los datos no coinciden. Revisa tu correo y contraseña por favor."; return false; }
+    if(!res.ok){ errEl.textContent = "Credenciales inválidas. Revisa los datos."; return false; }
+    
     localStorage.setItem('laforesta_club_token', data.token);
-    loadDashboard();
-  }catch(err){ errEl.textContent = 'Problemas de conexión. ¿Intentamos en unos segundos?'; }
+    
+    // Al hacer login con éxito, iniciamos la animación de gamificación
+    playSyncAnimation(data.customer.points_balance);
+    
+  }catch(err){ errEl.textContent = 'Problemas de conexión.'; }
   return false;
 }
 
@@ -487,24 +542,51 @@ async function authedFetch(path, options={}){
   return fetch(`${CLUB_API}${path}`, options);
 }
 
-async function loadDashboard(){
+// Variables globales para la vista final
+let currentCustomerData = null;
+
+async function loadDashboardInit(){
+  // Esta función se llama si el usuario YA estaba logueado y recarga la página
   const res = await authedFetch('/api/me');
   if(!res.ok){ return; }
   const { customer } = await res.json();
-
+  
+  document.getElementById('welcome-header').classList.add('hidden-panel');
   document.getElementById('auth-section').classList.add('hidden-panel');
   document.getElementById('verify-email-section').classList.add('hidden-panel');
+  
+  currentCustomerData = customer;
+  renderDashboard(false, customer.points_balance); // Sin animación al recargar
+}
+
+async function renderDashboard(animate = false, finalPoints = 0) {
+  // Obtenemos los datos recientes si venimos de la animación
+  if(!currentCustomerData) {
+      const res = await authedFetch('/api/me');
+      if(res.ok) {
+          const data = await res.json();
+          currentCustomerData = data.customer;
+      }
+  }
+  
+  const customer = currentCustomerData;
   document.getElementById('dashboard-section').classList.remove('hidden-panel');
 
-  document.getElementById('dash-points').textContent = customer.points_balance.toLocaleString('es-CL');
+  // Animación del número de puntos
+  const pointsEl = document.getElementById('dash-points');
+  if (animate) {
+      animatePoints(pointsEl, 0, customer.points_balance, 2000); // 2 segundos subiendo
+  } else {
+      pointsEl.textContent = customer.points_balance.toLocaleString('es-CL');
+  }
   
   // Render de Tiers
   const tierMap = {
-    semilla: { label: '🌱 Semilla', pct: 33, badge: '5% OFF' },
-    brote: { label: '🌿 Brote', pct: 66, badge: '7% OFF' },
-    flor_eterna: { label: '🌸 Flor Eterna', pct: 100, badge: '10% OFF' }
+    semilla: { label: '🌱 Semilla', pct: 33, badge: 'Reembolso del 3%' },
+    brote: { label: '🌿 Brote', pct: 66, badge: 'Reembolso del 4%' },
+    flor_eterna: { label: '🌸 Flor Eterna', pct: 100, badge: 'Reembolso del 5%' }
   };
-  const tierData = tierMap[customer.tier] || { label: customer.tier, pct: 10, badge: 'Descuento Activo' };
+  const tierData = tierMap[customer.tier] || { label: customer.tier, pct: 10, badge: 'Beneficio Activo' };
   
   document.getElementById('dash-tier').textContent = tierData.label;
   document.getElementById('tier-progress-bar').style.width = `${tierData.pct}%`;
@@ -519,7 +601,9 @@ async function loadDashboard(){
 
   document.getElementById('referral-code').textContent = customer.referral_code;
   const link = `${location.origin}/?ref=${customer.referral_code}`;
-  document.getElementById('referral-wa').href = `https://wa.me/?text=${encodeURIComponent('Hola! Te quiero regalar $5.000 para tu primera compra de flores en La Foresta. Solo usa este link: ' + link)}`;
+  
+  // El mensaje de WhatsApp para el embajador
+  document.getElementById('referral-wa').href = `https://wa.me/?text=${encodeURIComponent('Acabo de descubrir el secreto mejor guardado de Viña. Utiliza mi código VIP para tener $3.000 de regalo en tu primer arreglo en La Foresta Flores: ' + link)}`;
 
   loadDates();
   loadReferrals();
@@ -528,7 +612,7 @@ async function loadDashboard(){
 function copyReferralLink(){
   const code = document.getElementById('referral-code').textContent;
   navigator.clipboard.writeText(`${location.origin}/?ref=${code}`);
-  alert('¡Listo! Enlace copiado. Compártelo con quien quieras.');
+  alert('¡Código copiado a tu portapapeles! Listo para pegar en Instagram o donde gustes.');
 }
 
 let phonePoll;
@@ -567,7 +651,7 @@ async function addDate(e){
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ label, month_day, relation, notify_days_before })
   });
-  if(res.ok){ e.target.reset(); loadDates(); } else { alert('Uy, no pudimos guardar la fecha. ¿Lo intentamos de nuevo?'); }
+  if(res.ok){ e.target.reset(); loadDates(); } else { alert('La fecha no se pudo asegurar. Intenta nuevamente.'); }
   return false;
 }
 
@@ -581,12 +665,12 @@ async function loadDates(){
         <span class="text-sm text-theme-text block">${d.label}</span>
         <span class="text-theme-muted text-[10px] uppercase tracking-wider">${d.month_day} ${d.relation ? `· ${d.relation}` : ''}</span>
       </div>
-      <button onclick="deleteDate(${d.id})" class="text-theme-muted hover:text-red-400 text-xs transition px-2">Quitar</button>
-    </div>`).join('') || '<p class="text-theme-muted text-xs font-light italic">Aún no hay fechas guardadas.</p>';
+      <button onclick="deleteDate(${d.id})" class="text-theme-muted hover:text-red-400 text-[10px] uppercase font-bold tracking-widest transition px-2">Remover</button>
+    </div>`).join('') || '<p class="text-theme-muted text-xs font-light italic">No hay fechas en custodia aún.</p>';
 }
 
 async function deleteDate(id){
-  if(confirm('¿Seguro que quieres borrar esta fecha especial?')) {
+  if(confirm('¿Seguro que deseas remover esta fecha de la bóveda?')) {
     await authedFetch(`/api/dates/${id}`, { method:'DELETE' });
     loadDates();
   }
@@ -598,9 +682,9 @@ async function loadReferrals(){
   const list = document.getElementById('referrals-list');
   
   const statusToHuman = {
-    pending: 'Aún no compra',
-    completed: '¡Ya compró!',
-    rewarded: 'Ambos ganaron 🎉'
+    pending: 'Aún no utiliza tu regalo',
+    completed: '¡Compra acreditada!',
+    rewarded: 'Ambos cobraron el beneficio 🎉'
   };
 
   list.innerHTML = (data.referrals||[]).map(r =>
@@ -608,13 +692,16 @@ async function loadReferrals(){
       <span class="text-xs text-theme-text">${r.referred_email}</span>
       <span class="text-[9px] uppercase font-bold tracking-wider text-gold">${statusToHuman[r.status] || r.status}</span>
     </div>`
-  ).join('') || '<p class="text-theme-muted font-light text-xs italic">Pronto aparecerán aquí tus amigos invitados.</p>';
+  ).join('') || '<p class="text-theme-muted font-light text-xs italic">Tus invitaciones exitosas aparecerán en este registro.</p>';
 }
 
+// Si la URL contiene una invitación previa en caché:
 const savedRef = localStorage.getItem('laforesta_referral_code');
 if(savedRef){ document.getElementById('reg-referral').value = savedRef; showAuthTab('register'); }
 
-if(localStorage.getItem('laforesta_club_token')){ loadDashboard(); }
+// Si el usuario ya está conectado al ingresar a la página:
+if(localStorage.getItem('laforesta_club_token')){ loadDashboardInit(); }
+
 </script>
 </body>
 </html>
