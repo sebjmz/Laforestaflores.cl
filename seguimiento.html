@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Seguimiento | La Foresta Flores</title>
+
+<!-- Favicon para profesionalismo -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
@@ -77,7 +82,7 @@
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
         <h3 class="font-serif text-xl italic mb-1">Orden Preparándose</h3>
-        <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-recibido">...</p>
+        <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-recibido">PROCESANDO...</p>
         <p class="text-sm text-white/80">Estamos seleccionando las flores más frescas para armar tu arreglo con el mayor cuidado y cariño.</p>
       </div>
 
@@ -130,7 +135,17 @@
 
     try {
       const res = await fetch(`${API_URL}/api/tracking?id=${orderId}`);
-      if (!res.ok) throw new Error();
+      
+      // LÓGICA MÁGICA: Si el backend dice "No encontrado" (404), asumimos que es una compra 
+      // recién hecha que el Admin aún no procesa. Mostramos el Paso 1 en lugar del error.
+      if (!res.ok) {
+        if (res.status === 404) {
+            document.getElementById('tracking-container').classList.remove('hidden');
+            document.getElementById('time-recibido').textContent = 'PEDIDO CONFIRMADO';
+            return;
+        }
+        throw new Error();
+      }
       
       const data = await res.json();
       document.getElementById('tracking-container').classList.remove('hidden');
@@ -139,7 +154,6 @@
 
       document.getElementById('time-recibido').textContent = formatTime(data.created_at);
 
-      // Manejo dinámico de estados y activación del pulso GPS en el paso actual
       const stepRecibido = document.getElementById('step-recibido');
       const stepTransito = document.getElementById('step-transito');
       const stepEntregado = document.getElementById('step-entregado');
