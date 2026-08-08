@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Seguimiento | La Foresta Flores</title>
 
-<!-- Favicon con rutas absolutas -->
-<link rel="icon" type="image/x-icon" href="https://laforestaflores.cl/favicon.ico">
-<link rel="shortcut icon" type="image/x-icon" href="https://laforestaflores.cl/favicon.ico">
-<link rel="apple-touch-icon" href="https://laforestaflores.cl/favicon.ico">
+<!-- Favicon en formato webp dentro de img/ -->
+<link rel="icon" type="image/webp" href="/img/favicon.webp">
+<link rel="shortcut icon" type="image/webp" href="/img/favicon.webp">
+<link rel="apple-touch-icon" href="/img/favicon.webp">
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -67,7 +67,7 @@
 
     <!-- Buscador Manual -->
     <div id="manual-search-container" class="bg-white/5 border border-white/10 p-8 rounded-2xl hidden text-center">
-        <p class="text-sm opacity-80 mb-6 text-left">Ingresa el número de tu pedido para consultar el estado en tiempo real. Lo encuentras en tu comprobante de compra.</p>
+        <p class="text-sm opacity-80 mb-6 text-left">Ingresa el número de tu pedido para revisar su camino en tiempo real. Lo encuentras en el comprobante que te enviamos.</p>
         <input type="text" id="manual-id" placeholder="Ej: 12345" class="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white mb-4 focus:outline-none focus:border-[#c5a059]">
         <button onclick="buscarManual()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-3 rounded-lg uppercase tracking-wider mb-4">Buscar Pedido</button>
         <a href="/" class="block text-xs text-[#c5a059] opacity-80 hover:opacity-100 transition">← Volver a la Tienda</a>
@@ -76,37 +76,39 @@
     <!-- Línea de Tiempo -->
     <div id="tracking-container" class="bg-white/5 border border-white/10 p-8 rounded-2xl hidden">
       
+      <!-- Paso 1 -->
       <div class="timeline-step active" id="step-recibido">
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
-        <h3 class="font-serif text-xl italic mb-1">Pedido Confirmado en Atelier</h3>
-        <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-recibido">PROCESANDO...</p>
-        <p class="text-sm text-white/80 mb-3">Hemos registrado tu solicitud y tu cupo de entrega queda agendado. Prepararemos tu diseño con flores frescas respetando la fecha y horario solicitados.</p>
+        <h3 class="font-serif text-xl italic mb-1">Manos a la obra en el taller</h3>
+        <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-recibido">CONFIRMADO</p>
+        <p class="text-sm text-white/80 mb-3">Recibimos tu pedido y agendamos tu lugar. Vamos a elegir las mejores flores para armar un diseño impecable en la fecha y hora que pediste. Quédate tranquilo, está en las mejores manos.</p>
         <img id="img-recibido" src="/img/paso1-preparacion.webp" class="w-full h-40 object-cover rounded-lg border border-white/20">
       </div>
 
+      <!-- Paso 2 -->
       <div class="timeline-step inactive" id="step-transito">
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
-        <h3 class="font-serif text-xl italic mb-1">En Tránsito 🚚</h3>
+        <h3 class="font-serif text-xl italic mb-1">Flores en camino 🚚</h3>
         <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-transito">PENDIENTE</p>
-        <p class="text-sm text-white/80 mb-3">El arreglo ya salió de nuestro taller y va camino a su destino. ¡Qué emoción!</p>
+        <p class="text-sm text-white/80 mb-3">¡Salió el despacho! Tu arreglo ya va rumbo a destino recorriendo las calles. Estamos a un paso de sacar esa sonrisa.</p>
         <img id="img-transito" src="" class="hidden w-full h-40 object-cover rounded-lg border border-white/20">
       </div>
 
+      <!-- Paso 3 -->
       <div class="timeline-step inactive" id="step-entregado">
-        <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
-        <h3 class="font-serif text-xl italic mb-1">Entregado 🌸</h3>
+        <h3 class="font-serif text-xl italic mb-1">¡Entregado con éxito! 🌸</h3>
         <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-entregado">PENDIENTE</p>
-        <p class="text-sm text-white/80 mb-3">El arreglo llegó a manos de su destinatario. Misión cumplida.</p>
+        <p class="text-sm text-white/80 mb-3">Llegamos a destino y tu encargo ya está en manos de quien corresponde. Un nuevo momento especial compartido. Gracias por confiar en nosotros.</p>
         <img id="img-entregado" src="" class="hidden w-full h-40 object-cover rounded-lg border border-white/20">
       </div>
 
       <!-- Botones de Navegación Inferiores -->
       <div class="border-t border-white/10 mt-6 pt-6 flex justify-between items-center text-xs">
         <a href="/seguimiento.html" class="text-white/60 hover:text-[#c5a059] transition flex items-center gap-1">
-          🔍 Consultar otro pedido
+          🔍 Revisa otro pedido
         </a>
         <a href="/" class="text-[#c5a059] font-bold hover:underline transition flex items-center gap-1">
           Volver a la Tienda →
@@ -116,9 +118,9 @@
     </div>
 
     <div id="error-msg" class="text-center hidden mt-10">
-      <p class="text-red-400 font-bold mb-4">No pudimos encontrar este pedido. Verifica el enlace.</p>
+      <p class="text-red-400 font-bold mb-4">No dimos con este pedido. Revisa bien el enlace o el número ingresado.</p>
       <div class="flex justify-center gap-4 text-xs">
-        <a href="/seguimiento.html" class="text-white/60 hover:text-white underline">Consultar otro pedido</a>
+        <a href="/seguimiento.html" class="text-white/60 hover:text-white underline">Revisar otro pedido</a>
         <a href="/" class="text-[#c5a059] underline font-bold">Volver a la tienda</a>
       </div>
     </div>
