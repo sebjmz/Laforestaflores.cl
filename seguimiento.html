@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Seguimiento | La Foresta Flores</title>
 
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+<!-- Favicon con rutas absolutas -->
+<link rel="icon" type="image/x-icon" href="https://laforestaflores.cl/favicon.ico">
+<link rel="shortcut icon" type="image/x-icon" href="https://laforestaflores.cl/favicon.ico">
+<link rel="apple-touch-icon" href="https://laforestaflores.cl/favicon.ico">
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -58,17 +60,20 @@
 </head>
 <body class="p-6 md:p-12 min-h-screen flex items-center justify-center">
   <div class="max-w-md w-full">
-    <div class="text-center mb-10">
+    <div class="text-center mb-8">
       <h1 class="font-serif text-3xl italic text-[#c5a059] mb-2">Tu pedido viaja seguro</h1>
       <p class="text-white/60 text-sm" id="order-subtitle">Pedido #<span id="order-id-display">...</span></p>
     </div>
 
+    <!-- Buscador Manual -->
     <div id="manual-search-container" class="bg-white/5 border border-white/10 p-8 rounded-2xl hidden text-center">
         <p class="text-sm opacity-80 mb-6 text-left">Ingresa el número de tu pedido para consultar el estado en tiempo real. Lo encuentras en tu comprobante de compra.</p>
         <input type="text" id="manual-id" placeholder="Ej: 12345" class="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white mb-4 focus:outline-none focus:border-[#c5a059]">
-        <button onclick="buscarManual()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-3 rounded-lg uppercase tracking-wider">Buscar Pedido</button>
+        <button onclick="buscarManual()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-3 rounded-lg uppercase tracking-wider mb-4">Buscar Pedido</button>
+        <a href="/" class="block text-xs text-[#c5a059] opacity-80 hover:opacity-100 transition">← Volver a la Tienda</a>
     </div>
 
+    <!-- Línea de Tiempo -->
     <div id="tracking-container" class="bg-white/5 border border-white/10 p-8 rounded-2xl hidden">
       
       <div class="timeline-step active" id="step-recibido">
@@ -90,6 +95,7 @@
       </div>
 
       <div class="timeline-step inactive" id="step-entregado">
+        <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
         <h3 class="font-serif text-xl italic mb-1">Entregado 🌸</h3>
         <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-entregado">PENDIENTE</p>
@@ -97,10 +103,24 @@
         <img id="img-entregado" src="" class="hidden w-full h-40 object-cover rounded-lg border border-white/20">
       </div>
 
+      <!-- Botones de Navegación Inferiores -->
+      <div class="border-t border-white/10 mt-6 pt-6 flex justify-between items-center text-xs">
+        <a href="/seguimiento.html" class="text-white/60 hover:text-[#c5a059] transition flex items-center gap-1">
+          🔍 Consultar otro pedido
+        </a>
+        <a href="/" class="text-[#c5a059] font-bold hover:underline transition flex items-center gap-1">
+          Volver a la Tienda →
+        </a>
+      </div>
+
     </div>
 
-    <div id="error-msg" class="text-center text-red-400 hidden mt-10">
-      No pudimos encontrar este pedido. Verifica el enlace.
+    <div id="error-msg" class="text-center hidden mt-10">
+      <p class="text-red-400 font-bold mb-4">No pudimos encontrar este pedido. Verifica el enlace.</p>
+      <div class="flex justify-center gap-4 text-xs">
+        <a href="/seguimiento.html" class="text-white/60 hover:text-white underline">Consultar otro pedido</a>
+        <a href="/" class="text-[#c5a059] underline font-bold">Volver a la tienda</a>
+      </div>
     </div>
   </div>
 
