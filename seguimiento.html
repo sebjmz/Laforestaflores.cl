@@ -63,26 +63,23 @@
       <p class="text-white/60 text-sm" id="order-subtitle">Pedido #<span id="order-id-display">...</span></p>
     </div>
 
-    <!-- Contenedor del Buscador Manual -->
     <div id="manual-search-container" class="bg-white/5 border border-white/10 p-8 rounded-2xl hidden text-center">
         <p class="text-sm opacity-80 mb-6 text-left">Ingresa el número de tu pedido para consultar el estado en tiempo real. Lo encuentras en tu comprobante de compra.</p>
         <input type="text" id="manual-id" placeholder="Ej: 12345" class="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white mb-4 focus:outline-none focus:border-[#c5a059]">
         <button onclick="buscarManual()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-3 rounded-lg uppercase tracking-wider">Buscar Pedido</button>
     </div>
 
-    <!-- Contenedor de la Línea de Tiempo -->
     <div id="tracking-container" class="bg-white/5 border border-white/10 p-8 rounded-2xl hidden">
       
-      <!-- Paso 1: Recibido -->
       <div class="timeline-step active" id="step-recibido">
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
         <h3 class="font-serif text-xl italic mb-1">Pedido Confirmado en Atelier</h3>
         <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-recibido">PROCESANDO...</p>
-        <p class="text-sm text-white/80">Hemos registrado tu solicitud y tu cupo de entrega queda agendado. Prepararemos tu diseño con flores frescas respetando la fecha y horario solicitados.</p>
+        <p class="text-sm text-white/80 mb-3">Hemos registrado tu solicitud y tu cupo de entrega queda agendado. Prepararemos tu diseño con flores frescas respetando la fecha y horario solicitados.</p>
+        <img id="img-recibido" src="/img/paso1-preparacion.webp" class="w-full h-40 object-cover rounded-lg border border-white/20">
       </div>
 
-      <!-- Paso 2: En tránsito -->
       <div class="timeline-step inactive" id="step-transito">
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
@@ -92,7 +89,6 @@
         <img id="img-transito" src="" class="hidden w-full h-40 object-cover rounded-lg border border-white/20">
       </div>
 
-      <!-- Paso 3: Entregado -->
       <div class="timeline-step inactive" id="step-entregado">
         <div class="timeline-dot"></div>
         <h3 class="font-serif text-xl italic mb-1">Entregado 🌸</h3>
@@ -166,16 +162,17 @@
       const stepTransito = document.getElementById('step-transito');
       const stepEntregado = document.getElementById('step-entregado');
 
+      const imgTransito = document.getElementById('img-transito');
+      const imgEntregado = document.getElementById('img-entregado');
+
       if (data.transito_at) {
         stepRecibido.classList.remove('active');
         stepTransito.classList.remove('inactive');
         stepTransito.classList.add('active');
         
         document.getElementById('time-transito').textContent = formatTime(data.transito_at);
-        if (data.transito_img) {
-          document.getElementById('img-transito').src = data.transito_img;
-          document.getElementById('img-transito').classList.remove('hidden');
-        }
+        imgTransito.src = data.transito_img ? data.transito_img : '/img/paso2-transito.webp';
+        imgTransito.classList.remove('hidden');
       }
 
       if (data.entregado_at) {
@@ -184,10 +181,8 @@
         stepEntregado.classList.add('active');
         
         document.getElementById('time-entregado').textContent = formatTime(data.entregado_at);
-        if (data.entregado_img) {
-          document.getElementById('img-entregado').src = data.entregado_img;
-          document.getElementById('img-entregado').classList.remove('hidden');
-        }
+        imgEntregado.src = data.entregado_img ? data.entregado_img : '/img/paso3-entregado.webp';
+        imgEntregado.classList.remove('hidden');
       }
 
     } catch (e) {
