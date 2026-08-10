@@ -390,7 +390,7 @@
                 <div class="text-center mb-6">
                     <span class="text-5xl block mb-3">✨</span>
                     <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-2 leading-tight">¡De verdad gracias por elegirnos entre tantas opciones!</h3>
-                    <p class="text-sm md:text-base text-[#0a1f1c]/70 mt-4 leading-relaxed">Tu opinión es la semilla de nuestra excelencia. ¿En 10 segundos cuéntanos por favor cómo estuvo todo? <strong class="text-[#c5a059] block mt-1">Por tu valioso tiempo serás recompensado/a, lo prometemos.</strong></p>
+                    <p class="text-sm md:text-base text-[#0a1f1c]/70 mt-4 leading-relaxed">Tu opinión es la semilla de nuestra excelencia. ¿En 10 segundos cuéntanos por favor cómo estuvo todo? <strong class="text-[#c5a059] block mt-1">Por tu valioso tiempo serás recompensado/a, lo prometemos. 😁</strong></p>
                 </div>
                 
                 <form id="survey-form" onsubmit="return enviarEncuesta(event)">
@@ -411,7 +411,7 @@
                             <div class="space-y-3 text-sm text-[#0a1f1c]" id="survey-checkboxes"></div>
                         </div>
                         <div class="mb-6">
-                            <label id="survey-q3-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">¿Si pudieras darnos una sola sugerencia para mejorar, cual sería?</label>
+                            <label id="survey-q3-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">Si pudieras darnos una sola sugerencia para mejorar, ¿cuál sería?</label>
                             <textarea id="survey-suggestion" rows="3" class="w-full px-4 py-3 rounded-lg text-sm border border-[#0a1f1c]/20 bg-white text-[#0a1f1c] resize-none focus:outline-none focus:border-[#c5a059]" placeholder="Escribe tu idea aquí (Opcional)..."></textarea>
                         </div>
                         <button type="submit" id="survey-submit-btn" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs md:text-sm uppercase tracking-widest shadow-md transition hover:scale-[1.02]">Enviar mi opinión</button>
@@ -982,7 +982,7 @@ stars.forEach(btn => {
                 <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Puntualidad" class="w-4 h-4 accent-[#c5a059]"> La puntualidad en la entrega</label>
                 <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Atención" class="w-4 h-4 accent-[#c5a059]"> La atención y amabilidad</label>
             `;
-            q3.textContent = "¿Hay algo más que quieras destacar o alguna felicitación?";
+            q3.textContent = "Si pudieras darnos una sola sugerencia para mejorar, ¿cuál sería?";
         } else {
             q2.textContent = "Queremos mejorar para ti. ¿Qué podríamos hacer diferente?";
             checks.innerHTML = `
@@ -1030,7 +1030,7 @@ async function enviarEncuesta(e) {
                 <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-6 leading-relaxed">Si amas lo que hacemos, regalarnos una reseña en Google nos ayuda muchísimo a llegar a más personas como tú.</p>
                 <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review" target="_blank" class="block w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg mb-6 shadow-md hover:scale-105 transition">Dejar mi reseña en Google</a>
                 <p class="text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">Y como lo prometido es deuda... <strong class="text-[#c5a059]">¡Cierra esto para ver la sorpresa que sumamos a tu saldo!</strong> 😉</p>
-                <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 dark:text-white/40 hover:text-[#c5a059] dark:hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1">Cerrar esto</button>
+                <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 dark:text-white/40 hover:text-[#c5a059] dark:hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1 mt-4">Cerrar esto</button>
             `;
         } else {
             successDiv.innerHTML = `
@@ -1106,6 +1106,25 @@ if (prefillEmail && !localStorage.getItem('laforesta_club_token')) {
 }
 
 if(localStorage.getItem('laforesta_club_token')){ loadDashboardInit(); }
+
+// Sincronización silenciosa al regresar a la pestaña de Mi Club
+document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState === 'visible' && localStorage.getItem('laforesta_club_token')) {
+        try {
+            const res = await authedFetch('/api/me');
+            if (res.ok) {
+                const { customer } = await res.json();
+                const lastPoints = parseInt(localStorage.getItem('laforesta_last_points') || '-1');
+                if (lastPoints !== -1 && customer.points_balance > lastPoints) {
+                    loadDashboardInit();
+                } else {
+                    currentCustomerData = customer;
+                    localStorage.setItem('laforesta_last_points', customer.points_balance);
+                }
+            }
+        } catch(e) {}
+    }
+});
 </script>
 </body>
 </html>
