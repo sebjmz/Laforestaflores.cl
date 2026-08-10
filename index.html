@@ -1501,9 +1501,9 @@
     <button onclick="window.location.href='/seguimiento.html'; toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
         <span class="text-[9px] font-bold uppercase tracking-widest">Seguir Mi Pedido</span>
     </button>
-    <button onclick="let v = document.getElementById('vault'); if(v){ window.scrollTo({top: v.getBoundingClientRect().top + window.scrollY - (window.innerWidth >= 1024 ? 90 : 70), behavior: 'smooth'}); } else { window.location.href='/#vault'; } toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
-    <span class="text-[9px] font-bold uppercase tracking-widest">Colección Floral</span>
-</button>
+    <button onclick="scrollToVault(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+        <span class="text-[9px] font-bold uppercase tracking-widest">Colección Floral</span>
+    </button>
     <button onclick="document.getElementById('privilege').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
         <span class="text-[9px] font-bold uppercase tracking-widest">Suscripciones</span>
     </button>
