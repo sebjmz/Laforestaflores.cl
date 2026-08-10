@@ -1,4 +1,3 @@
-<!-- admin.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,41 +8,92 @@
 <style>
   body { background: #0a1f1c; color: #fcfaf7; font-family: sans-serif; }
   .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
-  input, select { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px; border-radius: 6px; width: 100%; margin-bottom: 15px; }
-  button { background: #c5a059; color: #0a1f1c; font-weight: bold; padding: 10px 15px; border-radius: 6px; width: 100%; text-transform: uppercase; letter-spacing: 1px; }
-  .hidden { display: none; }
+  input, select { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px; border-radius: 6px; width: 100%; margin-bottom: 15px; outline: none; }
+  input:focus, select:focus { border-color: #c5a059; }
+  button { background: #c5a059; color: #0a1f1c; font-weight: bold; padding: 10px 15px; border-radius: 6px; width: 100%; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
+  button:hover { background: #fff; }
+  .hidden { display: none !important; }
+  
+  /* Pestañas */
+  .tab-btn { background: transparent; color: rgba(255,255,255,0.5); border-bottom: 2px solid transparent; border-radius: 0; width: auto; padding: 10px 20px; }
+  .tab-btn.active { color: #c5a059; border-bottom: 2px solid #c5a059; }
+  .tab-btn:hover { background: transparent; color: #fff; }
+  
+  /* Tabla Excel */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+  th { background: rgba(255,255,255,0.1); padding: 12px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.2); color: #c5a059; }
+  td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  tr:hover td { background: rgba(255,255,255,0.02); }
 </style>
 </head>
-<body class="p-6 max-w-md mx-auto">
-  <h1 class="text-2xl font-bold mb-6 text-[#c5a059]">Operaciones La Foresta</h1>
+<body class="p-6 max-w-5xl mx-auto">
+  <div class="flex flex-col md:flex-row justify-between items-center mb-6 border-b border-white/10 pb-4">
+      <h1 class="text-2xl font-bold text-[#c5a059]">Operaciones La Foresta</h1>
+      <button onclick="borrarSecret()" class="w-auto bg-transparent border border-white/20 text-white/50 hover:text-white text-xs mt-4 md:mt-0 py-2">Cambiar Clave Interna</button>
+  </div>
 
-  <div class="card" id="config-section">
+  <div class="card max-w-md mx-auto" id="config-section">
     <h2 class="font-bold mb-2">Clave Interna (X-Internal-Secret)</h2>
     <input type="password" id="secret-key" placeholder="Pega tu INTERNAL_SECRET aquí">
     <button onclick="guardarSecret()">Guardar en dispositivo</button>
   </div>
 
-  <div class="card">
-    <h2 class="font-bold mb-2">Verificar WhatsApp Manual</h2>
-    <input type="text" id="wa-code" placeholder="Ej: LF-7583">
-    <button onclick="verificarWA()">Confirmar Código</button>
-    <p id="wa-status" class="text-xs mt-2 text-green-400"></p>
-  </div>
+  <div id="main-app" class="hidden">
+      <!-- Navegación -->
+      <div class="flex gap-4 mb-6 border-b border-white/10">
+          <button onclick="switchTab('ops')" id="tab-ops" class="tab-btn active">Despachos & WhatsApp</button>
+          <button onclick="switchTab('surveys'); loadSurveys();" id="tab-surveys" class="tab-btn">Resultados Encuestas</button>
+      </div>
 
-  <div class="card">
-    <h2 class="font-bold mb-2">Actualizar Seguimiento (Tracking)</h2>
-    <input type="text" id="track-order" placeholder="ID del Pedido (Ej: 987654321)">
-    <select id="track-status">
-      <option value="transito">En Tránsito (Va en camino)</option>
-      <option value="entregado">Entregado</option>
-    </select>
-    <label class="block mb-2 text-sm text-white/70">Foto de respaldo (Opcional):</label>
-    <input type="file" id="track-photo" accept="image/*" capture="environment">
-    <button onclick="actualizarTracking()">Subir y Notificar</button>
-    <p id="track-status-msg" class="text-xs mt-2 text-green-400 break-all"></p>
-  </div>
+      <!-- Pestaña: Operaciones -->
+      <div id="panel-ops" class="max-w-md">
+          <div class="card">
+            <h2 class="font-bold mb-2">Verificar WhatsApp Manual</h2>
+            <input type="text" id="wa-code" placeholder="Ej: LF-7583">
+            <button onclick="verificarWA()">Confirmar Código</button>
+            <p id="wa-status" class="text-xs mt-2 text-green-400"></p>
+          </div>
 
-  <button onclick="borrarSecret()" class="mb-6 text-xs text-white/50 hover:text-white underline">Cambiar Clave Interna</button>
+          <div class="card">
+            <h2 class="font-bold mb-2">Actualizar Seguimiento (Tracking)</h2>
+            <input type="text" id="track-order" placeholder="ID del Pedido (Ej: 987654321)">
+            <select id="track-status">
+              <option value="transito">En Tránsito (Va en camino)</option>
+              <option value="entregado">Entregado</option>
+            </select>
+            <label class="block mb-2 text-sm text-white/70">Foto de respaldo (Opcional):</label>
+            <input type="file" id="track-photo" accept="image/*" capture="environment" class="!p-2">
+            <button onclick="actualizarTracking()">Subir y Notificar</button>
+            <p id="track-status-msg" class="text-xs mt-2 text-green-400 break-all"></p>
+          </div>
+      </div>
+
+      <!-- Pestaña: Encuestas (Excel) -->
+      <div id="panel-surveys" class="hidden">
+          <div class="card overflow-x-auto">
+              <div class="flex justify-between items-center mb-4">
+                  <h2 class="font-bold text-lg">Resumen de Calidad</h2>
+                  <button onclick="exportarCSV()" class="w-auto text-xs py-2 px-4 bg-emerald-600 text-white hover:bg-emerald-500 flex items-center gap-2">
+                      <span>📥</span> Descargar Excel (CSV)
+                  </button>
+              </div>
+              <table id="surveys-table">
+                  <thead>
+                      <tr>
+                          <th>Fecha</th>
+                          <th>Cliente</th>
+                          <th>Estrellas</th>
+                          <th>Lo mejor valorado</th>
+                          <th>Sugerencias para mejorar</th>
+                      </tr>
+                  </thead>
+                  <tbody id="surveys-body">
+                      <tr><td colspan="5" class="text-center opacity-50 py-4">Cargando datos...</td></tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
 
 <script>
   const API_URL = 'https://club-laforesta.sebjmz.workers.dev';
@@ -51,8 +101,10 @@
   function checkSecret() {
     if(localStorage.getItem('lf_admin_secret')) {
       document.getElementById('config-section').classList.add('hidden');
+      document.getElementById('main-app').classList.remove('hidden');
     } else {
       document.getElementById('config-section').classList.remove('hidden');
+      document.getElementById('main-app').classList.add('hidden');
     }
   }
   checkSecret();
@@ -68,6 +120,14 @@
     checkSecret();
   }
 
+  function switchTab(tab) {
+      document.getElementById('panel-ops').classList.toggle('hidden', tab !== 'ops');
+      document.getElementById('panel-surveys').classList.toggle('hidden', tab !== 'surveys');
+      document.getElementById('tab-ops').classList.toggle('active', tab === 'ops');
+      document.getElementById('tab-surveys').classList.toggle('active', tab === 'surveys');
+  }
+
+  // OPERACIONES
   async function verificarWA() {
     const code = document.getElementById('wa-code').value;
     const secret = localStorage.getItem('lf_admin_secret');
@@ -81,7 +141,6 @@
         headers: { 'Content-Type': 'application/json', 'X-Internal-Secret': secret },
         body: JSON.stringify({ message_text: code })
       });
-      
       if (res.ok) {
         document.getElementById('wa-status').textContent = '✅ Verificado con éxito';
         document.getElementById('wa-status').className = 'text-xs mt-2 text-green-400';
@@ -134,6 +193,76 @@
       document.getElementById('track-status-msg').textContent = '❌ Error de conexión de red';
       document.getElementById('track-status-msg').className = 'text-xs mt-2 text-red-400';
     }
+  }
+
+  // ENCUESTAS Y EXCEL
+  let encuestasGlobales = [];
+
+  async function loadSurveys() {
+      const tbody = document.getElementById('surveys-body');
+      const secret = localStorage.getItem('lf_admin_secret');
+      tbody.innerHTML = '<tr><td colspan="5" class="text-center opacity-50 py-4">Cargando encuestas...</td></tr>';
+      
+      try {
+          const res = await fetch(`${API_URL}/api/admin/surveys`, {
+              headers: { 'X-Internal-Secret': secret }
+          });
+          const data = await res.json();
+          if(!res.ok) throw new Error(data.error);
+          
+          encuestasGlobales = data.surveys || [];
+          if(encuestasGlobales.length === 0) {
+              tbody.innerHTML = '<tr><td colspan="5" class="text-center opacity-50 py-4">No hay respuestas aún.</td></tr>';
+              return;
+          }
+
+          tbody.innerHTML = encuestasGlobales.map(s => {
+              const fecha = new Date(s.answered_at).toLocaleDateString('es-CL');
+              const estrellas = '★'.repeat(s.rating) + '☆'.repeat(5-s.rating);
+              let aspectos = '';
+              try { aspectos = JSON.parse(s.issues || '[]').join(', '); } catch(e){}
+              
+              return `
+                <tr>
+                    <td class="whitespace-nowrap opacity-70">${fecha}</td>
+                    <td><strong class="block">${s.full_name || 'Cliente'}</strong><span class="text-[10px] opacity-60">${s.email}</span></td>
+                    <td class="text-[#c5a059] text-lg">${estrellas}</td>
+                    <td>${aspectos || '-'}</td>
+                    <td class="italic opacity-90">${s.suggestion || '-'}</td>
+                </tr>
+              `;
+          }).join('');
+
+      } catch (err) {
+          tbody.innerHTML = `<tr><td colspan="5" class="text-center text-red-400 py-4">Error al cargar: ${err.message}</td></tr>`;
+      }
+  }
+
+  function exportarCSV() {
+      if(encuestasGlobales.length === 0) return alert('No hay datos para exportar.');
+      
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Fecha,Nombre,Email,Estrellas,Aspectos Valorado,Sugerencia\n";
+      
+      encuestasGlobales.forEach(s => {
+          const fecha = new Date(s.answered_at).toLocaleDateString('es-CL');
+          const name = `"${(s.full_name || '').replace(/"/g, '""')}"`;
+          const email = s.email;
+          let aspectos = '';
+          try { aspectos = JSON.parse(s.issues || '[]').join(' / '); } catch(e){}
+          const issues = `"${aspectos}"`;
+          const sug = `"${(s.suggestion || '').replace(/"/g, '""')}"`;
+          
+          csvContent += `${fecha},${name},${email},${s.rating},${issues},${s.sug}\n`;
+      });
+      
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `Encuestas_La_Foresta_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
   }
 </script>
 </body>
