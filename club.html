@@ -105,7 +105,7 @@
   <div class="flex items-center gap-4">
     <a href="/" class="btn-outline px-4 py-2 rounded-lg text-[10px] md:text-xs uppercase tracking-widest bg-transparent flex items-center justify-center">Tienda</a>
     <button onclick="toggleTheme()" class="p-2.5 rounded-full border border-[#0a1f1c]/20 dark:border-white/20 bg-transparent text-[#0a1f1c]/60 dark:text-white/60 hover:text-[#c5a059] dark:hover:text-[#c5a059] transition-all" aria-label="Ajustar Luz">
-      <svg id="theme-icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+      <svg id="theme-icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
       <svg id="theme-icon-moon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
     </button>
   </div>
@@ -389,7 +389,7 @@
             <div id="survey-content">
                 <div class="text-center mb-6">
                     <span class="text-5xl block mb-3">✨</span>
-                    <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-2 leading-tight">¡De verdad gracias por elegirnos entre tantas opciones!</h3>
+                    <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-2 leading-tight">¡Gracias por elegirnos!</h3>
                     <p class="text-sm md:text-base text-[#0a1f1c]/70 mt-4 leading-relaxed">Tu opinión es la semilla de nuestra excelencia. ¿En 10 segundos cuéntanos por favor cómo estuvo todo? <strong class="text-[#c5a059] block mt-1">Por tu valioso tiempo serás recompensado/a, lo prometemos. 😁</strong></p>
                 </div>
                 
@@ -512,7 +512,7 @@ function dispararFuegosArtificiales() {
   }, 250);
 }
 
-function playSyncAnimation(htmlContent) {
+function playSyncAnimation(htmlContent, addedPoints = 0, reasonText = "¡Gracias por tu opinión!") {
     document.getElementById('auth-wrap').classList.add('hidden-panel');
     document.getElementById('verify-email-section').classList.add('hidden-panel');
     document.getElementById('dashboard-section').classList.add('hidden-panel');
@@ -535,9 +535,33 @@ function playSyncAnimation(htmlContent) {
             clearInterval(interval);
             dispararFuegosArtificiales();
             syncScreen.classList.add('hidden-panel');
+            
             renderDashboard(true); 
+            
+            if (addedPoints > 0) {
+                mostrarBadgePuntosSumados(addedPoints, reasonText);
+            }
         }
     }, 900);
+}
+
+function mostrarBadgePuntosSumados(pts, reason) {
+    const pointsContainer = document.getElementById('dash-points').parentElement;
+    
+    const existing = document.getElementById('points-added-badge');
+    if (existing) existing.remove();
+
+    const badge = document.createElement('div');
+    badge.id = 'points-added-badge';
+    badge.className = 'mt-2 inline-flex items-center gap-1.5 bg-[#c5a059] text-[#0a1f1c] font-bold text-xs px-3 py-1.5 rounded-full shadow-lg animate-bounce';
+    badge.innerHTML = `<span>+${pts.toLocaleString('es-CL')} pts</span> 🫶 <span class="font-normal opacity-90">(${reason})</span>`;
+
+    pointsContainer.appendChild(badge);
+
+    setTimeout(() => {
+        badge.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+        setTimeout(() => badge.remove(), 1000);
+    }, 6000);
 }
 
 function animatePoints(obj, start, end, duration, isCurrency = false) {
@@ -668,7 +692,6 @@ async function claimPendingRewards() {
 }
 
 async function loadDashboardInit(){
-  // Intentamos reclamar premios huérfanos antes de pedir los datos al servidor
   await claimPendingRewards();
   
   const res = await authedFetch('/api/me');
@@ -681,14 +704,18 @@ async function loadDashboardInit(){
   localStorage.setItem('laforesta_prev_points', lastPoints === -1 ? 0 : lastPoints);
   localStorage.setItem('laforesta_last_points', customer.points_balance);
 
-  if (lastPoints !== -1 && customer.points_balance > lastPoints) {
+  const diff = customer.points_balance - lastPoints;
+
+  if (lastPoints !== -1 && diff > 0) {
       const htmlIncrease = `
-        <svg class="w-16 h-16 text-[#c5a059] mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        <h2 class="font-serif text-4xl md:text-5xl italic mb-5 text-[#0a1f1c] dark:text-[#fcfaf7]">¡Sorpresa!</h2>
-        <p class="text-[#0a1f1c]/70 dark:text-white/70 text-base md:text-lg mb-14">Tu saldo de puntos acaba de aumentar. Revelando tu nuevo total en...</p>
+        <div class="text-6xl mb-4">🫶</div>
+        <h2 class="font-serif text-4xl md:text-5xl italic mb-3 text-[#0a1f1c] dark:text-[#fcfaf7]">¡Gracias de nuevo!</h2>
+        <p class="text-[#0a1f1c]/70 dark:text-white/70 text-base md:text-lg mb-8">
+          Sumamos <strong class="text-[#c5a059] font-bold">+${diff.toLocaleString('es-CL')} pts</strong> a tu saldo.
+        </p>
         <div class="text-8xl font-serif text-[#c5a059] italic drop-shadow-md transition-transform" id="sync-countdown">3</div>
       `;
-      playSyncAnimation(htmlIncrease);
+      playSyncAnimation(htmlIncrease, diff, "¡Sumados con éxito!");
   } else {
       const htmlNormal = `
         <svg class="w-12 h-12 text-[#c5a059] animate-spin mb-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
@@ -696,7 +723,7 @@ async function loadDashboardInit(){
         <p class="text-[#0a1f1c]/70 dark:text-white/70 text-base md:text-lg mb-14">Estamos cargando tus beneficios y recordando tus fechas importantes.</p>
         <div class="text-8xl font-serif text-[#c5a059] italic drop-shadow-md" id="sync-countdown">3</div>
       `;
-      playSyncAnimation(htmlNormal);
+      playSyncAnimation(htmlNormal, 0);
   }
 }
 
@@ -942,7 +969,6 @@ async function loadReferrals(){
   }).join('');
 }
 
-// LOGICA DE LA ENCUESTA (POP-UP CON MÚLTIPLE SELECCIÓN)
 let pendingSurveyId = null;
 let surveySubmittedLocally = false;
 
@@ -1027,8 +1053,6 @@ async function enviarEncuesta(e) {
         });
 
         const data = await res.json();
-        
-        // ESTA LÍNEA ES LA CLAVE: Frena el proceso si el servidor arroja error (ej. 404)
         if (!res.ok) throw new Error(data.error || 'Error al enviar');
 
         surveySubmittedLocally = true;
@@ -1089,7 +1113,7 @@ function copyReferralLinkModal() {
   navigator.clipboard.writeText(`${location.origin}/club.html?ref=${code}`);
   alert('¡Enlace copiado! Ya puedes pegarlo y enviárselo a quien quieras.');
 }
-// LOGICA DE LLEGADA CON REFERIDO (QR O ENLACE)
+
 const refFromUrl = urlParams.get('ref') || localStorage.getItem('laforesta_referral_code');
 if (refFromUrl) {
   if(urlParams.get('ref')) localStorage.setItem('laforesta_referral_code', urlParams.get('ref'));
@@ -1120,10 +1144,10 @@ if (prefillEmail && !localStorage.getItem('laforesta_club_token')) {
 
 if(localStorage.getItem('laforesta_club_token')){ loadDashboardInit(); }
 
-// Sincronización silenciosa al regresar a la pestaña de Mi Club
 document.addEventListener('visibilitychange', async () => {
     if (document.visibilityState === 'visible' && localStorage.getItem('laforesta_club_token')) {
         try {
+            await claimPendingRewards();
             const res = await authedFetch('/api/me');
             if (res.ok) {
                 const { customer } = await res.json();
