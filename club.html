@@ -88,14 +88,12 @@
     100% {opacity: 1; transform: translateY(0)}
   }
 
-  /* Estrellas Encuesta */
   .star-rating button { transition: color 0.2s; }
   .star-rating button:hover, .star-rating button.active { color: #c5a059; }
 </style>
 </head>
 <body class="bg-[#fcfaf7] dark:bg-[#0a1f1c] text-[#0a1f1c] dark:text-[#fcfaf7] min-h-screen selection:bg-[#c5a059] selection:text-[#0a1f1c] transition-colors duration-500">
 
-<!-- MENÚ STICKY -->
 <div class="sticky top-0 z-[100] bg-[#fcfaf7]/90 dark:bg-[#0a1f1c]/90 backdrop-blur-md border-b border-[#0a1f1c]/10 dark:border-white/10 py-4 px-6 md:px-12 flex justify-between items-center transition-colors duration-500">
   <a href="/" class="inline-block group">
     <img src="img/logo-menu.webp" alt="La Foresta Flores" class="h-7 md:h-8 w-auto brightness-0 dark:invert opacity-80 group-hover:opacity-100 transition-all">
@@ -111,15 +109,12 @@
 
 <div class="max-w-5xl mx-auto px-6 md:px-12 pt-12 pb-24">
 
-  <!-- HEADER -->
   <div id="header-text">
       <h1 class="font-serif text-5xl md:text-6xl italic mb-3 text-[#0a1f1c] dark:text-[#fcfaf7]">Club La Foresta</h1>
       <p class="text-[#0a1f1c]/60 dark:text-white/60 text-base md:text-lg mb-12">Bienvenido a tu espacio. Aquí guardamos tus beneficios, tus recuerdos y las fechas que más te importan.</p>
   </div>
 
-  <!-- ================= AUTH SECTION ================= -->
   <div id="auth-wrap" class="max-w-2xl mx-auto">
-      <!-- BANNER BIENVENIDA REFERIDO (Oculto por defecto) -->
       <div id="referral-welcome-banner" class="hidden-panel card p-6 md:p-8 mb-8 border-[#c5a059]/40 bg-[#c5a059]/10 text-center shadow-lg relative overflow-hidden">
         <span class="text-[10px] md:text-xs uppercase tracking-[0.25em] text-[#c5a059] font-bold block mb-2">¡Invitación Especial VIP!</span>
         <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-[#fcfaf7] mb-2">Alguien quiere que te enamores de nosotros</h3>
@@ -158,7 +153,6 @@
       </div>
   </div>
 
-  <!-- ================= VERIFICACIÓN DE CORREO ================= -->
   <div id="verify-email-section" class="card p-10 md:p-14 mb-10 max-w-2xl mx-auto hidden-panel text-center">
     <h3 class="font-serif text-3xl italic mb-4">¡Ya casi! Revisa tu correo</h3>
     <p class="text-[#0a1f1c]/70 dark:text-white/70 text-sm uppercase tracking-widest mb-8 leading-relaxed">Te enviamos un código de 6 números. Escríbelo aquí para comprobar que eres tú.</p>
@@ -169,7 +163,6 @@
     <button onclick="resendEmailCode()" class="text-[#c5a059] text-xs uppercase tracking-widest mt-4 hover:text-[#0a1f1c] dark:hover:text-white transition font-bold">¿No llegó el código? Enviar de nuevo</button>
   </div>
 
-  <!-- ================= LOADER SYNC ================= -->
   <div id="sync-screen" class="hidden-panel flex flex-col items-center justify-center py-24 text-center min-h-[50vh]">
     <svg class="w-12 h-12 text-[#c5a059] animate-spin mb-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
     <h2 class="font-serif text-4xl md:text-5xl italic mb-5">Preparando todo...</h2>
@@ -177,13 +170,12 @@
     <div class="text-8xl font-serif text-[#c5a059] italic drop-shadow-md" id="sync-countdown">3</div>
   </div>
 
-  <!-- ================= DASHBOARD VIP ================= -->
   <div id="dashboard-section" class="hidden-panel space-y-10">
 
-    <!-- ENCUESTA DINÁMICA (Solo visible si hay encuesta pendiente) -->
+    <!-- ENCUESTA DINÁMICA -->
     <div id="survey-banner" class="hidden-panel card p-8 md:p-10 border-[#c5a059]/40 bg-[#c5a059]/5 shadow-[0_0_20px_rgba(197,160,89,0.15)] relative overflow-hidden">
         <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-2">Tu opinión es oro para nosotros</h3>
-        <p class="text-sm md:text-base text-[#0a1f1c]/70 dark:text-white/60 mb-6">Notamos que recibiste un pedido recientemente. ¿Nos regalas 1 minuto para contarnos cómo te fue? Solo son 3 preguntas.</p>
+        <p class="text-sm md:text-base text-[#0a1f1c]/70 dark:text-white/60 mb-6">Notamos que recibiste un pedido recientemente. ¿Nos regalas 1 minuto para contarnos cómo te fue?</p>
         
         <form id="survey-form" onsubmit="return submitSurvey(event)" class="space-y-6">
             <div>
@@ -200,7 +192,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">2. ¿Qué aspecto destacaría?</label>
+                    <label class="block text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">2. ¿Qué aspecto destacarías?</label>
                     <select id="survey-q-power" class="w-full px-5 py-4 rounded-lg text-sm bg-white dark:bg-[#0a1f1c] border border-[#0a1f1c]/10 dark:border-white/10" required>
                         <option value="" disabled selected>Selecciona una opción</option>
                         <option value="Frescura de las flores">La frescura de las flores</option>
@@ -210,18 +202,17 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">3. ¿Alguna sugerencia para mejorar?</label>
-                    <input id="survey-suggestion" type="text" placeholder="Escribe tu sugerencia (Opcional)" class="w-full px-5 py-4 rounded-lg text-sm bg-white dark:bg-[#0a1f1c] border border-[#0a1f1c]/10 dark:border-white/10">
+                    <label class="block text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">3. Un consejo para mejorar la experiencia, producto o servicio de La Foresta Flores</label>
+                    <input id="survey-suggestion" type="text" placeholder="Escribe tu consejo aquí..." class="w-full px-5 py-4 rounded-lg text-sm bg-white dark:bg-[#0a1f1c] border border-[#0a1f1c]/10 dark:border-white/10">
                 </div>
             </div>
             
-            <button type="submit" class="btn-gold px-8 py-4 rounded-lg text-sm uppercase tracking-widest font-bold shadow-md">Enviar mis respuestas</button>
+            <button type="submit" class="btn-gold px-8 py-4 rounded-lg text-sm uppercase tracking-widest font-bold shadow-md">Enviar mi opinión</button>
         </form>
     </div>
 
     <!-- MÉTRICAS -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-      <!-- Puntos -->
       <div class="card p-8 border-[#c5a059]/40 bg-[#c5a059]/5 shadow-[0_0_20px_rgba(197,160,89,0.15)] relative overflow-hidden flex flex-col justify-center">
         <div class="relative z-10">
             <span class="text-[11px] md:text-xs uppercase tracking-widest text-[#c5a059] font-bold">Tus Puntos Disponibles</span>
@@ -230,7 +221,6 @@
         </div>
       </div>
       
-      <!-- Estatus -->
       <div class="card p-8 flex flex-col justify-center">
         <div class="flex justify-between items-start mb-3">
             <span class="text-[11px] md:text-xs uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/50 font-bold">Tu Nivel actual (<span id="dash-tier-pct">3%</span>)</span>
@@ -244,7 +234,6 @@
         <p class="text-xs text-[#0a1f1c]/50 dark:text-white/50 mt-2.5 leading-relaxed">¡Recuerda que los puntos de tus invitados también te ayudan a subir de nivel!</p>
       </div>
       
-      <!-- Ahorro Histórico -->
       <div class="card p-8 flex flex-col justify-center">
         <span class="text-[11px] md:text-xs uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/50 font-bold mb-3">Tu ahorro total</span>
         <p class="font-serif text-5xl italic font-bold text-[#0a1f1c] dark:text-white" id="dash-savings">$0</p>
@@ -317,7 +306,6 @@
             <h3 class="font-serif text-2xl md:text-3xl italic mb-6">Contacto y notificaciones</h3>
             
             <div class="space-y-5 flex-grow">
-                <!-- Correo -->
                 <div class="flex justify-between items-center bg-[#0a1f1c]/5 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/10 dark:border-white/5">
                     <div>
                         <p class="text-base font-bold text-[#0a1f1c] dark:text-white">Tu correo electrónico</p>
@@ -326,7 +314,6 @@
                     <span class="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded text-[10px] uppercase tracking-widest font-bold shrink-0 ml-4">Verificado</span>
                 </div>
 
-                <!-- WhatsApp No Verificado -->
                 <div id="phone-not-verified" class="bg-[#0a1f1c]/5 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/10 dark:border-white/5">
                     <div class="mb-5">
                         <p class="text-base font-bold text-[#0a1f1c] dark:text-white">Tu número de WhatsApp</p>
@@ -342,7 +329,6 @@
                     </div>
                 </div>
 
-                <!-- WhatsApp Verificado -->
                 <div id="phone-verified-box" class="hidden-panel space-y-5">
                     <div class="flex justify-between items-center bg-[#0a1f1c]/5 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/10 dark:border-white/5">
                         <div>
@@ -352,7 +338,6 @@
                         <span class="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded text-[10px] uppercase tracking-widest font-bold shrink-0 ml-4">Enlazado</span>
                     </div>
                     
-                    <!-- Botón Canal VIP (Estrategia de Retención) -->
                     <a href="https://whatsapp.com/channel/TU_LINK_DE_CANAL_AQUI" target="_blank" class="block w-full py-5 border border-[#25D366]/40 bg-[#25D366]/10 hover:bg-[#25D366] text-[#0a1f1c] dark:text-white hover:text-white rounded-xl transition-all duration-300 group text-center shadow-sm">
                         <span class="text-sm md:text-base uppercase tracking-widest font-bold mb-2 flex items-center justify-center gap-3">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -365,7 +350,7 @@
         </div>
     </div>
 
-    <!-- ANIVERSARIOS IMPERDIBLES (FULL WIDTH FORM) -->
+    <!-- ANIVERSARIOS IMPERDIBLES -->
     <div class="card p-8 md:p-10">
       <h3 class="font-serif text-2xl md:text-3xl italic mb-3">Fechas que no puedes olvidar</h3>
       <p class="text-[#0a1f1c]/70 dark:text-white/70 text-sm md:text-base leading-relaxed mb-8">Déjanos los detalles de ese aniversario o fecha especial y te enviaremos un recordatorio para que tengas tiempo de planear una linda sorpresa.</p>
@@ -412,12 +397,12 @@
 
     <!-- COMUNIDAD Y RESEÑAS -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 mt-4">
-        <!-- Google -->
+        <!-- Google Reviews -->
         <div class="card p-8 md:p-10 text-center flex flex-col justify-center items-center">
             <span class="text-4xl md:text-5xl mb-4">⭐</span>
             <h3 class="font-serif text-2xl md:text-3xl italic mb-2">Ayúdanos a crecer</h3>
             <p class="text-sm md:text-base opacity-70 mb-8 leading-relaxed">Si amas lo que hacemos, regalarnos una reseña en Google nos ayuda muchísimo a llegar a más personas como tú.</p>
-            <a href="https://g.page/r/YOUR_GOOGLE_BUSINESS_LINK/review" target="_blank" class="btn-outline px-8 py-4 rounded-lg text-xs font-bold uppercase tracking-widest inline-flex w-full md:w-auto justify-center">Escribir una Reseña</a>
+            <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review,5" target="_blank" class="btn-outline px-8 py-4 rounded-lg text-xs font-bold uppercase tracking-widest inline-flex w-full md:w-auto justify-center">Escribir una Reseña</a>
         </div>
         <!-- Instagram -->
         <div class="card p-8 md:p-10 text-center flex flex-col justify-center items-center">
@@ -829,12 +814,12 @@ async function loadCards(){
   const cards = data.cards || [];
 
   if (cards.length === 0) {
-    label.textContent = "(0)";
+    label.textContent = "(0 envíos)";
     list.innerHTML = '<p class="text-[#0a1f1c]/60 dark:text-white/50 text-sm italic">Tus envíos aparecerán aquí cuando hagas tu primera compra.</p>';
     return;
   }
 
-  label.textContent = `(${cards.length})`;
+  label.textContent = `(${cards.length} envíos)`;
   list.innerHTML = cards.map(c => {
     const fecha = new Date(c.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' });
     const ramo = c.bouquet_name || "Arreglo Floral"; 
@@ -895,7 +880,6 @@ async function checkSurveyPending() {
     }
 }
 
-// Control de estrellas
 const starButtons = document.querySelectorAll('#survey-stars button');
 const ratingValInput = document.getElementById('survey-rating-val');
 starButtons.forEach(btn => {
@@ -996,10 +980,9 @@ function dispararFuegosArtificiales() {
   }, 250);
 }
 
-// ================== LOGICA DE LLEGADA CON REFERIDO (QR O ENLACE) ==================
+// LOGICA DE LLEGADA CON REFERIDO (QR O ENLACE)
 const refFromUrl = urlParams.get('ref') || localStorage.getItem('laforesta_referral_code');
 if (refFromUrl) {
-  // Guardamos en local si vino por URL
   if(urlParams.get('ref')) localStorage.setItem('laforesta_referral_code', urlParams.get('ref'));
   
   const inputRef = document.getElementById('reg-referral');
@@ -1008,7 +991,6 @@ if (refFromUrl) {
       inputRef.setAttribute('readonly', 'readonly');
   }
   
-  // Si no está logueado, mostrarle el banner de bienvenida
   if (!localStorage.getItem('laforesta_club_token')) {
       showAuthTab('register');
       const banner = document.getElementById('referral-welcome-banner');
