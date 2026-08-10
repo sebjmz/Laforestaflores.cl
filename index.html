@@ -1523,7 +1523,7 @@
     </button>
 </div>
 
-        <button id="main-fab-btn" onclick="removerOnda(); toggleFabMenu();" aria-label="Menú rápido" class="fab-wave pointer-events-auto relative bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
+        <button id="main-fab-btn" onclick="toggleFabMenu()" aria-label="Menú rápido" class="fab-wave pointer-events-auto relative bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
             <svg id="fab-icon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -1532,17 +1532,35 @@
         </button>
     </div>
 
-    <!-- Script de control inmediato para la onda -->
     <script>
-        // Si el usuario ya presionó el botón alguna vez, quitamos la onda inmediatamente
+        document.addEventListener("DOMContentLoaded", function() {
+            window.toggleFabMenu = function() {
+                let btn = document.getElementById('main-fab-btn');
+                if (btn && !localStorage.getItem('laforesta_fab_interacted')) {
+                    localStorage.setItem('laforesta_fab_interacted', 'true');
+                    btn.classList.remove('fab-wave');
+                }
+                
+                let menu = document.getElementById('fab-menu');
+                let icon = document.getElementById('fab-icon');
+                
+                if (menu && icon) {
+                    if (menu.classList.contains('opacity-0')) {
+                        menu.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'translate-y-4');
+                        menu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                        icon.style.transform = 'rotate(180deg)';
+                    } else {
+                        menu.classList.add('opacity-0', 'pointer-events-none', 'invisible', 'translate-y-4');
+                        menu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                        icon.style.transform = 'rotate(0deg)';
+                    }
+                }
+            };
+        });
+
         if (localStorage.getItem('laforesta_fab_interacted')) {
-            document.getElementById('main-fab-btn').classList.remove('fab-wave');
-        }
-        
-        // Función que desactiva la onda permanentemente tras el primer clic
-        function removerOnda() {
-            localStorage.setItem('laforesta_fab_interacted', 'true');
-            document.getElementById('main-fab-btn').classList.remove('fab-wave');
+            let btn = document.getElementById('main-fab-btn');
+            if (btn) btn.classList.remove('fab-wave');
         }
     </script>
 
