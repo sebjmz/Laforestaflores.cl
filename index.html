@@ -424,11 +424,10 @@
                 <img src="img/logo-menu.webp" width="130" height="42" alt="La Foresta Flores" class="h-6 md:h-8 w-auto object-contain" style="filter: brightness(0) saturate(100%) invert(72%) sepia(19%) saturate(1142%) hue-rotate(1deg) brightness(88%) contrast(92%);">
             </div>
             <div class="hidden lg:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap items-center">
-                <!-- Corrección directa a Collection -->
-                <a href="#vault" onclick="event.preventDefault(); document.getElementById('vault').scrollIntoView({behavior: 'smooth'});" class="hover:text-white transition-colors duration-300">Colección</a>
+                <a href="#vault" onclick="event.preventDefault(); document.getElementById('vault').scrollIntoView();" class="hover:text-white transition-colors duration-300">Colección</a>
                 <a href="#privilege" class="hover:text-white transition-colors duration-300">Suscripción & B2B</a>
                 <a href="#garden" class="hover:text-white transition-colors duration-300">Jardinería</a>
-                <a href="#faq" onclick="event.preventDefault(); document.getElementById('faq').scrollIntoView({behavior: 'smooth'});" class="hover:text-white transition-colors duration-300">Preguntas</a>
+                <a href="#faq" onclick="event.preventDefault(); document.getElementById('faq').scrollIntoView();" class="hover:text-white transition-colors duration-300">Preguntas</a>
                 <a href="#testimonios" class="hover:text-white transition-colors duration-300 flex items-center gap-1.5 group">
                     Testimonios
                     <svg class="w-3.5 h-3.5 text-[#c5a059] group-hover:text-white transition-colors duration-300 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
@@ -486,7 +485,6 @@
                 </span>
             </div>
 
-            <!-- AQUÍ CARGAMOS LAS PASARELAS DINÁMICAMENTE -->
             <button onclick="cargarPasarelasYAbrirCheckout()" aria-label="Proceder al Checkout" class="w-full btn-premium uppercase text-xs tracking-[0.2em] mb-6">Proceder al Checkout</button>
             
             <div class="flex justify-center items-center mb-6 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
@@ -530,8 +528,7 @@
         </p>
     </div>
     <div>
-        <!-- Corrección directa a Collection -->
-        <button onclick="document.getElementById('vault').scrollIntoView({behavior: 'smooth'});" aria-label="Explorar colección de flores" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Arreglos florales</button>
+        <button onclick="document.getElementById('vault').scrollIntoView();" aria-label="Explorar colección de flores" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Arreglos florales</button>
     </div>
 </div>
                 </div>
@@ -776,13 +773,12 @@
     </div>
 </section>
 
-    <!-- Corrección de Margen Superior para la Colección -->
     <section id="vault" class="bg-white pt-6 pb-12 border-t border-zinc-100" style="scroll-margin-top: 90px;">
         <div class="w-full max-w-[1800px] mx-auto px-6 md:px-12 lg:px-16">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-4 pb-4 border-b border-[#0a1f1c]/5 mb-6">
                 <div class="w-full md:w-auto overflow-hidden">
                     <h2 class="text-4xl md:text-7xl font-serif italic text-[#0a1f1c] mb-3 mt-2 md:mt-0 flex items-center gap-3 md:gap-4">
-                        Nuestra Colección
+                        Colección
                         <svg class="w-8 h-8 md:w-12 md:h-12 text-[#c5a059] opacity-80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="currentColor"/>
                             <path d="M19 4L20 7L23 8L20 9L19 12L18 9L15 8L18 7L19 4Z" fill="currentColor"/>
@@ -1202,8 +1198,7 @@
                     <li><a href="/privacidad.html" class="hover:text-[#c5a059] transition-colors">Política de Privacidad</a></li>
                     <li><a href="/terminos.html" class="hover:text-[#c5a059] transition-colors">Términos de Servicio</a></li>
                     <li><a href="/devoluciones.html" class="hover:text-[#c5a059] transition-colors">Políticas de Devolución</a></li>
-                    <!-- Corrección directa a Collection -->
-                    <li><a href="#vault" onclick="event.preventDefault(); document.getElementById('vault').scrollIntoView({behavior: 'smooth'});" class="hover:text-[#c5a059] transition-colors">Colecciones</a></li>
+                    <li><a href="#vault" onclick="event.preventDefault(); document.getElementById('vault').scrollIntoView();" class="hover:text-[#c5a059] transition-colors">Colecciones</a></li>
                     <li><a href="/seguimiento.html" class="hover:text-[#c5a059] transition-colors font-bold">Seguimiento de Pedido</a></li>
                 </ul>
             </div>
@@ -1493,20 +1488,19 @@
     <button onclick="window.location.href='/seguimiento.html'; toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
         <span class="text-[9px] font-bold uppercase tracking-widest">Seguir Mi Pedido</span>
     </button>
-    <!-- Corrección directa a Collection en el botón flotante -->
-    <button onclick="document.getElementById('vault').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+    <button onclick="document.getElementById('vault').scrollIntoView(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
         <span class="text-[9px] font-bold uppercase tracking-widest">Colección Floral</span>
     </button>
-    <button onclick="document.getElementById('privilege').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+    <button onclick="document.getElementById('privilege').scrollIntoView(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
         <span class="text-[9px] font-bold uppercase tracking-widest">Suscripciones</span>
     </button>
-    <button onclick="document.getElementById('garden').scrollIntoView({behavior: 'smooth'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+    <button onclick="document.getElementById('garden').scrollIntoView(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
         <span class="text-[9px] font-bold uppercase tracking-widest">Jardinería</span>
     </button>
-    <button onclick="document.getElementById('faq').scrollIntoView({behavior: 'smooth', block: 'start'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+    <button onclick="document.getElementById('faq').scrollIntoView({block: 'start'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
         <span class="text-[9px] font-bold uppercase tracking-widest">Preguntas</span>
     </button>
-    <button onclick="document.getElementById('testimonios').scrollIntoView({behavior: 'smooth', block: 'start'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300 group">
+    <button onclick="document.getElementById('testimonios').scrollIntoView({block: 'start'}); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300 group">
         <div class="flex items-center gap-1.5">
             <span class="text-[9px] font-bold uppercase tracking-widest">Testimonios</span>
             <svg class="w-3.5 h-3.5 text-[#c5a059] animate-pulse group-hover:text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
