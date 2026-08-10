@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Seguimiento | La Foresta Flores</title>
+
+<!-- Favicon -->
 <link rel="icon" type="image/webp" href="/img/favicon.webp">
 <link rel="shortcut icon" type="image/webp" href="/img/favicon.webp">
 <link rel="apple-touch-icon" href="/img/favicon.webp">
@@ -85,7 +87,7 @@
         <h3 class="font-serif text-xl italic mb-1">Manos a la obra en el taller</h3>
         <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-recibido">CONFIRMADO</p>
         <p class="text-sm text-white/80 mb-3">Recibimos tu pedido y agendamos tu lugar. Vamos a elegir las mejores flores para armar un diseño impecable en la fecha y hora que pediste. Quédate tranquilo, está en las mejores manos.</p>
-        <img id="img-recibido" src="/img/paso1-preparacion.webp" class="w-full h-40 object-cover rounded-lg border border-white/20">
+        <img id="img-recibido" src="/img/paso1-preparacion.webp" class="w-full h-40 object-cover rounded-lg border border-white/20" alt="Preparación">
       </div>
 
       <!-- Paso 2 -->
@@ -95,7 +97,7 @@
         <h3 class="font-serif text-xl italic mb-1">Flores en camino 🚚</h3>
         <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-transito">PENDIENTE</p>
         <p class="text-sm text-white/80 mb-3">¡Salió el despacho! Tu arreglo ya va rumbo a destino recorriendo las calles. Estamos a un paso de sacar esa sonrisa.</p>
-        <img id="img-transito" src="" class="hidden-panel w-full h-40 object-cover rounded-lg border border-white/20">
+        <img id="img-transito" src="" class="hidden-panel w-full h-40 object-cover rounded-lg border border-white/20" alt="En tránsito">
       </div>
 
       <!-- Paso 3 -->
@@ -105,7 +107,7 @@
         <h3 class="font-serif text-xl italic mb-1">¡Entregado con éxito! 🌸</h3>
         <p class="text-white/50 text-xs uppercase tracking-widest mb-2" id="time-entregado">PENDIENTE</p>
         <p class="text-sm text-white/80 mb-3">Llegamos a destino y tu encargo ya está en manos de quien corresponde. Un nuevo momento especial compartido. Gracias por confiar en nosotros.</p>
-        <img id="img-entregado" src="" class="hidden-panel w-full h-40 object-cover rounded-lg border border-white/20">
+        <img id="img-entregado" src="" class="hidden-panel w-full h-40 object-cover rounded-lg border border-white/20" alt="Entregado">
       </div>
 
       <!-- Botones Inferiores -->
@@ -133,8 +135,8 @@
           <div id="survey-content">
               <div class="text-center mb-6">
                   <span class="text-5xl block mb-3">✨</span>
-                  <h3 class="font-serif text-2xl italic text-[#0a1f1c] mb-2">¡De verdad gracias por elegirnos entre tantas opciones!</h3>
-                  <p class="text-sm text-[#0a1f1c]/70 leading-relaxed">Tu opinión es la semilla de nuestra excelencia. ¿En 10 segundos cuéntanos por favor cómo estuvo todo? <strong class="text-[#c5a059]">Por tu valioso tiempo serás recompensado/a, lo prometemos.</strong></p>
+                  <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-2 leading-tight">¡De verdad gracias por elegirnos entre tantas opciones!</h3>
+                  <p class="text-sm md:text-base text-[#0a1f1c]/70 mt-4 leading-relaxed">Tu opinión es la semilla de nuestra excelencia. ¿En 10 segundos cuéntanos por favor cómo estuvo todo? <strong class="text-[#c5a059] block mt-1">Por tu valioso tiempo serás recompensado/a, lo prometemos.</strong></p>
               </div>
               
               <form id="survey-form" onsubmit="return enviarEncuesta(event)">
@@ -149,16 +151,16 @@
                       <input type="hidden" id="survey-rating-val" value="0" required>
                   </div>
                   
-                  <div id="survey-dynamic-fields" class="hidden-panel">
+                  <div id="survey-dynamic-fields" class="hidden-panel animate-[fadeIn_0.5s_ease-out]">
                       <div class="mb-5">
                           <label id="survey-q2-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">¿Qué destacarías?</label>
                           <div class="space-y-3 text-sm text-[#0a1f1c]" id="survey-checkboxes"></div>
                       </div>
                       <div class="mb-6">
                           <label id="survey-q3-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">¿Si pudieras darnos una sola sugerencia para mejorar, cual sería?</label>
-                          <textarea id="survey-suggestion" rows="3" class="w-full px-4 py-3 rounded-lg text-sm border border-[#0a1f1c]/20 bg-white text-[#0a1f1c] resize-none" placeholder="Escribe tu idea aquí (Opcional)..."></textarea>
+                          <textarea id="survey-suggestion" rows="3" class="w-full px-4 py-3 rounded-lg text-sm border border-[#0a1f1c]/20 bg-white text-[#0a1f1c] resize-none focus:outline-none focus:border-[#c5a059]" placeholder="Escribe tu idea aquí (Opcional)..."></textarea>
                       </div>
-                      <button type="submit" id="survey-submit-btn" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md transition hover:scale-[1.02]">Enviar mi opinión</button>
+                      <button type="submit" id="survey-submit-btn" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs md:text-sm uppercase tracking-widest shadow-md transition hover:scale-[1.02]">Enviar mi opinión</button>
                   </div>
               </form>
           </div>
@@ -270,24 +272,27 @@
           document.getElementById('survey-dynamic-fields').classList.remove('hidden-panel');
           
           const q2 = document.getElementById('survey-q2-label');
+          const q3 = document.getElementById('survey-q3-label');
           const checks = document.getElementById('survey-checkboxes');
           
           if (val === 5) {
-              q2.textContent = "Nos haces muy felices. ¿Qué fue lo que más te gustó? (Múltiple)";
+              q2.textContent = "¡Nos haces muy felices! ¿Qué destacarías de nosotros?";
               checks.innerHTML = `
-                  <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Frescura" class="w-4 h-4 accent-[#c5a059]"> La frescura de las flores</label>
-                  <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Diseño" class="w-4 h-4 accent-[#c5a059]"> La presentación y el diseño</label>
-                  <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Puntualidad" class="w-4 h-4 accent-[#c5a059]"> La puntualidad en la entrega</label>
-                  <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Atención" class="w-4 h-4 accent-[#c5a059]"> La atención y amabilidad</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Frescura" class="w-4 h-4 accent-[#c5a059]"> La frescura de las flores</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Diseño" class="w-4 h-4 accent-[#c5a059]"> La presentación y el diseño</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Puntualidad" class="w-4 h-4 accent-[#c5a059]"> La puntualidad en la entrega</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Atención" class="w-4 h-4 accent-[#c5a059]"> La atención y amabilidad</label>
               `;
+              q3.textContent = "¿Hay algo más que quieras destacar o alguna felicitación?";
           } else {
-              q2.textContent = "Queremos solucionarlo. Ayúdanos a identificar el problema:";
+              q2.textContent = "Queremos mejorar para ti. ¿Qué podríamos hacer diferente?";
               checks.innerHTML = `
-                  <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Marchitas" class="w-4 h-4 accent-[#c5a059]"> Las flores no venían frescas</label>
-                  <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Diferente" class="w-4 h-4 accent-[#c5a059]"> El diseño no era el esperado</label>
-                  <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Atraso" class="w-4 h-4 accent-[#c5a059]"> Hubo un atraso en la entrega</label>
-                  <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Servicio" class="w-4 h-4 accent-[#c5a059]"> La atención no fue resolutiva</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Marchitas" class="w-4 h-4 accent-[#c5a059]"> Las flores no venían frescas</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Diferente" class="w-4 h-4 accent-[#c5a059]"> El diseño no era el esperado</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Atraso" class="w-4 h-4 accent-[#c5a059]"> Hubo un atraso en la entrega</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Servicio" class="w-4 h-4 accent-[#c5a059]"> La atención no fue resolutiva</label>
               `;
+              q3.textContent = "Si pudieras darnos una sola sugerencia para mejorar, ¿cuál sería?";
           }
       });
   });
@@ -314,7 +319,8 @@
 
           const data = await res.json();
           
-          if (!token && data.survey_id) {
+          // Si el cliente no estaba logueado, guardamos la encuesta en caché para que la cobre cuando se registre
+          if (data.requires_claim && data.survey_id) {
               localStorage.setItem('laforesta_unclaimed_survey', data.survey_id);
           }
 
@@ -326,18 +332,18 @@
               dispararFuegosArtificiales();
               successDiv.innerHTML = `
                   <span class="text-6xl mb-4 block">💖</span>
-                  <h3 class="font-serif text-2xl italic text-[#0a1f1c] mb-3">¡Muchas gracias por esas 5 estrellas!</h3>
+                  <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-3">¡Muchas gracias por esas 5 estrellas!</h3>
                   <p class="text-sm text-[#0a1f1c]/70 mb-6 leading-relaxed">Si amas lo que hacemos, regalarnos una reseña en Google nos ayuda muchísimo a llegar a más personas como tú.</p>
                   <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review" target="_blank" class="block w-full bg-[#0a1f1c] text-white text-xs uppercase tracking-widest font-bold py-4 rounded-lg mb-6 shadow-md hover:scale-105 transition">Dejar mi reseña en Google</a>
                   <p class="text-xs text-[#0a1f1c]/60 mb-6 leading-relaxed">Y como lo prometido es deuda... <strong class="text-[#c5a059]">¡luego de dejarnos tu reseña, vuelve a tu sesión de Mi Club, te tenemos una sorpresa!</strong> 😉</p>
-                  <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1">Cerrar esto</button>
+                  <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1 mt-4">Cerrar esto</button>
               `;
           } else {
               successDiv.innerHTML = `
                   <span class="text-6xl mb-4 block">🙏</span>
-                  <h3 class="font-serif text-2xl italic text-[#0a1f1c] mb-3">Agradecemos mucho tu honestidad</h3>
+                  <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-3">Agradecemos mucho tu honestidad</h3>
                   <p class="text-sm text-[#0a1f1c]/70 mb-8 leading-relaxed">De tu satisfacción depende nuestro crecimiento. Tomaremos muy en serio tus comentarios. <strong class="text-[#c5a059]">Te hemos dejado una recompensa en Mi Club por ayudarnos a ser mejores</strong>.</p>
-                  <button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md">Entendido</button>
+                  <button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">Entendido</button>
               `;
           }
       } catch (err) {
