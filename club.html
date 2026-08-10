@@ -93,6 +93,11 @@
   
   html { scroll-behavior: smooth; }
   section { scroll-margin-top: 100px; }
+
+  @keyframes slideInRight {
+    0% { opacity: 0; transform: translateX(30px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
 </style>
 </head>
 <body class="bg-[#fcfaf7] dark:bg-[#0a1f1c] text-[#0a1f1c] dark:text-[#fcfaf7] min-h-screen selection:bg-[#c5a059] selection:text-[#0a1f1c] transition-colors duration-500">
@@ -199,6 +204,21 @@
         <p class="font-serif text-5xl italic font-bold text-[#0a1f1c] dark:text-white" id="dash-savings">$0</p>
         <p class="text-xs text-[#0a1f1c]/70 dark:text-white/60 mt-4 leading-relaxed font-medium">Este es todo el dinero que has ahorrado gracias a tus descuentos, puntos y amigos invitados. ¡Suma y sigue!</p>
       </div>
+    </section>
+
+    <section class="card p-8 md:p-10 mb-6">
+      <h3 class="font-serif text-2xl md:text-3xl italic mb-3">Historial de Puntos</h3>
+      <p class="text-[#0a1f1c]/70 dark:text-white/70 text-sm md:text-base leading-relaxed mb-8">Revisa el detalle de cómo has ganado y utilizado tu saldo.</p>
+      
+      <details id="history-details" class="group border border-[#0a1f1c]/10 dark:border-white/10 rounded-xl overflow-hidden">
+          <summary class="flex justify-between items-center p-5 md:px-8 cursor-pointer hover:bg-[#0a1f1c]/5 dark:hover:bg-white/5 transition-colors text-xs uppercase tracking-widest font-bold text-[#c5a059] outline-none select-none">
+              Ver movimientos <span id="history-count-label">(0)</span>
+              <svg class="w-5 h-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </summary>
+          <div class="p-5 md:p-8 bg-[#0a1f1c]/5 dark:bg-black/20 border-t border-[#0a1f1c]/10 dark:border-white/10">
+              <div id="points-history-list" class="space-y-4"></div>
+          </div>
+      </details>
     </section>
 
     <section id="referral-section" class="card overflow-hidden border-[#c5a059]/40 mb-6 relative">
@@ -378,8 +398,8 @@
             <div id="survey-content">
                 <div class="text-center mb-6">
                     <span class="text-5xl block mb-3">✨</span>
-                    <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-2 leading-tight">¡Gracias por elegirnos y dejar que nuestras flores hablen por ti!</h3>
-                    <p class="text-sm md:text-base text-[#0a1f1c]/70 mt-4 leading-relaxed">Detrás de cada arreglo hay mucho amor y dedicación, pero tú eres quien le da sentido a lo que hacemos. ¿Nos regalas unos segundos para contarnos cómo vivimos este momento juntos? <strong class="text-[#c5a059] block mt-1">Valoramos infinitamente tu tiempo, así que al terminar te espera un regalo muy especial de nuestra parte. 😁</strong></p>
+                    <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-2 leading-tight">¡Gracias por confiar en nosotros!</h3>
+                    <p class="text-sm md:text-base text-[#0a1f1c]/70 mt-4 leading-relaxed">Nos importa mucho tu experiencia. ¿Nos cuentas en unos segundos cómo estuvo todo? <strong class="text-[#c5a059] block mt-1">Tu tiempo es muy valioso, así que te dejaremos un pequeño regalo al final.</strong></p>
                 </div>
                 
                 <form id="survey-form" onsubmit="return enviarEncuesta(event)">
@@ -403,7 +423,7 @@
                             <label id="survey-q3-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3"></label>
                             <textarea id="survey-suggestion" rows="3" class="w-full px-4 py-3 rounded-lg text-sm border border-[#0a1f1c]/20 bg-white text-[#0a1f1c] resize-none focus:outline-none focus:border-[#c5a059]"></textarea>
                         </div>
-                        <button type="submit" id="survey-submit-btn" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs md:text-sm uppercase tracking-widest shadow-md transition hover:scale-[1.02]">Enviar mi opinión</button>
+                        <button type="submit" id="survey-submit-btn" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs md:text-sm uppercase tracking-widest shadow-md transition hover:scale-[1.02]">ENVIAR MI OPINIÓN</button>
                     </div>
                 </form>
             </div>
@@ -662,6 +682,7 @@ async function renderDashboard(animate = false) {
   loadDates();
   loadReferrals();
   loadCards();
+  loadPointsHistory();
   checkSurveyPending();
 }
 
@@ -695,6 +716,7 @@ async function loadDashboardInit(){
   const diff = customer.points_balance - lastPoints;
 
   if (lastPoints !== -1 && diff > 0) {
+      document.getElementById('history-details').open = true;
       const htmlIncrease = `
         <div class="text-6xl mb-4">🫶</div>
         <h2 class="font-serif text-4xl md:text-5xl italic mb-3 text-[#0a1f1c] dark:text-[#fcfaf7]">¡Gracias de nuevo!</h2>
@@ -957,6 +979,65 @@ async function loadReferrals(){
   }).join('');
 }
 
+async function loadPointsHistory() {
+    const res = await authedFetch('/api/points-history');
+    if (!res.ok) return;
+    const data = await res.json();
+    const list = document.getElementById('points-history-list');
+    const label = document.getElementById('history-count-label');
+    const history = data.history || [];
+
+    if (history.length === 0) {
+        label.textContent = "(0)";
+        list.innerHTML = '<p class="text-[#0a1f1c]/60 dark:text-white/50 text-sm italic">Tus movimientos aparecerán aquí.</p>';
+        return;
+    }
+
+    label.textContent = `(${history.length})`;
+    list.innerHTML = history.map((h, i) => {
+        let reasonText = "";
+        let pointsClass = h.points > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-[#0a1f1c] dark:text-white";
+        let pointsSign = h.points > 0 ? "+" : "";
+
+        switch (h.reason) {
+            case 'encuesta':
+            case 'encuesta_reclamada':
+                reasonText = `por obsequiarnos tu opinión acerca de nuestro proyecto${h.order_id ? ` (Pedido #${h.order_id})` : ''}`;
+                break;
+            case 'compra':
+            case 'compra_test':
+                reasonText = `por tu compra (Pedido #${h.order_id || 'N/A'})`;
+                break;
+            case 'bono_bienvenida_referido':
+                reasonText = "Bono especial de bienvenida (Invitación)";
+                break;
+            case 'referido_completado':
+                reasonText = "por un amigo que usó tu código de invitación";
+                break;
+            case 'regalo_cumpleanos':
+                reasonText = "¡Regalo por tu cumpleaños!";
+                break;
+            case 'canje_descuento':
+            case 'canje_descuento_test':
+                reasonText = `Canjeaste saldo para descuento (Pedido #${h.order_id || 'N/A'})`;
+                break;
+            default:
+                reasonText = "Movimiento de puntos";
+        }
+
+        const dateStr = h.created_at ? new Date(h.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+
+        return `
+        <div class="flex justify-between items-center border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4 last:border-0 last:pb-0 opacity-0 animate-slideIn" style="animation-delay: ${i * 0.1}s">
+            <div>
+                <span class="text-sm block text-[#0a1f1c]/90 dark:text-white/90 font-medium">${reasonText}</span>
+                <span class="text-[#0a1f1c]/50 dark:text-white/50 text-[10px] uppercase tracking-widest mt-1 block">${dateStr}</span>
+            </div>
+            <span class="text-lg md:text-xl font-bold ${pointsClass} tracking-widest shrink-0 ml-4">${pointsSign}${h.points}</span>
+        </div>`;
+    }).join('');
+}
+
 let pendingSurveyId = null;
 let surveySubmittedLocally = false;
 
@@ -995,25 +1076,25 @@ stars.forEach(btn => {
         const sugArea = document.getElementById('survey-suggestion');
         
         if (val === 5) {
-            q2.textContent = "¡Nos llenas el corazón de alegría! Saber que cumplimos nuestra promesa lo es todo. ¿Qué detalle te hizo sonreír más?";
+            q2.textContent = "¡Qué alegría saber que te gustó! ¿Qué fue lo que más disfrutaste?";
             checks.innerHTML = `
-                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Frescura" class="w-4 h-4 accent-[#c5a059]"> La frescura y el aroma de las flores</label>
-                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Diseño" class="w-4 h-4 accent-[#c5a059]"> El cariño puesto en el diseño y la presentación</label>
-                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Puntualidad" class="w-4 h-4 accent-[#c5a059]"> La tranquilidad de que llegamos en el momento exacto</label>
-                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Atención" class="w-4 h-4 accent-[#c5a059]"> La calidez y cercanía de nuestra atención</label>
+                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Frescura" class="w-4 h-4 accent-[#c5a059]"> Las flores estaban muy frescas</label>
+                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Diseño" class="w-4 h-4 accent-[#c5a059]"> El diseño y la presentación</label>
+                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Puntualidad" class="w-4 h-4 accent-[#c5a059]"> Llegamos justo a tiempo</label>
+                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Atención" class="w-4 h-4 accent-[#c5a059]"> La atención que recibiste</label>
             `;
-            q3.textContent = "Porque siempre soñamos con superarnos, si pudieras pedirnos un deseo para hacerlo aún más mágico la próxima vez, ¿cuál sería?";
-            sugArea.placeholder = "Tu opinión es nuestro mayor tesoro (opcional)...";
+            q3.textContent = "¿Hay algún detalle que podríamos mejorar para la próxima vez?";
+            sugArea.placeholder = "Cuéntanos aquí (opcional)...";
         } else {
-            q2.textContent = "Te escuchamos con el corazón abierto. Lamentamos profundamente no haber alcanzado la perfección que mereces. Ayúdanos a entender qué sucedió:";
+            q2.textContent = "Lamentamos que no haya sido perfecto. ¿En qué podemos mejorar para ti?";
             checks.innerHTML = `
-                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Marchitas" class="w-4 h-4 accent-[#c5a059]"> Sentí que a las flores les faltaba vida y frescura</label>
-                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Diferente" class="w-4 h-4 accent-[#c5a059]"> El diseño no logró transmitir lo que yo esperaba</label>
-                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Atraso" class="w-4 h-4 accent-[#c5a059]"> Hubo un desencuentro con los tiempos de entrega</label>
-                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Servicio" class="w-4 h-4 accent-[#c5a059]"> Sentí que nos faltó empatía o resolución al atenderte</label>
+                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Marchitas" class="w-4 h-4 accent-[#c5a059]"> Las flores podrían haber estado más frescas</label>
+                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Diferente" class="w-4 h-4 accent-[#c5a059]"> El diseño no fue lo que esperaba</label>
+                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Atraso" class="w-4 h-4 accent-[#c5a059]"> El pedido no llegó a tiempo</label>
+                <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Servicio" class="w-4 h-4 accent-[#c5a059]"> Necesitaba mejor atención o ayuda</label>
             `;
-            q3.textContent = "Queremos aprender y asegurarnos de que esto no vuelva a pasar jamás. Por favor, cuéntanos con total honestidad.";
-            sugArea.placeholder = "Te leemos con toda la disposición de mejorar (opcional)...";
+            q3.textContent = "Cuéntanos un poco más para asegurarnos de que no vuelva a pasar.";
+            sugArea.placeholder = "Escribe tu comentario aquí (opcional)...";
         }
     });
 });
@@ -1056,24 +1137,24 @@ async function enviarEncuesta(e) {
             dispararFuegosArtificiales();
             successDiv.innerHTML = `
                 <span class="text-6xl mb-4 block">💖</span>
-                <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">¡Gracias por dejarnos florecer contigo!</h3>
-                <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-6 leading-relaxed">Tu satisfacción es el reflejo de nuestra pasión. Si sientes que hemos logrado transmitir tus emociones a través de nuestro trabajo, regalar unos segundos para dejarnos una reseña en Google sería un acto inmenso de generosidad que nos ayudará a que más corazones confíen en nosotros.</p>
-                <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review" target="_blank" class="block w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg mb-6 shadow-md hover:scale-105 transition">DEJAR MI RESEÑA CON MUCHO CARIÑO</a>
-                <p class="text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">Y como lo prometido es una obligación del corazón... <strong class="text-[#c5a059]">¡Cierra esta ventana para descubrir la sorpresa que sumamos a tu saldo!</strong> 😉 (Si aún no tienes cuenta, regístrate en "Iniciar Sesión" de nuestra web para guardarlo y ganar más al invitar amigos).</p>
-                <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 dark:text-white/40 hover:text-[#c5a059] dark:hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1 mt-4">Cerrar esto</button>
+                <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">¡Gracias por tu honestidad!</h3>
+                <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-6 leading-relaxed">Saber que logramos transmitirte nuestra pasión nos llena de alegría. Si pudieras regalarnos un minuto más para compartir esta experiencia en Google, nos ayudarías inmensamente a que más personas confíen en nuestro trabajo.</p>
+                <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review" target="_blank" class="block w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg mb-6 shadow-md hover:scale-105 transition">DEJAR MI RESEÑA EN GOOGLE</a>
+                <p class="text-[10px] md:text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">Como agradecimiento por tu tiempo, te dejamos un regalo en Mi Club. (Si aún no tienes cuenta, ve a "Iniciar Sesión" para guardarlo y seguir sumando saldo al invitar amigos).</p>
+                <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 dark:text-white/40 hover:text-[#c5a059] dark:hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1 mt-4">CERRAR ESTO</button>
             `;
         } else {
             successDiv.innerHTML = `
                 <span class="text-6xl mb-4 block">🙏</span>
-                <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Gracias por tu invaluable honestidad</h3>
-                <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-8 leading-relaxed">Leemos cada palabra con atención y humildad. Tu retroalimentación es el motor que nos impulsa a elevar nuestros estándares todos los días. Como una forma sincera de agradecerte por ayudarnos a crecer, te hemos dejado una recompensa en tu cuenta.</p>
-                <p class="text-[10px] md:text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">(Si aún no eres parte de la familia, regístrate en "Iniciar Sesión" para reclamar tu regalo y ganar saldo compartiendo amor floral con tus amigos).</p>
-                <button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">DESCUBRIR MI RECOMPENSA</button>
+                <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Gracias por tu honestidad</h3>
+                <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-8 leading-relaxed">Leemos cada comentario y nos tomamos muy en serio tu opinión para seguir mejorando. Como agradecimiento por tu tiempo, te dejamos un regalo en Mi Club.</p>
+                <p class="text-[10px] md:text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">(Si aún no tienes cuenta, ve a "Iniciar Sesión" para guardarlo y seguir sumando saldo al invitar amigos).</p>
+                <button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">ENTENDIDO</button>
             `;
         }
     } catch (err) {
         alert('Hubo un problema de conexión con la base de datos: ' + err.message);
-        btn.innerHTML = 'Enviar mi opinión'; btn.disabled = false;
+        btn.innerHTML = 'ENVIAR MI OPINIÓN'; btn.disabled = false;
     }
     return false;
 }
