@@ -97,7 +97,6 @@
 </head>
 <body class="bg-[#fcfaf7] dark:bg-[#0a1f1c] text-[#0a1f1c] dark:text-[#fcfaf7] min-h-screen selection:bg-[#c5a059] selection:text-[#0a1f1c] transition-colors duration-500">
 
-<!-- MENÚ STICKY -->
 <div class="sticky top-0 z-[100] bg-[#fcfaf7]/90 dark:bg-[#0a1f1c]/90 backdrop-blur-md border-b border-[#0a1f1c]/10 dark:border-white/10 py-4 px-6 md:px-12 flex justify-between items-center transition-colors duration-500">
   <a href="/" class="inline-block group">
     <img src="img/logo-menu.webp" alt="La Foresta Flores" class="h-7 md:h-8 w-auto brightness-0 dark:invert opacity-80 group-hover:opacity-100 transition-all">
@@ -105,7 +104,7 @@
   <div class="flex items-center gap-4">
     <a href="/" class="btn-outline px-4 py-2 rounded-lg text-[10px] md:text-xs uppercase tracking-widest bg-transparent flex items-center justify-center">Tienda</a>
     <button onclick="toggleTheme()" class="p-2.5 rounded-full border border-[#0a1f1c]/20 dark:border-white/20 bg-transparent text-[#0a1f1c]/60 dark:text-white/60 hover:text-[#c5a059] dark:hover:text-[#c5a059] transition-all" aria-label="Ajustar Luz">
-      <svg id="theme-icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+      <svg id="theme-icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
       <svg id="theme-icon-moon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
     </button>
   </div>
@@ -173,7 +172,6 @@
 
   <div id="dashboard-section" class="hidden-panel space-y-10">
 
-    <!-- MÉTRICAS -->
     <section id="metrics-section" class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
       <div class="card p-8 border-[#c5a059]/40 bg-[#c5a059]/5 shadow-[0_0_20px_rgba(197,160,89,0.15)] relative overflow-hidden flex flex-col justify-center">
         <div class="relative z-10">
@@ -203,7 +201,6 @@
       </div>
     </section>
 
-    <!-- PRIVILEGIOS COMPARTIDOS -->
     <section id="referral-section" class="card overflow-hidden border-[#c5a059]/40 mb-6 relative">
         <div class="relative w-full h-[280px] md:h-[220px] overflow-hidden group">
             <div class="absolute inset-0 z-0">
@@ -240,9 +237,7 @@
         </details>
     </section>
     
-    <!-- DISTRIBUCIÓN HORIZONTAL (CUMPLEAÑOS Y SEGURIDAD) -->
     <section id="dates-section" class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
-        <!-- MI CUMPLEAÑOS -->
         <div class="card p-8 md:p-10 flex flex-col h-full">
             <div class="flex items-center gap-4 mb-4">
                 <h3 class="font-serif text-2xl md:text-3xl italic">Mi cumpleaños</h3>
@@ -262,7 +257,6 @@
             </div>
         </div>
 
-        <!-- SEGURIDAD Y CANALES -->
         <div class="card p-8 md:p-10 flex flex-col h-full">
             <h3 class="font-serif text-2xl md:text-3xl italic mb-6">Contacto y notificaciones</h3>
             
@@ -311,7 +305,6 @@
         </div>
     </section>
 
-    <!-- HISTORIAL DE ENTREGAS -->
     <section class="card p-8 md:p-10">
       <h3 class="font-serif text-2xl md:text-3xl italic mb-3">Tus envíos anteriores</h3>
       <p class="text-[#0a1f1c]/70 dark:text-white/70 text-sm md:text-base leading-relaxed mb-8">Aquí guardamos todas las tarjetitas y ramos que has enviado. Te puede servir para recordar qué escribiste o buscar inspiración para la próxima vez.</p>
@@ -327,7 +320,6 @@
       </details>
     </section>
 
-    <!-- COMUNIDAD Y RESEÑAS -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 mt-4">
         <div class="card p-8 md:p-10 text-center flex flex-col justify-center items-center">
             <span class="text-4xl md:text-5xl mb-4">⭐</span>
@@ -343,7 +335,6 @@
         </div>
     </div>
 
-    <!-- MODAL COMPARTIR PRIVILEGIOS -->
     <div id="share-modal" class="fixed inset-0 bg-[#fcfaf7]/90 dark:bg-black/80 z-[105] hidden-panel flex items-center justify-center p-6 backdrop-blur-sm">
       <div class="card p-8 md:p-10 max-w-[90%] md:max-w-md w-full text-center border-[#c5a059]/30 relative shadow-2xl">
         <button onclick="cerrarShareModal()" class="absolute top-5 right-5 text-[#0a1f1c]/50 dark:text-white/50 hover:text-[#c5a059] text-3xl font-light">×</button>
@@ -368,7 +359,6 @@
       </div>
     </div>
 
-    <!-- Confirmación de borrado -->
     <div id="delete-modal" class="fixed inset-0 bg-[#fcfaf7]/90 dark:bg-black/80 z-[105] hidden-panel flex items-center justify-center p-6 backdrop-blur-sm">
       <div class="card p-8 max-w-[90%] md:max-w-sm w-full text-center border-[#c5a059]/30 shadow-2xl">
         <div class="text-4xl mb-4">🗑️</div>
@@ -381,7 +371,6 @@
       </div>
     </div>
     
-    <!-- POPUP ENCUESTA -->
     <div id="survey-modal" class="fixed inset-0 bg-[#0a1f1c]/90 z-[200] hidden-panel flex items-center justify-center p-4 backdrop-blur-md">
         <div class="bg-[#fcfaf7] w-full max-w-[90%] md:max-w-md rounded-2xl p-8 relative shadow-2xl overflow-y-auto max-h-[90vh]">
             <button onclick="cerrarEncuesta()" class="absolute top-4 right-5 text-[#0a1f1c]/40 hover:text-[#c5a059] text-3xl transition">×</button>
@@ -423,7 +412,6 @@
         </div>
     </div>
 
-    <!-- BOTÓN FLOTANTE MENÚ MÓVIL -->
     <div class="fixed bottom-6 right-6 md:hidden z-[90] flex flex-col items-end">
         <div id="fab-menu" class="absolute bottom-[calc(100%+12px)] right-0 flex flex-col gap-3 items-end opacity-0 invisible pointer-events-none translate-y-4 transition-all duration-300 w-max">
             <button onclick="document.getElementById('metrics-section').scrollIntoView(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
@@ -512,6 +500,25 @@ function dispararFuegosArtificiales() {
   }, 250);
 }
 
+function mostrarBadgePuntosSumados(pts, reason) {
+    const pointsContainer = document.getElementById('dash-points').parentElement;
+    
+    const existing = document.getElementById('points-added-badge');
+    if (existing) existing.remove();
+
+    const badge = document.createElement('div');
+    badge.id = 'points-added-badge';
+    badge.className = 'mt-3 inline-flex items-center gap-1.5 bg-[#c5a059] text-[#0a1f1c] font-bold text-xs px-3 py-1.5 rounded-full shadow-lg animate-bounce';
+    badge.innerHTML = `<span>+${pts.toLocaleString('es-CL')} pts</span> 🫶 <span class="font-normal opacity-90">(${reason})</span>`;
+
+    pointsContainer.appendChild(badge);
+
+    setTimeout(() => {
+        badge.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+        setTimeout(() => badge.remove(), 1000);
+    }, 6000);
+}
+
 function playSyncAnimation(htmlContent, addedPoints = 0, reasonText = "¡Gracias por tu opinión!") {
     document.getElementById('auth-wrap').classList.add('hidden-panel');
     document.getElementById('verify-email-section').classList.add('hidden-panel');
@@ -543,25 +550,6 @@ function playSyncAnimation(htmlContent, addedPoints = 0, reasonText = "¡Gracias
             }
         }
     }, 900);
-}
-
-function mostrarBadgePuntosSumados(pts, reason) {
-    const pointsContainer = document.getElementById('dash-points').parentElement;
-    
-    const existing = document.getElementById('points-added-badge');
-    if (existing) existing.remove();
-
-    const badge = document.createElement('div');
-    badge.id = 'points-added-badge';
-    badge.className = 'mt-2 inline-flex items-center gap-1.5 bg-[#c5a059] text-[#0a1f1c] font-bold text-xs px-3 py-1.5 rounded-full shadow-lg animate-bounce';
-    badge.innerHTML = `<span>+${pts.toLocaleString('es-CL')} pts</span> 🫶 <span class="font-normal opacity-90">(${reason})</span>`;
-
-    pointsContainer.appendChild(badge);
-
-    setTimeout(() => {
-        badge.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
-        setTimeout(() => badge.remove(), 1000);
-    }, 6000);
 }
 
 function animatePoints(obj, start, end, duration, isCurrency = false) {
@@ -1053,6 +1041,7 @@ async function enviarEncuesta(e) {
         });
 
         const data = await res.json();
+        
         if (!res.ok) throw new Error(data.error || 'Error al enviar');
 
         surveySubmittedLocally = true;
