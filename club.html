@@ -762,15 +762,20 @@ async function doLogin(e){
   errEl.textContent = '';
   try{
     const res = await fetch(`${CLUB_API}/api/login`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
+      method:'POST', 
+      headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ email, password, turnstileToken: loginTurnstileToken || "test_token_local" })
     });
     const data = await res.json();
-    if(!res.ok){ errEl.textContent = "Tus datos no coinciden. Inténtalo de nuevo."; return false; }
+    if(!res.ok){ 
+      errEl.textContent = data.detail || data.error || "Error al iniciar sesión."; 
+      return false; 
+    }
     localStorage.setItem('laforesta_club_token', data.token);
-    
     loadDashboardInit();
-  }catch(err){ errEl.textContent = 'Hubo un error de conexión.'; }
+  }catch(err){ 
+    errEl.textContent = 'Error de conexión con el servidor.'; 
+  }
   return false;
 }
 
