@@ -80,7 +80,6 @@
 
     <!-- Línea de Tiempo -->
     <div id="tracking-container" class="bg-white/5 border border-white/10 p-8 rounded-2xl hidden-panel">
-      <!-- Paso 1 -->
       <div class="timeline-step active" id="step-recibido">
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
@@ -90,7 +89,6 @@
         <img id="img-recibido" src="/img/paso1-preparacion.webp" class="w-full h-40 object-cover rounded-lg border border-white/20" alt="Preparación">
       </div>
 
-      <!-- Paso 2 -->
       <div class="timeline-step inactive" id="step-transito">
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
@@ -100,7 +98,6 @@
         <img id="img-transito" src="" class="hidden-panel w-full h-40 object-cover rounded-lg border border-white/20" alt="En tránsito">
       </div>
 
-      <!-- Paso 3 -->
       <div class="timeline-step inactive" id="step-entregado">
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
@@ -110,7 +107,6 @@
         <img id="img-entregado" src="" class="hidden-panel w-full h-40 object-cover rounded-lg border border-white/20" alt="Entregado">
       </div>
 
-      <!-- Botones Inferiores -->
       <div class="border-t border-white/10 mt-6 pt-6 flex justify-between items-center text-xs">
         <a href="/" class="text-[#c5a059] font-bold hover:underline transition flex items-center gap-1">← Volver a la Tienda</a>
         <a href="/seguimiento.html" class="text-white/60 hover:text-[#c5a059] transition flex items-center gap-1">Revisa otro pedido 🔍</a>
@@ -135,8 +131,8 @@
           <div id="survey-content">
               <div class="text-center mb-6">
                   <span class="text-5xl block mb-3">✨</span>
-                  <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-2 leading-tight">¡Gracias por elegirnos!</h3>
-                  <p class="text-sm md:text-base text-[#0a1f1c]/70 mt-4 leading-relaxed">Tu opinión es la semilla de nuestra excelencia. ¿En 10 segundos cuéntanos por favor cómo estuvo todo? <strong class="text-[#c5a059] block mt-1">Por tu valioso tiempo serás recompensado/a, lo prometemos. 😁</strong></p>
+                  <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-2 leading-tight">¡Gracias por elegirnos y dejar que nuestras flores hablen por ti!</h3>
+                  <p class="text-sm md:text-base text-[#0a1f1c]/70 mt-4 leading-relaxed">Detrás de cada arreglo hay mucho amor y dedicación, pero tú eres quien le da sentido a lo que hacemos. ¿Nos regalas unos segundos para contarnos cómo vivimos este momento juntos? <strong class="text-[#c5a059] block mt-1">Valoramos infinitamente tu tiempo, así que al terminar te espera un regalo muy especial de nuestra parte. 😁</strong></p>
               </div>
               
               <form id="survey-form" onsubmit="return enviarEncuesta(event)">
@@ -153,12 +149,12 @@
                   
                   <div id="survey-dynamic-fields" class="hidden-panel animate-[fadeIn_0.5s_ease-out]">
                       <div class="mb-5">
-                          <label id="survey-q2-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">¿Qué destacarías?</label>
+                          <label id="survey-q2-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3"></label>
                           <div class="space-y-3 text-sm text-[#0a1f1c]" id="survey-checkboxes"></div>
                       </div>
                       <div class="mb-6">
-                          <label id="survey-q3-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">Si pudieras darnos una sola sugerencia para mejorar, ¿cuál sería?</label>
-                          <textarea id="survey-suggestion" rows="3" class="w-full px-4 py-3 rounded-lg text-sm border border-[#0a1f1c]/20 bg-white text-[#0a1f1c] resize-none focus:outline-none focus:border-[#c5a059]" placeholder="Escribe tu idea aquí (Opcional)..."></textarea>
+                          <label id="survey-q3-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3"></label>
+                          <textarea id="survey-suggestion" rows="3" class="w-full px-4 py-3 rounded-lg text-sm border border-[#0a1f1c]/20 bg-white text-[#0a1f1c] resize-none focus:outline-none focus:border-[#c5a059]"></textarea>
                       </div>
                       <button type="submit" id="survey-submit-btn" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs md:text-sm uppercase tracking-widest shadow-md transition hover:scale-[1.02]">Enviar mi opinión</button>
                   </div>
@@ -262,45 +258,57 @@
   }
 
   const stars = document.querySelectorAll('#survey-stars button');
+  const ratingValInput = document.getElementById('survey-rating-val');
   stars.forEach(btn => {
       btn.addEventListener('click', (e) => {
           const val = parseInt(e.target.getAttribute('data-val'));
-          document.getElementById('survey-rating-val').value = val;
+          ratingValInput.value = val;
           stars.forEach(b => {
               b.style.color = parseInt(b.getAttribute('data-val')) <= val ? '#c5a059' : '#d4d4d8';
           });
           document.getElementById('survey-dynamic-fields').classList.remove('hidden-panel');
           
           const q2 = document.getElementById('survey-q2-label');
+          const q3 = document.getElementById('survey-q3-label');
           const checks = document.getElementById('survey-checkboxes');
+          const sugArea = document.getElementById('survey-suggestion');
           
           if (val === 5) {
-              q2.textContent = "¡Nos haces muy felices! ¿Qué destacarías de nosotros?";
+              q2.textContent = "¡Nos llenas el corazón de alegría! Saber que cumplimos nuestra promesa lo es todo. ¿Qué detalle te hizo sonreír más?";
               checks.innerHTML = `
-                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Frescura" class="w-4 h-4 accent-[#c5a059]"> La frescura de las flores</label>
-                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Diseño" class="w-4 h-4 accent-[#c5a059]"> La presentación y el diseño</label>
-                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Puntualidad" class="w-4 h-4 accent-[#c5a059]"> La puntualidad en la entrega</label>
-                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Atención" class="w-4 h-4 accent-[#c5a059]"> La atención y amabilidad</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Frescura" class="w-4 h-4 accent-[#c5a059]"> La frescura y el aroma de las flores</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Diseño" class="w-4 h-4 accent-[#c5a059]"> El cariño puesto en el diseño y la presentación</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Puntualidad" class="w-4 h-4 accent-[#c5a059]"> La tranquilidad de que llegamos en el momento exacto</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Atención" class="w-4 h-4 accent-[#c5a059]"> La calidez y cercanía de nuestra atención</label>
               `;
+              q3.textContent = "Porque siempre soñamos con superarnos, si pudieras pedirnos un deseo para hacerlo aún más mágico la próxima vez, ¿cuál sería?";
+              sugArea.placeholder = "Tu opinión es nuestro mayor tesoro (opcional)...";
           } else {
-              q2.textContent = "Queremos mejorar para ti. ¿Qué podríamos hacer diferente?";
+              q2.textContent = "Te escuchamos con el corazón abierto. Lamentamos profundamente no haber alcanzado la perfección que mereces. Ayúdanos a entender qué sucedió:";
               checks.innerHTML = `
-                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Marchitas" class="w-4 h-4 accent-[#c5a059]"> Las flores no venían frescas</label>
-                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Diferente" class="w-4 h-4 accent-[#c5a059]"> El diseño no era el esperado</label>
-                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Atraso" class="w-4 h-4 accent-[#c5a059]"> Hubo un atraso en la entrega</label>
-                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Servicio" class="w-4 h-4 accent-[#c5a059]"> La atención no fue resolutiva</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Marchitas" class="w-4 h-4 accent-[#c5a059]"> Sentí que a las flores les faltaba vida y frescura</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Diferente" class="w-4 h-4 accent-[#c5a059]"> El diseño no logró transmitir lo que yo esperaba</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Atraso" class="w-4 h-4 accent-[#c5a059]"> Hubo un desencuentro con los tiempos de entrega</label>
+                  <label class="flex items-center gap-3 cursor-pointer p-1"><input type="checkbox" value="Servicio" class="w-4 h-4 accent-[#c5a059]"> Sentí que nos faltó empatía o resolución al atenderte</label>
               `;
+              q3.textContent = "Queremos aprender y asegurarnos de que esto no vuelva a pasar jamás. Por favor, cuéntanos con total honestidad.";
+              sugArea.placeholder = "Te leemos con toda la disposición de mejorar (opcional)...";
           }
       });
   });
 
   async function enviarEncuesta(e) {
       e.preventDefault();
+      if(typeof orderId === 'undefined' && !pendingSurveyId) return; 
+      
       const btn = document.getElementById('survey-submit-btn');
       btn.innerHTML = 'Enviando...'; btn.disabled = true;
       
-      const rating = parseInt(document.getElementById('survey-rating-val').value);
-      const issues = Array.from(document.querySelectorAll('#survey-checkboxes input:checked')).map(c => c.value);
+      const rating = parseInt(document.getElementById('survey-rating-val').value) || 0;
+      if(rating === 0) { alert('Por favor, selecciona una calificación (estrellas).'); btn.disabled = false; return false; }
+      
+      const checkedBoxes = document.querySelectorAll('#survey-checkboxes input[type="checkbox"]:checked');
+      const issues = Array.from(checkedBoxes).map(cb => cb.value);
       const suggestion = document.getElementById('survey-suggestion').value;
 
       try {
@@ -315,8 +323,9 @@
           });
 
           const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Error al enviar');
           
-          if (!token && data.survey_id) {
+          if (data.requires_claim && data.survey_id) {
               localStorage.setItem('laforesta_unclaimed_survey', data.survey_id);
           }
 
@@ -328,22 +337,23 @@
               dispararFuegosArtificiales();
               successDiv.innerHTML = `
                   <span class="text-6xl mb-4 block">💖</span>
-                  <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-3">¡Muchas gracias por esas 5 estrellas!</h3>
-                  <p class="text-sm text-[#0a1f1c]/70 mb-6 leading-relaxed">Si amas lo que hacemos, regalarnos una reseña en Google nos ayuda muchísimo a llegar a más personas como tú.</p>
-                  <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review" target="_blank" class="block w-full bg-[#0a1f1c] text-white text-xs uppercase tracking-widest font-bold py-4 rounded-lg mb-6 shadow-md hover:scale-105 transition">Dejar mi reseña en Google</a>
-                  <p class="text-xs text-[#0a1f1c]/60 mb-6 leading-relaxed">Y como lo prometido es deuda... ¡luego de dejarnos tu reseña, vuelve a tu sesión de Mi Club (o regístrate en "Iniciar Sesión" si aún no tienes cuenta) y te estará esperando una sorpresa! 😉 Además, al registrarte podrás ganar saldo por invitar a tus amigos.</p>
-                  <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1 mt-4">Cerrar esto</button>
+                  <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">¡Gracias por dejarnos florecer contigo!</h3>
+                  <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-6 leading-relaxed">Tu satisfacción es el reflejo de nuestra pasión. Si sientes que hemos logrado transmitir tus emociones a través de nuestro trabajo, regalar unos segundos para dejarnos una reseña en Google sería un acto inmenso de generosidad que nos ayudará a que más corazones confíen en nosotros.</p>
+                  <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review" target="_blank" class="block w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg mb-6 shadow-md hover:scale-105 transition">DEJAR MI RESEÑA CON MUCHO CARIÑO</a>
+                  <p class="text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">Y como lo prometido es una obligación del corazón... <strong class="text-[#c5a059]">¡Cierra esta ventana para descubrir la sorpresa que sumamos a tu saldo!</strong> 😉 (Si aún no tienes cuenta, regístrate en "Iniciar Sesión" de nuestra web para guardarlo y ganar más al invitar amigos).</p>
+                  <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 dark:text-white/40 hover:text-[#c5a059] dark:hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1 mt-4">Cerrar esto</button>
               `;
           } else {
               successDiv.innerHTML = `
                   <span class="text-6xl mb-4 block">🙏</span>
-                  <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-3">Agradecemos mucho tu honestidad</h3>
-                  <p class="text-sm text-[#0a1f1c]/70 mb-8 leading-relaxed">De tu satisfacción depende nuestro crecimiento. Tomaremos muy en serio tus comentarios. <strong class="text-[#c5a059]">Te hemos dejado una recompensa en Mi Club por ayudarnos a ser mejores</strong> (si aún no tienes cuenta, regístrate en "Iniciar Sesión" para reclamarla y ganar saldo por invitar amigos).</p>
-                  <button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">Entendido</button>
+                  <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Gracias por tu invaluable honestidad</h3>
+                  <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-8 leading-relaxed">Leemos cada palabra con atención y humildad. Tu retroalimentación es el motor que nos impulsa a elevar nuestros estándares todos los días. Como una forma sincera de agradecerte por ayudarnos a crecer, te hemos dejado una recompensa en tu cuenta.</p>
+                  <p class="text-[10px] md:text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">(Si aún no eres parte de la familia, regístrate en "Iniciar Sesión" para reclamar tu regalo y ganar saldo compartiendo amor floral con tus amigos).</p>
+                  <button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">DESCUBRIR MI RECOMPENSA</button>
               `;
           }
       } catch (err) {
-          alert('Hubo un problema. Por favor intenta de nuevo.');
+          alert('Hubo un problema de conexión con la base de datos: ' + err.message);
           btn.innerHTML = 'Enviar mi opinión'; btn.disabled = false;
       }
   }
