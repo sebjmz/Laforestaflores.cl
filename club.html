@@ -1008,7 +1008,7 @@ async function enviarEncuesta(e) {
     const btn = document.getElementById('survey-submit-btn');
     btn.innerHTML = 'Enviando...'; btn.disabled = true;
     
-    const rating = parseInt(ratingValInput.value) || 0;
+    const rating = parseInt(document.getElementById('survey-rating-val').value) || 0;
     if(rating === 0) { alert('Por favor, selecciona una calificación (estrellas).'); btn.disabled = false; return false; }
     
     const checkedBoxes = document.querySelectorAll('#survey-checkboxes input[type="checkbox"]:checked');
@@ -1016,11 +1016,20 @@ async function enviarEncuesta(e) {
     const sug = document.getElementById('survey-suggestion').value;
 
     try {
-        await fetch(`${CLUB_API}/api/public/survey/submit`, {
+        const token = localStorage.getItem('laforesta_club_token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch(`${CLUB_API}/api/public/survey/submit`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('laforesta_club_token')}` },
+            headers: headers,
             body: JSON.stringify({ survey_id: pendingSurveyId, rating, issues, suggestion })
         });
+
+        const data = await res.json();
+        
+        // ESTA LÍNEA ES LA CLAVE: Frena el proceso si el servidor arroja error (ej. 404)
+        if (!res.ok) throw new Error(data.error || 'Error al enviar');
 
         surveySubmittedLocally = true;
         document.getElementById('survey-content').classList.add('hidden-panel');
@@ -1046,7 +1055,7 @@ async function enviarEncuesta(e) {
             `;
         }
     } catch (err) {
-        alert('Hubo un problema. Por favor intenta de nuevo.');
+        alert('Hubo un problema de conexión con la base de datos: ' + err.message);
         btn.innerHTML = 'Enviar mi opinión'; btn.disabled = false;
     }
     return false;
@@ -1080,7 +1089,6 @@ function copyReferralLinkModal() {
   navigator.clipboard.writeText(`${location.origin}/club.html?ref=${code}`);
   alert('¡Enlace copiado! Ya puedes pegarlo y enviárselo a quien quieras.');
 }
-
 // LOGICA DE LLEGADA CON REFERIDO (QR O ENLACE)
 const refFromUrl = urlParams.get('ref') || localStorage.getItem('laforesta_referral_code');
 if (refFromUrl) {
