@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Seguimiento | La Foresta Flores</title>
 
-<!-- Favicon en formato webp dentro de img/ -->
 <link rel="icon" type="image/webp" href="/img/favicon.webp">
 <link rel="shortcut icon" type="image/webp" href="/img/favicon.webp">
 <link rel="apple-touch-icon" href="/img/favicon.webp">
@@ -65,7 +64,6 @@
       <p class="text-white/60 text-sm" id="order-subtitle">Pedido #<span id="order-id-display">...</span></p>
     </div>
 
-    <!-- Buscador Manual -->
     <div id="manual-search-container" class="bg-white/5 border border-white/10 p-8 rounded-2xl hidden text-center">
         <p class="text-sm opacity-80 mb-6 text-left">Ingresa el número de tu pedido para revisar su camino en tiempo real. Lo encuentras en el comprobante que te enviamos.</p>
         <input type="text" id="manual-id" placeholder="Ej: 12345" class="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white mb-4 focus:outline-none focus:border-[#c5a059]">
@@ -73,10 +71,8 @@
         <a href="/" class="block text-xs text-[#c5a059] opacity-80 hover:opacity-100 transition">← Volver a la Tienda</a>
     </div>
 
-    <!-- Línea de Tiempo -->
     <div id="tracking-container" class="bg-white/5 border border-white/10 p-8 rounded-2xl hidden">
       
-      <!-- Paso 1 -->
       <div class="timeline-step active" id="step-recibido">
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
@@ -86,7 +82,6 @@
         <img id="img-recibido" src="/img/paso1-preparacion.webp" class="w-full h-40 object-cover rounded-lg border border-white/20">
       </div>
 
-      <!-- Paso 2 -->
       <div class="timeline-step inactive" id="step-transito">
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
@@ -96,7 +91,6 @@
         <img id="img-transito" src="" class="hidden w-full h-40 object-cover rounded-lg border border-white/20">
       </div>
 
-      <!-- Paso 3 -->
       <div class="timeline-step inactive" id="step-entregado">
         <div class="timeline-line"></div>
         <div class="timeline-dot"></div>
@@ -106,7 +100,6 @@
         <img id="img-entregado" src="" class="hidden w-full h-40 object-cover rounded-lg border border-white/20">
       </div>
 
-      <!-- Botones de Navegación Inferiores -->
       <div class="border-t border-white/10 mt-6 pt-6 flex justify-between items-center text-xs">
         <a href="/" class="text-[#c5a059] font-bold hover:underline transition flex items-center gap-1">
           ← Volver a la Tienda
@@ -143,16 +136,6 @@
       return new Date(iso).toLocaleString('es-CL', { hour: '2-digit', minute:'2-digit', day: 'numeric', month: 'short' }).toUpperCase();
   }
 
-  function getOrSetFirstVisitTime(id) {
-      const key = `lf_time_${id}`;
-      let storedTime = localStorage.getItem(key);
-      if (!storedTime) {
-          storedTime = new Date().toISOString();
-          localStorage.setItem(key, storedTime);
-      }
-      return storedTime;
-  }
-
   async function loadTracking() {
     if (!orderId) {
       document.getElementById('order-subtitle').textContent = 'Consulta de estado';
@@ -166,20 +149,15 @@
       const res = await fetch(`${API_URL}/api/tracking?id=${orderId}`);
       
       if (!res.ok) {
-        if (res.status === 404) {
-            document.getElementById('tracking-container').classList.remove('hidden');
-            const initialTime = getOrSetFirstVisitTime(orderId);
-            document.getElementById('time-recibido').textContent = formatTime(initialTime);
-            return;
-        }
-        throw new Error();
+        throw new Error('Pedido no encontrado');
       }
       
       const data = await res.json();
       document.getElementById('tracking-container').classList.remove('hidden');
       
-      const timeRecibido = data.created_at || getOrSetFirstVisitTime(orderId);
-      document.getElementById('time-recibido').textContent = formatTime(timeRecibido);
+      if (data.created_at) {
+          document.getElementById('time-recibido').textContent = formatTime(data.created_at);
+      }
 
       const stepRecibido = document.getElementById('step-recibido');
       const stepTransito = document.getElementById('step-transito');
