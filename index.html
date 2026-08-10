@@ -231,6 +231,22 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        @keyframes oceanRipple {
+    0% {
+        box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.6), 0 0 0 0 rgba(197, 160, 89, 0.3);
+    }
+    70% {
+        box-shadow: 0 0 0 14px rgba(197, 160, 89, 0), 0 0 0 28px rgba(197, 160, 89, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(197, 160, 89, 0), 0 0 0 0 rgba(197, 160, 89, 0);
+    }
+}
+
+.fab-wave {
+    animation: oceanRipple 2.5s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+        
         @keyframes marquee-infinite {
             0% { transform: translate3d(0%, 0, 0); }
             100% { transform: translate3d(-50%, 0, 0); }
@@ -1508,13 +1524,13 @@
     </button>
 </div>
 
-        <button onclick="toggleFabMenu()" aria-label="Menú rápido" class="pointer-events-auto relative bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
-            <svg id="fab-icon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-            </svg>
-            <span class="text-[10px] font-bold uppercase tracking-widest">Ver</span>
-        </button>
+        <button id="main-fab-btn" onclick="toggleFabMenu()" aria-label="Menú rápido" class="pointer-events-auto relative bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
+    <svg id="fab-icon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+    </svg>
+    <span class="text-[10px] font-bold uppercase tracking-widest">Ver</span>
+</button>
     </div>
 
     <!-- EL JAVASCRIPT AHORA ESTÁ AL FINAL, SEPARADO Y NO BLOQUEA -->
