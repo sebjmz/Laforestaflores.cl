@@ -91,6 +91,9 @@
   /* Estrellas Encuesta */
   .star-rating button { transition: color 0.2s; }
   .star-rating button:hover, .star-rating button.active { color: #c5a059; }
+  
+  html { scroll-behavior: smooth; }
+  section { scroll-margin-top: 100px; }
 </style>
 </head>
 <body class="bg-[#fcfaf7] dark:bg-[#0a1f1c] text-[#0a1f1c] dark:text-[#fcfaf7] min-h-screen selection:bg-[#c5a059] selection:text-[#0a1f1c] transition-colors duration-500">
@@ -109,7 +112,7 @@
   </div>
 </div>
 
-<div class="max-w-5xl mx-auto px-6 md:px-12 pt-12 pb-24">
+<div class="max-w-5xl mx-auto px-6 md:px-12 pt-12 pb-24 relative">
 
   <!-- HEADER -->
   <div id="header-text">
@@ -171,55 +174,16 @@
 
   <!-- ================= LOADER SYNC ================= -->
   <div id="sync-screen" class="hidden-panel flex flex-col items-center justify-center py-24 text-center min-h-[50vh]">
-    <svg class="w-12 h-12 text-[#c5a059] animate-spin mb-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-    <h2 class="font-serif text-4xl md:text-5xl italic mb-5">Preparando todo...</h2>
-    <p class="text-[#0a1f1c]/70 dark:text-white/70 text-base md:text-lg mb-14">Estamos cargando tus beneficios y recordando tus fechas importantes.</p>
-    <div class="text-8xl font-serif text-[#c5a059] italic drop-shadow-md" id="sync-countdown">3</div>
+    <div id="sync-content-wrap" class="w-full">
+        <!-- Content will be injected here dynamically for standard load or surprise load -->
+    </div>
   </div>
 
   <!-- ================= DASHBOARD VIP ================= -->
   <div id="dashboard-section" class="hidden-panel space-y-10">
 
-    <!-- ENCUESTA DINÁMICA -->
-    <div id="survey-banner" class="hidden-panel card p-8 md:p-10 border-[#c5a059]/40 bg-[#c5a059]/5 shadow-[0_0_20px_rgba(197,160,89,0.15)] relative overflow-hidden">
-        <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-2">Tu opinión es oro para nosotros</h3>
-        <p class="text-sm md:text-base text-[#0a1f1c]/70 dark:text-white/60 mb-6">Notamos que recibiste un pedido recientemente. ¿Nos regalas 1 minuto para contarnos cómo te fue?</p>
-        
-        <form id="survey-form" onsubmit="return submitSurvey(event)" class="space-y-6">
-            <div>
-                <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">1. ¿Cómo calificarías tu experiencia general?</label>
-                <div class="flex gap-2 text-3xl text-zinc-300 dark:text-zinc-600 star-rating" id="survey-stars">
-                    <button type="button" data-val="1">★</button>
-                    <button type="button" data-val="2">★</button>
-                    <button type="button" data-val="3">★</button>
-                    <button type="button" data-val="4">★</button>
-                    <button type="button" data-val="5">★</button>
-                </div>
-                <input type="hidden" id="survey-rating-val" value="0" required>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">2. ¿Qué te pareció mejor? (Puedes elegir varias)</label>
-                    <div class="space-y-3 text-sm text-[#0a1f1c] dark:text-white mt-2" id="survey-checkboxes">
-                        <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Frescura de las flores" class="w-4 h-4 accent-[#c5a059]"> La frescura de las flores</label>
-                        <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Presentación y diseño" class="w-4 h-4 accent-[#c5a059]"> La presentación y diseño</label>
-                        <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Puntualidad" class="w-4 h-4 accent-[#c5a059]"> La puntualidad de entrega</label>
-                        <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Atención al cliente" class="w-4 h-4 accent-[#c5a059]"> La atención al cliente</label>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">3. Si pudieras mejorar o crear una cosa genial en La Foresta Flores, ¿cuál sería tu sugerencia?</label>
-                    <textarea id="survey-suggestion" rows="4" placeholder="Escribe tu idea aquí (Opcional)" class="w-full px-5 py-4 rounded-lg text-sm bg-white dark:bg-[#0a1f1c] border border-[#0a1f1c]/10 dark:border-white/10 resize-none"></textarea>
-                </div>
-            </div>
-            
-            <button type="submit" class="btn-gold px-8 py-4 rounded-lg text-sm uppercase tracking-widest font-bold shadow-md">Enviar mi opinión</button>
-        </form>
-    </div>
-
     <!-- MÉTRICAS -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+    <section id="metrics-section" class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
       <div class="card p-8 border-[#c5a059]/40 bg-[#c5a059]/5 shadow-[0_0_20px_rgba(197,160,89,0.15)] relative overflow-hidden flex flex-col justify-center">
         <div class="relative z-10">
             <span class="text-[11px] md:text-xs uppercase tracking-widest text-[#c5a059] font-bold">Tus Puntos Disponibles</span>
@@ -246,10 +210,10 @@
         <p class="font-serif text-5xl italic font-bold text-[#0a1f1c] dark:text-white" id="dash-savings">$0</p>
         <p class="text-xs text-[#0a1f1c]/70 dark:text-white/60 mt-4 leading-relaxed font-medium">Este es todo el dinero que has ahorrado gracias a tus descuentos, puntos y amigos invitados. ¡Suma y sigue!</p>
       </div>
-    </div>
+    </section>
 
     <!-- PRIVILEGIOS COMPARTIDOS -->
-    <div class="card overflow-hidden border-[#c5a059]/40 mb-6 relative">
+    <section id="referral-section" class="card overflow-hidden border-[#c5a059]/40 mb-6 relative">
         <div class="relative w-full h-[280px] md:h-[220px] overflow-hidden group">
             <div class="absolute inset-0 z-0">
                 <img src="img/regalo-referido.webp" alt="Invita a tus amigos" class="w-full h-full object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-1000 opacity-40 group-hover:opacity-60">
@@ -283,19 +247,10 @@
                 </div>
             </div>
         </details>
-    </div>
-
-    <!-- BOTÓN FLOTANTE EXCLUSIVO PARA MÓVILES -->
-    <div class="fixed bottom-6 right-6 z-[90] md:hidden">
-        <button onclick="abrirShareModal()" class="btn-gold p-4 rounded-full shadow-2xl flex items-center justify-center gap-2 text-xs uppercase tracking-widest border-2 border-[#0a1f1c] animate-bounce">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
-            <span>Invitar $3.000</span>
-        </button>
-    </div>
+    </section>
     
     <!-- DISTRIBUCIÓN HORIZONTAL (CUMPLEAÑOS Y SEGURIDAD) -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
-        
+    <section id="dates-section" class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
         <!-- MI CUMPLEAÑOS -->
         <div class="card p-8 md:p-10 flex flex-col h-full">
             <div class="flex items-center gap-4 mb-4">
@@ -363,10 +318,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- ANIVERSARIOS IMPERDIBLES -->
-    <div class="card p-8 md:p-10">
+    <!-- ANIVERSARIOS E HISTORIAL -->
+    <section class="card p-8 md:p-10">
       <h3 class="font-serif text-2xl md:text-3xl italic mb-3">Fechas que no puedes olvidar</h3>
       <p class="text-[#0a1f1c]/70 dark:text-white/70 text-sm md:text-base leading-relaxed mb-8">Déjanos los detalles de ese aniversario o fecha especial y te enviaremos un recordatorio para que tengas tiempo de planear una linda sorpresa.</p>
       
@@ -392,9 +347,8 @@
               <div id="dates-list" class="space-y-5"></div>
           </div>
       </details>
-    </div>
+    </section>
 
-    <!-- HISTORIAL DE ENTREGAS -->
     <div class="card p-8 md:p-10">
       <h3 class="font-serif text-2xl md:text-3xl italic mb-3">Tus envíos anteriores</h3>
       <p class="text-[#0a1f1c]/70 dark:text-white/70 text-sm md:text-base leading-relaxed mb-8">Aquí guardamos todas las tarjetitas y ramos que has enviado. Te puede servir para recordar qué escribiste o buscar inspiración para la próxima vez.</p>
@@ -428,7 +382,7 @@
 
     <!-- MODAL COMPARTIR PRIVILEGIOS -->
     <div id="share-modal" class="fixed inset-0 bg-[#fcfaf7]/90 dark:bg-black/80 z-[105] hidden-panel flex items-center justify-center p-6 backdrop-blur-sm">
-      <div class="card p-8 md:p-10 max-w-md w-full text-center border-[#c5a059]/30 relative shadow-2xl">
+      <div class="card p-8 md:p-10 max-w-[90%] md:max-w-md w-full text-center border-[#c5a059]/30 relative shadow-2xl">
         <button onclick="cerrarShareModal()" class="absolute top-5 right-5 text-[#0a1f1c]/50 dark:text-white/50 hover:text-[#c5a059] text-3xl font-light">×</button>
         <h4 class="font-serif text-3xl md:text-4xl italic mb-3 text-[#0a1f1c] dark:text-white mt-2">Tu Código de Invitación</h4>
         <p class="text-[#0a1f1c]/70 dark:text-white/60 text-sm md:text-base mb-8 leading-relaxed">Muestra este código o envía el enlace directo a tus amigos.</p>
@@ -453,7 +407,7 @@
 
     <!-- Confirmación de borrado -->
     <div id="delete-modal" class="fixed inset-0 bg-[#fcfaf7]/90 dark:bg-black/80 z-[105] hidden-panel flex items-center justify-center p-6 backdrop-blur-sm">
-      <div class="card p-8 max-w-sm w-full text-center border-[#c5a059]/30 shadow-2xl">
+      <div class="card p-8 max-w-[90%] md:max-w-sm w-full text-center border-[#c5a059]/30 shadow-2xl">
         <div class="text-4xl mb-4">🗑️</div>
         <h4 class="font-serif text-2xl italic mb-3 text-[#0a1f1c] dark:text-white">¿Quieres borrar esto?</h4>
         <p class="text-[#0a1f1c]/70 dark:text-white/60 text-sm md:text-base mb-8 leading-relaxed">Si lo borras, no podremos recuperarlo. ¿Estás seguro?</p>
@@ -462,6 +416,70 @@
           <button onclick="cerrarModalEliminar()" class="btn-outline flex-1 py-4 rounded-lg text-sm uppercase tracking-widest bg-transparent border-[#0a1f1c]/20 dark:border-white/20 text-[#0a1f1c] dark:text-white hover:border-[#c5a059]">Cancelar</button>
         </div>
       </div>
+    </div>
+    
+    <!-- POPUP ENCUESTA -->
+    <div id="survey-modal" class="fixed inset-0 bg-[#0a1f1c]/90 z-[200] hidden-panel flex items-center justify-center p-4 backdrop-blur-md">
+        <div class="bg-[#fcfaf7] w-full max-w-[90%] md:max-w-md rounded-2xl p-8 relative shadow-2xl overflow-y-auto max-h-[90vh]">
+            <button onclick="cerrarEncuesta()" class="absolute top-4 right-5 text-[#0a1f1c]/40 hover:text-[#c5a059] text-3xl transition">×</button>
+            
+            <div id="survey-content">
+                <div class="text-center mb-6">
+                    <span class="text-5xl block mb-3">✨</span>
+                    <h3 class="font-serif text-2xl italic text-[#0a1f1c] mb-2">¡Mil gracias por confiar en nosotros!</h3>
+                    <p class="text-sm text-[#0a1f1c]/70 leading-relaxed">Tu opinión es determinante para seguir creciendo. ¿Nos regalas un minuto para saber cómo estuvo todo? <strong class="text-[#c5a059]">Tu tiempo será recompensado al final</strong>.</p>
+                </div>
+                
+                <form id="survey-form" onsubmit="return enviarEncuesta(event)">
+                    <div class="mb-6 text-center">
+                        <div class="flex justify-center gap-2 text-4xl text-zinc-300 star-rating" id="survey-stars">
+                            <button type="button" data-val="1">★</button>
+                            <button type="button" data-val="2">★</button>
+                            <button type="button" data-val="3">★</button>
+                            <button type="button" data-val="4">★</button>
+                            <button type="button" data-val="5">★</button>
+                        </div>
+                        <input type="hidden" id="survey-rating-val" value="0" required>
+                    </div>
+                    
+                    <div id="survey-dynamic-fields" class="hidden-panel">
+                        <div class="mb-5">
+                            <label id="survey-q2-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">¿Qué destacarías?</label>
+                            <div class="space-y-3 text-sm text-[#0a1f1c]" id="survey-checkboxes"></div>
+                        </div>
+                        <div class="mb-6">
+                            <label id="survey-q3-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">¿Algún comentario adicional?</label>
+                            <textarea id="survey-suggestion" rows="3" class="w-full px-4 py-3 rounded-lg text-sm border border-[#0a1f1c]/20 bg-white text-[#0a1f1c] resize-none" placeholder="Escribe aquí..."></textarea>
+                        </div>
+                        <button type="submit" id="survey-submit-btn" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md transition hover:scale-[1.02]">Enviar mi opinión</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="survey-success" class="hidden-panel text-center py-4"></div>
+        </div>
+    </div>
+
+    <!-- BOTÓN FLOTANTE MENÚ MÓVIL (Igual a Index) -->
+    <div class="fixed bottom-6 right-6 md:hidden z-[90] flex flex-col items-end">
+        <div id="fab-menu" class="absolute bottom-[calc(100%+12px)] right-0 flex flex-col gap-3 items-end opacity-0 invisible pointer-events-none translate-y-4 transition-all duration-300 w-max">
+            <button onclick="document.getElementById('metrics-section').scrollIntoView(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Puntaje Disponible</span>
+            </button>
+            <button onclick="document.getElementById('referral-section').scrollIntoView(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Referir Amigos</span>
+            </button>
+            <button onclick="document.getElementById('dates-section').scrollIntoView(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Aniversarios</span>
+            </button>
+        </div>
+
+        <button id="main-fab-btn" onclick="toggleFabMenu()" aria-label="Menú rápido" class="pointer-events-auto relative bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] px-5 py-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-2 hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300 group">
+            <svg id="fab-icon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <span class="text-[10px] font-bold uppercase tracking-widest">Menú</span>
+        </button>
     </div>
 
     <div class="text-center pt-8 pb-4">
@@ -486,6 +504,23 @@ let loginTurnstileToken = null, registerTurnstileToken = null;
 function onLoginTurnstile(t){ loginTurnstileToken = t; }
 function onRegisterTurnstile(t){ registerTurnstileToken = t; }
 
+function toggleFabMenu() {
+    let menu = document.getElementById('fab-menu');
+    let icon = document.getElementById('fab-icon');
+    
+    if (menu && icon) {
+        if (menu.classList.contains('opacity-0')) {
+            menu.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'translate-y-4');
+            menu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+            icon.style.transform = 'rotate(90deg)';
+        } else {
+            menu.classList.add('opacity-0', 'pointer-events-none', 'invisible', 'translate-y-4');
+            menu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+            icon.style.transform = 'rotate(0deg)';
+        }
+    }
+}
+
 function showAuthTab(tab){
   document.getElementById('login-form').classList.toggle('hidden-panel', tab !== 'login');
   document.getElementById('register-form').classList.toggle('hidden-panel', tab !== 'register');
@@ -500,45 +535,44 @@ function showAuthTab(tab){
 function dispararFuegosArtificiales() {
   const duration = 2500;
   const animationEnd = Date.now() + duration;
-  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 120 };
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 300 };
   function randomInRange(min, max) { return Math.random() * (max - min) + min; }
   
   const interval = setInterval(function() {
     const timeLeft = animationEnd - Date.now();
     if (timeLeft <= 0) return clearInterval(interval);
     const particleCount = 50 * (timeLeft / duration);
-    confetti(Object.assign({}, defaults, {
-      particleCount,
-      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-      colors: ['#c5a059', '#0a1f1c', '#ffffff']
-    }));
-    confetti(Object.assign({}, defaults, {
-      particleCount,
-      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-      colors: ['#c5a059', '#0a1f1c', '#ffffff']
-    }));
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#c5a059', '#0a1f1c', '#ffffff'] }));
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#c5a059', '#0a1f1c', '#ffffff'] }));
   }, 250);
 }
 
-function playSyncAnimation() {
+function playSyncAnimation(htmlContent) {
     document.getElementById('auth-wrap').classList.add('hidden-panel');
     document.getElementById('verify-email-section').classList.add('hidden-panel');
-    document.getElementById('sync-screen').classList.remove('hidden-panel');
+    document.getElementById('dashboard-section').classList.add('hidden-panel');
+    
+    const syncScreen = document.getElementById('sync-screen');
+    syncScreen.classList.remove('hidden-panel');
     window.scrollTo(0,0);
+    
+    document.getElementById('sync-content-wrap').innerHTML = htmlContent;
     
     let count = 3;
     const counterEl = document.getElementById('sync-countdown');
     const interval = setInterval(() => {
         count--;
         if(count > 0) {
+            counterEl.style.transform = 'scale(1.2)';
+            setTimeout(()=> counterEl.style.transform = 'scale(1)', 150);
             counterEl.textContent = count;
         } else {
             clearInterval(interval);
             dispararFuegosArtificiales();
-            document.getElementById('sync-screen').classList.add('hidden-panel');
+            syncScreen.classList.add('hidden-panel');
             renderDashboard(true); 
         }
-    }, 800);
+    }, 900);
 }
 
 function animatePoints(obj, start, end, duration, isCurrency = false) {
@@ -588,7 +622,8 @@ async function renderDashboard(animate = false) {
   const ahorro = c.historical_savings || 0;
 
   if (animate) {
-      animatePoints(pointsEl, 0, c.points_balance, 2000, false); 
+      const last = parseInt(localStorage.getItem('laforesta_prev_points') || '0');
+      animatePoints(pointsEl, last, c.points_balance, 2000, false); 
       animatePoints(savingsEl, 0, ahorro, 2000, true);
   } else {
       pointsEl.textContent = c.points_balance.toLocaleString('es-CL');
@@ -658,11 +693,29 @@ async function loadDashboardInit(){
   if(!res.ok){ return; }
   const { customer } = await res.json();
   
-  document.getElementById('auth-wrap').classList.add('hidden-panel');
-  document.getElementById('verify-email-section').classList.add('hidden-panel');
-  
   currentCustomerData = customer;
-  renderDashboard(false); 
+  
+  const lastPoints = parseInt(localStorage.getItem('laforesta_last_points') || '-1');
+  localStorage.setItem('laforesta_prev_points', lastPoints === -1 ? 0 : lastPoints);
+  localStorage.setItem('laforesta_last_points', customer.points_balance);
+
+  if (lastPoints !== -1 && customer.points_balance > lastPoints) {
+      const htmlIncrease = `
+        <svg class="w-16 h-16 text-[#c5a059] mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <h2 class="font-serif text-4xl md:text-5xl italic mb-5 text-[#0a1f1c] dark:text-[#fcfaf7]">¡Sorpresa!</h2>
+        <p class="text-[#0a1f1c]/70 dark:text-white/70 text-base md:text-lg mb-14">Tu saldo de puntos acaba de aumentar. Revelando tu nuevo total en...</p>
+        <div class="text-8xl font-serif text-[#c5a059] italic drop-shadow-md transition-transform" id="sync-countdown">3</div>
+      `;
+      playSyncAnimation(htmlIncrease);
+  } else {
+      const htmlNormal = `
+        <svg class="w-12 h-12 text-[#c5a059] animate-spin mb-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+        <h2 class="font-serif text-4xl md:text-5xl italic mb-5">Preparando todo...</h2>
+        <p class="text-[#0a1f1c]/70 dark:text-white/70 text-base md:text-lg mb-14">Estamos cargando tus beneficios y recordando tus fechas importantes.</p>
+        <div class="text-8xl font-serif text-[#c5a059] italic drop-shadow-md" id="sync-countdown">3</div>
+      `;
+      playSyncAnimation(htmlNormal);
+  }
 }
 
 async function doRegister(e){
@@ -735,7 +788,7 @@ async function doLogin(e){
     localStorage.setItem('laforesta_club_token', data.token);
     
     currentCustomerData = data.customer;
-    playSyncAnimation();
+    loadDashboardInit();
   }catch(err){ errEl.textContent = 'Hubo un error de conexión.'; }
   return false;
 }
@@ -788,7 +841,7 @@ async function saveBirthday(e) {
     });
     if(res.ok){
         currentCustomerData = null; 
-        renderDashboard(false);
+        loadDashboardInit();
     } else { 
         const errData = await res.json().catch(()=>({}));
         alert(`No pudimos guardar la fecha. Código: ${errData.detail || errData.error || 'Error'}`); 
@@ -903,79 +956,112 @@ async function loadReferrals(){
   }).join('');
 }
 
-// LOGICA DE LA ENCUESTA (3 PREGUNTAS)
+// LOGICA DE LA ENCUESTA (POP-UP CON MÚLTIPLE SELECCIÓN)
 let pendingSurveyId = null;
+let surveySubmittedLocally = false;
 
 async function checkSurveyPending() {
-    const res = await authedFetch('/api/survey/pending');
+    const res = await authedFetch('/api/public/survey/pending');
     if (!res.ok) return;
     const data = await res.json();
     if (data.survey && data.survey.id) {
         pendingSurveyId = data.survey.id;
-        document.getElementById('survey-banner').classList.remove('hidden-panel');
+        setTimeout(() => { document.getElementById('survey-modal').classList.remove('hidden-panel'); }, 1500);
     }
 }
 
-const starButtons = document.querySelectorAll('#survey-stars button');
+function cerrarEncuesta() {
+    document.getElementById('survey-modal').classList.add('hidden-panel');
+    if (surveySubmittedLocally) {
+        currentCustomerData = null;
+        loadDashboardInit();
+    }
+}
+
+const stars = document.querySelectorAll('#survey-stars button');
 const ratingValInput = document.getElementById('survey-rating-val');
-starButtons.forEach(btn => {
+stars.forEach(btn => {
     btn.addEventListener('click', (e) => {
         const val = parseInt(e.target.getAttribute('data-val'));
         ratingValInput.value = val;
-        starButtons.forEach(b => {
-            if(parseInt(b.getAttribute('data-val')) <= val) {
-                b.classList.add('text-[#c5a059]');
-                b.classList.remove('text-zinc-300', 'dark:text-zinc-600');
-            } else {
-                b.classList.remove('text-[#c5a059]');
-                b.classList.add('text-zinc-300', 'dark:text-zinc-600');
-            }
+        stars.forEach(b => {
+            b.style.color = parseInt(b.getAttribute('data-val')) <= val ? '#c5a059' : '#d4d4d8';
         });
+        document.getElementById('survey-dynamic-fields').classList.remove('hidden-panel');
+        
+        const q2 = document.getElementById('survey-q2-label');
+        const q3 = document.getElementById('survey-q3-label');
+        const checks = document.getElementById('survey-checkboxes');
+        
+        if (val === 5) {
+            q2.textContent = "Nos haces muy felices. ¿Qué fue lo que más te gustó? (Múltiple)";
+            checks.innerHTML = `
+                <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Frescura" class="w-4 h-4 accent-[#c5a059]"> La frescura de las flores</label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Diseño" class="w-4 h-4 accent-[#c5a059]"> La presentación y el diseño</label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Puntualidad" class="w-4 h-4 accent-[#c5a059]"> La puntualidad en la entrega</label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Atención" class="w-4 h-4 accent-[#c5a059]"> La atención y amabilidad</label>
+            `;
+            q3.textContent = "¿Hay algo más que quieras destacar o alguna felicitación?";
+        } else {
+            q2.textContent = "Queremos solucionarlo. Ayúdanos a identificar el problema:";
+            checks.innerHTML = `
+                <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Marchitas" class="w-4 h-4 accent-[#c5a059]"> Las flores no venían frescas</label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Diferente" class="w-4 h-4 accent-[#c5a059]"> El diseño no era el esperado</label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Atraso" class="w-4 h-4 accent-[#c5a059]"> Hubo un atraso en la entrega</label>
+                <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" value="Servicio" class="w-4 h-4 accent-[#c5a059]"> La atención no fue resolutiva</label>
+            `;
+            q3.textContent = "¿Qué podríamos hacer diferente la próxima vez para mejorar?";
+        }
     });
 });
 
-async function submitSurvey(e) {
+async function enviarEncuesta(e) {
     e.preventDefault();
     if(!pendingSurveyId) return;
     
-    const rating = parseInt(ratingValInput.value) || 0;
-    if(rating === 0) { alert('Por favor, selecciona una calificación (estrellas).'); return false; }
+    const btn = document.getElementById('survey-submit-btn');
+    btn.innerHTML = 'Enviando...'; btn.disabled = true;
     
-    // Recopilar selección múltiple
+    const rating = parseInt(ratingValInput.value) || 0;
+    if(rating === 0) { alert('Por favor, selecciona una calificación (estrellas).'); btn.disabled = false; return false; }
+    
     const checkedBoxes = document.querySelectorAll('#survey-checkboxes input[type="checkbox"]:checked');
     const issues = Array.from(checkedBoxes).map(cb => cb.value);
-    
     const sug = document.getElementById('survey-suggestion').value;
 
-    const res = await authedFetch('/api/survey/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            survey_id: pendingSurveyId,
-            rating: rating,
-            issues: issues, // Mandamos el arreglo de checks
-            suggestion: sug
-        })
-    });
+    try {
+        await fetch(`${CLUB_API}/api/public/survey/submit`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('laforesta_club_token')}` },
+            body: JSON.stringify({ survey_id: pendingSurveyId, rating, issues, suggestion })
+        });
 
-    if (res.ok) {
+        surveySubmittedLocally = true;
+        document.getElementById('survey-content').classList.add('hidden-panel');
+        const successDiv = document.getElementById('survey-success');
+        successDiv.classList.remove('hidden-panel');
+
         if (rating === 5) {
-            // SI ES 5 ESTRELLAS: Invitación a Google Reviews
-            document.getElementById('survey-banner').innerHTML = `
-                <div class="text-center flex flex-col items-center py-4">
-                    <span class="text-5xl mb-4">⭐</span>
-                    <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">¡Mil gracias por esas 5 estrellas!</h3>
-                    <p class="text-sm md:text-base text-[#0a1f1c]/70 dark:text-white/60 mb-6 max-w-lg">Nos ayudaría muchísimo si nos cuentas en Google qué fue lo que más te impresionó de tu pedido. ¡Así más personas podrán conocer nuestro trabajo!</p>
-                    <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review" target="_blank" onclick="document.getElementById('survey-banner').classList.add('hidden-panel')" class="btn-gold px-8 py-4 text-xs md:text-sm uppercase tracking-widest font-bold shadow-lg">Dejar mi reseña en Google</a>
-                </div>
+            dispararFuegosArtificiales();
+            successDiv.innerHTML = `
+                <span class="text-6xl mb-4 block">💖</span>
+                <h3 class="font-serif text-2xl italic text-[#0a1f1c] mb-3">¡Mil gracias por esto!</h3>
+                <p class="text-sm text-[#0a1f1c]/70 mb-6 leading-relaxed">Si amas lo que hacemos, ayúdanos a llegar a más personas dejándonos una breve reseña en Google.</p>
+                <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review" target="_blank" class="block w-full bg-[#0a1f1c] text-white text-xs uppercase tracking-widest font-bold py-4 rounded-lg mb-6 shadow-md hover:scale-105 transition">Dejar mi reseña en Google</a>
+                <p class="text-xs text-[#0a1f1c]/60 mb-6 leading-relaxed">Y como lo prometido es deuda... <strong class="text-[#c5a059]">¡Cierra esto para ver la sorpresa que sumamos a tu saldo!</strong> 😉</p>
+                <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1">Cerrar esto</button>
             `;
         } else {
-            // MENOS DE 5: Agradecimiento simple
-            document.getElementById('survey-banner').innerHTML = `<h3 class="font-serif text-xl md:text-2xl italic text-[#c5a059] text-center w-full py-8">¡Gracias por ayudarnos a mejorar! Tomaremos en cuenta tu opinión ✨</h3>`;
-            setTimeout(() => { document.getElementById('survey-banner').classList.add('hidden-panel'); }, 4000);
+            successDiv.innerHTML = `
+                <span class="text-6xl mb-4 block">🙏</span>
+                <h3 class="font-serif text-2xl italic text-[#0a1f1c] mb-3">Agradecemos mucho tu honestidad</h3>
+                <p class="text-sm text-[#0a1f1c]/70 mb-8 leading-relaxed">De tu satisfacción depende nuestro crecimiento. Tomaremos muy en serio tus comentarios. <strong class="text-[#c5a059]">Te hemos dejado una recompensa en tu cuenta como agradecimiento</strong> por ayudarnos a ser mejores.</p>
+                <button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md">Descubrir mi recompensa</button>
+            `;
         }
-    } else {
-        alert('Hubo un problema al enviar tu opinión.');
+    } catch (err) {
+        alert('Hubo un problema. Por favor intenta de nuevo.');
+        btn.innerHTML = 'Enviar mi opinión'; btn.disabled = false;
     }
     return false;
 }
