@@ -768,7 +768,7 @@ async function doLogin(e){
     });
     const data = await res.json();
     if(!res.ok){ 
-      errEl.textContent = data.detail || data.error || "Error al iniciar sesión."; 
+      errEl.textContent = data.error || data.detail || `Error (${res.status})`; 
       return false; 
     }
     localStorage.setItem('laforesta_club_token', data.token);
