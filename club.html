@@ -249,42 +249,43 @@
     </div>
 
     <!-- PRIVILEGIOS COMPARTIDOS -->
-    <div class="card overflow-hidden border-[#c5a059]/40">
-        <div class="relative w-full h-[280px] md:h-[220px] overflow-hidden group">
-            <div class="absolute inset-0 z-0">
-                <img src="img/regalo-referido.webp" alt="Invita a tus amigos" class="w-full h-full object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-1000 opacity-40 group-hover:opacity-60">
-                <div class="absolute inset-0 bg-gradient-to-r from-[#fcfaf7] via-[#fcfaf7]/90 to-[#fcfaf7]/20 dark:from-[#0a1f1c] dark:via-[#0a1f1c]/90 dark:to-transparent"></div>
+    <div class="card overflow-hidden border-[#c5a059]/40 mb-6">
+        <div class="relative w-full p-6 md:p-10 bg-gradient-to-r from-[#c5a059]/10 to-transparent flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div class="max-w-xl">
+                <span class="text-[10px] md:text-xs uppercase tracking-[0.25em] text-[#c5a059] font-bold block mb-2">Programa de Invitados</span>
+                <h3 class="font-serif text-2xl md:text-4xl italic text-[#0a1f1c] dark:text-[#fcfaf7] mb-2">Invita a tus amigos y gana</h3>
+                <p class="text-[#0a1f1c]/80 dark:text-[#fcfaf7]/80 text-xs md:text-base leading-relaxed font-medium">
+                    Regálale $3.000 de descuento a un amigo en su primera compra. Cuando lo use, nosotros te regalaremos 3.000 puntos a ti.
+                </p>
             </div>
-            
-            <div class="relative z-10 p-8 md:p-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 h-full">
-                <div class="max-w-xl">
-                    <span class="text-[10px] md:text-xs uppercase tracking-[0.25em] text-[#c5a059] font-bold block mb-2">Programa de Invitados</span>
-                    <h3 class="font-serif text-3xl md:text-4xl italic text-[#0a1f1c] dark:text-[#fcfaf7] mb-3 drop-shadow-md">Invita a tus amigos</h3>
-                    <p class="text-[#0a1f1c]/80 dark:text-[#fcfaf7]/80 text-sm md:text-base leading-relaxed font-medium">
-                        Regálale $3.000 de descuento a un amigo en su primera compra. Cuando lo use, nosotros te regalaremos 3.000 puntos a ti. ¡Así ganan los dos!
-                    </p>
-                </div>
-                <div class="flex-shrink-0">
-                    <button onclick="abrirShareModal()" class="btn-gold px-8 py-4 md:py-5 rounded-lg text-xs md:text-sm uppercase tracking-widest font-bold shadow-lg hover:scale-105 transition-transform">
-                        Compartir mi código
-                    </button>
-                </div>
+            <div class="w-full md:w-auto flex-shrink-0">
+                <button onclick="abrirShareModal()" class="btn-gold w-full md:w-auto px-8 py-4 rounded-lg text-xs md:text-sm uppercase tracking-widest font-bold shadow-lg hover:scale-105 transition-transform">
+                    Compartir mi código ($3.000)
+                </button>
             </div>
         </div>
 
         <details class="group border-t border-[#0a1f1c]/10 dark:border-white/10">
-            <summary class="flex justify-between items-center p-5 md:px-10 cursor-pointer hover:bg-[#0a1f1c]/5 dark:hover:bg-white/5 transition-colors text-xs uppercase tracking-widest font-bold text-[#0a1f1c]/60 dark:text-white/60 outline-none select-none">
+            <summary class="flex justify-between items-center p-4 md:px-10 cursor-pointer hover:bg-[#0a1f1c]/5 dark:hover:bg-white/5 transition-colors text-xs uppercase tracking-widest font-bold text-[#0a1f1c]/60 dark:text-white/60 outline-none select-none">
                 Ver a mis amigos invitados <span id="referral-count-label">(0)</span>
                 <svg class="w-5 h-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </summary>
-            <div class="p-5 md:px-10 pb-8 bg-[#0a1f1c]/5 dark:bg-black/20 border-t border-[#0a1f1c]/10 dark:border-white/10">
-                <div id="referrals-list" class="space-y-4">
-                    <p class="italic text-[#0a1f1c]/60 dark:text-white/50 text-sm">Aún no has invitado a nadie. ¡Comparte tu enlace con tus amigos para empezar a ganar puntos!</p>
+            <div class="p-4 md:px-10 pb-6 bg-[#0a1f1c]/5 dark:bg-black/20 border-t border-[#0a1f1c]/10 dark:border-white/10">
+                <div id="referrals-list" class="space-y-3">
+                    <p class="italic text-[#0a1f1c]/60 dark:text-white/50 text-xs">Aún no has invitado a nadie. ¡Comparte tu enlace para empezar a ganar!</p>
                 </div>
             </div>
         </details>
     </div>
 
+    <!-- BOTÓN FLOTANTE EXCLUSIVO PARA MÓVILES (Fijo abajo a la derecha) -->
+    <div class="fixed bottom-6 right-6 z-[90] md:hidden">
+        <button onclick="abrirShareModal()" class="btn-gold p-4 rounded-full shadow-2xl flex items-center justify-center gap-2 text-xs uppercase tracking-widest border-2 border-[#0a1f1c] animate-bounce">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+            <span>Invitar $3.000</span>
+        </button>
+    </div>
+    
     <!-- DISTRIBUCIÓN HORIZONTAL (CUMPLEAÑOS Y SEGURIDAD) -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
         
