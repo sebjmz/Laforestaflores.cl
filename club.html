@@ -71,11 +71,11 @@
   select option { background: #fcfaf7; color: #0a1f1c; }
   .dark select option { background: #0a1f1c; color: #fcfaf7; }
 
-  .btn-gold { background: #c5a059; color: #0a1f1c; font-weight: 700; transition: .3s; }
+  .btn-gold { background: #c5a059; color: #0a1f1c; font-weight: 700; transition: .3s; cursor: pointer; }
   .btn-gold:hover { background: #ffffff; color: #0a1f1c; box-shadow: 0 4px 15px rgba(197,160,89,0.3); }
   .dark .btn-gold:hover { background: #ffffff; }
 
-  .btn-outline { border: 1px solid #c5a059; color: #c5a059; transition: .3s; font-weight: 600; }
+  .btn-outline { border: 1px solid #c5a059; color: #c5a059; transition: .3s; font-weight: 600; cursor: pointer; }
   .btn-outline:hover { background: #c5a059; color: #0a1f1c; }
 
   .hidden-panel { display: none !important; }
@@ -87,16 +87,21 @@
     0% {opacity: 0; transform: translateY(-5px)}
     100% {opacity: 1; transform: translateY(0)}
   }
+
+  /* Estrellas Encuesta */
+  .star-rating button { transition: color 0.2s; }
+  .star-rating button:hover, .star-rating button.active { color: #c5a059; }
 </style>
 </head>
 <body class="bg-[#fcfaf7] dark:bg-[#0a1f1c] text-[#0a1f1c] dark:text-[#fcfaf7] min-h-screen selection:bg-[#c5a059] selection:text-[#0a1f1c] transition-colors duration-500">
 
+<!-- MENÚ STICKY -->
 <div class="sticky top-0 z-[100] bg-[#fcfaf7]/90 dark:bg-[#0a1f1c]/90 backdrop-blur-md border-b border-[#0a1f1c]/10 dark:border-white/10 py-4 px-6 md:px-12 flex justify-between items-center transition-colors duration-500">
   <a href="/" class="inline-block group">
     <img src="img/logo-menu.webp" alt="La Foresta Flores" class="h-7 md:h-8 w-auto brightness-0 dark:invert opacity-80 group-hover:opacity-100 transition-all">
   </a>
   <div class="flex items-center gap-4">
-    <a href="/" class="btn-outline px-4 py-2 rounded-lg text-[10px] md:text-xs uppercase tracking-widest bg-transparent">Tienda</a>
+    <a href="/" class="btn-outline px-4 py-2 rounded-lg text-[10px] md:text-xs uppercase tracking-widest bg-transparent flex items-center justify-center">Tienda</a>
     <button onclick="toggleTheme()" class="p-2.5 rounded-full border border-[#0a1f1c]/20 dark:border-white/20 bg-transparent text-[#0a1f1c]/60 dark:text-white/60 hover:text-[#c5a059] dark:hover:text-[#c5a059] transition-all" aria-label="Ajustar Luz">
       <svg id="theme-icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
       <svg id="theme-icon-moon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
@@ -106,40 +111,54 @@
 
 <div class="max-w-5xl mx-auto px-6 md:px-12 pt-12 pb-24">
 
+  <!-- HEADER -->
   <div id="header-text">
       <h1 class="font-serif text-5xl md:text-6xl italic mb-3 text-[#0a1f1c] dark:text-[#fcfaf7]">Club La Foresta</h1>
       <p class="text-[#0a1f1c]/60 dark:text-white/60 text-base md:text-lg mb-12">Bienvenido a tu espacio. Aquí guardamos tus beneficios, tus recuerdos y las fechas que más te importan.</p>
   </div>
 
-  <div id="auth-section" class="card p-8 md:p-12 mb-10 max-w-2xl mx-auto">
-    <div class="flex gap-8 mb-8 text-sm md:text-base font-bold uppercase tracking-widest border-b border-[#0a1f1c]/10 dark:border-white/10 pb-2">
-      <button onclick="showAuthTab('login')" id="tab-login" class="pb-2 border-b-2 border-[#c5a059] text-[#0a1f1c] dark:text-white transition-colors">Miembros</button>
-      <button onclick="showAuthTab('register')" id="tab-register" class="pb-2 border-b-2 border-transparent text-[#0a1f1c]/40 dark:text-white/40 hover:text-[#0a1f1c] dark:hover:text-white transition-colors">Crear Cuenta</button>
-    </div>
-
-    <form id="login-form" class="space-y-5" onsubmit="return doLogin(event)">
-      <input required type="email" id="login-email" placeholder="Tu correo electrónico" class="w-full px-5 py-4 rounded-lg text-base">
-      <input required type="password" id="login-password" placeholder="Tu contraseña" class="w-full px-5 py-4 rounded-lg text-base">
-      <div class="cf-turnstile flex justify-center pt-3" data-sitekey="1x00000000000000000000AA" data-callback="onLoginTurnstile" data-theme="auto"></div>
-      <button class="btn-gold w-full py-5 rounded-lg text-sm uppercase tracking-widest mt-4">Ingresar a mi cuenta</button>
-      <p id="login-error" class="text-red-500 dark:text-red-400 text-sm font-bold text-center mt-2"></p>
-    </form>
-
-    <form id="register-form" class="space-y-5 hidden-panel" onsubmit="return doRegister(event)">
-      <input required id="reg-name" placeholder="Tu nombre y apellido" class="w-full px-5 py-4 rounded-lg text-base">
-      <input required type="email" id="reg-email" placeholder="Tu correo electrónico" class="w-full px-5 py-4 rounded-lg text-base">
-      <input required type="password" id="reg-password" placeholder="Crea una contraseña (mínimo 8 caracteres)" minlength="8" class="w-full px-5 py-4 rounded-lg text-base">
-      <input id="reg-phone" placeholder="Tu número de celular (+56 9 ...) (Opcional)" class="w-full px-5 py-4 rounded-lg text-base">
-      <div class="relative">
-        <input id="reg-referral" placeholder="Código de invitación (si tienes uno)" class="w-full px-5 py-4 rounded-lg text-base">
+  <!-- ================= AUTH SECTION ================= -->
+  <div id="auth-wrap" class="max-w-2xl mx-auto">
+      <!-- BANNER BIENVENIDA REFERIDO (Oculto por defecto) -->
+      <div id="referral-welcome-banner" class="hidden-panel card p-6 md:p-8 mb-8 border-[#c5a059]/40 bg-[#c5a059]/10 text-center shadow-lg relative overflow-hidden">
+        <span class="text-[10px] md:text-xs uppercase tracking-[0.25em] text-[#c5a059] font-bold block mb-2">¡Invitación Especial VIP!</span>
+        <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-[#fcfaf7] mb-2">Alguien quiere que te enamores de nosotros</h3>
+        <p class="text-sm md:text-base text-[#0a1f1c]/80 dark:text-white/80 leading-relaxed">
+          Tienes <strong class="text-[#c5a059] font-bold">$3.000 de regalo</strong> esperándote para tu primera compra al crear tu cuenta.
+        </p>
       </div>
-      <div class="cf-turnstile flex justify-center pt-3" data-sitekey="1x00000000000000000000AA" data-callback="onRegisterTurnstile" data-theme="auto"></div>
-      <button class="btn-gold w-full py-5 rounded-lg text-sm uppercase tracking-widest mt-4">Crear mi cuenta</button>
-      <p id="register-error" class="text-red-500 dark:text-red-400 text-sm font-bold text-center mt-2"></p>
-      <p id="register-success" class="text-emerald-600 dark:text-emerald-400 text-sm font-bold text-center mt-2"></p>
-    </form>
+
+      <div id="auth-section" class="card p-8 md:p-12 mb-10">
+        <div class="flex gap-8 mb-8 text-sm md:text-base font-bold uppercase tracking-widest border-b border-[#0a1f1c]/10 dark:border-white/10 pb-2">
+          <button onclick="showAuthTab('login')" id="tab-login" class="pb-2 border-b-2 border-[#c5a059] text-[#0a1f1c] dark:text-white transition-colors">Miembros</button>
+          <button onclick="showAuthTab('register')" id="tab-register" class="pb-2 border-b-2 border-transparent text-[#0a1f1c]/40 dark:text-white/40 hover:text-[#0a1f1c] dark:hover:text-white transition-colors">Crear Cuenta</button>
+        </div>
+
+        <form id="login-form" class="space-y-5" onsubmit="return doLogin(event)">
+          <input required type="email" id="login-email" placeholder="Tu correo electrónico" class="w-full px-5 py-4 rounded-lg text-base">
+          <input required type="password" id="login-password" placeholder="Tu contraseña" class="w-full px-5 py-4 rounded-lg text-base">
+          <div class="cf-turnstile flex justify-center pt-3" data-sitekey="0x4AAAAAAD6y4OVRCN5aeJKh" data-callback="onLoginTurnstile" data-theme="auto"></div>
+          <button class="btn-gold w-full py-5 rounded-lg text-sm uppercase tracking-widest mt-4">Ingresar a mi cuenta</button>
+          <p id="login-error" class="text-red-500 dark:text-red-400 text-sm font-bold text-center mt-2"></p>
+        </form>
+
+        <form id="register-form" class="space-y-5 hidden-panel" onsubmit="return doRegister(event)">
+          <input required id="reg-name" placeholder="Tu nombre y apellido" class="w-full px-5 py-4 rounded-lg text-base">
+          <input required type="email" id="reg-email" placeholder="Tu correo electrónico" class="w-full px-5 py-4 rounded-lg text-base">
+          <input required type="password" id="reg-password" placeholder="Crea una contraseña (mínimo 8 caracteres)" minlength="8" class="w-full px-5 py-4 rounded-lg text-base">
+          <input id="reg-phone" placeholder="Tu número de celular (+56 9 ...) (Opcional)" class="w-full px-5 py-4 rounded-lg text-base">
+          <div class="relative">
+            <input id="reg-referral" placeholder="Código de invitación (si tienes uno)" class="w-full px-5 py-4 rounded-lg text-base">
+          </div>
+          <div class="cf-turnstile flex justify-center pt-3" data-sitekey="0x4AAAAAAD6y4OVRCN5aeJKh" data-callback="onRegisterTurnstile" data-theme="auto"></div>
+          <button class="btn-gold w-full py-5 rounded-lg text-sm uppercase tracking-widest mt-4">Crear mi cuenta</button>
+          <p id="register-error" class="text-red-500 dark:text-red-400 text-sm font-bold text-center mt-2"></p>
+          <p id="register-success" class="text-emerald-600 dark:text-emerald-400 text-sm font-bold text-center mt-2"></p>
+        </form>
+      </div>
   </div>
 
+  <!-- ================= VERIFICACIÓN DE CORREO ================= -->
   <div id="verify-email-section" class="card p-10 md:p-14 mb-10 max-w-2xl mx-auto hidden-panel text-center">
     <h3 class="font-serif text-3xl italic mb-4">¡Ya casi! Revisa tu correo</h3>
     <p class="text-[#0a1f1c]/70 dark:text-white/70 text-sm uppercase tracking-widest mb-8 leading-relaxed">Te enviamos un código de 6 números. Escríbelo aquí para comprobar que eres tú.</p>
@@ -150,6 +169,7 @@
     <button onclick="resendEmailCode()" class="text-[#c5a059] text-xs uppercase tracking-widest mt-4 hover:text-[#0a1f1c] dark:hover:text-white transition font-bold">¿No llegó el código? Enviar de nuevo</button>
   </div>
 
+  <!-- ================= LOADER SYNC ================= -->
   <div id="sync-screen" class="hidden-panel flex flex-col items-center justify-center py-24 text-center min-h-[50vh]">
     <svg class="w-12 h-12 text-[#c5a059] animate-spin mb-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
     <h2 class="font-serif text-4xl md:text-5xl italic mb-5">Preparando todo...</h2>
@@ -157,9 +177,51 @@
     <div class="text-8xl font-serif text-[#c5a059] italic drop-shadow-md" id="sync-countdown">3</div>
   </div>
 
+  <!-- ================= DASHBOARD VIP ================= -->
   <div id="dashboard-section" class="hidden-panel space-y-10">
 
+    <!-- ENCUESTA DINÁMICA (Solo visible si hay encuesta pendiente) -->
+    <div id="survey-banner" class="hidden-panel card p-8 md:p-10 border-[#c5a059]/40 bg-[#c5a059]/5 shadow-[0_0_20px_rgba(197,160,89,0.15)] relative overflow-hidden">
+        <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-2">Tu opinión es oro para nosotros</h3>
+        <p class="text-sm md:text-base text-[#0a1f1c]/70 dark:text-white/60 mb-6">Notamos que recibiste un pedido recientemente. ¿Nos regalas 1 minuto para contarnos cómo te fue? Solo son 3 preguntas.</p>
+        
+        <form id="survey-form" onsubmit="return submitSurvey(event)" class="space-y-6">
+            <div>
+                <label class="block text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">1. ¿Cómo calificarías tu experiencia general?</label>
+                <div class="flex gap-2 text-3xl text-zinc-300 dark:text-zinc-600 star-rating" id="survey-stars">
+                    <button type="button" data-val="1">★</button>
+                    <button type="button" data-val="2">★</button>
+                    <button type="button" data-val="3">★</button>
+                    <button type="button" data-val="4">★</button>
+                    <button type="button" data-val="5">★</button>
+                </div>
+                <input type="hidden" id="survey-rating-val" value="0" required>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">2. ¿Qué aspecto destacaría?</label>
+                    <select id="survey-q-power" class="w-full px-5 py-4 rounded-lg text-sm bg-white dark:bg-[#0a1f1c] border border-[#0a1f1c]/10 dark:border-white/10" required>
+                        <option value="" disabled selected>Selecciona una opción</option>
+                        <option value="Frescura de las flores">La frescura de las flores</option>
+                        <option value="Presentación y diseño">La presentación y diseño</option>
+                        <option value="Puntualidad">La puntualidad de entrega</option>
+                        <option value="Atención al cliente">La atención al cliente</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3">3. ¿Alguna sugerencia para mejorar?</label>
+                    <input id="survey-suggestion" type="text" placeholder="Escribe tu sugerencia (Opcional)" class="w-full px-5 py-4 rounded-lg text-sm bg-white dark:bg-[#0a1f1c] border border-[#0a1f1c]/10 dark:border-white/10">
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-gold px-8 py-4 rounded-lg text-sm uppercase tracking-widest font-bold shadow-md">Enviar mis respuestas</button>
+        </form>
+    </div>
+
+    <!-- MÉTRICAS -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+      <!-- Puntos -->
       <div class="card p-8 border-[#c5a059]/40 bg-[#c5a059]/5 shadow-[0_0_20px_rgba(197,160,89,0.15)] relative overflow-hidden flex flex-col justify-center">
         <div class="relative z-10">
             <span class="text-[11px] md:text-xs uppercase tracking-widest text-[#c5a059] font-bold">Tus Puntos Disponibles</span>
@@ -168,6 +230,7 @@
         </div>
       </div>
       
+      <!-- Estatus -->
       <div class="card p-8 flex flex-col justify-center">
         <div class="flex justify-between items-start mb-3">
             <span class="text-[11px] md:text-xs uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/50 font-bold">Tu Nivel actual (<span id="dash-tier-pct">3%</span>)</span>
@@ -181,6 +244,7 @@
         <p class="text-xs text-[#0a1f1c]/50 dark:text-white/50 mt-2.5 leading-relaxed">¡Recuerda que los puntos de tus invitados también te ayudan a subir de nivel!</p>
       </div>
       
+      <!-- Ahorro Histórico -->
       <div class="card p-8 flex flex-col justify-center">
         <span class="text-[11px] md:text-xs uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/50 font-bold mb-3">Tu ahorro total</span>
         <p class="font-serif text-5xl italic font-bold text-[#0a1f1c] dark:text-white" id="dash-savings">$0</p>
@@ -188,6 +252,7 @@
       </div>
     </div>
 
+    <!-- PRIVILEGIOS COMPARTIDOS -->
     <div class="card overflow-hidden border-[#c5a059]/40">
         <div class="relative w-full h-[280px] md:h-[220px] overflow-hidden group">
             <div class="absolute inset-0 z-0">
@@ -224,8 +289,10 @@
         </details>
     </div>
 
+    <!-- DISTRIBUCIÓN HORIZONTAL (CUMPLEAÑOS Y SEGURIDAD) -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
         
+        <!-- MI CUMPLEAÑOS -->
         <div class="card p-8 md:p-10 flex flex-col h-full">
             <div class="flex items-center gap-4 mb-4">
                 <h3 class="font-serif text-2xl md:text-3xl italic">Mi cumpleaños</h3>
@@ -245,10 +312,12 @@
             </div>
         </div>
 
+        <!-- SEGURIDAD Y CANALES -->
         <div class="card p-8 md:p-10 flex flex-col h-full">
             <h3 class="font-serif text-2xl md:text-3xl italic mb-6">Contacto y notificaciones</h3>
             
             <div class="space-y-5 flex-grow">
+                <!-- Correo -->
                 <div class="flex justify-between items-center bg-[#0a1f1c]/5 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/10 dark:border-white/5">
                     <div>
                         <p class="text-base font-bold text-[#0a1f1c] dark:text-white">Tu correo electrónico</p>
@@ -257,6 +326,7 @@
                     <span class="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded text-[10px] uppercase tracking-widest font-bold shrink-0 ml-4">Verificado</span>
                 </div>
 
+                <!-- WhatsApp No Verificado -->
                 <div id="phone-not-verified" class="bg-[#0a1f1c]/5 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/10 dark:border-white/5">
                     <div class="mb-5">
                         <p class="text-base font-bold text-[#0a1f1c] dark:text-white">Tu número de WhatsApp</p>
@@ -264,14 +334,15 @@
                     </div>
                     <div class="flex flex-col sm:flex-row gap-4">
                         <input id="phone-input" placeholder="+56 9 ..." class="px-5 py-4 rounded-lg text-base sm:flex-1 bg-white dark:bg-[#0a1f1c]">
-                        <button onclick="requestPhoneOtp()" class="btn-outline px-8 py-4 rounded-lg text-xs md:text-sm uppercase tracking-widest font-bold bg-transparent">Generar enlace</button>
+                        <button onclick="requestPhoneOtp()" type="button" class="btn-outline px-8 py-4 rounded-lg text-xs md:text-sm uppercase tracking-widest font-bold bg-transparent flex justify-center items-center">Generar enlace</button>
                     </div>
                     <div id="phone-otp-box" class="mt-5 hidden-panel">
-                        <a id="phone-wa-link" target="_blank" class="btn-gold inline-block px-8 py-4 rounded-lg text-sm uppercase tracking-widest font-bold text-center w-full sm:w-auto shadow-md">Vincular mi número</a>
+                        <a id="phone-wa-link" target="_blank" class="btn-gold inline-flex px-8 py-4 rounded-lg text-sm uppercase tracking-widest font-bold text-center w-full sm:w-auto shadow-md justify-center">Vincular mi número</a>
                         <p class="text-[#0a1f1c]/60 dark:text-white/50 text-[10px] md:text-xs uppercase tracking-widest mt-4 animate-pulse font-bold">Esperando confirmación...</p>
                     </div>
                 </div>
 
+                <!-- WhatsApp Verificado -->
                 <div id="phone-verified-box" class="hidden-panel space-y-5">
                     <div class="flex justify-between items-center bg-[#0a1f1c]/5 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/10 dark:border-white/5">
                         <div>
@@ -281,18 +352,20 @@
                         <span class="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded text-[10px] uppercase tracking-widest font-bold shrink-0 ml-4">Enlazado</span>
                     </div>
                     
+                    <!-- Botón Canal VIP (Estrategia de Retención) -->
                     <a href="https://whatsapp.com/channel/TU_LINK_DE_CANAL_AQUI" target="_blank" class="block w-full py-5 border border-[#25D366]/40 bg-[#25D366]/10 hover:bg-[#25D366] text-[#0a1f1c] dark:text-white hover:text-white rounded-xl transition-all duration-300 group text-center shadow-sm">
                         <span class="text-sm md:text-base uppercase tracking-widest font-bold mb-2 flex items-center justify-center gap-3">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                             Unirse al Canal VIP de WhatsApp
                         </span>
-                        <span class="text-xs md:text-sm opacity-80 group-hover:text-white/90 px-4">Únete y sé el primero en enterarte de nuestras novedades. Es un canal privado, nadie llenará tu teléfono de mensajes.</span>
+                        <span class="text-xs md:text-sm opacity-80 group-hover:text-white/90 px-4 block">Únete y sé el primero en enterarte de nuestras novedades. Es un canal privado, nadie llenará tu teléfono de mensajes.</span>
                     </a>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ANIVERSARIOS IMPERDIBLES (FULL WIDTH FORM) -->
     <div class="card p-8 md:p-10">
       <h3 class="font-serif text-2xl md:text-3xl italic mb-3">Fechas que no puedes olvidar</h3>
       <p class="text-[#0a1f1c]/70 dark:text-white/70 text-sm md:text-base leading-relaxed mb-8">Déjanos los detalles de ese aniversario o fecha especial y te enviaremos un recordatorio para que tengas tiempo de planear una linda sorpresa.</p>
@@ -321,19 +394,38 @@
       </details>
     </div>
 
+    <!-- HISTORIAL DE ENTREGAS -->
     <div class="card p-8 md:p-10">
       <h3 class="font-serif text-2xl md:text-3xl italic mb-3">Tus envíos anteriores</h3>
       <p class="text-[#0a1f1c]/70 dark:text-white/70 text-sm md:text-base leading-relaxed mb-8">Aquí guardamos todas las tarjetitas y ramos que has enviado. Te puede servir para recordar qué escribiste o buscar inspiración para la próxima vez.</p>
       
       <details class="group border border-[#0a1f1c]/10 dark:border-white/10 rounded-xl overflow-hidden">
           <summary class="flex justify-between items-center p-5 md:px-8 cursor-pointer hover:bg-[#0a1f1c]/5 dark:hover:bg-white/5 transition-colors text-xs uppercase tracking-widest font-bold text-[#c5a059] outline-none select-none">
-              Ver todos mis envíos <span id="cards-count-label">(0)</span>
+              Ver todos mis envíos <span id="cards-count-label">(0 envíos)</span>
               <svg class="w-5 h-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </summary>
           <div class="p-5 md:p-8 bg-[#0a1f1c]/5 dark:bg-black/20 border-t border-[#0a1f1c]/10 dark:border-white/10">
               <div id="orders-list" class="space-y-8"></div>
           </div>
       </details>
+    </div>
+
+    <!-- COMUNIDAD Y RESEÑAS -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 mt-4">
+        <!-- Google -->
+        <div class="card p-8 md:p-10 text-center flex flex-col justify-center items-center">
+            <span class="text-4xl md:text-5xl mb-4">⭐</span>
+            <h3 class="font-serif text-2xl md:text-3xl italic mb-2">Ayúdanos a crecer</h3>
+            <p class="text-sm md:text-base opacity-70 mb-8 leading-relaxed">Si amas lo que hacemos, regalarnos una reseña en Google nos ayuda muchísimo a llegar a más personas como tú.</p>
+            <a href="https://g.page/r/YOUR_GOOGLE_BUSINESS_LINK/review" target="_blank" class="btn-outline px-8 py-4 rounded-lg text-xs font-bold uppercase tracking-widest inline-flex w-full md:w-auto justify-center">Escribir una Reseña</a>
+        </div>
+        <!-- Instagram -->
+        <div class="card p-8 md:p-10 text-center flex flex-col justify-center items-center">
+            <span class="text-4xl md:text-5xl mb-4">📸</span>
+            <h3 class="font-serif text-2xl md:text-3xl italic mb-2">Inspiración diaria</h3>
+            <p class="text-sm md:text-base opacity-70 mb-8 leading-relaxed">Únete a nuestra comunidad en Instagram para ver nuestras últimas creaciones florales y detrás de escena del taller.</p>
+            <a href="https://instagram.com/laforestaflores" target="_blank" class="btn-gold px-8 py-4 rounded-lg text-xs font-bold uppercase tracking-widest inline-flex w-full md:w-auto justify-center shadow-md hover:scale-105 transition-transform">Seguir en Instagram</a>
+        </div>
     </div>
 
     <!-- MODAL COMPARTIR PRIVILEGIOS -->
@@ -363,7 +455,7 @@
 
     <!-- Confirmación de borrado -->
     <div id="delete-modal" class="fixed inset-0 bg-[#fcfaf7]/90 dark:bg-black/80 z-[105] hidden-panel flex items-center justify-center p-6 backdrop-blur-sm">
-      <div class="card p-8 max-w-sm w-full text-center border-[#c5a059]/30">
+      <div class="card p-8 max-w-sm w-full text-center border-[#c5a059]/30 shadow-2xl">
         <div class="text-4xl mb-4">🗑️</div>
         <h4 class="font-serif text-2xl italic mb-3 text-[#0a1f1c] dark:text-white">¿Quieres borrar esto?</h4>
         <p class="text-[#0a1f1c]/70 dark:text-white/60 text-sm md:text-base mb-8 leading-relaxed">Si lo borras, no podremos recuperarlo. ¿Estás seguro?</p>
@@ -390,13 +482,6 @@ function toggleTheme() {
 }
 
 const urlParams = new URLSearchParams(window.location.search);
-const prefillEmail = urlParams.get('email');
-
-if (prefillEmail) {
-    document.getElementById('reg-email').value = prefillEmail;
-    document.getElementById('login-email').value = prefillEmail;
-    setTimeout(() => showAuthTab('register'), 100); 
-}
 
 let pendingRegisterEmail = '';
 let loginTurnstileToken = null, registerTurnstileToken = null;
@@ -415,8 +500,7 @@ function showAuthTab(tab){
 }
 
 function playSyncAnimation() {
-    document.getElementById('header-text').classList.add('hidden-panel');
-    document.getElementById('auth-section').classList.add('hidden-panel');
+    document.getElementById('auth-wrap').classList.add('hidden-panel');
     document.getElementById('verify-email-section').classList.add('hidden-panel');
     document.getElementById('sync-screen').classList.remove('hidden-panel');
     window.scrollTo(0,0);
@@ -473,7 +557,7 @@ async function renderDashboard(animate = false) {
   }
   
   const c = currentCustomerData;
-  document.getElementById('header-text').classList.add('hidden-panel');
+  document.getElementById('auth-wrap').classList.add('hidden-panel');
   document.getElementById('dashboard-section').classList.remove('hidden-panel');
 
   const pointsEl = document.getElementById('dash-points');
@@ -545,6 +629,7 @@ async function renderDashboard(animate = false) {
   loadDates();
   loadReferrals();
   loadCards();
+  checkSurveyPending();
 }
 
 async function loadDashboardInit(){
@@ -552,7 +637,7 @@ async function loadDashboardInit(){
   if(!res.ok){ return; }
   const { customer } = await res.json();
   
-  document.getElementById('auth-section').classList.add('hidden-panel');
+  document.getElementById('auth-wrap').classList.add('hidden-panel');
   document.getElementById('verify-email-section').classList.add('hidden-panel');
   
   currentCustomerData = customer;
@@ -581,7 +666,7 @@ async function doRegister(e){
     pendingRegisterEmail = email;
     okEl.textContent = "¡Casi listo!";
     setTimeout(() => {
-        document.getElementById('auth-section').classList.add('hidden-panel');
+        document.getElementById('auth-wrap').classList.add('hidden-panel');
         document.getElementById('verify-email-section').classList.remove('hidden-panel');
     }, 800);
   }catch(err){ errEl.textContent = 'Hubo un error de conexión.'; }
@@ -597,7 +682,7 @@ async function doVerifyEmail(e){
   });
   if(res.ok){
     document.getElementById('verify-email-section').classList.add('hidden-panel');
-    document.getElementById('auth-section').classList.remove('hidden-panel');
+    document.getElementById('auth-wrap').classList.remove('hidden-panel');
     showAuthTab('login');
     document.getElementById('login-email').value = pendingRegisterEmail;
     alert("¡Listo! Ahora ingresa tu contraseña para entrar.");
@@ -732,7 +817,7 @@ async function loadDates(){
                 ${d.favorite_flower ? ` · Su flor favorita: <span class="text-[#0a1f1c] dark:text-white font-medium">${d.favorite_flower}</span>` : ''}
             </p>
         </div>
-        <button onclick="pedirEliminar('date', ${d.id})" class="text-[#0a1f1c]/40 dark:text-white/40 hover:text-red-500 text-[10px] md:text-xs uppercase font-bold tracking-widest transition shrink-0 md:ml-4 text-left md:text-right">Borrar</button>
+        <button onclick="pedirEliminar('date', ${d.id})" type="button" class="text-[#0a1f1c]/40 dark:text-white/40 hover:text-red-500 text-[10px] md:text-xs uppercase font-bold tracking-widest transition shrink-0 md:ml-4 text-left md:text-right">Borrar</button>
     </div>`).join('');
 }
 
@@ -764,7 +849,7 @@ async function loadCards(){
           </div>
           ${c.card_text ? `<p class="text-[#0a1f1c]/80 dark:text-white/80 text-sm italic leading-relaxed border-l-2 border-[#c5a059] pl-4 mt-4 py-1 bg-[#0a1f1c]/5 dark:bg-white/5 rounded-r-lg">"${c.card_text}"</p>` : ''}
           <div class="text-right mt-4">
-              <button onclick="pedirEliminar('card', ${c.id})" class="text-[#0a1f1c]/40 dark:text-white/40 hover:text-red-500 text-[10px] md:text-xs uppercase tracking-widest font-bold transition">Ocultar esto</button>
+              <button onclick="pedirEliminar('card', ${c.id})" type="button" class="text-[#0a1f1c]/40 dark:text-white/40 hover:text-red-500 text-[10px] md:text-xs uppercase tracking-widest font-bold transition">Ocultar esto</button>
           </div>
       </div>`;
   }).join('');
@@ -795,6 +880,68 @@ async function loadReferrals(){
          <span class="text-[10px] md:text-xs ${colorClass} font-bold tracking-widest uppercase shrink-0">${stateTxt}</span>
       </div>`;
   }).join('');
+}
+
+// LOGICA DE LA ENCUESTA (3 PREGUNTAS)
+let pendingSurveyId = null;
+
+async function checkSurveyPending() {
+    const res = await authedFetch('/api/survey/pending');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.survey && data.survey.id) {
+        pendingSurveyId = data.survey.id;
+        document.getElementById('survey-banner').classList.remove('hidden-panel');
+    }
+}
+
+// Control de estrellas
+const starButtons = document.querySelectorAll('#survey-stars button');
+const ratingValInput = document.getElementById('survey-rating-val');
+starButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const val = parseInt(e.target.getAttribute('data-val'));
+        ratingValInput.value = val;
+        starButtons.forEach(b => {
+            if(parseInt(b.getAttribute('data-val')) <= val) {
+                b.classList.add('text-[#c5a059]');
+                b.classList.remove('text-zinc-300', 'dark:text-zinc-600');
+            } else {
+                b.classList.remove('text-[#c5a059]');
+                b.classList.add('text-zinc-300', 'dark:text-zinc-600');
+            }
+        });
+    });
+});
+
+async function submitSurvey(e) {
+    e.preventDefault();
+    if(!pendingSurveyId) return;
+    
+    const rating = parseInt(ratingValInput.value) || 0;
+    if(rating === 0) { alert('Por favor, selecciona una calificación (estrellas).'); return false; }
+    
+    const q1 = document.getElementById('survey-q-power').value;
+    const sug = document.getElementById('survey-suggestion').value;
+
+    const res = await authedFetch('/api/survey/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            survey_id: pendingSurveyId,
+            rating: rating,
+            power_q1: q1,
+            suggestion: sug
+        })
+    });
+
+    if (res.ok) {
+        document.getElementById('survey-banner').innerHTML = `<h3 class="font-serif text-2xl italic text-[#c5a059] text-center w-full">¡Gracias por ayudarnos a mejorar! ✨</h3>`;
+        setTimeout(() => { document.getElementById('survey-banner').classList.add('hidden-panel'); }, 3000);
+    } else {
+        alert('Hubo un problema al enviar tu opinión.');
+    }
+    return false;
 }
 
 let itemAEliminar = null;
@@ -849,17 +996,35 @@ function dispararFuegosArtificiales() {
   }, 250);
 }
 
-const refFromUrl = urlParams.get('ref');
+// ================== LOGICA DE LLEGADA CON REFERIDO (QR O ENLACE) ==================
+const refFromUrl = urlParams.get('ref') || localStorage.getItem('laforesta_referral_code');
 if (refFromUrl) {
+  // Guardamos en local si vino por URL
+  if(urlParams.get('ref')) localStorage.setItem('laforesta_referral_code', urlParams.get('ref'));
+  
   const inputRef = document.getElementById('reg-referral');
-  inputRef.value = refFromUrl;
-  inputRef.setAttribute('readonly', 'readonly');
-} else {
-  const savedRef = localStorage.getItem('laforesta_referral_code');
-  if (savedRef) {
-    document.getElementById('reg-referral').value = savedRef;
-    showAuthTab('register');
+  if (inputRef) {
+      inputRef.value = refFromUrl;
+      inputRef.setAttribute('readonly', 'readonly');
   }
+  
+  // Si no está logueado, mostrarle el banner de bienvenida
+  if (!localStorage.getItem('laforesta_club_token')) {
+      showAuthTab('register');
+      const banner = document.getElementById('referral-welcome-banner');
+      if (banner) banner.classList.remove('hidden-panel');
+      
+      setTimeout(() => {
+          if (typeof dispararFuegosArtificiales === 'function') dispararFuegosArtificiales();
+      }, 300);
+  }
+}
+
+const prefillEmail = urlParams.get('email');
+if (prefillEmail && !localStorage.getItem('laforesta_club_token')) {
+    document.getElementById('reg-email').value = prefillEmail;
+    document.getElementById('login-email').value = prefillEmail;
+    setTimeout(() => showAuthTab('register'), 100); 
 }
 
 if(localStorage.getItem('laforesta_club_token')){ loadDashboardInit(); }
