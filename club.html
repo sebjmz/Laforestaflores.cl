@@ -890,6 +890,8 @@ async function doResetPassword(e) {
 
 function logout(){
   localStorage.removeItem('laforesta_club_token');
+  localStorage.removeItem('laforesta_last_points');
+  localStorage.removeItem('laforesta_prev_points');
   location.reload();
 }
 
