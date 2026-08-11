@@ -298,67 +298,77 @@
   });
 
   async function enviarEncuesta(e) {
-      e.preventDefault();
-      if(typeof orderId === 'undefined' && !pendingSurveyId) return; 
-      
-      const btn = document.getElementById('survey-submit-btn');
-      btn.innerHTML = 'Enviando...'; btn.disabled = true;
-      
-      const rating = parseInt(document.getElementById('survey-rating-val').value) || 0;
-      if(rating === 0) { alert('Por favor, selecciona una calificación (estrellas).'); btn.disabled = false; return false; }
-      
-      const checkedBoxes = document.querySelectorAll('#survey-checkboxes input[type="checkbox"]:checked');
-      const issues = Array.from(checkedBoxes).map(cb => cb.value);
-      const suggestion = document.getElementById('survey-suggestion').value;
+    e.preventDefault();
+    if(typeof orderId === 'undefined' && !pendingSurveyId) return; 
+    
+    const btn = document.getElementById('survey-submit-btn');
+    btn.innerHTML = 'Enviando...'; btn.disabled = true;
+    
+    const rating = parseInt(document.getElementById('survey-rating-val').value) || 0;
+    if(rating === 0) { alert('Por favor, selecciona una calificación (estrellas).'); btn.disabled = false; return false; }
+    
+    const checkedBoxes = document.querySelectorAll('#survey-checkboxes input[type="checkbox"]:checked');
+    const issues = Array.from(checkedBoxes).map(cb => cb.value);
+    const suggestion = document.getElementById('survey-suggestion').value;
 
-      try {
-          const token = localStorage.getItem('laforesta_club_token');
-          const headers = { 'Content-Type': 'application/json' };
-          if (token) headers['Authorization'] = `Bearer ${token}`;
+    const payload = { rating, issues, suggestion };
+    if (typeof orderId !== 'undefined' && orderId) payload.order_id = orderId;
+    if (typeof pendingSurveyId !== 'undefined' && pendingSurveyId) payload.survey_id = pendingSurveyId;
 
-          const res = await fetch(`${API_URL}/api/public/survey/submit`, {
-              method: 'POST',
-              headers: headers,
-              body: JSON.stringify({ order_id: orderId, survey_id: pendingSurveyId, rating, issues, suggestion })
-          });
+    const baseUrl = (typeof API_URL !== 'undefined') ? API_URL : ((typeof CLUB_API !== 'undefined') ? CLUB_API : '');
 
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || 'Error al enviar');
-          
-          if (data.requires_claim && data.survey_id) {
-              localStorage.setItem('laforesta_unclaimed_survey', data.survey_id);
-          }
+    try {
+        const token = localStorage.getItem('laforesta_club_token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
 
-          document.getElementById('survey-content').classList.add('hidden-panel');
-          const successDiv = document.getElementById('survey-success');
-          successDiv.classList.remove('hidden-panel');
+        const res = await fetch(`${baseUrl}/api/public/survey/submit`, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(payload)
+        });
 
-          if (rating === 5) {
-              dispararFuegosArtificiales();
-              successDiv.innerHTML = `
-                  <span class="text-6xl mb-4 block">💖</span>
-                  <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">¡Gracias por dejarnos florecer contigo!</h3>
-                  <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-6 leading-relaxed">Tu satisfacción es el reflejo de nuestra pasión. Si sientes que hemos logrado transmitir tus emociones a través de nuestro trabajo, regalar unos segundos para dejarnos una reseña en Google sería un acto inmenso de generosidad que nos ayudará a que más corazones confíen en nosotros.</p>
-                  <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review" target="_blank" class="block w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg mb-6 shadow-md hover:scale-105 transition">DEJAR MI RESEÑA CON MUCHO CARIÑO</a>
-                  <p class="text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">Y como lo prometido es una obligación del corazón... <strong class="text-[#c5a059]">¡Cierra esta ventana para descubrir la sorpresa que sumamos a tu saldo!</strong> 😉 (Si aún no tienes cuenta, regístrate en "Iniciar Sesión" de nuestra web para guardarlo y ganar más al invitar amigos).</p>
-                  <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 dark:text-white/40 hover:text-[#c5a059] dark:hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1 mt-4">Cerrar esto</button>
-              `;
-          } else {
-              successDiv.innerHTML = `
-                  <span class="text-6xl mb-4 block">🙏</span>
-                  <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Gracias por tu invaluable honestidad</h3>
-                  <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-8 leading-relaxed">Leemos cada palabra con atención y humildad. Tu retroalimentación es el motor que nos impulsa a elevar nuestros estándares todos los días. Como una forma sincera de agradecerte por ayudarnos a crecer, te hemos dejado una recompensa en tu cuenta.</p>
-                  <p class="text-[10px] md:text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">(Si aún no eres parte de la familia, regístrate en "Iniciar Sesión" para reclamar tu regalo y ganar saldo compartiendo amor floral con tus amigos).</p>
-                  <button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">DESCUBRIR MI RECOMPENSA</button>
-              `;
-          }
-      } catch (err) {
-          alert('Hubo un problema de conexión con la base de datos: ' + err.message);
-          btn.innerHTML = 'Enviar mi opinión'; btn.disabled = false;
-      }
-  }
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Error al enviar');
+        
+        if (data.requires_claim && data.survey_id) {
+            localStorage.setItem('laforesta_unclaimed_survey', data.survey_id);
+        }
 
-  loadTracking();
-</script>
+        if (typeof surveySubmittedLocally !== 'undefined') surveySubmittedLocally = true;
+
+        document.getElementById('survey-content').classList.add('hidden-panel');
+        const successDiv = document.getElementById('survey-success');
+        successDiv.classList.remove('hidden-panel');
+
+        const isGuest = data.requires_claim;
+        const botonDirectoHTML = isGuest 
+            ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition mb-3">CREAR CUENTA Y GUARDAR REGALO (500 PTS)</a>`
+            : `<button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition mb-3">DESCUBRIR MI RECOMPENSA</button>`;
+
+        if (rating === 5) {
+            dispararFuegosArtificiales();
+            successDiv.innerHTML = `
+                <span class="text-6xl mb-4 block">💖</span>
+                <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">¡Gracias por dejarnos florecer contigo!</h3>
+                <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-6 leading-relaxed">Tu satisfacción es el reflejo de nuestra pasión. Si sientes que hemos logrado transmitir tus emociones a través de nuestro trabajo, regalar unos segundos para dejarnos una reseña en Google sería un acto inmenso de generosidad que nos ayudará a que más corazones confíen en nosotros.</p>
+                <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review" target="_blank" class="block w-full border border-[#0a1f1c] dark:border-[#c5a059] text-[#0a1f1c] dark:text-[#c5a059] text-xs uppercase tracking-widest font-bold py-4 rounded-lg mb-6 shadow-sm hover:bg-[#0a1f1c]/5 dark:hover:bg-[#c5a059]/10 transition text-center">DEJAR MI RESEÑA CON MUCHO CARIÑO</a>
+                <p class="text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">Y como lo prometido es una obligación del corazón... <strong class="text-[#c5a059]">¡Te dejamos un regalo de 500 puntos por tu tiempo!</strong></p>
+                ${botonDirectoHTML}
+                <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 dark:text-white/40 hover:text-[#c5a059] dark:hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1 mt-2">Cerrar esto</button>
+            `;
+        } else {
+            successDiv.innerHTML = `
+                <span class="text-6xl mb-4 block">🙏</span>
+                <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Gracias por tu invaluable honestidad</h3>
+                <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-6 leading-relaxed">Leemos cada palabra con atención y humildad. Tu retroalimentación es el motor que nos impulsa a elevar nuestros estándares todos los días. Como una forma sincera de agradecerte por ayudarnos a crecer, te hemos dejado un regalo de 500 puntos.</p>
+                ${botonDirectoHTML}
+            `;
+        }
+    } catch (err) {
+        alert('Hubo un problema de conexión con la base de datos: ' + err.message);
+        btn.innerHTML = 'Enviar mi opinión'; btn.disabled = false;
+    }
+}
 </body>
 </html>
