@@ -368,7 +368,7 @@
         <div class="bg-[#0a1f1c]/5 dark:bg-white/10 border border-[#0a1f1c]/10 dark:border-white/20 px-5 py-4 rounded-xl mb-6 flex justify-between items-center">
             <span id="modal-referral-code" class="text-base md:text-lg font-bold tracking-widest text-[#c5a059]">—</span>
             <button onclick="copyReferralLinkModal()" class="text-[#0a1f1c]/50 dark:text-white/50 hover:text-[#c5a059] transition p-2" title="Copiar Enlace">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
             </button>
         </div>
 
@@ -1210,10 +1210,14 @@ if (refFromUrl) {
 }
 
 const prefillEmail = urlParams.get('email');
+const tabParam = urlParams.get('tab');
+
 if (prefillEmail && !localStorage.getItem('laforesta_club_token')) {
     document.getElementById('reg-email').value = prefillEmail;
     document.getElementById('login-email').value = prefillEmail;
-    setTimeout(() => showAuthTab('register'), 100); 
+    showAuthTab(tabParam === 'register' ? 'register' : 'login');
+} else if (tabParam === 'register' && !localStorage.getItem('laforesta_club_token')) {
+    showAuthTab('register');
 }
 
 if(localStorage.getItem('laforesta_club_token')){ loadDashboardInit(); }
