@@ -204,7 +204,7 @@
         <div class="relative z-10">
             <span class="text-[11px] md:text-xs uppercase tracking-widest text-[#c5a059] font-bold">Tus Puntos Disponibles</span>
             <p class="font-serif text-5xl italic mt-3 font-bold text-[#c5a059]" id="dash-points">0</p>
-            <p class="text-xs text-[#0a1f1c]/70 dark:text-white/60 mt-4 leading-relaxed font-medium">Úsalos para descontar hasta el 30% en cualquiera de nuestros arreglos. ¡1 punto equivale a 1 peso!</p>
+            <p class="text-xs text-[#0a1f1c]/70 dark:text-white/60 mt-4 leading-relaxed font-medium">Úsalos para descontar hasta el 30% en cualquiera de nuestros arreglos <strong class="text-[#c5a059] font-bold">(Exclusivo para compras en la página web)</strong>. ¡1 punto equivale a 1 peso!</p>
         </div>
       </div>
       
@@ -443,7 +443,7 @@
                         </div>
                         <div class="mb-6">
                             <label id="survey-q3-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3"></label>
-                            <textarea id="survey-suggestion" rows="3" class="w-full px-4 py-3 rounded-lg text-sm border border-[#0a1f1c]/20 bg-white text-[#0a1f1c] resize-none focus:outline-none focus:border-[#c5a059]"></textarea>
+                            <textarea id="survey-suggestion" rows="3" style="background-color: #ffffff !important; color: #0a1f1c !important; border-color: rgba(10,31,28,0.2) !important;" class="w-full px-4 py-3 rounded-lg text-sm border resize-none focus:outline-none focus:border-[#c5a059] placeholder-[#0a1f1c]/40"></textarea>
                         </div>
                         <button type="submit" id="survey-submit-btn" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs md:text-sm uppercase tracking-widest shadow-md transition hover:scale-[1.02]">ENVIAR MI OPINIÓN</button>
                     </div>
@@ -1175,7 +1175,7 @@ stars.forEach(btn => {
 
 async function enviarEncuesta(e) {
     e.preventDefault();
-    if(typeof orderId === 'undefined' && !pendingSurveyId) return; 
+    if(!pendingSurveyId) return; 
     
     const btn = document.getElementById('survey-submit-btn');
     btn.innerHTML = 'Enviando...'; btn.disabled = true;
@@ -1187,64 +1187,50 @@ async function enviarEncuesta(e) {
     const issues = Array.from(checkedBoxes).map(cb => cb.value);
     const suggestion = document.getElementById('survey-suggestion').value;
 
-    const payload = { rating, issues, suggestion };
-    if (typeof orderId !== 'undefined' && orderId) payload.order_id = orderId;
-    if (typeof pendingSurveyId !== 'undefined' && pendingSurveyId) payload.survey_id = pendingSurveyId;
-
-    const baseUrl = (typeof API_URL !== 'undefined') ? API_URL : ((typeof CLUB_API !== 'undefined') ? CLUB_API : '');
-
     try {
         const token = localStorage.getItem('laforesta_club_token');
         const headers = { 'Content-Type': 'application/json' };
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        const res = await fetch(`${baseUrl}/api/public/survey/submit`, {
+        const res = await fetch(`${CLUB_API}/api/public/survey/submit`, {
             method: 'POST',
             headers: headers,
-            body: JSON.stringify(payload)
+            body: JSON.stringify({ survey_id: pendingSurveyId, rating, issues, suggestion })
         });
 
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Error al enviar');
         
-        if (data.requires_claim && data.survey_id) {
-            localStorage.setItem('laforesta_unclaimed_survey', data.survey_id);
-        }
+        if (!res.ok) throw new Error(data.error || 'Error al enviar');
 
-        if (typeof surveySubmittedLocally !== 'undefined') surveySubmittedLocally = true;
-
+        surveySubmittedLocally = true;
         document.getElementById('survey-content').classList.add('hidden-panel');
         const successDiv = document.getElementById('survey-success');
         successDiv.classList.remove('hidden-panel');
-
-        const isGuest = data.requires_claim;
-        const botonDirectoHTML = isGuest 
-            ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition mb-3">CREAR CUENTA Y GUARDAR REGALO (500 PTS)</a>`
-            : `<button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition mb-3">DESCUBRIR MI RECOMPENSA</button>`;
 
         if (rating === 5) {
             dispararFuegosArtificiales();
             successDiv.innerHTML = `
                 <span class="text-6xl mb-4 block">💖</span>
-                <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">¡Gracias por dejarnos florecer contigo!</h3>
-                <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-6 leading-relaxed">Tu satisfacción es el reflejo de nuestra pasión. Si sientes que hemos logrado transmitir tus emociones a través de nuestro trabajo, regalar unos segundos para dejarnos una reseña en Google sería un acto inmenso de generosidad que nos ayudará a que más corazones confíen en nosotros.</p>
-                <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review" target="_blank" class="block w-full border border-[#0a1f1c] dark:border-[#c5a059] text-[#0a1f1c] dark:text-[#c5a059] text-xs uppercase tracking-widest font-bold py-4 rounded-lg mb-6 shadow-sm hover:bg-[#0a1f1c]/5 dark:hover:bg-[#c5a059]/10 transition text-center">DEJAR MI RESEÑA CON MUCHO CARIÑO</a>
-                <p class="text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">Y como lo prometido es una obligación del corazón... <strong class="text-[#c5a059]">¡Te dejamos un regalo de 500 puntos por tu tiempo!</strong></p>
-                ${botonDirectoHTML}
-                <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 dark:text-white/40 hover:text-[#c5a059] dark:hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1 mt-2">Cerrar esto</button>
+                <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">¡Gracias por tu honestidad!</h3>
+                <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-6 leading-relaxed">Saber que logramos transmitirte nuestra pasión nos llena de alegría. Si pudieras regalarnos un minuto más para compartir esta experiencia en Google, nos ayudarías inmensamente.</p>
+                <a href="https://g.page/r/CWb5W5Ay6jb1EBM/review" target="_blank" class="block w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg mb-6 shadow-md hover:scale-105 transition">DEJAR MI RESEÑA EN GOOGLE</a>
+                <p class="text-[10px] md:text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">Como agradecimiento por tu tiempo, te dejamos un regalo en Mi Club. (Si aún no tienes cuenta, ve a "Iniciar Sesión" para guardarlo y seguir sumando saldo al invitar amigos).</p>
+                <button onclick="cerrarEncuesta()" class="text-[10px] uppercase font-bold text-[#0a1f1c]/40 dark:text-white/40 hover:text-[#c5a059] dark:hover:text-[#c5a059] tracking-widest transition border-b border-transparent hover:border-current pb-1 mt-4">CERRAR ESTO</button>
             `;
         } else {
             successDiv.innerHTML = `
                 <span class="text-6xl mb-4 block">🙏</span>
-                <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Gracias por tu invaluable honestidad</h3>
-                <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-6 leading-relaxed">Leemos cada palabra con atención y humildad. Tu retroalimentación es el motor que nos impulsa a elevar nuestros estándares todos los días. Como una forma sincera de agradecerte por ayudarnos a crecer, te hemos dejado un regalo de 500 puntos.</p>
-                ${botonDirectoHTML}
+                <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Gracias por tu honestidad</h3>
+                <p class="text-sm text-[#0a1f1c]/70 dark:text-white/60 mb-8 leading-relaxed">Leemos cada comentario y nos tomamos muy en serio tu opinión para seguir mejorando. Como agradecimiento por tu tiempo, te dejamos un regalo en Mi Club.</p>
+                <p class="text-[10px] md:text-xs text-[#0a1f1c]/60 dark:text-white/50 mb-6 leading-relaxed">(Si aún no tienes cuenta, ve a "Iniciar Sesión" para guardarlo y seguir sumando saldo al invitar amigos).</p>
+                <button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">ENTENDIDO</button>
             `;
         }
     } catch (err) {
         alert('Hubo un problema de conexión con la base de datos: ' + err.message);
-        btn.innerHTML = 'Enviar mi opinión'; btn.disabled = false;
+        btn.innerHTML = 'ENVIAR MI OPINIÓN'; btn.disabled = false;
     }
+    return false;
 }
 
 let itemAEliminar = null;
@@ -1303,9 +1289,9 @@ const tabParam = urlParams.get('tab');
 if (prefillEmail && !localStorage.getItem('laforesta_club_token')) {
     document.getElementById('reg-email').value = prefillEmail;
     document.getElementById('login-email').value = prefillEmail;
-    setTimeout(() => showAuthTab(tabParam === 'register' ? 'register' : 'login'), 100);
+    showAuthTab(tabParam === 'register' ? 'register' : 'login');
 } else if (tabParam === 'register' && !localStorage.getItem('laforesta_club_token')) {
-    setTimeout(() => showAuthTab('register'), 100);
+    showAuthTab('register');
 }
 
 if(localStorage.getItem('laforesta_club_token')){ loadDashboardInit(); }
