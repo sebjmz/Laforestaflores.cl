@@ -339,26 +339,26 @@
           const isGuest = data.requires_claim;
 
           if (rating === 5) {
-              if (typeof dispararFuegosArtificiales === 'function') dispararFuegosArtificiales();
-              successDiv.innerHTML = `
-                  <div id="step-review">
-                      <span class="text-6xl mb-4 block">⭐</span>
-                      <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Ayúdanos a crecer</h3>
-                      <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Si amas lo que hacemos, regalarnos una reseña en Google nos ayuda muchísimo a llegar a más personas como tú.</p>
-                      <p class="text-sm font-bold text-[#c5a059] mb-6">Al dejar tu reseña, vuelve a esta página y te estarán esperando los puntos de tu compra aún vigentes, más el engañito por ser parte de nuestra mejora constante.</p>
-                      <button onclick="window.open('https://g.page/r/CWb5W5Ay6jb1EBM/review', '_blank');" class="w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:scale-105 transition mb-4">1. DEJAR MI RESEÑA EN GOOGLE</button>
-                      <button onclick="document.getElementById('step-review').style.display='none'; document.getElementById('step-reward').style.display='block';" class="w-full border border-[#0a1f1c] dark:border-[#c5a059] text-[#0a1f1c] dark:text-[#c5a059] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:bg-[#0a1f1c]/5 dark:hover:bg-[#c5a059]/10 transition">2. YA DEJÉ MI RESEÑA</button>
-                  </div>
-                  <div id="step-reward" style="display:none;">
-                      <span class="text-6xl mb-4 block">🎁</span>
-                      <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Tu regalo está listo</h3>
-                      <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Aquí tienes el engañito que te prometimos. Te hemos dejado tus puntos en tu cuenta personal gratuita.</p>
-                      ${isGuest 
-                          ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CREAR CUENTA Y GUARDAR PUNTOS</a>`
-                          : `<button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CERRAR Y VER MI SALDO</button>`
-                      }
-                  </div>
-              `;
+            if (typeof dispararFuegosArtificiales === 'function') dispararFuegosArtificiales();
+            successDiv.innerHTML = `
+                <div id="step-review">
+                    <span class="text-6xl mb-4 block">⭐</span>
+                    <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Ayúdanos a crecer</h3>
+                    <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Si amas lo que hacemos, regalarnos una reseña en Google nos ayuda muchísimo a llegar a más personas como tú.</p>
+                    <p class="text-sm font-bold text-[#c5a059] mb-6">Al dejar tu reseña, vuelve a esta página y te estarán esperando los puntos retenidos de tu compra más un engañito por querer ser parte de nuestra mejora constante.</p>
+                    <button onclick="window.open('https://g.page/r/CWb5W5Ay6jb1EBM/review', '_blank');" class="w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:scale-105 transition mb-4">DEJAR MI RESEÑA EN GOOGLE</button>
+                    <button onclick="document.getElementById('step-review').style.display='none'; document.getElementById('step-reward').style.display='block';" class="w-full border border-[#0a1f1c] dark:border-[#c5a059] text-[#0a1f1c] dark:text-[#c5a059] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:bg-[#0a1f1c]/5 dark:hover:bg-[#c5a059]/10 transition">YA DEJÉ MI RESEÑA</button>
+                </div>
+                <div id="step-reward" style="display:none;">
+                    <span class="text-6xl mb-4 block">🎁</span>
+                    <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Tu regalo está listo</h3>
+                    <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Aquí tienes el engañito que te prometimos. Te hemos dejado tus puntos en tu cuenta personal gratuita.</p>
+                    ${isGuest 
+                        ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CREAR CUENTA Y GUARDAR PUNTOS</a>`
+                        : `<button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CERRAR Y VER MI SALDO</button>`
+                    }
+                </div>
+            `;
           } else {
               successDiv.innerHTML = `
                   <span class="text-6xl mb-4 block">🙏</span>
