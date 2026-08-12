@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Optimización CRO: Preload de imagen LCP -->
     <link rel="preload" as="image" href="img/slide1-pc.webp" fetchpriority="high">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +23,6 @@
     <link rel="canonical" href="https://laforestaflores.cl/">
     <meta name="theme-color" content="#0a1f1c">
 
-    <!-- TAILWIND COMPILADO Y PURGADO -->
     <link rel="stylesheet" href="css/styles.min.css?v=2">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;600;700&display=swap" rel="stylesheet"></noscript>
@@ -419,7 +417,6 @@
 <body>
 
     <script>
-        // Sincronización transparente de Mi Club
         (function(){
             const ref = new URLSearchParams(window.location.search).get('ref');
             if (ref) localStorage.setItem('laforesta_referral_code', ref);
@@ -453,10 +450,18 @@
                     const emailInput = document.getElementById('buyer-email');
                     if (emailInput && customer.email) {
                         emailInput.value = customer.email;
-                        // Bloquear correo y agregar feedback visual
                         emailInput.readOnly = true;
                         emailInput.classList.add('opacity-50', 'cursor-not-allowed');
                         emailInput.onclick = () => alert("Tu correo está validado y protegido por tu membresía de Mi Club.");
+                    }
+                    
+                    const loginText = document.getElementById('login-btn-text');
+                    if (loginText) {
+                        if (customer.full_name) {
+                            loginText.textContent = customer.full_name.trim().split(' ')[0];
+                        } else {
+                            loginText.textContent = "Mi Cuenta";
+                        }
                     }
                 });
             } catch (e) {
@@ -489,7 +494,7 @@
                 <svg class="w-5 h-5 md:hidden text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                 </svg>
-                <span class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-[#c5a059] group-hover:text-white transition-colors border-b border-transparent group-hover:border-white pb-0.5">Iniciar Sesión</span>
+                <span id="login-btn-text" class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-[#c5a059] group-hover:text-white transition-colors border-b border-transparent group-hover:border-white pb-0.5">Iniciar Sesión</span>
             </a>
             <button onclick="toggleCart()" aria-label="Ver carrito de compras" class="relative group flex items-center hover:scale-110 transition-transform duration-300">
                 <svg class="w-5 h-5 text-[#c5a059] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
