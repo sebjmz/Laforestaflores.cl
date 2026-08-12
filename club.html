@@ -783,7 +783,7 @@ async function doRegister(e){
         return false; 
     }
     localStorage.setItem('laforesta_prev_points', 0);
-    localStorage.removeItem('laforesta_last_points');
+    localStorage.setItem('laforesta_last_points', -1);
     pendingRegisterEmail = email;
     okEl.textContent = "¡Casi listo!";
     setTimeout(() => {
@@ -837,7 +837,7 @@ async function doLogin(e){
       return false; 
     }
     localStorage.setItem('laforesta_prev_points', 0);
-    localStorage.removeItem('laforesta_last_points');
+    localStorage.setItem('laforesta_last_points', -1);
     localStorage.setItem('laforesta_club_token', data.token);
     loadDashboardInit();
   }catch(err){ 
@@ -1072,48 +1072,33 @@ async function loadPointsHistory() {
     }
 
     label.textContent = `(${history.length})`;
-    list.innerHTML = history.map((h, i) => {
-        let reasonText = "";
+    
+    let html = '';
+    for (let i = 0; i < history.length; i++) {
+        const h = history[i];
+        let reasonText = "Movimiento de puntos";
+        
+        if (h.reason === 'encuesta' || h.reason === 'encuesta_reclamada') reasonText = `Opinión sobre pedido #${h.order_id || ''}`;
+        else if (h.reason === 'compra' || h.reason === 'compra_test') reasonText = `Compra (Pedido #${h.order_id || ''})`;
+        else if (h.reason === 'bono_bienvenida_referido') reasonText = "Bono de bienvenida";
+        else if (h.reason === 'referido_completado') reasonText = "Amigo invitado";
+        else if (h.reason === 'regalo_cumpleanos') reasonText = "Regalo de cumpleaños";
+        else if (h.reason === 'canje_descuento' || h.reason === 'canje_descuento_test') reasonText = `Canje en Pedido #${h.order_id || ''}`;
+        
         let pointsClass = h.points > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-[#0a1f1c] dark:text-white";
         let pointsSign = h.points > 0 ? "+" : "";
+        let dateStr = h.created_at ? new Date(h.created_at).toLocaleDateString('es-CL') : '';
 
-        switch (h.reason) {
-            case 'encuesta':
-            case 'encuesta_reclamada':
-                reasonText = `por obsequiarnos tu opinión acerca de nuestro proyecto${h.order_id ? ` (Pedido #${h.order_id})` : ''}`;
-                break;
-            case 'compra':
-            case 'compra_test':
-                reasonText = `por tu compra (Pedido #${h.order_id || 'N/A'})`;
-                break;
-            case 'bono_bienvenida_referido':
-                reasonText = "Bono especial de bienvenida (Invitación)";
-                break;
-            case 'referido_completado':
-                reasonText = "por un amigo que usó tu código de invitación";
-                break;
-            case 'regalo_cumpleanos':
-                reasonText = "¡Regalo por tu cumpleaños!";
-                break;
-            case 'canje_descuento':
-            case 'canje_descuento_test':
-                reasonText = `Canjeaste saldo para descuento (Pedido #${h.order_id || 'N/A'})`;
-                break;
-            default:
-                reasonText = "Movimiento de puntos";
-        }
-
-        const dateStr = h.created_at ? new Date(h.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
-
-        return `
-        <div class="flex justify-between items-center border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4 last:border-0 last:pb-0" style="animation-delay: ${i * 0.1}s">
+        html += `
+        <div class="flex justify-between items-center border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4 last:border-0 last:pb-0">
             <div>
-                <span class="text-sm block text-[#0a1f1c]/90 dark:text-white/90 font-medium">${reasonText}</span>
-                <span class="text-[#0a1f1c]/50 dark:text-white/50 text-[10px] uppercase tracking-widest mt-1 block">${dateStr}</span>
+                <span class="text-sm block text-[#0a1f1c] dark:text-white font-bold">${reasonText}</span>
+                <span class="text-[#0a1f1c]/60 dark:text-white/60 text-[10px] uppercase tracking-widest mt-1 block">${dateStr}</span>
             </div>
             <span class="text-lg md:text-xl font-bold ${pointsClass} tracking-widest shrink-0 ml-4">${pointsSign}${h.points}</span>
         </div>`;
-    }).join('');
+    }
+    list.innerHTML = html;
 }
 
 let pendingSurveyId = null;
@@ -1217,18 +1202,19 @@ async function enviarEncuesta(e) {
             dispararFuegosArtificiales();
             successDiv.innerHTML = `
                 <div id="step-review">
-                    <span class="text-6xl mb-4 block">💖</span>
-                    <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">¡Gracias de corazón!</h3>
-                    <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Saber que logramos transmitir tu cariño nos emociona. Somos una familia de esfuerzo, y con tu reseña en Google nos ayudas inmensamente a seguir embelleciendo cada rincón del mundo. Tu apoyo cambia nuestras vidas.</p>
-                    <button onclick="window.open('https://g.page/r/CWb5W5Ay6jb1EBM/review', '_blank');" class="w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:scale-105 transition mb-4">DEJAR MI RESEÑA EN GOOGLE</button>
-                    <button onclick="document.getElementById('step-review').style.display='none'; document.getElementById('step-reward').style.display='block';" class="text-[10px] uppercase font-bold text-[#0a1f1c]/60 dark:text-white/60 hover:text-[#c5a059] tracking-widest transition text-center w-full mt-2">Cuando dejes tu reseña vuelve aquí y verás el engañito que te dejamos con cariño.</button>
+                    <span class="text-6xl mb-4 block">⭐</span>
+                    <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Ayúdanos a crecer</h3>
+                    <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Si amas lo que hacemos, regalarnos una reseña en Google nos ayuda muchísimo a llegar a más personas como tú.</p>
+                    <p class="text-sm font-bold text-[#c5a059] mb-6">Al dejar tu reseña, vuelve a esta página y te estarán esperando los puntos de tu compra aún vigentes, más el engañito por ser parte de nuestra mejora constante.</p>
+                    <button onclick="window.open('https://g.page/r/CWb5W5Ay6jb1EBM/review', '_blank');" class="w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:scale-105 transition mb-4">1. DEJAR MI RESEÑA EN GOOGLE</button>
+                    <button onclick="document.getElementById('step-review').style.display='none'; document.getElementById('step-reward').style.display='block';" class="w-full border border-[#0a1f1c] dark:border-[#c5a059] text-[#0a1f1c] dark:text-[#c5a059] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:bg-[#0a1f1c]/5 dark:hover:bg-[#c5a059]/10 transition">2. YA DEJÉ MI RESEÑA</button>
                 </div>
                 <div id="step-reward" style="display:none;">
                     <span class="text-6xl mb-4 block">🎁</span>
                     <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Tu regalo está listo</h3>
                     <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Aquí tienes el engañito que te prometimos. Te hemos dejado tus puntos en tu cuenta personal gratuita.</p>
                     ${isGuest 
-                        ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CREAR CUENTA Y GUARDAR REGALO</a>`
+                        ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CREAR CUENTA Y GUARDAR PUNTOS</a>`
                         : `<button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CERRAR Y VER MI SALDO</button>`
                     }
                 </div>
@@ -1239,7 +1225,7 @@ async function enviarEncuesta(e) {
                 <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Gracias por tu honestidad</h3>
                 <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Leemos cada comentario con humildad para mejorar. Como muestra de nuestro agradecimiento por ayudarnos a crecer, te hemos dejado un regalo en tu cuenta personal gratuita.</p>
                 ${isGuest 
-                    ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CREAR CUENTA Y GUARDAR REGALO</a>`
+                    ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CREAR CUENTA Y GUARDAR PUNTOS</a>`
                     : `<button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CERRAR Y VER MI SALDO</button>`
                 }
             `;
