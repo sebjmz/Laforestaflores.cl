@@ -645,8 +645,7 @@ async function renderDashboard(animate = false) {
   const ahorro = c.historical_savings || 0;
 
   if (animate) {
-      const last = parseInt(localStorage.getItem('laforesta_prev_points') || '0');
-      animatePoints(pointsEl, last, c.points_balance, 2000, false); 
+      animatePoints(pointsEl, 0, c.points_balance, 2000, false); 
       animatePoints(savingsEl, 0, ahorro, 2000, true);
   } else {
       pointsEl.textContent = c.points_balance.toLocaleString('es-CL');
@@ -739,19 +738,19 @@ async function loadDashboardInit(){
   localStorage.setItem('laforesta_prev_points', lastPoints === -1 ? 0 : lastPoints);
   localStorage.setItem('laforesta_last_points', customer.points_balance);
 
-  const diff = customer.points_balance - lastPoints;
+  const diff = lastPoints === -1 ? customer.points_balance : (customer.points_balance - lastPoints);
 
-  if (lastPoints !== -1 && diff > 0) {
+  if (diff > 0) {
       document.getElementById('history-details').open = true;
       const htmlIncrease = `
         <div class="text-6xl mb-4">🫶</div>
-        <h2 class="font-serif text-4xl md:text-5xl italic mb-3 text-[#0a1f1c] dark:text-[#fcfaf7]">¡Gracias de nuevo!</h2>
+        <h2 class="font-serif text-4xl md:text-5xl italic mb-3 text-[#0a1f1c] dark:text-[#fcfaf7]">¡Puntos Rescatados!</h2>
         <p class="text-[#0a1f1c]/70 dark:text-white/70 text-base md:text-lg mb-8">
           Sumamos <strong class="text-[#c5a059] font-bold">+${diff.toLocaleString('es-CL')} pts</strong> a tu saldo.
         </p>
         <div class="text-8xl font-serif text-[#c5a059] italic drop-shadow-md transition-transform" id="sync-countdown">3</div>
       `;
-      playSyncAnimation(htmlIncrease, diff, "¡Sumados con éxito!");
+      playSyncAnimation(htmlIncrease, diff, "¡Puntos rescatados!");
   } else {
       const htmlNormal = `
         <svg class="w-12 h-12 text-[#c5a059] animate-spin mb-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2-2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
@@ -1074,10 +1073,8 @@ async function loadPointsHistory() {
     label.textContent = `(${history.length})`;
     
     let html = '';
-    for (let i = 0; i < history.length; i++) {
-        const h = history[i];
+    history.forEach(h => {
         let reasonText = "Movimiento de puntos";
-        
         if (h.reason === 'encuesta' || h.reason === 'encuesta_reclamada') reasonText = `Opinión sobre pedido #${h.order_id || ''}`;
         else if (h.reason === 'compra' || h.reason === 'compra_test') reasonText = `Compra (Pedido #${h.order_id || ''})`;
         else if (h.reason === 'bono_bienvenida_referido') reasonText = "Bono de bienvenida";
@@ -1085,9 +1082,10 @@ async function loadPointsHistory() {
         else if (h.reason === 'regalo_cumpleanos') reasonText = "Regalo de cumpleaños";
         else if (h.reason === 'canje_descuento' || h.reason === 'canje_descuento_test') reasonText = `Canje en Pedido #${h.order_id || ''}`;
         
-        let pointsClass = h.points > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-[#0a1f1c] dark:text-white";
-        let pointsSign = h.points > 0 ? "+" : "";
-        let dateStr = h.created_at ? new Date(h.created_at).toLocaleDateString('es-CL') : '';
+        const pointsVal = parseInt(h.points) || 0;
+        let pointsClass = pointsVal > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-[#0a1f1c] dark:text-white";
+        let pointsSign = pointsVal > 0 ? "+" : "";
+        let dateStr = h.created_at ? new Date(h.created_at).toLocaleDateString('es-CL') : 'Reciente';
 
         html += `
         <div class="flex justify-between items-center border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4 last:border-0 last:pb-0">
@@ -1095,9 +1093,9 @@ async function loadPointsHistory() {
                 <span class="text-sm block text-[#0a1f1c] dark:text-white font-bold">${reasonText}</span>
                 <span class="text-[#0a1f1c]/60 dark:text-white/60 text-[10px] uppercase tracking-widest mt-1 block">${dateStr}</span>
             </div>
-            <span class="text-lg md:text-xl font-bold ${pointsClass} tracking-widest shrink-0 ml-4">${pointsSign}${h.points}</span>
+            <span class="text-lg md:text-xl font-bold ${pointsClass} tracking-widest shrink-0 ml-4">${pointsSign}${pointsVal}</span>
         </div>`;
-    }
+    });
     list.innerHTML = html;
 }
 
@@ -1205,9 +1203,9 @@ async function enviarEncuesta(e) {
                     <span class="text-6xl mb-4 block">⭐</span>
                     <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Ayúdanos a crecer</h3>
                     <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Si amas lo que hacemos, regalarnos una reseña en Google nos ayuda muchísimo a llegar a más personas como tú.</p>
-                    <p class="text-sm font-bold text-[#c5a059] mb-6">Al dejar tu reseña, vuelve a esta página y te estarán esperando los puntos de tu compra aún vigentes, más el engañito por ser parte de nuestra mejora constante.</p>
-                    <button onclick="window.open('https://g.page/r/CWb5W5Ay6jb1EBM/review', '_blank');" class="w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:scale-105 transition mb-4">1. DEJAR MI RESEÑA EN GOOGLE</button>
-                    <button onclick="document.getElementById('step-review').style.display='none'; document.getElementById('step-reward').style.display='block';" class="w-full border border-[#0a1f1c] dark:border-[#c5a059] text-[#0a1f1c] dark:text-[#c5a059] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:bg-[#0a1f1c]/5 dark:hover:bg-[#c5a059]/10 transition">2. YA DEJÉ MI RESEÑA</button>
+                    <p class="text-sm font-bold text-[#c5a059] mb-6">Al dejar tu reseña, vuelve a esta página y te estarán esperando los puntos retenidos de tu compra más un engañito por querer ser parte de nuestra mejora constante.</p>
+                    <button onclick="window.open('https://g.page/r/CWb5W5Ay6jb1EBM/review', '_blank');" class="w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:scale-105 transition mb-4">DEJAR MI RESEÑA EN GOOGLE</button>
+                    <button onclick="document.getElementById('step-review').style.display='none'; document.getElementById('step-reward').style.display='block';" class="w-full border border-[#0a1f1c] dark:border-[#c5a059] text-[#0a1f1c] dark:text-[#c5a059] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:bg-[#0a1f1c]/5 dark:hover:bg-[#c5a059]/10 transition">YA DEJÉ MI RESEÑA</button>
                 </div>
                 <div id="step-reward" style="display:none;">
                     <span class="text-6xl mb-4 block">🎁</span>
