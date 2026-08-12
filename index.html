@@ -485,7 +485,12 @@
         </div>
         
         <div class="flex items-center space-x-4 md:space-x-6 flex-shrink-0">
-            <div class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Reñaca, Chile</div>
+            <a href="/club.html" aria-label="Iniciar Sesión" class="flex items-center gap-1.5 group hover:scale-105 transition-transform duration-300">
+                <svg class="w-5 h-5 md:hidden text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                <span class="hidden md:block text-[10px] font-bold uppercase tracking-widest whitespace-nowrap text-[#c5a059] group-hover:text-white transition-colors border-b border-transparent group-hover:border-white pb-0.5">Iniciar Sesión</span>
+            </a>
             <button onclick="toggleCart()" aria-label="Ver carrito de compras" class="relative group flex items-center hover:scale-110 transition-transform duration-300">
                 <svg class="w-5 h-5 text-[#c5a059] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
@@ -1566,6 +1571,9 @@
     <div class="fixed bottom-24 right-6 md:right-12 z-[90] pointer-events-none flex flex-col items-end">
     
         <div id="fab-menu" class="absolute bottom-[calc(100%+12px)] right-0 flex flex-col gap-3 items-end opacity-0 invisible pointer-events-none translate-y-4 transition-all duration-300 w-max">
+            <button onclick="window.location.href='/club.html'; toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
+                <span class="text-[9px] font-bold uppercase tracking-widest">Club La Foresta</span>
+            </button>
             <button onclick="window.location.href='/seguimiento.html'; toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
                 <span class="text-[9px] font-bold uppercase tracking-widest">Seguir Mi Pedido</span>
             </button>
