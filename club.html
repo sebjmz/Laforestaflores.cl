@@ -641,7 +641,7 @@ async function renderDashboard(animate = false) {
   const pointsEl = document.getElementById('dash-points');
   const savingsEl = document.getElementById('dash-savings');
   
-  const totalPuntos = c.lifetime_points || (c.lifetime_flowers_clp ? Math.round(c.lifetime_flowers_clp * 0.03) : 0); 
+  const totalPuntos = c.lifetime_points || 0;
   const ahorro = c.historical_savings || 0;
 
   if (animate) {
