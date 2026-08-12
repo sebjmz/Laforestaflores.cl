@@ -1108,6 +1108,13 @@ async function checkSurveyPending() {
     const data = await res.json();
     if (data.survey && data.survey.id) {
         pendingSurveyId = data.survey.id;
+        
+        const titulo = document.querySelector('#survey-content h3');
+        const texto = document.querySelector('#survey-content p');
+        
+        if (titulo) titulo.innerHTML = `Tu pedido #${data.survey.order_id} ha sido entregado 🌸`;
+        if (texto) texto.innerHTML = `Confirmamos que tu arreglo llegó a destino. ¿Nos cuentas en unos segundos cómo estuvo todo? <strong class="text-[#c5a059] block mt-1">Tu tiempo es muy valioso, así que te dejaremos un regalo al final.</strong>`;
+
         setTimeout(() => { document.getElementById('survey-modal').classList.remove('hidden-panel'); }, 1500);
     }
 }
