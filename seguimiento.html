@@ -293,90 +293,90 @@
   });
 
   async function enviarEncuesta(e) {
-    e.preventDefault();
-    if(typeof orderId === 'undefined' && (typeof pendingSurveyId === 'undefined' || !pendingSurveyId)) return; 
-    
-    const btn = document.getElementById('survey-submit-btn');
-    btn.innerHTML = 'Enviando...'; btn.disabled = true;
-    
-    const rating = parseInt(document.getElementById('survey-rating-val').value) || 0;
-    if(rating === 0) { alert('Por favor, selecciona una calificación (estrellas).'); btn.disabled = false; return false; }
-    
-    const checkedBoxes = document.querySelectorAll('#survey-checkboxes input[type="checkbox"]:checked');
-    const issues = Array.from(checkedBoxes).map(cb => cb.value);
-    const suggestion = document.getElementById('survey-suggestion').value;
+      e.preventDefault();
+      if(typeof orderId === 'undefined' && (typeof pendingSurveyId === 'undefined' || !pendingSurveyId)) return; 
+      
+      const btn = document.getElementById('survey-submit-btn');
+      btn.innerHTML = 'Enviando...'; btn.disabled = true;
+      
+      const rating = parseInt(document.getElementById('survey-rating-val').value) || 0;
+      if(rating === 0) { alert('Por favor, selecciona una calificación (estrellas).'); btn.disabled = false; return false; }
+      
+      const checkedBoxes = document.querySelectorAll('#survey-checkboxes input[type="checkbox"]:checked');
+      const issues = Array.from(checkedBoxes).map(cb => cb.value);
+      const suggestion = document.getElementById('survey-suggestion').value;
 
-    const payload = { rating, issues, suggestion };
-    if (typeof orderId !== 'undefined' && orderId) payload.order_id = orderId;
-    if (typeof pendingSurveyId !== 'undefined' && pendingSurveyId) payload.survey_id = pendingSurveyId;
+      const payload = { rating, issues, suggestion };
+      if (typeof orderId !== 'undefined' && orderId) payload.order_id = orderId;
+      if (typeof pendingSurveyId !== 'undefined' && pendingSurveyId) payload.survey_id = pendingSurveyId;
 
-    const baseUrl = (typeof API_URL !== 'undefined') ? API_URL : ((typeof CLUB_API !== 'undefined') ? CLUB_API : '');
+      const baseUrl = (typeof API_URL !== 'undefined') ? API_URL : ((typeof CLUB_API !== 'undefined') ? CLUB_API : '');
 
-    try {
-        const token = localStorage.getItem('laforesta_club_token');
-        const headers = { 'Content-Type': 'application/json' };
-        if (token) headers['Authorization'] = `Bearer ${token}`;
+      try {
+          const token = localStorage.getItem('laforesta_club_token');
+          const headers = { 'Content-Type': 'application/json' };
+          if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        const res = await fetch(`${baseUrl}/api/public/survey/submit`, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(payload)
-        });
+          const res = await fetch(`${baseUrl}/api/public/survey/submit`, {
+              method: 'POST',
+              headers: headers,
+              body: JSON.stringify(payload)
+          });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Error al enviar');
-        
-        if (data.requires_claim && data.survey_id) {
-            localStorage.setItem('laforesta_unclaimed_survey', data.survey_id);
-        }
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Error al enviar');
+          
+          if (data.requires_claim && data.survey_id) {
+              localStorage.setItem('laforesta_unclaimed_survey', data.survey_id);
+          }
 
-        if (typeof surveySubmittedLocally !== 'undefined') surveySubmittedLocally = true;
+          if (typeof surveySubmittedLocally !== 'undefined') surveySubmittedLocally = true;
 
-        document.getElementById('survey-content').classList.add('hidden-panel');
-        const successDiv = document.getElementById('survey-success');
-        successDiv.classList.remove('hidden-panel');
+          document.getElementById('survey-content').classList.add('hidden-panel');
+          const successDiv = document.getElementById('survey-success');
+          successDiv.classList.remove('hidden-panel');
 
-        const isGuest = data.requires_claim;
+          const isGuest = data.requires_claim;
 
-        if (rating === 5) {
-            if (typeof dispararFuegosArtificiales === 'function') dispararFuegosArtificiales();
-            successDiv.innerHTML = `
-                <div id="step-review">
-                    <span class="text-6xl mb-4 block">💖</span>
-                    <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">¡Gracias de corazón!</h3>
-                    <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-4 leading-relaxed">Saber que logramos transmitir tu cariño nos emociona. Somos una familia de esfuerzo, y con tu reseña en Google nos ayudas inmensamente a seguir embelleciendo cada rincón del mundo. Tu apoyo cambia nuestras vidas.</p>
-                    <p class="text-sm font-bold text-[#c5a059] mb-6">Una vez que dejes tu reseña, vuelve aquí para recibir una pequeña muestra de nuestro agradecimiento.</p>
-                    <button onclick="window.open('https://g.page/r/CWb5W5Ay6jb1EBM/review', '_blank');" class="w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:scale-105 transition mb-4">1. DEJAR MI RESEÑA EN GOOGLE</button>
-                    <button onclick="document.getElementById('step-review').style.display='none'; document.getElementById('step-reward').style.display='block';" class="w-full border border-[#0a1f1c] dark:border-[#c5a059] text-[#0a1f1c] dark:text-[#c5a059] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:bg-[#0a1f1c]/5 dark:hover:bg-[#c5a059]/10 transition">2. YA DEJÉ MI RESEÑA</button>
-                </div>
-                <div id="step-reward" style="display:none;">
-                    <span class="text-6xl mb-4 block">🎁</span>
-                    <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Tu regalo está listo</h3>
-                    <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Como muestra de nuestro agradecimiento, te hemos dejado un regalo en tu cuenta personal gratuita.</p>
-                    ${isGuest 
-                        ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CREAR CUENTA Y GUARDAR REGALO</a>`
-                        : `<button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CERRAR Y VER MI SALDO</button>`
-                    }
-                </div>
-            `;
-        } else {
-            successDiv.innerHTML = `
-                <span class="text-6xl mb-4 block">🙏</span>
-                <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Gracias por tu honestidad</h3>
-                <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Leemos cada comentario con humildad para mejorar. Como muestra de nuestro agradecimiento por ayudarnos a crecer, te hemos dejado un regalo en tu cuenta personal gratuita.</p>
-                ${isGuest 
-                    ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CREAR CUENTA Y GUARDAR REGALO</a>`
-                    : `<button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CERRAR Y VER MI SALDO</button>`
-                }
-            `;
-        }
-    } catch (err) {
-        alert('Hubo un problema de conexión con la base de datos: ' + err.message);
-        btn.innerHTML = 'ENVIAR MI OPINIÓN'; btn.disabled = false;
-    }
-    return false;
-}
-loadTracking();
+          if (rating === 5) {
+              if (typeof dispararFuegosArtificiales === 'function') dispararFuegosArtificiales();
+              successDiv.innerHTML = `
+                  <div id="step-review">
+                      <span class="text-6xl mb-4 block">💖</span>
+                      <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">¡Gracias de corazón!</h3>
+                      <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-4 leading-relaxed">Saber que logramos transmitir tu cariño nos emociona. Somos una familia de esfuerzo, y con tu reseña en Google nos ayudas inmensamente a seguir embelleciendo cada rincón del mundo. Tu apoyo cambia nuestras vidas.</p>
+                      <button onclick="window.open('https://g.page/r/CWb5W5Ay6jb1EBM/review', '_blank');" class="w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:scale-105 transition mb-4">DEJAR MI RESEÑA EN GOOGLE</button>
+                      <button onclick="document.getElementById('step-review').style.display='none'; document.getElementById('step-reward').style.display='block';" class="text-[10px] uppercase font-bold text-[#0a1f1c]/60 dark:text-white/60 hover:text-[#c5a059] tracking-widest transition text-center w-full mt-2">Cuando dejes tu reseña vuelve aquí y verás el engañito que te dejamos con cariño.</button>
+                  </div>
+                  <div id="step-reward" style="display:none;">
+                      <span class="text-6xl mb-4 block">🎁</span>
+                      <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Tu regalo está listo</h3>
+                      <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Aquí tienes el engañito que te prometimos. Te hemos dejado tus puntos en tu cuenta personal gratuita.</p>
+                      ${isGuest 
+                          ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CREAR CUENTA Y GUARDAR REGALO</a>`
+                          : `<button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CERRAR Y VER MI SALDO</button>`
+                      }
+                  </div>
+              `;
+          } else {
+              successDiv.innerHTML = `
+                  <span class="text-6xl mb-4 block">🙏</span>
+                  <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Gracias por tu honestidad</h3>
+                  <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Leemos cada comentario con humildad para mejorar. Como muestra de nuestro agradecimiento por ayudarnos a crecer, te hemos dejado un regalo en tu cuenta personal gratuita.</p>
+                  ${isGuest 
+                      ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CREAR CUENTA Y GUARDAR REGALO</a>`
+                      : `<button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CERRAR Y VER MI SALDO</button>`
+                  }
+              `;
+          }
+      } catch (err) {
+          alert('Hubo un problema de conexión con la base de datos: ' + err.message);
+          btn.innerHTML = 'ENVIAR MI OPINIÓN'; btn.disabled = false;
+      }
+      return false;
+  }
+
+  loadTracking();
 </script>
 </body>
 </html>
