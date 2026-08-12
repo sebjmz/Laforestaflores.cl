@@ -414,46 +414,46 @@
     </div>
     
     <div id="survey-modal" class="fixed inset-0 bg-[#0a1f1c]/90 z-[200] hidden-panel flex items-center justify-center p-4 backdrop-blur-md">
-    <div class="bg-[#fcfaf7] w-full max-w-[90%] md:max-w-md rounded-2xl p-8 relative shadow-2xl overflow-y-auto max-h-[90vh]">
-        <button onclick="cerrarEncuesta()" class="absolute top-4 right-5 text-[#0a1f1c]/40 hover:text-[#c5a059] text-3xl transition">×</button>
-        
-        <div id="survey-content">
-            <div class="text-center mb-6">
-                <span class="text-5xl block mb-3">✨</span>
-                <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] mb-2 leading-tight">¡Gracias por confiar en nosotros!</h3>
-                <p class="text-sm md:text-base text-[#0a1f1c]/70 mt-4 leading-relaxed">Nos importa mucho tu experiencia. ¿Nos cuentas en unos segundos cómo estuvo todo? <strong class="text-[#c5a059] block mt-1">Tu tiempo es muy valioso, así que te dejaremos un pequeño regalo al final.</strong></p>
-            </div>
+        <div class="bg-[#fcfaf7] dark:bg-[#0a1f1c] border border-transparent dark:border-white/10 w-full max-w-[90%] md:max-w-md rounded-2xl p-8 relative shadow-2xl overflow-y-auto max-h-[90vh]">
+            <button onclick="cerrarEncuesta()" class="absolute top-4 right-5 text-[#0a1f1c]/40 dark:text-white/40 hover:text-[#c5a059] dark:hover:text-[#c5a059] text-3xl transition">×</button>
             
-            <form id="survey-form" onsubmit="return enviarEncuesta(event)">
-                <div class="mb-6 text-center">
-                    <div class="flex justify-center gap-2 text-4xl text-zinc-300 star-rating" id="survey-stars">
-                        <button type="button" data-val="1">★</button>
-                        <button type="button" data-val="2">★</button>
-                        <button type="button" data-val="3">★</button>
-                        <button type="button" data-val="4">★</button>
-                        <button type="button" data-val="5">★</button>
-                    </div>
-                    <input type="hidden" id="survey-rating-val" value="0" required>
+            <div id="survey-content">
+                <div class="text-center mb-6">
+                    <span class="text-5xl block mb-3">✨</span>
+                    <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-2 leading-tight">¡Gracias por confiar en nosotros!</h3>
+                    <p class="text-sm md:text-base text-[#0a1f1c]/70 dark:text-white/70 mt-4 leading-relaxed">Nos importa mucho tu experiencia. ¿Nos cuentas en unos segundos cómo estuvo todo? <strong class="text-[#c5a059] block mt-1">Tu tiempo es muy valioso, así que te dejaremos un pequeño regalo al final.</strong></p>
                 </div>
                 
-                <div id="survey-dynamic-fields" class="hidden-panel animate-[fadeIn_0.5s_ease-out]">
-                    <div class="mb-5">
-                        <label id="survey-q2-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3"></label>
-                        <div class="space-y-3 text-sm text-[#0a1f1c]" id="survey-checkboxes"></div>
+                <form id="survey-form" onsubmit="return enviarEncuesta(event)">
+                    <div class="mb-6 text-center">
+                        <div class="flex justify-center gap-2 text-4xl text-zinc-300 dark:text-zinc-600 star-rating" id="survey-stars">
+                            <button type="button" data-val="1">★</button>
+                            <button type="button" data-val="2">★</button>
+                            <button type="button" data-val="3">★</button>
+                            <button type="button" data-val="4">★</button>
+                            <button type="button" data-val="5">★</button>
+                        </div>
+                        <input type="hidden" id="survey-rating-val" value="0" required>
                     </div>
-                    <div class="mb-6">
-                        <label id="survey-q3-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3"></label>
-                        <textarea id="survey-suggestion" rows="3" style="background-color: #ffffff !important; color: #0a1f1c !important; border-color: rgba(10,31,28,0.2) !important;" class="w-full px-4 py-3 rounded-lg text-sm border resize-none focus:outline-none focus:border-[#c5a059] placeholder-[#0a1f1c]/40"></textarea>
+                    
+                    <div id="survey-dynamic-fields" class="hidden-panel animate-[fadeIn_0.5s_ease-out]">
+                        <div class="mb-5">
+                            <label id="survey-q2-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3"></label>
+                            <div class="space-y-3 text-sm text-[#0a1f1c] dark:text-white" id="survey-checkboxes"></div>
+                        </div>
+                        <div class="mb-6">
+                            <label id="survey-q3-label" class="block text-[10px] md:text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-3"></label>
+                            <textarea id="survey-suggestion" rows="3" class="w-full px-4 py-3 rounded-lg text-sm border resize-none focus:outline-none focus:border-[#c5a059] bg-white dark:bg-[#0a1f1c]/50 text-[#0a1f1c] dark:text-white border-[#0a1f1c]/20 dark:border-white/20 placeholder-[#0a1f1c]/40 dark:placeholder-white/40"></textarea>
+                        </div>
+                        <button type="submit" id="survey-submit-btn" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs md:text-sm uppercase tracking-widest shadow-md transition hover:scale-[1.02]">ENVIAR MI OPINIÓN</button>
                     </div>
-                    <button type="submit" id="survey-submit-btn" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs md:text-sm uppercase tracking-widest shadow-md transition hover:scale-[1.02]">ENVIAR MI OPINIÓN</button>
-                </div>
-            </form>
+                </form>
+            </div>
+            
+            <div id="survey-success" class="hidden-panel text-center py-4"></div>
         </div>
-        
-        <div id="survey-success" class="hidden-panel text-center py-4"></div>
     </div>
-</div>
-
+    
     <div class="fixed bottom-6 right-6 md:hidden z-[90] flex flex-col items-end">
         <div id="fab-menu" class="absolute bottom-[calc(100%+12px)] right-0 flex flex-col gap-3 items-end opacity-0 invisible pointer-events-none translate-y-4 transition-all duration-300 w-max">
             <button onclick="document.getElementById('metrics-section').scrollIntoView(); toggleFabMenu();" class="pointer-events-auto bg-[#fcfaf7] border border-[#c5a059]/30 text-[#0a1f1c] px-5 py-3 rounded-full shadow-md flex items-center justify-center hover:bg-[#c5a059] transition-all duration-300">
