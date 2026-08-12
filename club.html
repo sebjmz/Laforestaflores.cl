@@ -782,6 +782,8 @@ async function doRegister(e){
         errEl.textContent = data.error === "Email already exists" ? "Ya existe una cuenta con tu correo." : data.error; 
         return false; 
     }
+    localStorage.setItem('laforesta_prev_points', 0);
+    localStorage.removeItem('laforesta_last_points');
     pendingRegisterEmail = email;
     okEl.textContent = "¡Casi listo!";
     setTimeout(() => {
@@ -834,6 +836,8 @@ async function doLogin(e){
       errEl.textContent = data.error || data.detail || `Error (${res.status})`; 
       return false; 
     }
+    localStorage.setItem('laforesta_prev_points', 0);
+    localStorage.removeItem('laforesta_last_points');
     localStorage.setItem('laforesta_club_token', data.token);
     loadDashboardInit();
   }catch(err){ 
@@ -1102,7 +1106,7 @@ async function loadPointsHistory() {
         const dateStr = h.created_at ? new Date(h.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
 
         return `
-        <div class="flex justify-between items-center border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4 last:border-0 last:pb-0 opacity-0 animate-slideIn" style="animation-delay: ${i * 0.1}s">
+        <div class="flex justify-between items-center border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4 last:border-0 last:pb-0" style="animation-delay: ${i * 0.1}s">
             <div>
                 <span class="text-sm block text-[#0a1f1c]/90 dark:text-white/90 font-medium">${reasonText}</span>
                 <span class="text-[#0a1f1c]/50 dark:text-white/50 text-[10px] uppercase tracking-widest mt-1 block">${dateStr}</span>
@@ -1215,15 +1219,14 @@ async function enviarEncuesta(e) {
                 <div id="step-review">
                     <span class="text-6xl mb-4 block">💖</span>
                     <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">¡Gracias de corazón!</h3>
-                    <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-4 leading-relaxed">Saber que logramos transmitir tu cariño nos emociona. Somos una familia de esfuerzo, y con tu reseña en Google nos ayudas inmensamente a seguir embelleciendo cada rincón del mundo. Tu apoyo cambia nuestras vidas.</p>
-                    <p class="text-sm font-bold text-[#c5a059] mb-6">Una vez que dejes tu reseña, vuelve aquí para recibir una pequeña muestra de nuestro agradecimiento.</p>
-                    <button onclick="window.open('https://g.page/r/CWb5W5Ay6jb1EBM/review', '_blank');" class="w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:scale-105 transition mb-4">1. DEJAR MI RESEÑA EN GOOGLE</button>
-                    <button onclick="document.getElementById('step-review').style.display='none'; document.getElementById('step-reward').style.display='block';" class="w-full border border-[#0a1f1c] dark:border-[#c5a059] text-[#0a1f1c] dark:text-[#c5a059] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:bg-[#0a1f1c]/5 dark:hover:bg-[#c5a059]/10 transition">2. YA DEJÉ MI RESEÑA</button>
+                    <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Saber que logramos transmitir tu cariño nos emociona. Somos una familia de esfuerzo, y con tu reseña en Google nos ayudas inmensamente a seguir embelleciendo cada rincón del mundo. Tu apoyo cambia nuestras vidas.</p>
+                    <button onclick="window.open('https://g.page/r/CWb5W5Ay6jb1EBM/review', '_blank');" class="w-full bg-[#0a1f1c] dark:bg-[#c5a059] text-[#c5a059] dark:text-[#0a1f1c] text-xs uppercase tracking-widest font-bold py-4 rounded-lg shadow-md hover:scale-105 transition mb-4">DEJAR MI RESEÑA EN GOOGLE</button>
+                    <button onclick="document.getElementById('step-review').style.display='none'; document.getElementById('step-reward').style.display='block';" class="text-[10px] uppercase font-bold text-[#0a1f1c]/60 dark:text-white/60 hover:text-[#c5a059] tracking-widest transition text-center w-full mt-2">Cuando dejes tu reseña vuelve aquí y verás el engañito que te dejamos con cariño.</button>
                 </div>
                 <div id="step-reward" style="display:none;">
                     <span class="text-6xl mb-4 block">🎁</span>
                     <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-3">Tu regalo está listo</h3>
-                    <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Como muestra de nuestro agradecimiento, te hemos dejado un regalo en tu cuenta personal gratuita.</p>
+                    <p class="text-sm text-[#0a1f1c]/80 dark:text-white/80 mb-6 leading-relaxed">Aquí tienes el engañito que te prometimos. Te hemos dejado tus puntos en tu cuenta personal gratuita.</p>
                     ${isGuest 
                         ? `<a href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold text-center py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CREAR CUENTA Y GUARDAR REGALO</a>`
                         : `<button onclick="cerrarEncuesta()" class="w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">CERRAR Y VER MI SALDO</button>`
