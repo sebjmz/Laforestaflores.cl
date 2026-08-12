@@ -1672,7 +1672,9 @@
                             const container = document.getElementById('points-redemption-container');
                             if(container && data.points_balance > 0) {
                                 container.classList.remove('hidden');
-                                document.getElementById('checkout-points-balance').innerText = `${data.points_balance.toLocaleString("es-CL")} pts`;
+                                // Si ya se aplicaron antes, mantenemos en 0 visualmente
+                                const puntosDisponiblesVisual = window.descuentoPuntos > 0 ? 0 : data.points_balance;
+                                document.getElementById('checkout-points-balance').innerText = `${puntosDisponiblesVisual.toLocaleString("es-CL")} pts`;
                                 window.maxPuntosCanjeables = data.max_redeemable_clp;
                                 
                                 let textoDescuento = `Puedes usar hasta ${data.max_redeemable_clp.toLocaleString("es-CL")} pts en esta compra (Cubre hasta el ${data.cap_pct}% del arreglo).`;
@@ -1702,18 +1704,36 @@
             }
         });
 
+        // Función para aplicar o revertir el uso de puntos (Permite volver atrás)
         window.aplicarPuntos = function() {
-            if(window.maxPuntosCanjeables <= 0) return;
-            window.descuentoPuntos = window.maxPuntosCanjeables;
-            
-            document.getElementById('checkout-points-discount').classList.remove('hidden');
-            document.getElementById('checkout-points-amount').innerText = `-$${window.descuentoPuntos.toLocaleString("es-CL")}`;
-            
             const btn = document.getElementById('btn-aplicar-puntos');
-            btn.innerText = "✓ Saldo Aplicado";
-            btn.classList.remove('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
-            btn.classList.add('bg-[#c5a059]', 'text-[#0a1f1c]', 'border-transparent');
-            btn.disabled = true;
+            const balanceEl = document.getElementById('checkout-points-balance');
+
+            if (window.descuentoPuntos > 0) {
+                // REVERTIR / VOLVER ATRÁS: Devolvemos los puntos al saldo visual y anulamos el descuento
+                window.descuentoPuntos = 0;
+                document.getElementById('checkout-points-discount').classList.add('hidden');
+                
+                // Restauramos el balance visual original (recuperándolo desde la vista previa o calculándolo)
+                balanceEl.innerText = `${window.maxPuntosCanjeables.toLocaleString("es-CL")} pts`; 
+                
+                btn.innerText = "Usar mi saldo en esta compra";
+                btn.classList.add('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
+                btn.classList.remove('bg-[#c5a059]', 'border-transparent');
+            } else {
+                // APLICAR PUNTOS: Los puntos bajan a 0 arriba y se aplica el descuento abajo
+                if(window.maxPuntosCanjeables <= 0) return;
+                window.descuentoPuntos = window.maxPuntosCanjeables;
+                
+                document.getElementById('checkout-points-discount').classList.remove('hidden');
+                document.getElementById('checkout-points-amount').innerText = `-$${window.descuentoPuntos.toLocaleString("es-CL")}`;
+                
+                balanceEl.innerText = `0 pts`; // Quedan en 0 arriba
+                
+                btn.innerText = "✓ Saldo Aplicado (Hacer clic para anular)";
+                btn.classList.remove('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
+                btn.classList.add('bg-[#c5a059]', 'text-[#0a1f1c]', 'border-transparent');
+            }
             
             if(typeof window.actualizarTotalConDespacho === 'function') window.actualizarTotalConDespacho();
         };
