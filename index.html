@@ -1685,13 +1685,23 @@
                             }
                             
                             let pct = 0;
-                            if(data.tier === 'Diamante') pct = 0.05;
-                            else if(data.tier === 'Zafiro') pct = 0.04;
-                            else if(data.tier === 'Cuarzo') pct = 0.03;
+                            let tierNameLabel = "Beneficio Privé";
+                            
+                            if(data.tier === 'Diamante') {
+                                pct = 0.05;
+                                tierNameLabel = "Beneficio Diamante (5%)";
+                            } else if(data.tier === 'Zafiro') {
+                                pct = 0.04;
+                                tierNameLabel = "Beneficio Zafiro (4%)";
+                            } else if(data.tier === 'Cuarzo') {
+                                pct = 0.03;
+                                tierNameLabel = "Beneficio Cuarzo (3%)";
+                            }
                             
                             window.tierDiscount = Math.round(subtotalFlores * pct);
                             if(window.tierDiscount > 0) {
                                 document.getElementById('checkout-tier-discount').classList.remove('hidden');
+                                document.getElementById('checkout-tier-label').innerText = tierNameLabel;
                                 document.getElementById('checkout-tier-amount').innerText = `-$${window.tierDiscount.toLocaleString("es-CL")}`;
                             }
                             
