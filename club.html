@@ -348,10 +348,7 @@
     </section>
 
     <section class="card p-8 md:p-10 mb-6 mt-6">
-        <div class="flex justify-between items-center mb-3">
-            <h3 class="font-serif text-2xl md:text-3xl italic">Fechas Importantes</h3>
-            <span class="text-[#0a1f1c]/50 dark:text-white/50 text-[10px] uppercase font-bold tracking-widest bg-[#0a1f1c]/5 dark:bg-white/5 px-3 py-1 rounded" id="dates-count-label">(0)</span>
-        </div>
+        <h3 class="font-serif text-2xl md:text-3xl italic mb-3">Fechas Importantes</h3>
         <p class="text-[#0a1f1c]/70 dark:text-white/70 text-sm md:text-base leading-relaxed mb-8">Guarda aniversarios, cumpleaños o cualquier día especial. Te avisaremos a tiempo para que nunca olvides sorprender a quienes quieres.</p>
         
         <form onsubmit="return addDate(event)" class="bg-[#0a1f1c]/5 dark:bg-black/20 p-6 rounded-xl border border-[#0a1f1c]/10 dark:border-white/5 mb-8">
@@ -386,9 +383,15 @@
             </div>
         </form>
 
-        <div id="dates-list" class="space-y-4">
-            <!-- Los datos de D1 se inyectarán aquí automáticamente -->
-        </div>
+        <details class="group border border-[#0a1f1c]/10 dark:border-white/10 rounded-xl overflow-hidden">
+            <summary class="flex justify-between items-center p-5 md:px-8 cursor-pointer hover:bg-[#0a1f1c]/5 dark:hover:bg-white/5 transition-colors text-xs uppercase tracking-widest font-bold text-[#c5a059] outline-none select-none">
+                Ver mis fechas guardadas <span id="dates-count-label">(0)</span>
+                <svg class="w-5 h-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </summary>
+            <div class="p-5 md:p-8 bg-[#0a1f1c]/5 dark:bg-black/20 border-t border-[#0a1f1c]/10 dark:border-white/10">
+                <div id="dates-list" class="space-y-4"></div>
+            </div>
+        </details>
     </section>
 
     <section class="card p-8 md:p-10">
