@@ -347,6 +347,50 @@
         </div>
     </section>
 
+    <section class="card p-8 md:p-10 mb-6 mt-6">
+        <div class="flex justify-between items-center mb-3">
+            <h3 class="font-serif text-2xl md:text-3xl italic">Fechas Importantes</h3>
+            <span class="text-[#0a1f1c]/50 dark:text-white/50 text-[10px] uppercase font-bold tracking-widest bg-[#0a1f1c]/5 dark:bg-white/5 px-3 py-1 rounded" id="dates-count-label">(0)</span>
+        </div>
+        <p class="text-[#0a1f1c]/70 dark:text-white/70 text-sm md:text-base leading-relaxed mb-8">Guarda aniversarios, cumpleaños o cualquier día especial. Te avisaremos a tiempo para que nunca olvides sorprender a quienes quieres.</p>
+        
+        <form onsubmit="return addDate(event)" class="bg-[#0a1f1c]/5 dark:bg-black/20 p-6 rounded-xl border border-[#0a1f1c]/10 dark:border-white/5 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/60 font-bold mb-2">Ocasión</label>
+                    <input required id="date-label" placeholder="Ej: Aniversario de bodas" class="w-full px-4 py-3 rounded-lg text-sm bg-white dark:bg-[#0a1f1c]">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/60 font-bold mb-2">¿Para quién es?</label>
+                    <input id="date-relation" placeholder="Ej: Mi esposa, Mamá..." class="w-full px-4 py-3 rounded-lg text-sm bg-white dark:bg-[#0a1f1c]">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/60 font-bold mb-2">Flor preferida (Opcional)</label>
+                    <input id="date-flower" placeholder="Ej: Peonías, Rosas rojas..." class="w-full px-4 py-3 rounded-lg text-sm bg-white dark:bg-[#0a1f1c]">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/60 font-bold mb-2">Fecha del evento</label>
+                    <input required type="date" id="date-monthday" class="w-full px-4 py-3 rounded-lg text-sm bg-white dark:bg-[#0a1f1c] cursor-pointer">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/60 font-bold mb-2">¿Cuándo te avisamos?</label>
+                    <select required id="date-days" class="w-full px-4 py-3 rounded-lg text-sm bg-white dark:bg-[#0a1f1c] cursor-pointer">
+                        <option value="3">3 días antes</option>
+                        <option value="5" selected>5 días antes</option>
+                        <option value="7">7 días antes</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button type="submit" class="btn-gold w-full py-3 rounded-lg text-xs uppercase tracking-widest shadow-md">Guardar Fecha</button>
+                </div>
+            </div>
+        </form>
+
+        <div id="dates-list" class="space-y-4">
+            <!-- Los datos de D1 se inyectarán aquí automáticamente -->
+        </div>
+    </section>
+
     <section class="card p-8 md:p-10">
       <h3 class="font-serif text-2xl md:text-3xl italic mb-3">Tus envíos anteriores</h3>
       <p class="text-[#0a1f1c]/70 dark:text-white/70 text-sm md:text-base leading-relaxed mb-8">Aquí guardamos todas las tarjetitas y ramos que has enviado. Te puede servir para recordar qué escribiste o buscar inspiración para la próxima vez.</p>
