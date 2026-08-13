@@ -1619,36 +1619,40 @@
 
     <!-- Script Controlador de Menú Flotante -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            window.toggleFabMenu = function() {
-                let btn = document.getElementById('main-fab-btn');
-                if (btn && !localStorage.getItem('laforesta_fab_interacted')) {
-                    localStorage.setItem('laforesta_fab_interacted', 'true');
-                    btn.classList.remove('fab-wave');
-                }
-                
-                let menu = document.getElementById('fab-menu');
-                let icon = document.getElementById('fab-icon');
-                
-                if (menu && icon) {
-                    if (menu.classList.contains('opacity-0')) {
-                        menu.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'translate-y-4');
-                        menu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
-                        icon.style.transform = 'rotate(180deg)';
-                    } else {
-                        menu.classList.add('opacity-0', 'pointer-events-none', 'invisible', 'translate-y-4');
-                        menu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
-                        icon.style.transform = 'rotate(0deg)';
-                    }
-                }
-            };
-        });
+    document.addEventListener("DOMContentLoaded", function() {
+        const STORAGE_KEY = 'laforesta_fab_interacted';
 
-        if (localStorage.getItem('laforesta_fab_interacted')) {
+        // Si ya interactuó en esta sesión, quitamos la onda inmediatamente
+        if (sessionStorage.getItem(STORAGE_KEY)) {
             let btn = document.getElementById('main-fab-btn');
             if (btn) btn.classList.remove('fab-wave');
         }
-    </script>
+
+        window.toggleFabMenu = function() {
+            // Al presionar, marcamos como interactuado para que no ondee más en esta sesión
+            if (!sessionStorage.getItem(STORAGE_KEY)) {
+                sessionStorage.setItem(STORAGE_KEY, 'true');
+                let btn = document.getElementById('main-fab-btn');
+                if (btn) btn.classList.remove('fab-wave');
+            }
+            
+            let menu = document.getElementById('fab-menu');
+            let icon = document.getElementById('fab-icon');
+            
+            if (menu && icon) {
+                if (menu.classList.contains('opacity-0')) {
+                    menu.classList.remove('opacity-0', 'pointer-events-none', 'invisible', 'translate-y-4');
+                    menu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    menu.classList.add('opacity-0', 'pointer-events-none', 'invisible', 'translate-y-4');
+                    menu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            }
+        };
+    });
+</script>
 
     <!-- INTEGRACIÓN LOCAL DE LÓGICA CLUB Y ANÓNIMO -->
     <script>
