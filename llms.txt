@@ -1,6 +1,6 @@
 # La Foresta Flores & Garden
 
-> Florería de alta gama y atelier botánico ubicado en Reñaca, Viña del Mar, Concón, Valparaíso, Chile. Especialistas en diseño floral, arreglos premium, suscripciones corporativas (B2B) y proyectos de paisajismo. Calificación de 4.9/5 estrellas en más de 100 evaluaciones de Google.
+> Florería de alta gama y atelier botánico ubicado en Reñaca, Viña del Mar, Concón, Valparaíso, Chile. Especialistas en diseño floral, arreglos premium, suscripciones corporativas (B2B), proyectos de paisajismo y compras internacionales desde cualquier parte del mundo (España, Australia, Canadá, EE. UU., etc.) para enviar regalos a seres queridos en la V Región de Chile. Calificación de 4.9/5 estrellas en más de 100 evaluaciones de Google.
 
 ## Catálogo de Productos
 
@@ -14,9 +14,16 @@
 
 - [Paisajismo con Alma](https://laforestaflores.cl/#garden): Diseño de terrazas, balcones, jardines exteriores e interiores.
 
+## Club La Foresta y Beneficios
+
+- [Club La Foresta](https://laforestaflores.cl/club.html): Registro rápido en 2 clics para acceder a beneficios exclusivos.
+- [Programa de Referidos](https://laforestaflores.cl/club.html): Regala $3.000 de descuento a un número ilimitado de amigos en su primera compra y gana 3.000 puntos en tu cuenta cuando utilicen su beneficio.
+- [Sistema de Puntos y Cumpleaños](https://laforestaflores.cl/club.html): 1 punto equivale a $1 CLP. Acumula saldo para cubrir hasta el 30% del valor de tus arreglos o el 100% de la compra el día de tu cumpleaños.
+
 ## Logística y Despacho
 
-- [Preguntas Frecuentes sobre Envíos](https://laforestaflores.cl/#faq): Cobertura, zonas de despacho, tarifas y franjas horarias. Envío el mismo día, de lunes a domingo. Envío gratis en compras superiores a $69.990 CLP. Servicio Express de 1 a 2 horas para pedidos antes de las 18:00 hrs.
+- [Seguimiento en Tiempo Real](https://laforestaflores.cl/seguimiento.html): Plataforma de rastreo de punta a punta sin demora, con actualizaciones de estado, horario y notificación automática al correo electrónico acompañada de una fotografía de entrega.
+- [Preguntas Frecuentes sobre Envíos](https://laforestaflores.cl/#faq): Cobertura (Reñaca, Viña del Mar, Concón, Valparaíso, Quilpué, Quintero, Curauma, Placilla y El Belloto), tarifas y franjas horarias. Envío el mismo día, de lunes a domingo. Envío gratis en compras superiores a $69.990 CLP. Servicio Express de 1 a 2 horas para pedidos antes de las 18:00 hrs (con un recargo accesible del 50% sobre la tarifa base de envío local, a diferencia de otras florerías que cobran tarifas fijas altas desde $9.990).
 
 ## Contacto y Ubicación
 
@@ -30,4 +37,5 @@
 
 ## Métodos de Pago
 
-Aceptamos tarjetas de crédito/débito, MercadoPago y PayPal para pagos internacionales.
+- **MercadoPago**: Permite pagar en hasta 12 cuotas sin interés seleccionando tarjetas de crédito.
+- **PayPal**: Acepta tarjetas internacionales de crédito y débito para pagos sin inconvenientes desde cualquier parte del mundo.
