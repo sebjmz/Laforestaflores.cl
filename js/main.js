@@ -654,6 +654,9 @@ function closeCheckout() {
     }
 }
 
+// ----------------------------------------------------
+// INTEGRACIÓN NATIVA DEL CLUB LA FORESTA
+// ----------------------------------------------------
 async function cargarVistaPreviaPuntosNativo() {
     const token = localStorage.getItem('laforesta_club_token');
     if (!token) return;
@@ -695,7 +698,7 @@ async function cargarVistaPreviaPuntosNativo() {
                 if (taEl) taEl.innerText = `-$${window.tierDiscount.toLocaleString("es-CL")}`;
             }
 
-            if (typeof actualizarTotalConDespacho === 'function') actualizarTotalConDespacho();
+            actualizarTotalConDespacho();
         }
     } catch (e) {
         console.warn("Error preview club", e);
@@ -730,7 +733,7 @@ window.aplicarPuntos = function() {
             btn.classList.add('bg-[#c5a059]', 'text-[#0a1f1c]', 'border-transparent');
         }
     }
-    if (typeof actualizarTotalConDespacho === 'function') actualizarTotalConDespacho();
+    actualizarTotalConDespacho();
 };
 
 function goToStep(e) {
@@ -739,10 +742,13 @@ function goToStep(e) {
     let a = document.getElementById(t);
     if (a) a.classList.add("active");
     guardarProgresoCheckout();
-    if (t === "step-6" && typeof cargarVistaPreviaPuntosNativo === "function") {
+    
+    // Validar saldo y nivel si se entra al checkout de pago final
+    if (t === "step-6") {
         cargarVistaPreviaPuntosNativo();
     }
 }
+// ----------------------------------------------------
 
 function selectOption(e) {
     let a = e.closest(".checkout-step");
