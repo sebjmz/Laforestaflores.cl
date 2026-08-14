@@ -1,40 +1,33 @@
 window.stopAutoPlay = null;
-let mapasCargados = false;
-let pasarelasCargadas = false;
+window.descuentoPuntos = 0;
+window.maxPuntosCanjeables = 0;
+window.tierDiscount = 0;
+
+let mapasCargados = !1, pasarelasCargadas = !1;
 
 function cargarMapasYAbrirModal() {
-    if (mapasCargados) {
-        openCoverageModal();
-    } else {
+    if (mapasCargados) openCoverageModal();
+    else {
         let e = document.createElement("link");
         e.rel = "stylesheet";
         e.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
         document.head.appendChild(e);
-
         let t = document.createElement("script");
         t.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
-        t.onload = () => {
-            mapasCargados = true;
-            openCoverageModal();
-        };
+        t.onload = () => { mapasCargados = !0; openCoverageModal(); };
         document.body.appendChild(t);
     }
 }
 
 function cargarPasarelasYAbrirCheckout() {
-    if (pasarelasCargadas) {
-        openCheckout();
-    } else {
+    if (pasarelasCargadas) openCheckout();
+    else {
         let e = document.createElement("script");
         e.src = "https://sdk.mercadopago.com/js/v2";
         document.body.appendChild(e);
-
         let t = document.createElement("script");
         t.src = "https://www.paypal.com/sdk/js?client-id=AbfBLeAuXrylWnzDIOQcvpfJwrzBAy0N8281_ip4dFmH1k6H8kW70tPOE_IH6sc05OafIHHfe1PE1Mv1&currency=USD";
-        t.onload = () => {
-            pasarelasCargadas = true;
-            openCheckout();
-        };
+        t.onload = () => { pasarelasCargadas = !0; openCheckout(); };
         document.body.appendChild(t);
     }
 }
@@ -65,9 +58,9 @@ function selectB2BSegment(e) {
     let segmentInput = document.getElementById("b2b-selected-segment");
     if (segmentInput) segmentInput.value = e;
     
-    let t = document.getElementById("b2b-testimonial-text");
-    let a = document.getElementById("b2b-testimonial-author");
-    let r = document.getElementById("b2b-dynamic-testimonial");
+    let t = document.getElementById("b2b-testimonial-text"),
+        a = document.getElementById("b2b-testimonial-author"),
+        r = document.getElementById("b2b-dynamic-testimonial");
     
     if (r) r.classList.add("opacity-0");
     
@@ -90,8 +83,8 @@ function selectB2BSegment(e) {
         }
     }
     
-    let o = document.getElementById("b2b-step-1");
-    let n = document.getElementById("b2b-step-2");
+    let o = document.getElementById("b2b-step-1"),
+        n = document.getElementById("b2b-step-2");
     if (o && n) {
         o.classList.add("opacity-0", "-translate-x-8");
         setTimeout(() => {
@@ -124,8 +117,8 @@ function registrarOrdenIntranet(e, t, a) {
 }
 
 function backToB2BStep1() {
-    let e = document.getElementById("b2b-step-1");
-    let t = document.getElementById("b2b-step-2");
+    let e = document.getElementById("b2b-step-1"),
+        t = document.getElementById("b2b-step-2");
     if (e && t) {
         t.classList.add("opacity-0", "translate-x-8");
         setTimeout(() => {
@@ -142,9 +135,9 @@ function backToB2BStep1() {
 function resetB2BFlow() {
     let e = document.getElementById("b2b-final-form");
     if (e) e.reset();
-    let t = document.getElementById("b2b-step-1");
-    let a = document.getElementById("b2b-step-2");
-    let r = document.getElementById("b2b-success");
+    let t = document.getElementById("b2b-step-1"),
+        a = document.getElementById("b2b-step-2"),
+        r = document.getElementById("b2b-success");
     if (t) t.className = "b2b-step flex flex-col items-center w-full max-w-lg text-center transition-all duration-500 transform opacity-100 translate-x-0";
     if (a) a.className = "b2b-step hidden flex-col items-center w-full max-w-md text-center transition-all duration-500 transform translate-x-8 opacity-0";
     if (r) {
@@ -163,7 +156,7 @@ async function sendB2BConsultation(e) {
     let a = t ? t.innerHTML : "";
     if (t) {
         t.innerHTML = "PROCESANDO...";
-        t.disabled = true;
+        t.disabled = !0;
     }
     let r = new FormData(e.target);
     r.append("_subject", "Nueva Solicitud de Membresía B2B - La Foresta Flores");
@@ -185,16 +178,14 @@ async function sendB2BConsultation(e) {
                 n.classList.remove("hidden");
                 n.classList.add("flex");
             }
-        } else {
-            alert("Hubo un problema al procesar la solicitud. Por favor, intente vía WhatsApp.");
-        }
+        } else alert("Hubo un problema al procesar la solicitud. Por favor, intente vía WhatsApp.");
     } catch (i) {
         console.error("Error al enviar:", i);
         alert("Error de conexión. Verifique su internet.");
     } finally {
         if (t) {
             t.innerHTML = a;
-            t.disabled = false;
+            t.disabled = !1;
         }
     }
 }
@@ -211,17 +202,7 @@ function obtenerGA4ClientId() {
     return null;
 }
 
-let cart = [];
-let selectedGardenSpace = "";
-let selectedPalette = "";
-let shippingCost = 0;
-let selectedZoneName = "";
-let selectedLogistics = "";
-let selectedDate = "";
-let selectedTimeSlot = "";
-let isExpressDelivery = false;
-let b2bTurnstileToken = null;
-let gardenTurnstileToken = null;
+let cart = [], selectedGardenSpace = "", selectedPalette = "", shippingCost = 0, selectedZoneName = "", selectedLogistics = "", selectedDate = "", selectedTimeSlot = "", isExpressDelivery = !1, b2bTurnstileToken = null, gardenTurnstileToken = null;
 
 function onB2BTurnstileSuccess(e) { b2bTurnstileToken = e; }
 function onGardenTurnstileSuccess(e) { gardenTurnstileToken = e; }
@@ -241,25 +222,20 @@ try {
 }
 
 const RECARGO_EXPRESS_ENVIO = 1.5;
-let currentCalendarDate = new Date();
-let mp;
+let currentCalendarDate = new Date(), mp;
 try {
-    if (typeof MercadoPago !== "undefined") {
-        mp = new MercadoPago("APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb", { locale: "es-CL" });
-    }
+    if (typeof MercadoPago !== "undefined") mp = new MercadoPago("APP_USR-d0faaa27-f799-4a28-9898-7ccc68e2c8cb", { locale: "es-CL" });
 } catch (t) {
     console.warn("MercadoPago SDK bloqueado o no cargado aún.");
 }
 
-let mapInitialized = false;
-let coverageMap;
-let circleLayers = {};
+let mapInitialized = !1, coverageMap, circleLayers = {};
 const zoneData = [
-    { id: 1, radius: 2200, color: "#c5a059", fillOpacity: 0.4, name: "Central" },
-    { id: 2, radius: 4500, color: "#c5a059", fillOpacity: 0.25, name: "Local" },
-    { id: 3, radius: 6500, color: "#c5a059", fillOpacity: 0.15, name: "Intermedia" },
-    { id: 4, radius: 11500, color: "#c5a059", fillOpacity: 0.08, name: "Extendida" },
-    { id: 5, radius: 20000, color: "#c5a059", fillOpacity: 0.03, name: "Extendida+" }
+    { id: 1, radius: 2200, color: "#c5a059", fillOpacity: .4, name: "Central" },
+    { id: 2, radius: 4500, color: "#c5a059", fillOpacity: .25, name: "Local" },
+    { id: 3, radius: 6500, color: "#c5a059", fillOpacity: .15, name: "Intermedia" },
+    { id: 4, radius: 11500, color: "#c5a059", fillOpacity: .08, name: "Extendida" },
+    { id: 5, radius: 2e4, color: "#c5a059", fillOpacity: .03, name: "Extendida+" }
 ];
 const atelierCenter = [-32.97074205954955, -71.5431332198481];
 
@@ -267,40 +243,22 @@ function initCoverageMap() {
     if (mapInitialized) return;
     let e = document.getElementById("coverage-map");
     if (!e) return;
-    coverageMap = L.map("coverage-map", { zoomControl: true, scrollWheelZoom: false }).setView(atelierCenter, 10);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png", {
-        attribution: "© OpenStreetMap",
-        subdomains: "abcd",
-        maxZoom: 18
-    }).addTo(coverageMap);
+    coverageMap = L.map("coverage-map", { zoomControl: !0, scrollWheelZoom: !1 }).setView(atelierCenter, 10);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png", { attribution: "© OpenStreetMap", subdomains: "abcd", maxZoom: 18 }).addTo(coverageMap);
     
     [...zoneData].reverse().forEach(z => {
-        let t = L.circle(atelierCenter, {
-            radius: z.radius,
-            color: z.color,
-            weight: 1,
-            fillColor: z.color,
-            fillOpacity: z.fillOpacity,
-            interactive: false
-        }).addTo(coverageMap);
+        let t = L.circle(atelierCenter, { radius: z.radius, color: z.color, weight: 1, fillColor: z.color, fillOpacity: z.fillOpacity, interactive: !1 }).addTo(coverageMap);
         circleLayers[z.id] = t;
     });
     
-    let t = L.divIcon({
-        html: '<div class="w-3 h-3 bg-[#c5a059] rounded-full border border-[#0a1f1c] shadow-[0_0_15px_rgba(197,160,89,1)]"></div>',
-        className: ""
-    });
-    L.marker(atelierCenter, { icon: t }).addTo(coverageMap).bindTooltip("Atelier", {
-        permanent: true,
-        direction: "right",
-        className: "atelier-tooltip"
-    }).openTooltip();
-    mapInitialized = true;
+    let t = L.divIcon({ html: '<div class="w-3 h-3 bg-[#c5a059] rounded-full border border-[#0a1f1c] shadow-[0_0_15px_rgba(197,160,89,1)]"></div>', className: "" });
+    L.marker(atelierCenter, { icon: t }).addTo(coverageMap).bindTooltip("Atelier", { permanent: !0, direction: "right", className: "atelier-tooltip" }).openTooltip();
+    mapInitialized = !0;
 }
 
 function highlightZone(e) {
     if (circleLayers[e]) {
-        circleLayers[e].setStyle({ fillOpacity: 0.6, weight: 3, color: "#ffffff" });
+        circleLayers[e].setStyle({ fillOpacity: .6, weight: 3, color: "#ffffff" });
         circleLayers[e].bringToFront();
     }
 }
@@ -318,13 +276,8 @@ function openCoverageModal() {
     let e = document.getElementById("coverage-modal");
     if (e) {
         e.classList.remove("hidden");
-        setTimeout(() => {
-            e.classList.remove("opacity-0");
-            initCoverageMap();
-        }, 10);
-        setTimeout(() => {
-            if (coverageMap) coverageMap.invalidateSize();
-        }, 550);
+        setTimeout(() => { e.classList.remove("opacity-0"); initCoverageMap(); }, 10);
+        setTimeout(() => { if (coverageMap) coverageMap.invalidateSize(); }, 550);
         document.body.style.overflow = "hidden";
         if (typeof window.stopAutoPlay === "function") window.stopAutoPlay();
     }
@@ -378,20 +331,16 @@ const upsellsCatalog = [
 
 function getLuxuryBadge(e) {
     switch (e) {
-        case 5:
-        case 3:
-        case 8:
-        case 11:
-        case 10:
-            return "Más Vendidos";
-        default:
-            return "";
+        case 5: case 3: case 8: case 11: case 10: return "Más Vendidos";
+        default: return "";
     }
 }
 
+const grid = document.getElementById("product-grid");
+
 function toggleCart() {
-    let e = document.getElementById("atelier-bag");
-    let t = document.getElementById("cart-overlay");
+    let e = document.getElementById("atelier-bag"),
+        t = document.getElementById("cart-overlay");
     if (e) e.classList.toggle("open");
     if (t && e) {
         if (e.classList.contains("open")) {
@@ -407,11 +356,8 @@ function toggleCart() {
 function addToCart(e, t, a, r) {
     try {
         let o = cart.find(item => item.id === e);
-        if (o) {
-            o.qty++;
-        } else {
-            cart.push({ id: e, name: t, price: a, img: r, qty: 1 });
-        }
+        if (o) o.qty++;
+        else cart.push({ id: e, name: t, price: a, img: r, qty: 1 });
         localStorage.setItem("laforesta_cart", JSON.stringify(cart));
         if (typeof updateCartUI === "function") updateCartUI();
         
@@ -442,11 +388,8 @@ function updateQty(e, t) {
     let a = cart.find(item => item.id === e);
     if (a) {
         a.qty += t;
-        if (a.qty <= 0) {
-            removeFromCart(e);
-        } else {
-            updateCartUI();
-        }
+        if (a.qty <= 0) removeFromCart(e);
+        else updateCartUI();
     }
 }
 
@@ -456,10 +399,10 @@ function updateCartUI() {
         if (!e) cart = [];
         localStorage.setItem("laforesta_cart", JSON.stringify(cart));
         
-        let t = document.getElementById("cart-items-container");
-        let a = document.getElementById("cart-total");
-        let r = document.getElementById("cart-count");
-        
+        let t = document.getElementById("cart-items-container"),
+            a = document.getElementById("cart-total"),
+            r = document.getElementById("cart-count");
+            
         if (!t) return;
         
         if (cart.length === 0) {
@@ -472,8 +415,8 @@ function updateCartUI() {
             if (r) r.innerText = "0";
             let o = document.getElementById("mobile-sticky-cart");
             if (o) {
-                let n = document.getElementById("sticky-cart-count");
-                let i = document.getElementById("sticky-cart-total");
+                let n = document.getElementById("sticky-cart-count"),
+                    i = document.getElementById("sticky-cart-total");
                 if (n) n.innerText = "0";
                 if (i) i.innerText = "$0";
                 o.classList.add("translate-y-full");
@@ -549,15 +492,12 @@ function updateCartUI() {
         
         let g = document.getElementById("mobile-sticky-cart");
         if (g) {
-            let stickyCount = document.getElementById("sticky-cart-count");
-            let stickyTotal = document.getElementById("sticky-cart-total");
+            let stickyCount = document.getElementById("sticky-cart-count"),
+                stickyTotal = document.getElementById("sticky-cart-total");
             if (stickyCount) stickyCount.innerText = u;
             if (stickyTotal && a) stickyTotal.innerText = a.innerText;
-            if (cart.length > 0) {
-                g.classList.remove("translate-y-full");
-            } else {
-                g.classList.add("translate-y-full");
-            }
+            if (cart.length > 0) g.classList.remove("translate-y-full");
+            else g.classList.add("translate-y-full");
         }
     } catch (f) {
         console.error("Error al renderizar el carrito:", f);
@@ -690,12 +630,42 @@ async function cargarVistaPreviaPuntosNativo() {
                 let taEl = document.getElementById('checkout-tier-amount');
                 if (taEl) taEl.innerText = `-$${window.tierDiscount.toLocaleString("es-CL")}`;
             }
-
-            if (typeof actualizarTotalConDespacho === 'function') actualizarTotalConDespacho();
+            actualizarTotalConDespacho();
         }
     } catch (e) {
         console.warn("Error preview club", e);
     }
+}
+
+function aplicarPuntos() {
+    const btn = document.getElementById('btn-aplicar-puntos');
+    const balanceEl = document.getElementById('checkout-points-balance');
+
+    if (window.descuentoPuntos > 0) {
+        window.descuentoPuntos = 0;
+        let pDisc = document.getElementById('checkout-points-discount');
+        if(pDisc) pDisc.classList.add('hidden');
+        if(balanceEl) balanceEl.innerText = `${(window.maxPuntosCanjeables || 0).toLocaleString("es-CL")} pts`; 
+        if(btn) {
+            btn.innerText = "Usar mi saldo en esta compra";
+            btn.classList.add('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
+            btn.classList.remove('bg-[#c5a059]', 'border-transparent');
+        }
+    } else {
+        if(window.maxPuntosCanjeables <= 0) return;
+        window.descuentoPuntos = window.maxPuntosCanjeables;
+        let pDisc = document.getElementById('checkout-points-discount');
+        if(pDisc) pDisc.classList.remove('hidden');
+        let pAmt = document.getElementById('checkout-points-amount');
+        if(pAmt) pAmt.innerText = `-$${window.descuentoPuntos.toLocaleString("es-CL")}`;
+        if(balanceEl) balanceEl.innerText = `0 pts`;
+        if(btn) {
+            btn.innerText = "✓ Saldo Aplicado (Hacer clic para anular)";
+            btn.classList.remove('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
+            btn.classList.add('bg-[#c5a059]', 'text-[#0a1f1c]', 'border-transparent');
+        }
+    }
+    actualizarTotalConDespacho();
 }
 
 function goToStep(e) {
@@ -704,10 +674,7 @@ function goToStep(e) {
     let a = document.getElementById(t);
     if (a) a.classList.add("active");
     guardarProgresoCheckout();
-
-    if (t === "step-6") {
-        cargarVistaPreviaPuntosNativo();
-    }
+    if (t === "step-6") cargarVistaPreviaPuntosNativo();
 }
 
 function selectOption(e) {
@@ -729,9 +696,8 @@ function setPalette(e) {
 
 function seleccionarModalidad(e) {
     selectedLogistics = e;
-    if (e === "envio") {
-        goToStep("step-zona");
-    } else {
+    if (e === "envio") goToStep("step-zona");
+    else {
         shippingCost = 0;
         selectedZoneName = "Retiro en tienda";
         actualizarTotalConDespacho();
@@ -753,11 +719,8 @@ function confirmarDireccion() {
 }
 
 function regresarDesdeFecha() {
-    if (selectedLogistics === "envio") {
-        goToStep("step-direccion");
-    } else {
-        goToStep("step-quien-retira");
-    }
+    if (selectedLogistics === "envio") goToStep("step-direccion");
+    else goToStep("step-quien-retira");
 }
 
 function seleccionarFecha(e) {
@@ -778,35 +741,35 @@ function seleccionarFecha(e) {
 }
 
 function renderCalendar() {
-    let e = document.getElementById("calendar-grid");
-    let t = document.getElementById("cal-month-title");
+    let e = document.getElementById("calendar-grid"),
+        t = document.getElementById("cal-month-title");
     if (!e || !t) return;
     
-    let a = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
-    let r = currentCalendarDate.getFullYear();
-    let o = currentCalendarDate.getMonth();
+    let a = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" })),
+        r = currentCalendarDate.getFullYear(),
+        o = currentCalendarDate.getMonth();
     const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     t.innerText = `${meses[o]} ${r}`;
     
-    let n = a.getMonth();
-    let i = a.getFullYear();
-    let s = new Date(a);
-    let l = new Date(a);
+    let n = a.getMonth(),
+        i = a.getFullYear(),
+        s = new Date(a),
+        l = new Date(a);
     l.setDate(l.getDate() + 1);
     if (l.getMonth() !== a.getMonth()) s.setMonth(s.getMonth() + 1);
-    let c = new Date(s.getFullYear(), s.getMonth() + 1, 1);
-    let d = c.getMonth();
-    let p = c.getFullYear();
-    
-    let prevBtn = document.getElementById("cal-prev");
-    let nextBtn = document.getElementById("cal-next");
+    let c = new Date(s.getFullYear(), s.getMonth() + 1, 1),
+        d = c.getMonth(),
+        p = c.getFullYear();
+        
+    let prevBtn = document.getElementById("cal-prev"),
+        nextBtn = document.getElementById("cal-next");
     if (prevBtn) prevBtn.style.visibility = (r === i && o === n) ? "hidden" : "visible";
     if (nextBtn) nextBtn.style.visibility = (r === p && o === d) ? "hidden" : "visible";
     
     e.innerHTML = "";
-    let m = new Date(r, o, 1).getDay();
-    let u = new Date(r, o + 1, 0).getDate();
-    
+    let m = new Date(r, o, 1).getDay(),
+        u = new Date(r, o + 1, 0).getDate();
+        
     for (let g = 0; g < m; g++) e.innerHTML += "<div></div>";
     for (let day = 1; day <= u; day++) {
         let y = new Date(r, o, day);
@@ -836,17 +799,17 @@ function seleccionarDiaCalendario(e) {
 }
 
 function renderHorariosInteligentes() {
-    let e = document.getElementById("time-slots-container");
-    let t = document.getElementById("time-step-chosen-date");
+    let e = document.getElementById("time-slots-container"),
+        t = document.getElementById("time-step-chosen-date");
     if (!e) return;
     e.innerHTML = "";
     
-    let a = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
-    let r = a.getHours();
-    let o = a.getMinutes();
-    let n = r + o / 60;
-    let i = `${a.getFullYear()}-${String(a.getMonth() + 1).padStart(2, "0")}-${String(a.getDate()).padStart(2, "0")}`;
-    let s = selectedDate === "hoy" || selectedDate === i;
+    let a = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" })),
+        r = a.getHours(),
+        o = a.getMinutes(),
+        n = r + o / 60,
+        i = `${a.getFullYear()}-${String(a.getMonth() + 1).padStart(2, "0")}-${String(a.getDate()).padStart(2, "0")}`,
+        s = selectedDate === "hoy" || selectedDate === i;
     const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     
     if (s) {
@@ -854,19 +817,16 @@ function renderHorariosInteligentes() {
     } else {
         let c = selectedDate.split("-");
         if (c.length === 3) {
-            let d = c[0];
-            let p = parseInt(c[1], 10) - 1;
-            let m = parseInt(c[2], 10);
+            let d = c[0],
+                p = parseInt(c[1], 10) - 1,
+                m = parseInt(c[2], 10);
             if (t) t.innerText = `Para el ${m} de ${meses[p]} de ${d}`;
         } else {
             if (t) t.innerText = selectedDate;
         }
     }
     
-    let u = "";
-    let g = "";
-    let express = "";
-    
+    let u = "", g = "", express = "";
     if (s) {
         if (n < 7) g += `<button onclick="definirHorario('Mañana (11:00 - 13:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Mañana (11:00 - 13:00)</button>`;
         if (n < 11) g += `<button onclick="definirHorario('Medio día (14:00 - 17:00)', false)" class="step-option w-full py-5 text-xs uppercase tracking-widest font-bold mb-3">Medio día (14:00 - 17:00)</button>`;
@@ -886,11 +846,10 @@ function renderHorariosInteligentes() {
 }
 
 function generarHorasExpress(e) {
-    let t = "";
-    let a = Math.max(10, Math.ceil(e + 1));
+    let t = "", a = Math.max(10, Math.ceil(e + 1));
     while (a < 20) {
-        let r = `${String(a).padStart(2, "0")}:00`;
-        let o = `${String(a + 1).padStart(2, "0")}:00`;
+        let r = `${String(a).padStart(2, "0")}:00`,
+            o = `${String(a + 1).padStart(2, "0")}:00`;
         t += `<button onclick="definirHorario('Express (${r} - ${o})', true)" class="step-option text-[10px] uppercase tracking-widest font-bold py-4 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] transition w-full">${r} - ${o}</button>`;
         a += 1;
     }
@@ -898,11 +857,8 @@ function generarHorasExpress(e) {
 }
 
 function regresarDesdeTime() {
-    if (selectedDate === "hoy") {
-        goToStep("step-fecha");
-    } else {
-        goToStep("step-calendario");
-    }
+    if (selectedDate === "hoy") goToStep("step-fecha");
+    else goToStep("step-calendario");
 }
 
 function definirHorario(e, t) {
@@ -944,24 +900,18 @@ function actualizarTotalConDespacho() {
         }
     }
     
-    let c = document.getElementById("checkout-subtotal");
-    let d = document.getElementById("checkout-shipping");
-    let p = document.getElementById("checkout-final-total");
-    let m = document.getElementById("checkout-shipping-notice");
-    let u = document.getElementById("checkout-shipping-label");
-    
+    let c = document.getElementById("checkout-subtotal"),
+        d = document.getElementById("checkout-shipping"),
+        p = document.getElementById("checkout-final-total"),
+        m = document.getElementById("checkout-shipping-notice"),
+        u = document.getElementById("checkout-shipping-label");
+        
     if (c) c.innerText = `$${e.toLocaleString("es-CL")}`;
     if (p) p.innerText = `$${n.toLocaleString("es-CL")}`;
     
     if (u) {
         if (isExpressDelivery && selectedLogistics === "envio") {
-            u.innerHTML = `
-                <span class="inline-flex items-center gap-1.5">
-                    Logística 
-                    <span class="bg-[#c5a059]/10 text-[#c5a059] border border-[#c5a059]/30 px-1.5 py-[2px] rounded-sm text-[7px] md:text-[8px] font-bold uppercase tracking-widest whitespace-nowrap leading-none mt-0.5">
-                        Express (+50%)
-                    </span>
-                </span>`;
+            u.innerHTML = `<span class="inline-flex items-center gap-1.5">Logística <span class="bg-[#c5a059]/10 text-[#c5a059] border border-[#c5a059]/30 px-1.5 py-[2px] rounded-sm text-[7px] md:text-[8px] font-bold uppercase tracking-widest whitespace-nowrap leading-none mt-0.5">Express (+50%)</span></span>`;
         } else {
             u.innerText = "Logística";
         }
@@ -992,8 +942,8 @@ function actualizarTotalConDespacho() {
 function scrollToVault() {
     let e = document.getElementById("vault");
     if (e) {
-        let t = window.innerWidth >= 1024 ? 90 : 70;
-        let a = e.getBoundingClientRect().top + window.scrollY;
+        let t = window.innerWidth >= 1024 ? 90 : 70,
+            a = e.getBoundingClientRect().top + window.scrollY;
         window.scrollTo({ top: a - t, behavior: "smooth" });
     }
 }
@@ -1048,9 +998,9 @@ function selectGardenOption(e, t) {
 }
 
 function sendGardenConsultation() {
-    let e = document.getElementById("g-name")?.value.trim();
-    let t = document.getElementById("g-details")?.value.trim();
-    let a = document.getElementById("g-phone")?.value.trim();
+    let e = document.getElementById("g-name")?.value.trim(),
+        t = document.getElementById("g-details")?.value.trim(),
+        a = document.getElementById("g-phone")?.value.trim();
     if (!e || !a) {
         alert("Por favor complete los campos obligatorios.");
         return;
@@ -1120,10 +1070,10 @@ function obtenerPayloadOrden() {
 async function iniciarMercadoPago() {
     if (cart.length === 0) return alert("El atelier está vacío.");
     
-    let sel = document.getElementById("payment-selector");
-    let btnVolver = document.getElementById("btn-volver-pago");
-    let loadEl = document.getElementById("loading-payment");
-    
+    let sel = document.getElementById("payment-selector"),
+        btnVolver = document.getElementById("btn-volver-pago"),
+        loadEl = document.getElementById("loading-payment");
+        
     if (sel) sel.style.display = "none";
     if (btnVolver) btnVolver.style.display = "none";
     if (loadEl) loadEl.style.display = "block";
@@ -1207,10 +1157,10 @@ function iniciarPayPal() {
         return;
     }
     
-    let sel = document.getElementById("payment-selector");
-    let btnVolver = document.getElementById("btn-volver-pago");
-    let paypalCont = document.getElementById("paypal-container");
-    
+    let sel = document.getElementById("payment-selector"),
+        btnVolver = document.getElementById("btn-volver-pago"),
+        paypalCont = document.getElementById("paypal-container");
+        
     if (sel) sel.style.display = "none";
     if (btnVolver) btnVolver.style.display = "none";
     
@@ -1290,8 +1240,8 @@ function resetearPasarela() {
 }
 
 function toggleGardenImage() {
-    let e = document.getElementById("garden-img-1");
-    let t = document.getElementById("garden-img-2");
+    let e = document.getElementById("garden-img-1"),
+        t = document.getElementById("garden-img-2");
     if (e && t) {
         if (e.classList.contains("opacity-100")) {
             e.classList.replace("opacity-100", "opacity-0");
@@ -1315,8 +1265,8 @@ function updateCountdown() {
             a.innerHTML = "<span class='text-sm tracking-wide'>Envíos a partir de <strong>MAÑANA</strong>.</span>";
             return;
         }
-        let r = t - e;
-        let o = `${String(Math.floor((r % 86400000) / 3600000)).padStart(2, "0")}:${String(Math.floor((r % 3600000) / 60000)).padStart(2, "0")}:${String(Math.floor((r % 60000) / 1000)).padStart(2, "0")}`;
+        let r = t - e,
+            o = `${String(Math.floor((r % 86400000) / 3600000)).padStart(2, "0")}:${String(Math.floor((r % 3600000) / 60000)).padStart(2, "0")}:${String(Math.floor((r % 60000) / 1000)).padStart(2, "0")}`;
         a.innerHTML = `<span class="opacity-80 hidden md:inline">Envío Express (1-2h) cierra en:</span><span class="opacity-80 md:hidden">Express cierra en:</span> <span class="ml-1 font-mono text-[#0a1f1c] bg-[#c5a059]/20 px-1.5 py-0.5 rounded text-[10px] font-extrabold">${o}</span>`;
     } catch (n) {
         console.warn("Contador visual desactivado", n);
@@ -1326,8 +1276,7 @@ function updateCountdown() {
 function escribirMensaje(e) {
     let t = document.getElementById("card-message");
     if (!t) return;
-    let a = "";
-    let r = [];
+    let a = "", r = [];
     if (e === "romance") {
         r = [
             "Cada pétalo de este ramo me recuerda a un momento a tu lado. Gracias por hacer que mi vida florezca de esta manera. Te amo profundamente.",
@@ -1388,8 +1337,8 @@ function toggleFabMenu() {
         localStorage.setItem("laforesta_fab_interacted", "true");
         fabBtn.classList.remove("fab-wave");
     }
-    let e = document.getElementById("fab-menu");
-    let t = document.getElementById("fab-icon");
+    let e = document.getElementById("fab-menu"),
+        t = document.getElementById("fab-icon");
     if (e && t) {
         if (e.classList.contains("opacity-0")) {
             e.classList.remove("opacity-0", "pointer-events-none", "invisible", "translate-y-4");
@@ -1407,9 +1356,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let grid = document.getElementById("product-grid");
     if (grid) {
         grid.innerHTML = catalog.map(e => {
-            let t = getLuxuryBadge(e.id);
-            let a = t ? `<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm">${t}</div>` : "";
-            let r = (e.id === 3 || e.id === 5) ? `<div class="urgency-tag">Últimas 2 unidades</div>` : "";
+            let t = getLuxuryBadge(e.id),
+                a = t ? `<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm">${t}</div>` : "",
+                r = (e.id === 3 || e.id === 5) ? `<div class="urgency-tag">Últimas 2 unidades</div>` : "";
             return `
             <div class="product-card group flex flex-col h-full">
                 <a href="${e.url || "#"}" class="block">
@@ -1442,10 +1391,10 @@ document.addEventListener("DOMContentLoaded", () => {
         fabBtn.classList.add("fab-wave");
     }
     
-    let urlParams = new URLSearchParams(window.location.search);
-    let payResult = urlParams.get("payment_result");
-    let status = urlParams.get("status") || urlParams.get("collection_status");
-    
+    let urlParams = new URLSearchParams(window.location.search),
+        payResult = urlParams.get("payment_result"),
+        status = urlParams.get("status") || urlParams.get("collection_status");
+        
     if (payResult === "success" && status === "approved") {
         localStorage.removeItem("pending_laforesta_order");
         localStorage.removeItem("laforesta_cart");
@@ -1512,18 +1461,13 @@ document.addEventListener("DOMContentLoaded", () => {
     
     let slides = document.querySelectorAll(".slide-item");
     if (slides.length > 0) {
-        let cur = 0;
-        let total = slides.length;
-        let dots = document.getElementById("hero-dots");
-        let timer;
-        let isStopped = false;
-        let isMoving = false;
-        
+        let cur = 0, total = slides.length, dots = document.getElementById("hero-dots"),
+            timer, isStopped = false, isMoving = false;
+            
         function moveSlide(target, dir) {
             if (isMoving) return;
             isMoving = true;
-            let current = slides[cur];
-            let next = slides[target];
+            let current = slides[cur], next = slides[target];
             next.style.transition = "none";
             next.style.zIndex = "20";
             current.style.zIndex = "10";
@@ -1572,11 +1516,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                     anims.forEach(el => {
                         el.classList.remove("opacity-100", "translate-y-0");
-                        if (el.tagName === "H2") {
-                            el.classList.add("opacity-0", "translate-y-8");
-                        } else {
-                            el.classList.add("opacity-0", "translate-y-4");
-                        }
+                        if (el.tagName === "H2") el.classList.add("opacity-0", "translate-y-8");
+                        else el.classList.add("opacity-0", "translate-y-4");
                     });
                 }
             });
@@ -1636,8 +1577,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         let wrapper = document.getElementById("slider-wrapper");
         if (wrapper) {
-            let startX = 0;
-            let endX = 0;
+            let startX = 0, endX = 0;
             wrapper.addEventListener("touchstart", evt => { startX = evt.changedTouches[0].screenX; }, { passive: true });
             wrapper.addEventListener("touchend", evt => {
                 endX = evt.changedTouches[0].screenX;
