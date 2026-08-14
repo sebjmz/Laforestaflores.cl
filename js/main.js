@@ -597,13 +597,7 @@ function restaurarProgresoCheckout() {
             if (el) el.value = e[id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] || "";
         });
         if (localStorage.getItem("laforesta_checkout_abierto") === "true") {
-            let t = document.getElementById("checkout-flow");
-            if (t) {
-                t.classList.add("open");
-                t.classList.remove("hidden");
-                goToStep(e.currentStep);
-                if (e.currentStep === "step-time") renderHorariosInteligentes();
-            }
+            cargarPasarelasYAbrirCheckout();
         }
     }
 }
