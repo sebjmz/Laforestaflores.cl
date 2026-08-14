@@ -650,12 +650,64 @@ function closeCheckout() {
     }
 }
 
+async function cargarVistaPreviaPuntosNativo() {
+    const token = localStorage.getItem('laforesta_club_token');
+    if (!token) return;
+    let currentCart = cart.length > 0 ? cart : (JSON.parse(localStorage.getItem('laforesta_cart')) || []);
+    let subtotalFlores = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    try {
+        const res = await fetch(`https://club-laforesta.sebjmz.workers.dev/api/redeem-preview?flowers_subtotal=${subtotalFlores}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            const container = document.getElementById('points-redemption-container');
+            if (container && data.points_balance > 0) {
+                container.classList.remove('hidden');
+                const ptsVisual = window.descuentoPuntos > 0 ? 0 : data.points_balance;
+                let balEl = document.getElementById('checkout-points-balance');
+                if (balEl) balEl.innerText = `${ptsVisual.toLocaleString("es-CL")} pts`;
+                window.maxPuntosCanjeables = data.max_redeemable_clp;
+
+                let txt = `Puedes usar hasta ${data.max_redeemable_clp.toLocaleString("es-CL")} pts en esta compra (Cubre hasta el ${data.cap_pct}% del arreglo).`;
+                if (data.es_cumpleanos) txt = `¡Feliz Cumpleaños! Hoy puedes cubrir el 100% de tus flores con tus puntos. (Máx: ${data.max_redeemable_clp.toLocaleString("es-CL")})`;
+                let maxEl = document.getElementById('checkout-max-discount');
+                if (maxEl) maxEl.innerText = txt;
+            }
+
+            let pct = 0;
+            let tName = "Beneficio Privé";
+            if (data.tier === 'Diamante') { pct = 0.05; tName = "Beneficio Diamante (5%)"; }
+            else if (data.tier === 'Zafiro') { pct = 0.04; tName = "Beneficio Zafiro (4%)"; }
+            else if (data.tier === 'Cuarzo') { pct = 0.03; tName = "Beneficio Cuarzo (3%)"; }
+
+            window.tierDiscount = Math.round(subtotalFlores * pct);
+            if (window.tierDiscount > 0) {
+                let tdEl = document.getElementById('checkout-tier-discount');
+                if (tdEl) tdEl.classList.remove('hidden');
+                let tlEl = document.getElementById('checkout-tier-label');
+                if (tlEl) tlEl.innerText = tName;
+                let taEl = document.getElementById('checkout-tier-amount');
+                if (taEl) taEl.innerText = `-$${window.tierDiscount.toLocaleString("es-CL")}`;
+            }
+
+            if (typeof actualizarTotalConDespacho === 'function') actualizarTotalConDespacho();
+        }
+    } catch (e) {
+        console.warn("Error preview club", e);
+    }
+}
+
 function goToStep(e) {
     let t = typeof e === "number" ? `step-${e}` : e;
     document.querySelectorAll(".checkout-step").forEach(step => step.classList.remove("active"));
     let a = document.getElementById(t);
     if (a) a.classList.add("active");
     guardarProgresoCheckout();
+
+    if (t === "step-6") {
+        cargarVistaPreviaPuntosNativo();
+    }
 }
 
 function selectOption(e) {
@@ -862,12 +914,16 @@ function definirHorario(e, t) {
 
 function actualizarTotalConDespacho() {
     let e = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
+    let puntosAplicados = parseInt(window.descuentoPuntos || 0, 10) || 0;
+    let descuentoTier = parseInt(window.tierDiscount || 0, 10) || 0;
+    let subtotalConDescuentos = Math.max(0, e - descuentoTier - puntosAplicados);
+
     let t = parseInt(shippingCost || 0, 10);
     let a = isExpressDelivery ? Math.round(1.5 * t) : t;
     let r = 0;
     if (e >= 69990) r = Math.min(a, 7250);
     let o = Math.max(0, a - r);
-    let n = e + o;
+    let n = subtotalConDescuentos + (selectedLogistics === "retiro" ? 0 : o);
     
     let i = document.getElementById("cart-total");
     if (i) i.innerText = `$${e.toLocaleString("es-CL")}`;
@@ -1031,14 +1087,13 @@ function obtenerPayloadOrden() {
     let subtotalFlores = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
     let puntos = parseInt(window.descuentoPuntos || 0, 10) || 0;
     let tier = parseInt(window.tierDiscount || 0, 10) || 0;
-    let subtotalConDescuentos = Math.max(0, subtotalFlores - tier - puntos);
     
     let baseShip = parseInt(shippingCost || 0, 10);
     let shipWithExpress = isExpressDelivery ? Math.round(1.5 * baseShip) : baseShip;
     let shippingFinal = Math.max(0, shipWithExpress - (subtotalFlores >= 69990 ? Math.min(shipWithExpress, 7250) : 0));
     if (selectedLogistics === "retiro") shippingFinal = 0;
     
-    let totalPagar = subtotalConDescuentos + shippingFinal;
+    let totalPagar = actualizarTotalConDespacho();
 
     return {
         totalCLP: totalPagar,
