@@ -6,5 +6,4 @@ Disallow: /juego.html
 Disallow: /juego2.html
 Disallow: /gracias1.html
 
-# Enlace directo al mapa para los robots
 Sitemap: https://laforestaflores.cl/sitemap.xml
