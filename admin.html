@@ -3,267 +3,353 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin | La Foresta</title>
+<title>Admin Dashboard | La Foresta</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  body { background: #0a1f1c; color: #fcfaf7; font-family: sans-serif; }
-  .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
-  input, select { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px; border-radius: 6px; width: 100%; margin-bottom: 15px; outline: none; }
-  input:focus, select:focus { border-color: #c5a059; }
-  button { background: #c5a059; color: #0a1f1c; font-weight: bold; padding: 10px 15px; border-radius: 6px; width: 100%; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
-  button:hover { background: #fff; }
-  .hidden { display: none !important; }
-  
-  /* Pestañas */
-  .tab-btn { background: transparent; color: rgba(255,255,255,0.5); border-bottom: 2px solid transparent; border-radius: 0; width: auto; padding: 10px 20px; }
-  .tab-btn.active { color: #c5a059; border-bottom: 2px solid #c5a059; }
-  .tab-btn:hover { background: transparent; color: #fff; }
-  
-  /* Tabla Excel */
-  table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
-  th { background: rgba(255,255,255,0.1); padding: 12px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.2); color: #c5a059; }
-  td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  body { background: #050f0e; color: #fcfaf7; font-family: 'Inter', sans-serif; }
+  .sidebar { background: #0a1f1c; border-right: 1px solid rgba(197,160,89,0.2); }
+  .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; }
+  .btn-gold { background: #c5a059; color: #0a1f1c; font-weight: bold; transition: 0.2s; }
+  .btn-gold:hover { background: #fff; }
+  .input-dark { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 8px; outline: none; }
+  .input-dark:focus { border-color: #c5a059; }
+  table { width: 100%; text-align: left; font-size: 13px; }
+  th { padding: 12px 16px; color: #c5a059; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em; }
+  td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
   tr:hover td { background: rgba(255,255,255,0.02); }
+  .hidden-panel { display: none !important; }
 </style>
 </head>
-<body class="p-6 max-w-5xl mx-auto">
-  <div class="flex flex-col md:flex-row justify-between items-center mb-6 border-b border-white/10 pb-4">
-      <h1 class="text-2xl font-bold text-[#c5a059]">Operaciones La Foresta</h1>
-      <button onclick="borrarSecret()" class="w-auto bg-transparent border border-white/20 text-white/50 hover:text-white text-xs mt-4 md:mt-0 py-2">Cambiar Clave Interna</button>
+<body class="flex h-screen overflow-hidden">
+
+  <div id="auth-overlay" class="fixed inset-0 bg-[#050f0e] z-50 flex items-center justify-center">
+    <div class="card p-8 w-96 text-center shadow-2xl">
+      <h2 class="text-xl font-bold text-[#c5a059] mb-6">Credenciales de Acceso</h2>
+      <input type="password" id="secret-key" class="input-dark w-full p-3 mb-4 text-center" placeholder="INTERNAL_SECRET">
+      <button onclick="login()" class="btn-gold w-full p-3 rounded-lg uppercase tracking-widest text-xs">Acceder</button>
+    </div>
   </div>
 
-  <div class="card max-w-md mx-auto" id="config-section">
-    <h2 class="font-bold mb-2">Clave Interna (X-Internal-Secret)</h2>
-    <input type="password" id="secret-key" placeholder="Pega tu INTERNAL_SECRET aquí">
-    <button onclick="guardarSecret()">Guardar en dispositivo</button>
-  </div>
+  <aside class="sidebar w-64 h-full flex flex-col hidden" id="sidebar">
+    <div class="p-6 border-b border-white/10">
+      <h1 class="text-xl font-serif italic text-[#c5a059]">La Foresta</h1>
+      <p class="text-[9px] uppercase tracking-widest opacity-50 mt-1">Control Operations</p>
+    </div>
+    <nav class="flex-1 p-4 space-y-2">
+      <button onclick="nav('dashboard')" id="nav-dashboard" class="w-full text-left p-3 rounded-lg bg-white/5 text-[#c5a059] font-medium text-sm transition">📊 Dashboard</button>
+      <button onclick="nav('customers')" id="nav-customers" class="w-full text-left p-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white font-medium text-sm transition">👥 Clientes & Billetera</button>
+      <button onclick="nav('surveys')" id="nav-surveys" class="w-full text-left p-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white font-medium text-sm transition">⭐ Calidad & Compensaciones</button>
+      <button onclick="nav('ops')" id="nav-ops" class="w-full text-left p-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white font-medium text-sm transition">🚚 Logística</button>
+    </nav>
+    <div class="p-4 border-t border-white/10">
+      <button onclick="logout()" class="w-full text-xs text-white/40 hover:text-red-400 text-left p-2">Cerrar Sesión</button>
+    </div>
+  </aside>
 
-  <div id="main-app" class="hidden">
-      <!-- Navegación -->
-      <div class="flex gap-4 mb-6 border-b border-white/10">
-          <button onclick="switchTab('ops')" id="tab-ops" class="tab-btn active">Despachos & WhatsApp</button>
-          <button onclick="switchTab('surveys'); loadSurveys();" id="tab-surveys" class="tab-btn">Resultados Encuestas</button>
+  <main class="flex-1 h-full overflow-y-auto bg-[#050f0e] p-8 hidden" id="main-content">
+    
+    <div id="view-dashboard" class="hidden-panel space-y-6">
+      <h2 class="text-2xl font-bold text-white mb-6">Métricas de Negocio</h2>
+      
+      <div class="grid grid-cols-3 gap-6">
+        <div class="card p-6">
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Pasivo Circulante (Puntos)</p>
+          <p class="text-3xl font-serif" id="stat-points">0</p>
+          <p class="text-xs opacity-50 mt-2">Puntos pendientes de canje</p>
+        </div>
+        <div class="card p-6">
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Descuentos Entregados</p>
+          <p class="text-3xl font-serif text-emerald-400" id="stat-savings">$0</p>
+          <p class="text-xs opacity-50 mt-2">Ahorro histórico transferido</p>
+        </div>
+        <div class="card p-6">
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">LTV Base Clientes</p>
+          <p class="text-3xl font-serif text-blue-400" id="stat-ltv">$0</p>
+          <p class="text-xs opacity-50 mt-2">Total ventas registradas en CRM</p>
+        </div>
       </div>
 
-      <!-- Pestaña: Operaciones -->
-      <div id="panel-ops" class="max-w-md">
-          <div class="card">
-            <h2 class="font-bold mb-2">Verificar WhatsApp Manual</h2>
-            <input type="text" id="wa-code" placeholder="Ej: LF-7583">
-            <button onclick="verificarWA()">Confirmar Código</button>
-            <p id="wa-status" class="text-xs mt-2 text-green-400"></p>
-          </div>
-
-          <div class="card">
-            <h2 class="font-bold mb-2">Actualizar Seguimiento (Tracking)</h2>
-            <input type="text" id="track-order" placeholder="ID del Pedido (Ej: 987654321)">
-            <select id="track-status">
-              <option value="transito">En Tránsito (Va en camino)</option>
-              <option value="entregado">Entregado</option>
-            </select>
-            <label class="block mb-2 text-sm text-white/70">Foto de respaldo (Opcional):</label>
-            <input type="file" id="track-photo" accept="image/*" capture="environment" class="!p-2">
-            <button onclick="actualizarTracking()">Subir y Notificar</button>
-            <p id="track-status-msg" class="text-xs mt-2 text-green-400 break-all"></p>
-          </div>
+      <div class="grid grid-cols-2 gap-6 h-80">
+        <div class="card p-6 flex flex-col">
+          <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest">Distribución de Niveles</p>
+          <div class="relative flex-1 w-full"><canvas id="tierChart"></canvas></div>
+        </div>
+        <div class="card p-6 flex flex-col">
+          <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest">Distribución de Satisfacción</p>
+          <div class="relative flex-1 w-full"><canvas id="ratingChart"></canvas></div>
+        </div>
       </div>
+    </div>
 
-      <!-- Pestaña: Encuestas (Excel) -->
-      <div id="panel-surveys" class="hidden">
-          <div class="card overflow-x-auto">
-              <div class="flex justify-between items-center mb-4">
-                  <h2 class="font-bold text-lg">Resumen de Calidad</h2>
-                  <button onclick="exportarCSV()" class="w-auto text-xs py-2 px-4 bg-emerald-600 text-white hover:bg-emerald-500 flex items-center gap-2">
-                      <span>📥</span> Descargar Excel (CSV)
-                  </button>
-              </div>
-              <table id="surveys-table">
-                  <thead>
-                      <tr>
-                          <th>Fecha</th>
-                          <th>Cliente</th>
-                          <th>Estrellas</th>
-                          <th>Lo mejor valorado</th>
-                          <th>Sugerencias para mejorar</th>
-                      </tr>
-                  </thead>
-                  <tbody id="surveys-body">
-                      <tr><td colspan="5" class="text-center opacity-50 py-4">Cargando datos...</td></tr>
-                  </tbody>
-              </table>
-          </div>
+    <div id="view-customers" class="hidden-panel space-y-6">
+      <div class="flex justify-between items-end">
+        <h2 class="text-2xl font-bold text-white">Billetera de Clientes</h2>
+        <div class="w-72">
+          <input type="text" id="search-customer" class="input-dark w-full p-2 text-sm" placeholder="Buscar por email o nombre..." oninput="searchDebounce(loadCustomers)">
+        </div>
       </div>
+      <div class="card overflow-x-auto">
+        <table id="customers-table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Nivel</th>
+              <th>LTV (Gasto)</th>
+              <th>Saldo Puntos</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="customers-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="view-surveys" class="hidden-panel space-y-6">
+      <div class="flex justify-between items-end">
+        <h2 class="text-2xl font-bold text-white">Auditoría de Calidad</h2>
+      </div>
+      <div class="card overflow-x-auto">
+        <table id="surveys-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Cliente</th>
+              <th>Calificación</th>
+              <th>Feedback</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="surveys-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="view-ops" class="hidden-panel space-y-6">
+      <h2 class="text-2xl font-bold text-white">Operaciones Logísticas</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="card p-6">
+          <h3 class="font-bold text-[#c5a059] mb-4">Actualizar Tracking</h3>
+          <input type="text" id="track-order" class="input-dark w-full p-3 mb-3 text-sm" placeholder="ID del Pedido">
+          <select id="track-status" class="input-dark w-full p-3 mb-3 text-sm">
+            <option value="transito">En Tránsito</option>
+            <option value="entregado">Entregado</option>
+          </select>
+          <input type="file" id="track-photo" accept="image/*" class="input-dark w-full p-2 mb-4 text-sm">
+          <button onclick="updateTracking()" class="btn-gold w-full p-3 rounded-lg text-sm font-bold uppercase tracking-widest">Notificar al Cliente</button>
+          <p id="track-msg" class="text-xs mt-3 text-center"></p>
+        </div>
+        
+        <div class="card p-6">
+          <h3 class="font-bold text-[#c5a059] mb-4">Auditoría WhatsApp</h3>
+          <input type="text" id="wa-code" class="input-dark w-full p-3 mb-4 text-sm" placeholder="Código OTP (Ej: LF-1234)">
+          <button onclick="verifyWA()" class="btn-gold w-full p-3 rounded-lg text-sm font-bold uppercase tracking-widest">Enlazar Número</button>
+          <p id="wa-msg" class="text-xs mt-3 text-center"></p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="points-modal" class="fixed inset-0 bg-[#050f0e]/90 backdrop-blur-sm z-[100] hidden-panel flex items-center justify-center">
+    <div class="card p-8 w-[400px]">
+      <h3 class="text-xl font-bold text-[#c5a059] mb-2">Ajuste Manual de Puntos</h3>
+      <p id="modal-customer-name" class="text-sm opacity-70 mb-6"></p>
+      
+      <label class="block text-xs uppercase tracking-widest font-bold opacity-50 mb-2">Cantidad (Usar signo - para restar)</label>
+      <input type="number" id="modal-points-val" class="input-dark w-full p-3 mb-4 text-lg text-center" placeholder="Ej: 5000">
+      
+      <label class="block text-xs uppercase tracking-widest font-bold opacity-50 mb-2">Motivo Interno</label>
+      <input type="text" id="modal-points-reason" class="input-dark w-full p-3 mb-6" placeholder="Ej: Compensación atraso">
+      
+      <input type="hidden" id="modal-customer-id">
+      
+      <div class="flex gap-4">
+        <button onclick="document.getElementById('points-modal').classList.add('hidden-panel')" class="flex-1 p-3 rounded-lg border border-white/20 text-xs font-bold uppercase hover:bg-white/5">Cancelar</button>
+        <button onclick="submitPoints()" class="flex-1 p-3 rounded-lg btn-gold text-xs font-bold uppercase">Ejecutar</button>
+      </div>
+    </div>
   </div>
 
 <script>
   const API_URL = 'https://club-laforesta.sebjmz.workers.dev';
+  let chartTiers, chartRatings;
+  let timer;
 
-  function checkSecret() {
-    if(localStorage.getItem('lf_admin_secret')) {
-      document.getElementById('config-section').classList.add('hidden');
-      document.getElementById('main-app').classList.remove('hidden');
-    } else {
-      document.getElementById('config-section').classList.remove('hidden');
-      document.getElementById('main-app').classList.add('hidden');
-    }
-  }
-  checkSecret();
-
-  function guardarSecret() {
-    localStorage.setItem('lf_admin_secret', document.getElementById('secret-key').value);
-    document.getElementById('secret-key').value = '';
-    checkSecret();
+  function login() {
+    const sec = document.getElementById('secret-key').value;
+    if(!sec) return;
+    localStorage.setItem('lf_admin_secret', sec);
+    initApp();
   }
 
-  function borrarSecret() {
+  function logout() {
     localStorage.removeItem('lf_admin_secret');
-    checkSecret();
+    location.reload();
   }
 
-  function switchTab(tab) {
-      document.getElementById('panel-ops').classList.toggle('hidden', tab !== 'ops');
-      document.getElementById('panel-surveys').classList.toggle('hidden', tab !== 'surveys');
-      document.getElementById('tab-ops').classList.toggle('active', tab === 'ops');
-      document.getElementById('tab-surveys').classList.toggle('active', tab === 'surveys');
+  function initApp() {
+    if(!localStorage.getItem('lf_admin_secret')) return;
+    document.getElementById('auth-overlay').classList.add('hidden');
+    document.getElementById('sidebar').classList.remove('hidden');
+    document.getElementById('main-content').classList.remove('hidden');
+    nav('dashboard');
   }
 
-  // OPERACIONES
-  async function verificarWA() {
-    const code = document.getElementById('wa-code').value;
-    const secret = localStorage.getItem('lf_admin_secret');
-    
-    document.getElementById('wa-status').textContent = 'Procesando...';
-    document.getElementById('wa-status').className = 'text-xs mt-2 text-yellow-400';
+  async function apicall(path, method='GET', body=null) {
+    const sec = localStorage.getItem('lf_admin_secret');
+    const opts = { method, headers: { 'X-Internal-Secret': sec, 'Content-Type': 'application/json' }};
+    if (body && !(body instanceof FormData)) opts.body = JSON.stringify(body);
+    if (body instanceof FormData) { opts.body = body; delete opts.headers['Content-Type']; }
+    const res = await fetch(`${API_URL}${path}`, opts);
+    if(res.status === 401) { logout(); throw new Error("No autorizado"); }
+    return res;
+  }
 
+  function nav(view) {
+    ['dashboard', 'customers', 'surveys', 'ops'].forEach(v => {
+      document.getElementById(`view-${v}`).classList.add('hidden-panel');
+      const btn = document.getElementById(`nav-${v}`);
+      btn.classList.remove('bg-white/5', 'text-[#c5a059]');
+      btn.classList.add('text-white/70');
+    });
+    document.getElementById(`view-${view}`).classList.remove('hidden-panel');
+    const activeBtn = document.getElementById(`nav-${view}`);
+    activeBtn.classList.add('bg-white/5', 'text-[#c5a059]');
+    activeBtn.classList.remove('text-white/70');
+
+    if(view === 'dashboard') loadStats();
+    if(view === 'customers') loadCustomers();
+    if(view === 'surveys') loadSurveys();
+  }
+
+  function searchDebounce(func) {
+    clearTimeout(timer);
+    timer = setTimeout(func, 500);
+  }
+
+  async function loadStats() {
     try {
-      const res = await fetch(`${API_URL}/api/verify-phone`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Internal-Secret': secret },
-        body: JSON.stringify({ message_text: code })
+      const res = await apicall('/api/admin/stats');
+      const data = await res.json();
+      
+      document.getElementById('stat-points').innerText = parseInt(data.financial.pasivo_circulante || 0).toLocaleString('es-CL');
+      document.getElementById('stat-savings').innerText = '$' + parseInt(data.financial.ahorro_entregado || 0).toLocaleString('es-CL');
+      document.getElementById('stat-ltv').innerText = '$' + parseInt(data.financial.ltv_total || 0).toLocaleString('es-CL');
+
+      if(chartTiers) chartTiers.destroy();
+      const ctxT = document.getElementById('tierChart').getContext('2d');
+      chartTiers = new Chart(ctxT, {
+        type: 'doughnut',
+        data: {
+          labels: data.tiers.map(t => t.tier || 'Sin Nivel'),
+          datasets: [{ data: data.tiers.map(t => t.count), backgroundColor: ['#c5a059', '#3b82f6', '#10b981', '#4b5563'], borderWidth: 0 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#fff', font: { size: 10 } } } } }
       });
-      if (res.ok) {
-        document.getElementById('wa-status').textContent = '✅ Verificado con éxito';
-        document.getElementById('wa-status').className = 'text-xs mt-2 text-green-400';
-      } else {
-        const data = await res.json();
-        document.getElementById('wa-status').textContent = '❌ Error: ' + (data.error || 'Error desconocido');
-        document.getElementById('wa-status').className = 'text-xs mt-2 text-red-400';
-      }
-    } catch (err) {
-      document.getElementById('wa-status').textContent = '❌ Error de conexión de red';
-      document.getElementById('wa-status').className = 'text-xs mt-2 text-red-400';
-    }
+
+      if(chartRatings) chartRatings.destroy();
+      const ctxR = document.getElementById('ratingChart').getContext('2d');
+      chartRatings = new Chart(ctxR, {
+        type: 'bar',
+        data: {
+          labels: data.ratings.map(r => r.rating + ' Estrellas'),
+          datasets: [{ label: 'Respuestas', data: data.ratings.map(r => r.count), backgroundColor: '#c5a059', borderRadius: 4 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
+      });
+    } catch(e) {}
   }
 
-  async function actualizarTracking() {
-    const orderId = document.getElementById('track-order').value;
-    const status = document.getElementById('track-status').value;
-    const photoInput = document.getElementById('track-photo');
-    const secret = localStorage.getItem('lf_admin_secret');
+  async function loadCustomers() {
+    const q = document.getElementById('search-customer').value;
+    const res = await apicall(`/api/admin/customers?q=${encodeURIComponent(q)}`);
+    const data = await res.json();
+    const tbody = document.getElementById('customers-body');
     
-    if(!orderId) return alert('Falta ID del pedido');
-
-    const formData = new FormData();
-    formData.append('order_id', orderId);
-    formData.append('status', status);
-    if(photoInput.files[0]) formData.append('photo', photoInput.files[0]);
-
-    document.getElementById('track-status-msg').textContent = 'Subiendo...';
-    document.getElementById('track-status-msg').className = 'text-xs mt-2 text-yellow-400';
-
-    try {
-      const res = await fetch(`${API_URL}/api/admin/tracking`, {
-        method: 'POST',
-        headers: { 'X-Internal-Secret': secret },
-        body: formData
-      });
-
-      if(res.ok) {
-        const data = await res.json();
-        document.getElementById('track-status-msg').textContent = '✅ Actualizado. Link: ' + data.tracking_link;
-        document.getElementById('track-status-msg').className = 'text-xs mt-2 text-green-400 break-all';
-        document.getElementById('track-order').value = '';
-        photoInput.value = '';
-      } else {
-        const data = await res.json();
-        document.getElementById('track-status-msg').textContent = '❌ Error: ' + (data.error || 'Error al subir');
-        document.getElementById('track-status-msg').className = 'text-xs mt-2 text-red-400';
-      }
-    } catch (err) {
-      document.getElementById('track-status-msg').textContent = '❌ Error de conexión de red';
-      document.getElementById('track-status-msg').className = 'text-xs mt-2 text-red-400';
-    }
+    tbody.innerHTML = data.customers.map(c => `
+      <tr>
+        <td><strong class="block">${c.full_name || '-'}</strong><span class="text-[10px] opacity-50">${c.email}</span></td>
+        <td><span class="bg-white/5 border border-white/10 px-2 py-1 rounded text-[10px] uppercase text-[#c5a059]">${c.tier || 'Cuarzo'}</span></td>
+        <td class="font-serif">$${(c.lifetime_flowers_clp || 0).toLocaleString('es-CL')}</td>
+        <td class="font-bold font-serif text-[#c5a059]">${(c.points_balance || 0).toLocaleString('es-CL')} pts</td>
+        <td><button onclick="openPointsModal('${c.id}', '${c.full_name || c.email}')" class="text-[10px] border border-[#c5a059] text-[#c5a059] px-3 py-1.5 rounded hover:bg-[#c5a059] hover:text-[#050f0e] uppercase tracking-widest font-bold transition">Ajustar Saldo</button></td>
+      </tr>
+    `).join('');
   }
 
-  // ENCUESTAS Y EXCEL
-  let encuestasGlobales = [];
+  function openPointsModal(id, name) {
+    document.getElementById('modal-customer-id').value = id;
+    document.getElementById('modal-customer-name').innerText = name;
+    document.getElementById('modal-points-val').value = '';
+    document.getElementById('modal-points-reason').value = '';
+    document.getElementById('points-modal').classList.remove('hidden-panel');
+  }
+
+  async function submitPoints() {
+    const id = document.getElementById('modal-customer-id').value;
+    const pts = document.getElementById('modal-points-val').value;
+    const reason = document.getElementById('modal-points-reason').value;
+    if(!pts) return;
+
+    await apicall('/api/admin/customers/points', 'POST', { customer_id: id, points: pts, reason });
+    document.getElementById('points-modal').classList.add('hidden-panel');
+    loadCustomers();
+  }
 
   async function loadSurveys() {
-      const tbody = document.getElementById('surveys-body');
-      const secret = localStorage.getItem('lf_admin_secret');
-      tbody.innerHTML = '<tr><td colspan="5" class="text-center opacity-50 py-4">Cargando encuestas...</td></tr>';
+    const res = await apicall('/api/admin/surveys');
+    const data = await res.json();
+    const tbody = document.getElementById('surveys-body');
+    
+    tbody.innerHTML = data.surveys.map(s => {
+      const estrellas = '★'.repeat(s.rating) + '<span class="opacity-20">' + '★'.repeat(5-s.rating) + '</span>';
+      const critico = s.rating <= 3 ? 'bg-red-500/10' : '';
+      let aspec = ''; try { aspec = JSON.parse(s.issues || '[]').join(', '); } catch(e){}
       
-      try {
-          const res = await fetch(`${API_URL}/api/admin/surveys`, {
-              headers: { 'X-Internal-Secret': secret }
-          });
-          const data = await res.json();
-          if(!res.ok) throw new Error(data.error);
-          
-          encuestasGlobales = data.surveys || [];
-          if(encuestasGlobales.length === 0) {
-              tbody.innerHTML = '<tr><td colspan="5" class="text-center opacity-50 py-4">No hay respuestas aún.</td></tr>';
-              return;
-          }
-
-          tbody.innerHTML = encuestasGlobales.map(s => {
-              const fecha = new Date(s.answered_at).toLocaleDateString('es-CL');
-              const estrellas = '★'.repeat(s.rating) + '☆'.repeat(5-s.rating);
-              let aspectos = '';
-              try { aspectos = JSON.parse(s.issues || '[]').join(', '); } catch(e){}
-              
-              return `
-                <tr>
-                    <td class="whitespace-nowrap opacity-70">${fecha}</td>
-                    <td><strong class="block">${s.full_name || 'Cliente'}</strong><span class="text-[10px] opacity-60">${s.email}</span></td>
-                    <td class="text-[#c5a059] text-lg">${estrellas}</td>
-                    <td>${aspectos || '-'}</td>
-                    <td class="italic opacity-90">${s.suggestion || '-'}</td>
-                </tr>
-              `;
-          }).join('');
-
-      } catch (err) {
-          tbody.innerHTML = `<tr><td colspan="5" class="text-center text-red-400 py-4">Error al cargar: ${err.message}</td></tr>`;
-      }
+      return `
+        <tr class="${critico}">
+          <td class="text-[10px] opacity-60">${new Date(s.answered_at).toLocaleDateString('es-CL')}</td>
+          <td><strong class="block">${s.full_name || 'Anónimo'}</strong><span class="text-[10px] opacity-50">${s.email}</span></td>
+          <td class="text-[#c5a059] text-lg tracking-widest">${estrellas}</td>
+          <td><span class="block text-xs text-white/80">${aspec}</span><span class="text-[10px] opacity-50 italic block mt-1">"${s.suggestion || '-'}"</span></td>
+          <td>
+            ${s.rating <= 3 && s.customer_id ? `<button onclick="openPointsModal('${s.customer_id}', '${s.full_name || s.email}')" class="text-[10px] bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1.5 rounded hover:bg-red-500 hover:text-white uppercase tracking-widest font-bold transition">Compensar</button>` : '<span class="text-[10px] opacity-30 uppercase tracking-widest">N/A</span>'}
+          </td>
+        </tr>
+      `;
+    }).join('');
   }
 
-  function exportarCSV() {
-      if(encuestasGlobales.length === 0) return alert('No hay datos para exportar.');
-      
-      let csvContent = "data:text/csv;charset=utf-8,";
-      csvContent += "Fecha,Nombre,Email,Estrellas,Aspectos Valorado,Sugerencia\n";
-      
-      encuestasGlobales.forEach(s => {
-          const fecha = new Date(s.answered_at).toLocaleDateString('es-CL');
-          const name = `"${(s.full_name || '').replace(/"/g, '""')}"`;
-          const email = s.email;
-          let aspectos = '';
-          try { aspectos = JSON.parse(s.issues || '[]').join(' / '); } catch(e){}
-          const issues = `"${aspectos}"`;
-          const sug = `"${(s.suggestion || '').replace(/"/g, '""')}"`;
-          
-          csvContent += `${fecha},${name},${email},${s.rating},${issues},${s.sug}\n`;
-      });
-      
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", `Encuestas_La_Foresta_${new Date().toISOString().slice(0,10)}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+  async function updateTracking() {
+    const form = new FormData();
+    form.append('order_id', document.getElementById('track-order').value);
+    form.append('status', document.getElementById('track-status').value);
+    const photo = document.getElementById('track-photo').files[0];
+    if(photo) form.append('photo', photo);
+
+    const msg = document.getElementById('track-msg');
+    msg.innerText = 'Subiendo...'; msg.className = 'text-xs mt-3 text-center text-yellow-400';
+
+    try {
+      const res = await apicall('/api/admin/tracking', 'POST', form);
+      const data = await res.json();
+      if(res.ok) { msg.innerText = '✅ Listo: ' + data.tracking_link; msg.className = 'text-xs mt-3 text-center text-emerald-400 break-all'; }
+      else { msg.innerText = '❌ ' + data.error; msg.className = 'text-xs mt-3 text-center text-red-400'; }
+    } catch(e) { msg.innerText = '❌ Error de red'; msg.className = 'text-xs mt-3 text-center text-red-400'; }
   }
+
+  async function verifyWA() {
+    const msg = document.getElementById('wa-msg');
+    msg.innerText = 'Verificando...'; msg.className = 'text-xs mt-3 text-center text-yellow-400';
+    try {
+      const res = await apicall('/api/verify-phone', 'POST', { message_text: document.getElementById('wa-code').value });
+      if(res.ok) { msg.innerText = '✅ Verificado'; msg.className = 'text-xs mt-3 text-center text-emerald-400'; }
+      else { msg.innerText = '❌ Código inválido'; msg.className = 'text-xs mt-3 text-center text-red-400'; }
+    } catch(e) { msg.innerText = '❌ Error de red'; msg.className = 'text-xs mt-3 text-center text-red-400'; }
+  }
+
+  initApp();
 </script>
 </body>
 </html>
