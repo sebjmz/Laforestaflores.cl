@@ -1622,14 +1622,12 @@
     document.addEventListener("DOMContentLoaded", function() {
         const STORAGE_KEY = 'laforesta_fab_interacted';
 
-        // Si ya interactuó en esta sesión, quitamos la onda inmediatamente
         if (sessionStorage.getItem(STORAGE_KEY)) {
             let btn = document.getElementById('main-fab-btn');
             if (btn) btn.classList.remove('fab-wave');
         }
 
         window.toggleFabMenu = function() {
-            // Al presionar, marcamos como interactuado para que no ondee más en esta sesión
             if (!sessionStorage.getItem(STORAGE_KEY)) {
                 sessionStorage.setItem(STORAGE_KEY, 'true');
                 let btn = document.getElementById('main-fab-btn');
@@ -1652,16 +1650,15 @@
             }
         };
     });
-</script>
+    </script>
 
-<!-- INTEGRACIÓN LOCAL DE LÓGICA CLUB Y ANÓNIMO -->
+    <!-- INTEGRACIÓN LOCAL DE LÓGICA CLUB Y ANÓNIMO -->
     <script>
     document.addEventListener("DOMContentLoaded", () => {
         window.descuentoPuntos = 0;
         window.maxPuntosCanjeables = 0;
         window.tierDiscount = 0;
         
-        // Interceptar paso 6 para cargar la vista previa de puntos
         const botones = document.querySelectorAll("button");
         botones.forEach(b => {
             if(b.getAttribute("onclick") && b.getAttribute("onclick").includes("goToStep(6)")) {
@@ -1680,7 +1677,6 @@
                             const container = document.getElementById('points-redemption-container');
                             if(container && data.points_balance > 0) {
                                 container.classList.remove('hidden');
-                                // Si ya se aplicaron antes, mantenemos en 0 visualmente
                                 const puntosDisponiblesVisual = window.descuentoPuntos > 0 ? 0 : data.points_balance;
                                 document.getElementById('checkout-points-balance').innerText = `${puntosDisponiblesVisual.toLocaleString("es-CL")} pts`;
                                 window.maxPuntosCanjeables = data.max_redeemable_clp;
@@ -1692,8 +1688,8 @@
                                 document.getElementById('checkout-max-discount').innerText = textoDescuento;
                             }
                             
-                            let pct = 0;
-                            let tierNameLabel = "Beneficio Privé";
+                            let pct = 0.03;
+                            let tierNameLabel = "Beneficio Cuarzo (3%)";
                             
                             if(data.tier === 'Diamante') {
                                 pct = 0.05;
@@ -1701,9 +1697,6 @@
                             } else if(data.tier === 'Zafiro') {
                                 pct = 0.04;
                                 tierNameLabel = "Beneficio Zafiro (4%)";
-                            } else if(data.tier === 'Cuarzo') {
-                                pct = 0.03;
-                                tierNameLabel = "Beneficio Cuarzo (3%)";
                             }
                             
                             window.tierDiscount = Math.round(subtotalFlores * pct);
@@ -1722,61 +1715,45 @@
             }
         });
 
-        // Función para aplicar o revertir el uso de puntos (Permite volver atrás)
         window.aplicarPuntos = function() {
             const btn = document.getElementById('btn-aplicar-puntos');
             const balanceEl = document.getElementById('checkout-points-balance');
 
             if (window.descuentoPuntos > 0) {
-                // REVERTIR / VOLVER ATRÁS: Devolvemos los puntos al saldo visual y anulamos el descuento
                 window.descuentoPuntos = 0;
                 document.getElementById('checkout-points-discount').classList.add('hidden');
-                
-                // Restauramos el balance visual original (recuperándolo desde la vista previa o calculándolo)
                 balanceEl.innerText = `${window.maxPuntosCanjeables.toLocaleString("es-CL")} pts`; 
-                
                 btn.innerText = "Usar mi saldo en esta compra";
                 btn.classList.add('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
                 btn.classList.remove('bg-[#c5a059]', 'border-transparent');
             } else {
-                // APLICAR PUNTOS: Los puntos bajan a 0 arriba y se aplica el descuento abajo
                 if(window.maxPuntosCanjeables <= 0) return;
                 window.descuentoPuntos = window.maxPuntosCanjeables;
-                
                 document.getElementById('checkout-points-discount').classList.remove('hidden');
                 document.getElementById('checkout-points-amount').innerText = `-$${window.descuentoPuntos.toLocaleString("es-CL")}`;
-                
-                balanceEl.innerText = `0 pts`; // Quedan en 0 arriba
-                
+                balanceEl.innerText = `0 pts`; 
                 btn.innerText = "✓ Saldo Aplicado (Hacer clic para anular)";
                 btn.classList.remove('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
                 btn.classList.add('bg-[#c5a059]', 'text-[#0a1f1c]', 'border-transparent');
             }
-            
             if(typeof window.actualizarTotalConDespacho === 'function') window.actualizarTotalConDespacho();
         };
 
-        // Sobrescritura de main.js: actualizarTotalConDespacho
         const checkMainJsLoaded = setInterval(() => {
             if (typeof window.actualizarTotalConDespacho === 'function') {
                 clearInterval(checkMainJsLoaded);
                 window.actualizarTotalConDespacho = function() {
                     const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
                     const subtotalOriginal = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
-                    
                     const subtotalConDescuentos = Math.max(0, subtotalOriginal - (window.tierDiscount || 0) - (window.descuentoPuntos || 0));
-
                     const shippingCost = parseInt(window.shippingCost || localStorage.getItem('laforesta_shippingCost') || 0, 10);
                     const isExpressDelivery = window.isExpressDelivery || localStorage.getItem('laforesta_isExpressDelivery') === 'true';
                     const selectedLogistics = window.selectedLogistics || localStorage.getItem('laforesta_selectedLogistics');
-                    
                     const costoEnvioBase = isExpressDelivery ? Math.round(shippingCost * 1.5) : shippingCost;
                     let bonoEnvio = 0;
                     if (subtotalOriginal >= 69990) bonoEnvio = Math.min(costoEnvioBase, 7250);
-                    
                     const envioFinal = Math.max(0, costoEnvioBase - bonoEnvio);
                     const totalPagar = subtotalConDescuentos + envioFinal;
-                    
                     const elSub = document.getElementById('checkout-subtotal');
                     const elShip = document.getElementById('checkout-shipping');
                     const elTotal = document.getElementById('checkout-final-total');
@@ -1785,7 +1762,6 @@
 
                     if(elSub) elSub.innerText = `$${subtotalOriginal.toLocaleString("es-CL")}`;
                     if(elTotal) elTotal.innerText = `$${totalPagar.toLocaleString("es-CL")}`;
-                    
                     if(elLabel) {
                         if(isExpressDelivery && selectedLogistics === 'envio') {
                             elLabel.innerHTML = `<span class="inline-flex items-center gap-1.5">Logística <span class="bg-[#c5a059]/10 text-[#c5a059] border border-[#c5a059]/30 px-1.5 py-[2px] rounded-sm text-[7px] md:text-[8px] font-bold uppercase tracking-widest whitespace-nowrap leading-none mt-0.5">Express (+50%)</span></span>`;
@@ -1793,7 +1769,6 @@
                             elLabel.innerText = 'Logística';
                         }
                     }
-
                     if(elShip && elNotice) {
                         if(selectedLogistics === 'retiro') {
                             elShip.innerText = "Retiro en tienda ($0)";
@@ -1815,7 +1790,6 @@
                             }
                         }
                     }
-
                     const cartTotal = document.getElementById('cart-total');
                     const cartNotice = document.getElementById('cart-shipping-notice');
                     if(cartTotal) cartTotal.innerText = `$${subtotalOriginal.toLocaleString("es-CL")}`;
@@ -1832,39 +1806,29 @@
                     }
                     const stickyTotal = document.getElementById('sticky-cart-total');
                     if(stickyTotal) stickyTotal.innerText = `$${subtotalOriginal.toLocaleString("es-CL")}`;
-
                     return totalPagar;
                 };
 
-                // Sobrescribir obtenerPayloadOrden
                 window.obtenerPayloadOrden = function() {
                     const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
                     const subtotalOriginal = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
-                    
                     const isAnon = document.getElementById('envio-anonimo') && document.getElementById('envio-anonimo').checked;
                     const emisorAnonimo = isAnon ? "Alguien que te quiere (Anónimo)" : (document.getElementById("sender-name")?.value || "No especificado");
-
                     const tEmail = document.getElementById("buyer-email")?.value.trim() || "";
                     const tReceiver = document.getElementById("receiver-name")?.value || "No especificado";
                     const tCard = document.getElementById("card-message")?.value || "";
                     const tPhone = document.getElementById("receiver-phone")?.value || "";
-                    
                     const selectedLogistics = window.selectedLogistics || localStorage.getItem('laforesta_selectedLogistics');
                     const selectedZoneName = window.selectedZoneName || localStorage.getItem('laforesta_selectedZoneName') || '';
                     const isExpressDelivery = window.isExpressDelivery || localStorage.getItem('laforesta_isExpressDelivery') === 'true';
-
                     let tLogistics = selectedLogistics === 'envio' 
                         ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById("address")?.value || ""}` 
                         : `Retiro en Atelier Reñaca\n• *RETIRA:* ${document.getElementById("pickup-name")?.value || ""}`;
-                    
                     if(isExpressDelivery && selectedLogistics === 'envio') tLogistics = "[SERVICIO EXPRESS] " + tLogistics;
-
                     const tTime = window.selectedTimeSlot || localStorage.getItem('laforesta_selectedTimeSlot') || "No especificado";
                     const sDate = window.selectedDate || localStorage.getItem('laforesta_selectedDate');
                     const tFecha = sDate === "hoy" ? "Hoy" : sDate;
-
                     const totalPagar = window.actualizarTotalConDespacho();
-                    
                     const shippingCost = parseInt(window.shippingCost || localStorage.getItem('laforesta_shippingCost') || 0, 10);
                     const costoEnvioBase = isExpressDelivery ? Math.round(shippingCost * 1.5) : shippingCost;
                     let bonoEnvio = 0;
@@ -1882,12 +1846,13 @@
                             destination_phone: tPhone,
                             card_text: tCard,
                             total_price: totalPagar,
+                            flowers_subtotal_clp: subtotalOriginal,
+                            points_discount_clp: window.descuentoPuntos || 0,
                             order_summary: currentCart.map(e => `- ${e.name} (Cant: ${e.qty}) [c/u: $${e.price.toLocaleString("es-CL")}]`).join("\n"),
                             fecha_entrega: tFecha,
                             valor_envio: envioFinal,
                             comprador_email: tEmail,
-                            points_discount_clp: window.descuentoPuntos || 0,
-                            flowers_subtotal_clp: subtotalOriginal
+                            ga_client_id: obtenerGA4ClientId()
                         }
                     };
                 };
@@ -1895,8 +1860,8 @@
         }, 100);
     });
     </script>
-    
-    <script src="js/main.js?v=2" defer></script>
+
+    <script src="js/main.js?v=12" defer></script>
 
     <!-- Google Tag Manager -->
     <script>
