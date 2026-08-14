@@ -39,6 +39,12 @@ function cargarPasarelasYAbrirCheckout() {
             pasarelasCargadas = true;
             openCheckout();
         };
+        t.onerror = () => {
+            // Si la carga falla o se interrumpe, abrimos el checkout de todas formas 
+            // para no bloquear el proceso y permitir el pago con MercadoPago.
+            pasarelasCargadas = true;
+            openCheckout();
+        };
         document.body.appendChild(t);
     }
 }
@@ -1236,11 +1242,33 @@ async function iniciarMercadoPago() {
 
 function iniciarPayPal() {
     if (cart.length === 0) return alert("El atelier está vacío.");
+    
+    // Si el objeto paypal no existe (por interrupción de red o recarga rápida), 
+    // lo forzamos a cargar dinámicamente aquí mismo antes de continuar.
     if (typeof paypal === "undefined") {
-        alert("El sistema de pago internacional no pudo cargar (posible bloqueo por AdBlock o conexión). Por favor, desactive el bloqueador de anuncios o intente recargar la página.");
+        let loading = document.getElementById("loading-payment");
+        if (loading) {
+            loading.style.display = "block";
+            loading.innerHTML = '<p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Conectando pasarela segura...</p>';
+        }
+        
+        let t = document.createElement("script");
+        t.src = "https://www.paypal.com/sdk/js?client-id=AbfBLeAuXrylWnzDIOQcvpfJwrzBAy0N8281_ip4dFmH1k6H8kW70tPOE_IH6sc05OafIHHfe1PE1Mv1&currency=USD";
+        t.onload = () => {
+            ejecutarLogicaPayPal();
+        };
+        t.onerror = () => {
+            alert("No se pudo establecer conexión con PayPal. Por favor, intente con MercadoPago o revise su conexión.");
+            resetearPasarela();
+        };
+        document.body.appendChild(t);
         return;
     }
-    
+
+    ejecutarLogicaPayPal();
+}
+
+function ejecutarLogicaPayPal() {
     let sel = document.getElementById("payment-selector");
     let btnVolver = document.getElementById("btn-volver-pago");
     let paypalCont = document.getElementById("paypal-container");
