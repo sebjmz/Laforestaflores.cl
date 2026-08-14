@@ -837,6 +837,7 @@ async function doRegister(e){
     const data = await res.json();
     if(!res.ok) { 
         errEl.textContent = data.error === "Email already exists" ? "Ya existe una cuenta con tu correo." : data.error; 
+        if (typeof turnstile !== 'undefined') turnstile.reset();
         return false; 
     }
     localStorage.setItem('laforesta_prev_points', 0);
@@ -847,7 +848,10 @@ async function doRegister(e){
         document.getElementById('auth-wrap').classList.add('hidden-panel');
         document.getElementById('verify-email-section').classList.remove('hidden-panel');
     }, 800);
-  }catch(err){ errEl.textContent = 'Hubo un error de conexión.'; }
+  }catch(err){ 
+      errEl.textContent = 'Hubo un error de conexión.'; 
+      if (typeof turnstile !== 'undefined') turnstile.reset();
+  }
   return false;
 }
 
@@ -891,6 +895,7 @@ async function doLogin(e){
     const data = await res.json();
     if(!res.ok){ 
       errEl.textContent = data.error || data.detail || `Error (${res.status})`; 
+      if (typeof turnstile !== 'undefined') turnstile.reset();
       return false; 
     }
     localStorage.setItem('laforesta_prev_points', 0);
@@ -899,6 +904,7 @@ async function doLogin(e){
     loadDashboardInit();
   }catch(err){ 
     errEl.textContent = 'Error de conexión con el servidor.'; 
+    if (typeof turnstile !== 'undefined') turnstile.reset();
   }
   return false;
 }
@@ -917,13 +923,18 @@ async function doForgotPassword(e) {
       body: JSON.stringify({ email, turnstileToken: forgotTurnstileToken || "test_token_local" })
     });
     const data = await res.json();
-    if (!res.ok) { errEl.textContent = data.error; okEl.textContent = ''; return; }
+    if (!res.ok) { 
+        errEl.textContent = data.error; okEl.textContent = ''; 
+        if (typeof turnstile !== 'undefined') turnstile.reset();
+        return; 
+    }
     pendingForgotEmail = email;
     okEl.textContent = '';
     showAuthTab('reset');
     alert(data.message);
   } catch(err) {
     errEl.textContent = 'Error de conexión.'; okEl.textContent = '';
+    if (typeof turnstile !== 'undefined') turnstile.reset();
   }
 }
 
