@@ -286,7 +286,7 @@
                 <span id="bday-badge" class="hidden bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded text-[10px] uppercase tracking-widest font-bold">Guardado</span>
             </div>
             <p id="bday-desc" class="text-[#0a1f1c]/70 dark:text-white/70 text-sm md:text-base leading-relaxed mb-8 flex-grow">
-                Cuéntanos cuándo estás de cumpleaños (recuerda que solo puedes hacerlo una vez). Ese día te regalaremos 3.000 puntos y te dejaremos pagar hasta el 100% de tu ramo con tu saldo.
+                Cuéntanos cuándo estás de cumpleaños (recuerda que solo puedes hacerlo una vez). Ese día te dejaremos pagar hasta el 100% de tu ramo con tu saldo, y si ya eres cliente, sumaremos 3.000 puntos automáticos de regalo.
             </p>
             
             <form id="bday-form" class="flex flex-col sm:flex-row gap-4" onsubmit="return saveBirthday(event)">
@@ -753,7 +753,12 @@ async function renderDashboard(animate = false) {
           const dia = parseInt(parts[1], 10);
           const mes = meses[parseInt(parts[0], 10) - 1];
           document.getElementById('bday-display').value = `${dia} de ${mes}`;
-          document.getElementById('bday-desc').innerHTML = `El <strong class="text-[#0a1f1c] dark:text-white text-base">${dia} de ${mes}</strong> depositaremos 3.000 puntos en tu cuenta con vigencia de 24 horas y podrás usarlos para pagar hasta el 100% de cualquier arreglo floral.`;
+          
+          if (c.lifetime_flowers_clp > 0) {
+              document.getElementById('bday-desc').innerHTML = `El <strong class="text-[#0a1f1c] dark:text-white text-base">${dia} de ${mes}</strong> depositaremos 3.000 puntos en tu cuenta con vigencia de 24 horas y podrás usarlos para pagar hasta el 100% de cualquier arreglo floral.`;
+          } else {
+              document.getElementById('bday-desc').innerHTML = `El <strong class="text-[#0a1f1c] dark:text-white text-base">${dia} de ${mes}</strong> podrás usar tu saldo acumulado para pagar hasta el 100% de cualquier arreglo floral. ¡Asegúrate de invitar amigos para sumar puntos!`;
+          }
       }
   }
 
