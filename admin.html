@@ -361,96 +361,6 @@
     loadStats();
   }
 
-  <script>
-  const API_URL = 'https://club-laforesta.sebjmz.workers.dev';
-  let chartTrend, chartTiers, chartRatings;
-  let chartFunnel; // <-- 1. AQUÍ SE DECLARA LA VARIABLE DEL GRÁFICO
-  let currentPeriod = '30';
-  let timer;
-
-  function login() { ... }
-  function logout() { ... }
-  function initApp() { ... }
-  async function apicall(path, method='GET', body=null) { ... }
-  function nav(view) { ... }
-  function searchDebounce(func) { ... }
-  function changePeriod(p) { ... }
-  async function loadStats() { ... }
-
-  // <-- 2. AQUÍ PEGAS LA FUNCIÓN loadAnalytics COMPLETA -->
-  async function loadAnalytics() {
-    try {
-      const urlFilter = document.getElementById('analytics-url-filter').value;
-      const res = await apicall(`/api/admin/analytics?url_filter=${encodeURIComponent(urlFilter)}`);
-      const data = await res.json();
-      
-      const aeRate = data.conversion_ae.views > 0 ? ((data.conversion_ae.adds / data.conversion_ae.views) * 100).toFixed(1) : 0;
-      document.getElementById('ae-views').innerText = data.conversion_ae.views;
-      document.getElementById('ae-adds').innerText = data.conversion_ae.adds;
-      document.getElementById('ae-rate').innerText = aeRate + '%';
-
-      const abandonedTotal = data.abandoned.reduce((acc, curr) => acc + parseInt(curr.value || 0), 0);
-      document.getElementById('abandoned-total').innerText = '$' + abandonedTotal.toLocaleString('es-CL');
-      document.getElementById('abandoned-count').innerText = data.abandoned.length;
-      
-      const tbody = document.getElementById('abandoned-body');
-      tbody.innerHTML = data.abandoned.map(c => `
-        <tr class="hover:bg-red-900/30">
-          <td>${new Date(c.created_at).toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})}</td>
-          <td><strong class="text-[#c5a059]">${c.email}</strong></td>
-          <td class="font-serif">$${parseInt(c.value || 0).toLocaleString('es-CL')}</td>
-          <td class="opacity-50 text-[10px] uppercase">${c.method}</td>
-        </tr>
-      `).join('');
-
-      const upsellList = document.getElementById('upsell-list');
-      upsellList.innerHTML = data.upsells.map(u => `
-        <div class="flex justify-between border-b border-white/10 pb-2 mb-2 last:border-0 last:mb-0 last:pb-0">
-          <span class="text-sm opacity-80 truncate pr-2">${u.name}</span>
-          <span class="text-[#c5a059] font-bold shrink-0">${u.count} uds</span>
-        </div>
-      `).join('');
-
-      if(chartFunnel) chartFunnel.destroy();
-      const ctxF = document.getElementById('funnelChart').getContext('2d');
-      chartFunnel = new Chart(ctxF, {
-        type: 'bar',
-        data: {
-          labels: data.funnel.map(f => f.step),
-          datasets: [{
-            label: 'Usuarios en este paso',
-            data: data.funnel.map(f => f.count),
-            backgroundColor: 'rgba(239, 68, 68, 0.7)',
-            borderColor: 'rgb(239, 68, 68)',
-            borderWidth: 1,
-            borderRadius: 4
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } },
-            y: { grid: { display: false }, ticks: { color: '#888', font: { size: 10 } } }
-          }
-        }
-      });
-
-    } catch(e) { console.error(e); }
-  }
-
-  async function loadCustomers() { ... }
-  function openPointsModal(id, name) { ... }
-  async function submitPoints() { ... }
-  async function loadSurveys() { ... }
-  async function updateTracking() { ... }
-  async function verifyWA() { ... }
-
-  initApp();
-</script>
-  
   async function loadStats() {
     try {
       const res = await apicall(`/api/admin/stats?period=${currentPeriod}`);
@@ -520,7 +430,8 @@
 
   async function loadAnalytics() {
     try {
-      const res = await apicall('/api/admin/analytics');
+      const urlFilter = document.getElementById('analytics-url-filter').value;
+      const res = await apicall(`/api/admin/analytics?url_filter=${encodeURIComponent(urlFilter)}`);
       const data = await res.json();
       
       const aeRate = data.conversion_ae.views > 0 ? ((data.conversion_ae.adds / data.conversion_ae.views) * 100).toFixed(1) : 0;
@@ -552,7 +463,6 @@
 
       if(chartFunnel) chartFunnel.destroy();
       const ctxF = document.getElementById('funnelChart').getContext('2d');
-      
       chartFunnel = new Chart(ctxF, {
         type: 'bar',
         data: {
