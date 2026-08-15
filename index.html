@@ -1926,25 +1926,20 @@
         }
     };
 
-    // 1. Registro de Visita
     trackEvent4D('page_view');
 
-    // 2. Registro de Conversión Real (Solo se ejecuta en gracias.html)
     if (pathActual.includes('gracias.html')) {
         const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
         cartData.forEach(item => {
             trackEvent4D('purchase', { product_id: item.id, product_name: item.name, price: item.price, qty: item.qty });
         });
-        // Si tienes una función para vaciar el carro tras pago, asegúrate de que corra DESPUÉS de este bloque.
     }
 
-    // 3. Captura exacta de retención en segundos (Time-on-Page)
     window.addEventListener('beforeunload', function() {
         const secondsSpent = Math.round((Date.now() - startTime) / 1000);
         trackEvent4D('time_on_page', { seconds: secondsSpent });
     });
 
-    // 4. Interceptores Funcionales (Checkout y AddToCart globales)
     function engancharFuncionesGlobales() {
         if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
             const originalGoToStep = window.goToStep;
@@ -1962,15 +1957,15 @@
     }
     setInterval(engancharFuncionesGlobales, 500);
 
-    // 5. Escucha de interacciones orgánicas en el DOM
     document.addEventListener('click', function(e) {
         const el = e.target.closest('button, a, .step-option, [onclick]');
         if (!el) return;
 
         const onclickAttr = el.getAttribute('onclick') || '';
-        const text = (el.innerText || el.textContent || '').trim();
+        // AQUÍ ESTÁ LA MAGIA: Pasa todo a minúsculas para no perder clics
+        const text = (el.innerText || el.textContent || '').trim().toLowerCase();
 
-        if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || text === 'Añadir' || text.includes('Añadir al Atelier')) {
+        if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || text === 'añadir' || text.includes('añadir al atelier')) {
             const matchId = onclickAttr.match(/(?:addToCart|agregarYVolver)\s*\(\s*(\d+)/);
             const prodId = matchId ? parseInt(matchId[1], 10) : 0;
             let prodName = 'Producto';
@@ -1999,11 +1994,12 @@
             return;
         }
 
-        if (onclickAttr.includes('iniciarMercadoPago') || onclickAttr.includes('iniciarPayPal') || text.includes('MercadoPago') || text.includes('PayPal')) {
+        // AQUÍ SE CAPTURAN TODOS LOS BOTONES DE PAGO Y FINALIZAR COMPRA
+        if (onclickAttr.includes('iniciarMercadoPago') || onclickAttr.includes('iniciarPayPal') || text.includes('mercadopago') || text.includes('paypal') || text.includes('pagar') || text.includes('finalizar compra') || text.includes('comprar')) {
             const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
             const totalVal = cartData.reduce((acc, item) => acc + (item.price * item.qty), 0);
             const email = document.getElementById('buyer-email')?.value || 'desconocido';
-            trackEvent4D('payment_initiated', { method: text.includes('PayPal') ? 'PayPal' : 'MercadoPago', cart_value: totalVal, email: email });
+            trackEvent4D('payment_initiated', { method: text.includes('paypal') ? 'PayPal' : 'MercadoPago/Otro', cart_value: totalVal, email: email });
         }
     }, true);
 })();
