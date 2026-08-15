@@ -1394,73 +1394,76 @@ document.addEventListener('visibilitychange', async () => {
 });
 </script>
 <script>
-    (function() {
+(function() {
     const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
     
-    // Generar o recuperar ID de sesión único
     let sid = sessionStorage.getItem('lf_sid');
     if (!sid) { 
-        sid = crypto.randomUUID ? crypto.randomUUID() : 'sid_' + Date.now() + Math.random(); 
+        sid = 'sid_' + Date.now() + '_' + Math.floor(Math.random()*100000); 
         sessionStorage.setItem('lf_sid', sid); 
     }
-    
-    // Función base de envío asíncrono silencioso
+
+    const pathActual = window.location.pathname || '/club.html';
+
     window.trackEvent4D = function(name, data = {}) {
         fetch(API_TRACK, { 
             method: 'POST', 
             headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ session_id: sid, event_name: name, event_data: data, url: window.location.pathname }),
-            keepalive: true // Asegura que el evento llegue aunque se cambie de página
+            body: JSON.stringify({ session_id: sid, event_name: name, event_data: data, url: pathActual }),
+            keepalive: true 
         }).catch(()=>{});
     };
 
-    // 1. Rastrear visita de página
     trackEvent4D('page_view');
 
-    // 2. Interceptar Embudo de Checkout
-    if (typeof window.goToStep === 'function') {
-        const originalGoToStep = window.goToStep;
-        window.goToStep = function(step) {
-            trackEvent4D('checkout_step', { step_target: step });
-            return originalGoToStep.apply(this, arguments);
-        };
-    }
+    // Interceptor dinámico para acciones de Mi Club
+    document.addEventListener('click', function(e) {
+        const el = e.target.closest('button, a, [onclick]');
+        if (!el) return;
 
-    // 3. Interceptar Agregados al Carrito y Upsells
-    if (typeof window.addToCart === 'function') {
-        const originalAddToCart = window.addToCart;
-        window.addToCart = function(id, name, price, img) {
-            const isUpsell = id > 100 && id < 200; // Según lógica de upsellsCatalog
-            trackEvent4D(isUpsell ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name, price: price });
-            return originalAddToCart.apply(this, arguments);
-        };
-    }
+        const onclickAttr = el.getAttribute('onclick') || '';
+        const text = (el.innerText || el.textContent || '').trim();
 
-    // 4. Interceptar Fuga Financiera (Pasarelas)
-    ['iniciarMercadoPago', 'iniciarPayPal'].forEach(fnName => {
-        if (typeof window[fnName] === 'function') {
-            const originalFn = window[fnName];
-            window[fnName] = function() {
-                // Capturar el valor total del carrito abandonable
-                const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
-                const totalValue = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
-                const email = document.getElementById('buyer-email')?.value || 'desconocido';
-                
-                trackEvent4D('payment_initiated', { method: fnName, cart_value: totalValue, email: email });
-                return originalFn.apply(this, arguments);
-            };
+        // 1. Intentos de Login o Registro
+        if (onclickAttr.includes('doLogin')) {
+            trackEvent4D('club_login_attempt', { email: document.getElementById('login-email')?.value || '' });
         }
-    });
+        if (onclickAttr.includes('doRegister')) {
+            trackEvent4D('club_register_attempt', { email: document.getElementById('reg-email')?.value || '' });
+        }
 
-    // 5. Interceptar envíos B2B
-    if (typeof window.sendB2BConsultation === 'function') {
-        const originalB2B = window.sendB2BConsultation;
-        window.sendB2BConsultation = function(e) {
-            const segment = document.getElementById("b2b-selected-segment")?.value || 'desconocido';
-            trackEvent4D('b2b_lead_submitted', { segment: segment });
-            return originalB2B.apply(this, arguments);
-        };
-    }
+        // 2. Guardar Cumpleaños
+        if (onclickAttr.includes('saveBirthday')) {
+            trackEvent4D('club_birthday_saved', {});
+        }
+
+        // 3. Guardar Fechas Importantes
+        if (onclickAttr.includes('addDate') || text.includes('Guardar Fecha')) {
+            const label = document.getElementById('date-label')?.value || 'Fecha importante';
+            trackEvent4D('club_important_date_added', { label: label });
+        }
+
+        // 4. Referidos y Compartir (WhatsApp / Copiar Código / QR)
+        if (onclickAttr.includes('abrirShareModal') || text.includes('Compartir mi código')) {
+            trackEvent4D('club_referral_modal_opened', {});
+        }
+        if (onclickAttr.includes('copyReferralLinkModal') || el.title === 'Copiar Enlace') {
+            trackEvent4D('club_referral_link_copied', {});
+        }
+        if (el.id === 'modal-referral-wa' || onclickAttr.includes('modal-referral-wa')) {
+            trackEvent4D('club_referral_whatsapp_clicked', {});
+        }
+
+        // 5. Vincular Teléfono WhatsApp
+        if (onclickAttr.includes('requestPhoneOtp') || text.includes('Generar enlace')) {
+            trackEvent4D('club_phone_otp_requested', {});
+        }
+
+        // 6. Enviar Reseña o Clic en Google desde el Club
+        if (onclickAttr.includes('registrarClicGoogle') || text.includes('DEJAR MI RESEÑA EN GOOGLE')) {
+            trackEvent4D('club_google_review_clicked', {});
+        }
+    }, true);
 })();
 </script>
 </body>
