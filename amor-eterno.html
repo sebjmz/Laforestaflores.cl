@@ -443,73 +443,99 @@
         }
     </script>
 <script>
-    (function() {
+(function() {
     const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
     
-    // Generar o recuperar ID de sesión único
     let sid = sessionStorage.getItem('lf_sid');
     if (!sid) { 
-        sid = crypto.randomUUID ? crypto.randomUUID() : 'sid_' + Date.now() + Math.random(); 
+        sid = crypto.randomUUID ? crypto.randomUUID() : 'sid_' + Date.now() + '_' + Math.floor(Math.random()*100000); 
         sessionStorage.setItem('lf_sid', sid); 
     }
-    
-    // Función base de envío asíncrono silencioso
+
+    // Normalizar ruta: si es "/" lo guarda como "/index.html" para que el filtro coincida siempre
+    const pathActual = (window.location.pathname === '/' || window.location.pathname === '') ? '/index.html' : window.location.pathname;
+
     window.trackEvent4D = function(name, data = {}) {
-        fetch(API_TRACK, { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ session_id: sid, event_name: name, event_data: data, url: window.location.pathname }),
-            keepalive: true // Asegura que el evento llegue aunque se cambie de página
-        }).catch(()=>{});
+        const payload = JSON.stringify({ 
+            session_id: sid, 
+            event_name: name, 
+            event_data: data, 
+            url: pathActual 
+        });
+
+        // sendBeacon garantiza que la data llegue incluso si el usuario cambia de página o cierra la pestaña
+        if (navigator.sendBeacon) {
+            const blob = new Blob([payload], { type: 'application/json' });
+            navigator.sendBeacon(API_TRACK, blob);
+        } else {
+            fetch(API_TRACK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(()=>{});
+        }
     };
 
-    // 1. Rastrear visita de página
+    // 1. Registrar vista de página
     trackEvent4D('page_view');
 
-    // 2. Interceptar Embudo de Checkout
-    if (typeof window.goToStep === 'function') {
-        const originalGoToStep = window.goToStep;
-        window.goToStep = function(step) {
-            trackEvent4D('checkout_step', { step_target: step });
-            return originalGoToStep.apply(this, arguments);
-        };
-    }
+    // 2. Escucha Global Inteligente de Clics (Fase de Captura)
+    document.addEventListener('click', function(e) {
+        const el = e.target.closest('button, a, .step-option, [onclick]');
+        if (!el) return;
 
-    // 3. Interceptar Agregados al Carrito y Upsells
-    if (typeof window.addToCart === 'function') {
-        const originalAddToCart = window.addToCart;
-        window.addToCart = function(id, name, price, img) {
-            const isUpsell = id > 100 && id < 200; // Según lógica de upsellsCatalog
-            trackEvent4D(isUpsell ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name, price: price });
-            return originalAddToCart.apply(this, arguments);
-        };
-    }
+        const onclickAttr = el.getAttribute('onclick') || '';
+        const text = (el.innerText || el.textContent || '').trim();
 
-    // 4. Interceptar Fuga Financiera (Pasarelas)
-    ['iniciarMercadoPago', 'iniciarPayPal'].forEach(fnName => {
-        if (typeof window[fnName] === 'function') {
-            const originalFn = window[fnName];
-            window[fnName] = function() {
-                // Capturar el valor total del carrito abandonable
-                const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
-                const totalValue = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
-                const email = document.getElementById('buyer-email')?.value || 'desconocido';
-                
-                trackEvent4D('payment_initiated', { method: fnName, cart_value: totalValue, email: email });
-                return originalFn.apply(this, arguments);
-            };
+        // Detectar Añadir Producto Principal / Bestseller
+        if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver')) {
+            const matchId = onclickAttr.match(/(?:addToCart|agregarYVolver)\s*\(\s*(\d+)/);
+            const prodId = matchId ? parseInt(matchId[1], 10) : 0;
+            const isUpsell = prodId > 100 && prodId < 200;
+
+            if (isUpsell) {
+                trackEvent4D('upsell_added', { product_id: prodId, product_name: text.split('\n')[0] || 'Upsell' });
+            } else {
+                trackEvent4D('add_to_cart', { product_id: prodId, product_name: text.split('\n')[0] || 'Producto' });
+            }
+            return;
         }
-    });
 
-    // 5. Interceptar envíos B2B
-    if (typeof window.sendB2BConsultation === 'function') {
-        const originalB2B = window.sendB2BConsultation;
-        window.sendB2BConsultation = function(e) {
-            const segment = document.getElementById("b2b-selected-segment")?.value || 'desconocido';
-            trackEvent4D('b2b_lead_submitted', { segment: segment });
-            return originalB2B.apply(this, arguments);
-        };
-    }
+        // Detectar Pasos del Checkout (por función o botones de paso)
+        if (onclickAttr.includes('goToStep') || onclickAttr.includes('seleccionar') || onclickAttr.includes('confirmar') || onclickAttr.includes('openCheckout') || onclickAttr.includes('cargarPasarelas')) {
+            let targetStep = 'interaccion_checkout';
+            const matchStep = onclickAttr.match(/goToStep\s*\(\s*['"]?([^'")]+)['"]?\s*\)/);
+            if (matchStep) targetStep = matchStep[1];
+            else if (onclickAttr.includes('seleccionarModalidad')) targetStep = 'modalidad_logistica';
+            else if (onclickAttr.includes('seleccionarZona')) targetStep = 'seleccion_zona';
+            else if (onclickAttr.includes('seleccionarFecha')) targetStep = 'seleccion_fecha';
+            else if (onclickAttr.includes('openCheckout') || onclickAttr.includes('cargarPasarelas')) targetStep = 'step-1';
+
+            trackEvent4D('checkout_step', { step_target: String(targetStep), label: text.slice(0, 30) });
+            return;
+        }
+
+        // Detectar Clic en Pasarelas de Pago
+        if (onclickAttr.includes('iniciarMercadoPago') || text.includes('MercadoPago')) {
+            const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+            const totalVal = cartData.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            const email = document.getElementById('buyer-email')?.value || 'desconocido';
+            trackEvent4D('payment_initiated', { method: 'MercadoPago', cart_value: totalVal, email: email });
+            return;
+        }
+
+        if (onclickAttr.includes('iniciarPayPal') || text.includes('PayPal')) {
+            const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+            const totalVal = cartData.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            const email = document.getElementById('buyer-email')?.value || 'desconocido';
+            trackEvent4D('payment_initiated', { method: 'PayPal', cart_value: totalVal, email: email });
+            return;
+        }
+
+        // Detectar Formulario B2B
+        if (onclickAttr.includes('sendB2B') || onclickAttr.includes('openB2B') || text.includes('Membresía')) {
+            const seg = document.getElementById('b2b-selected-segment')?.value || text.slice(0, 30);
+            trackEvent4D('b2b_interaction', { detail: seg });
+            return;
+        }
+
+    }, true); // true = fase de captura (se ejecuta antes que cualquier otra función)
 })();
 </script>
 </body>
