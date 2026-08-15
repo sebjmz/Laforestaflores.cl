@@ -136,14 +136,8 @@
       <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-4 gap-4">
         <div>
           <h2 class="text-2xl font-bold text-white">Monitor 4D de Fugas y Adopción</h2>
-          <p class="text-xs opacity-50 mt-1">Rastreo crudo en tiempo real. Análisis transaccional y embudos de conversión.</p>
+          <p class="text-xs opacity-50 mt-1">Rastreo crudo en tiempo real. Análisis transaccional y rendimiento detallado.</p>
         </div>
-        <select id="analytics-url-filter" onchange="loadAnalytics()" class="input-dark p-2 text-xs w-full md:w-64">
-          <option value="">Todas las páginas (Global)</option>
-          <option value="index.html">Inicio (index.html)</option>
-          <option value="amor-eterno.html">Producto: Amor Eterno</option>
-          <option value="club.html">Club La Foresta</option>
-        </select>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -153,24 +147,53 @@
           <p class="text-3xl font-serif text-white" id="abandoned-total">$0</p>
           <p class="text-[10px] opacity-60 mt-1"><span id="abandoned-count" class="font-bold text-white">0</span> intentos fallidos de pago</p>
         </div>
-        <div class="card p-6 border border-[#c5a059]/30">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Conversión Amor Eterno (Bestseller)</p>
-          <p class="text-3xl font-serif text-white" id="ae-rate">0%</p>
-          <p class="text-[10px] opacity-60 mt-1"><span id="ae-views" class="font-bold text-white">0</span> Vistas vs <span id="ae-adds" class="font-bold text-white">0</span> Agregados</p>
+
+        <!-- SELECTOR DE PRODUCTOS -->
+        <div class="card p-6 border border-[#c5a059]/30 flex flex-col justify-between">
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Rendimiento por Producto</p>
+            <select id="product-selector" onchange="loadAnalytics()" class="input-dark w-full p-2.5 text-xs font-medium cursor-pointer">
+              <option value="">Seleccionar producto...</option>
+            </select>
+          </div>
+          <p class="text-[10px] opacity-50 mt-2">Ordenado de mayor a menor tráfico y conversión.</p>
         </div>
-        <div class="card p-6">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Actualizar Data</p>
-          <button onclick="loadAnalytics()" class="mt-2 w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs uppercase tracking-widest font-bold transition">Refrescar Ahora</button>
+
+        <!-- SELECTOR DE CATEGORÍAS -->
+        <div class="card p-6 border border-emerald-900/30 flex flex-col justify-between">
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-2">Rendimiento por Categoría</p>
+            <select id="category-selector" onchange="loadAnalytics()" class="input-dark w-full p-2.5 text-xs font-medium cursor-pointer">
+              <option value="">Seleccionar categoría / página...</option>
+            </select>
+          </div>
+          <p class="text-[10px] opacity-50 mt-2">Ordenado por volumen de visitas.</p>
+        </div>
+      </div>
+
+      <!-- PANEL DE RAYOS X (DETALLE INDIVIDUAL SELECCIONADO) -->
+      <div id="deep-dive-panel" class="grid grid-cols-1 md:grid-cols-2 gap-6 hidden-panel">
+        <div class="card p-6 border border-[#c5a059]/20 bg-[#c5a059]/5">
+          <h3 class="text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-4 pb-2 border-b border-white/10" id="deep-dive-prod-title">Análisis de Producto</h3>
+          <div id="product-deep-content" class="space-y-4 text-xs">
+            <p class="opacity-50 italic">Selecciona un producto arriba para ver sus upsells y dinero perdido en checkout.</p>
+          </div>
+        </div>
+        <div class="card p-6 border border-emerald-500/20 bg-emerald-900/5">
+          <h3 class="text-xs uppercase tracking-widest font-bold text-emerald-400 mb-4 pb-2 border-b border-white/10" id="deep-dive-cat-title">Análisis de Categoría / Sección</h3>
+          <div id="category-deep-content" class="space-y-4 text-xs">
+            <p class="opacity-50 italic">Selecciona una categoría arriba para ver el comportamiento y clics internos.</p>
+          </div>
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="card p-6 md:col-span-2 flex flex-col h-96">
-          <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest text-red-400 border-b border-white/10 pb-2">Embudo de Fuga de Checkout</p>
+          <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest text-red-400 border-b border-white/10 pb-2">Embudo de Fuga de Checkout (Global)</p>
           <div class="relative flex-1 w-full"><canvas id="funnelChart"></canvas></div>
         </div>
         <div class="card p-6 flex flex-col h-96">
-          <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest border-b border-white/10 pb-2">Adopción de Upsells</p>
+          <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest border-b border-white/10 pb-2">Adopción Global de Upsells</p>
           <div id="upsell-list" class="overflow-y-auto pr-2 space-y-2 flex-1 hide-scroll">
             <p class="text-xs opacity-50 italic">Cargando datos...</p>
           </div>
@@ -430,14 +453,62 @@
 
   async function loadAnalytics() {
     try {
-      const urlFilter = document.getElementById('analytics-url-filter').value;
-      const res = await apicall(`/api/admin/analytics?url_filter=${encodeURIComponent(urlFilter)}`);
+      const selectedProd = document.getElementById('product-selector').value;
+      const selectedCat = document.getElementById('category-selector').value;
+
+      const res = await apicall(`/api/admin/analytics?product=${encodeURIComponent(selectedProd)}&category=${encodeURIComponent(selectedCat)}`);
       const data = await res.json();
       
-      const aeRate = data.conversion_ae.views > 0 ? ((data.conversion_ae.adds / data.conversion_ae.views) * 100).toFixed(1) : 0;
-      document.getElementById('ae-views').innerText = data.conversion_ae.views;
-      document.getElementById('ae-adds').innerText = data.conversion_ae.adds;
-      document.getElementById('ae-rate').innerText = aeRate + '%';
+      // Poblar Selector de Productos (Ordenado por vistas DESC, conversiones/adds DESC)
+      const prodSelect = document.getElementById('product-selector');
+      const currentProdVal = prodSelect.value;
+      prodSelect.innerHTML = '<option value="">Seleccionar producto...</option>' + 
+        (data.products || []).map(p => `<option value="${p.name}">${p.name} (Vistas: ${p.views} | Adds: ${p.adds})</option>`).join('');
+      prodSelect.value = currentProdVal;
+
+      // Poblar Selector de Categorías (Ordenado por tráfico DESC)
+      const catSelect = document.getElementById('category-selector');
+      const currentCatVal = catSelect.value;
+      catSelect.innerHTML = '<option value="">Seleccionar categoría / página...</option>' + 
+        (data.categories || []).map(c => `<option value="${c.category}">${c.category} (Vistas: ${c.views})</option>`).join('');
+      catSelect.value = currentCatVal;
+
+      // Mostrar panel de rayos X si hay selecciones
+      const deepPanel = document.getElementById('deep-dive-panel');
+      if (selectedProd || selectedCat) {
+        deepPanel.classList.remove('hidden-panel');
+        
+        // Rellenar producto
+        const prodContent = document.getElementById('product-deep-content');
+        if (selectedProd && data.product_deep_dive) {
+          document.getElementById('deep-dive-prod-title').innerText = `Detalle: ${selectedProd}`;
+          const upsellsHtml = (data.product_deep_dive.upsells || []).map(u => `<div class="flex justify-between border-b border-white/5 pb-1"><span>${u.name}</span><span class="text-[#c5a059] font-bold">${u.count} ventas</span></div>`).join('') || '<p class="opacity-40">Sin upsells registrados para este ítem.</p>';
+          const abandonedHtml = (data.product_deep_dive.abandoned_steps || []).map(s => `<div class="flex justify-between border-b border-white/5 pb-1 text-red-400"><span>Paso: ${s.step}</span><span class="font-bold">$${parseInt(s.lost_money||0).toLocaleString('es-CL')} (${s.attempts} abandonos)</span></div>`).join('') || '<p class="opacity-40">Sin fugas de pago registradas.</p>';
+          
+          prodContent.innerHTML = `
+            <div><p class="font-bold text-white mb-2">🎁 Upsells más vendidos con este producto:</p>${upsellsHtml}</div>
+            <div class="mt-4"><p class="font-bold text-red-400 mb-2">💸 Dinero perdido por etapa de checkout:</p>${abandonedHtml}</div>
+          `;
+        } else {
+          prodContent.innerHTML = `<p class="opacity-40 italic">Selecciona un producto arriba para ver su desglose.</p>`;
+        }
+
+        // Rellenar categoría
+        const catContent = document.getElementById('category-deep-content');
+        if (selectedCat && data.category_deep_dive) {
+          document.getElementById('deep-dive-cat-title').innerText = `Comportamiento en: ${selectedCat}`;
+          const interHtml = (data.category_deep_dive.interactions || []).map(i => `<div class="flex justify-between border-b border-white/5 pb-1"><span>Evento: ${i.event_name}</span><span class="text-emerald-400 font-bold">${i.count} interacciones</span></div>`).join('') || '<p class="opacity-40">Sin interacciones registradas.</p>';
+          
+          catContent.innerHTML = `
+            <div><p class="font-bold text-white mb-2">🔍 Acciones y clics más frecuentes en esta sección:</p>${interHtml}</div>
+            <p class="text-[10px] opacity-50 mt-4">Nota: Si esta es el índice o una categoría (como /romance), muestra qué botones y áreas generan mayor atención antes de comprar.</p>
+          `;
+        } else {
+          catContent.innerHTML = `<p class="opacity-40 italic">Selecciona una categoría arriba para ver su desglose.</p>`;
+        }
+      } else {
+        deepPanel.classList.add('hidden-panel');
+      }
 
       const abandonedTotal = data.abandoned.reduce((acc, curr) => acc + parseInt(curr.value || 0), 0);
       document.getElementById('abandoned-total').innerText = '$' + abandonedTotal.toLocaleString('es-CL');
@@ -454,12 +525,10 @@
       `).join('');
 
       const upsellList = document.getElementById('upsell-list');
-      upsellList.innerHTML = data.upsells.map(u => `
-        <div class="flex justify-between border-b border-white/10 pb-2 mb-2 last:border-0 last:mb-0 last:pb-0">
-          <span class="text-sm opacity-80 truncate pr-2">${u.name}</span>
-          <span class="text-[#c5a059] font-bold shrink-0">${u.count} uds</span>
-        </div>
-      `).join('');
+      // Mostrar top upsells globales si no hay producto específico, o los filtrados
+      upsellList.innerHTML = (data.product_deep_dive?.upsells || []).length > 0 
+        ? data.product_deep_dive.upsells.map(u => `<div class="flex justify-between border-b border-white/10 pb-2 mb-2"><span class="text-sm opacity-80">${u.name}</span><span class="text-[#c5a059] font-bold">${u.count} uds</span></div>`).join('')
+        : '<p class="text-xs opacity-50 italic">Selecciona un producto específico para ver sus upsells asociados o navega para acumular data global.</p>';
 
       if(chartFunnel) chartFunnel.destroy();
       const ctxF = document.getElementById('funnelChart').getContext('2d');
