@@ -40,8 +40,6 @@ function cargarPasarelasYAbrirCheckout() {
             openCheckout();
         };
         t.onerror = () => {
-            // Si la carga falla o se interrumpe, abrimos el checkout de todas formas 
-            // para no bloquear el proceso y permitir el pago con MercadoPago.
             pasarelasCargadas = true;
             openCheckout();
         };
@@ -595,19 +593,17 @@ function guardarProgresoCheckout() {
     localStorage.setItem("laforesta_selectedPalette", selectedPalette);
 
     // Captura silenciosa inmediata del prospecto al escribir datos clave
-    const tempName = document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || '';
     const tempEmail = document.getElementById('buyer-email')?.value?.trim() || '';
-    const tempPhone = document.getElementById('receiver-phone')?.value?.trim() || '';
     const currentCart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
     const tempVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
 
-    if (tempEmail && tempEmail.includes('@') && typeof window.track4DAdvanced === 'function') {
-        window.track4DAdvanced('abandonment_or_close', {
+    if (tempEmail && tempEmail.includes('@') && typeof window.trackEvent4D === 'function') {
+        window.trackEvent4D('lead_captured', {
             step_name: e.currentStep,
             cart_value: tempVal,
             email: tempEmail,
-            name: tempName,
-            phone: tempPhone
+            name: e.senderName || e.receiverName || '',
+            phone: e.receiverPhone || ''
         });
     }
 }
@@ -1260,8 +1256,6 @@ async function iniciarMercadoPago() {
 function iniciarPayPal() {
     if (cart.length === 0) return alert("El atelier está vacío.");
     
-    // Si el objeto paypal no existe (por interrupción de red o recarga rápida), 
-    // lo forzamos a cargar dinámicamente aquí mismo antes de continuar.
     if (typeof paypal === "undefined") {
         let loading = document.getElementById("loading-payment");
         if (loading) {
@@ -1732,9 +1726,12 @@ setInterval(updateCountdown, 1000);
 updateCountdown();
 
 // ==========================================
-// SENSOR ACTIVO D1 - LA FORESTA
+// SENSOR MAESTRO 4D & PROSPECTOS (LA FORESTA)
 // ==========================================
 (function() {
+    if (window.LF_TRACKER_INITIALIZED) return;
+    window.LF_TRACKER_INITIALIZED = true;
+
     const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
     
     let sid = sessionStorage.getItem('lf_sid_4d');
@@ -1747,7 +1744,7 @@ updateCountdown();
     if (pagePath === '/' || pagePath === '') pagePath = '/index.html';
     const pageStartTime = Date.now();
 
-    function sendEvent(name, data = {}) {
+    window.trackEvent4D = function(name, data = {}) {
         const payload = JSON.stringify({
             session_id: sid,
             event_name: name,
@@ -1765,37 +1762,80 @@ updateCountdown();
                 keepalive: true
             }).catch(() => {});
         }
-    }
+    };
 
-    // 1. Registrar vista inmediata
-    sendEvent('page_view');
+    // 1. Registrar vista de página inmediata
+    window.trackEvent4D('page_view');
 
-    // 2. Registrar tiempo de lectura al salir
+    // 2. Registrar tiempo de permanencia al salir (y abandono si hay carrito)
     window.addEventListener('beforeunload', function() {
         const seconds = Math.round((Date.now() - pageStartTime) / 1000);
-        sendEvent('time_on_page', { seconds: seconds });
+        const cart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+        const cartVal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+        const email = document.getElementById('buyer-email')?.value?.trim() || '';
+        const name = document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || '';
+        const phone = document.getElementById('receiver-phone')?.value?.trim() || '';
+        
+        const currentStep = document.querySelector(".checkout-step.active")?.id || 'checkout';
+
+        window.trackEvent4D('time_on_page', { 
+            seconds: seconds,
+            cart_value: cartVal,
+            email: email,
+            name: name,
+            phone: phone
+        });
+
+        if (email && cartVal > 0) {
+            window.trackEvent4D('abandonment_or_close', {
+                step_name: currentStep,
+                cart_value: cartVal,
+                email: email,
+                name: name,
+                phone: phone
+            });
+        }
     });
 
-    // 3. Sensor de clics (Añadir al carro, upsells y pasarelas)
+    // 3. Interceptar avances en el checkout para el embudo
+    if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
+        const originalGoToStep = window.goToStep;
+        window.goToStep = function(step) { 
+            window.trackEvent4D('checkout_step', { step_target: String(step) }); 
+            return originalGoToStep.apply(this, arguments); 
+        };
+        window.goToStep._tracked4d = true;
+    }
+
+    // 4. Sensor de clics (Añadir al carro, Upsells, Pasarelas)
     document.addEventListener('click', function(e) {
-        const target = e.target.closest('button, a, .product-card, .step-option');
+        const target = e.target.closest('button, a, .step-option, .product-card');
         if (!target) return;
 
         const text = (target.innerText || target.textContent || '').trim();
         const onclickAttr = target.getAttribute('onclick') || '';
 
-        if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || text.includes('Añadir')) {
+        // Añadir producto al carrito
+        if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || text === 'Añadir' || text.includes('Añadir al Atelier')) {
+            const matchId = onclickAttr.match(/(?:addToCart|agregarYVolver)\s*\(\s*(\d+)/);
+            const prodId = matchId ? parseInt(matchId[1], 10) : 0;
+            
             const card = target.closest('.product-card') || document;
             const titleEl = card.querySelector('h1, h3, .product-title');
-            let prodName = titleEl ? titleEl.innerText.trim() : pagePath.replace('/', '').replace('.html', '').replace(/-/g, ' ');
+            const prodName = titleEl ? titleEl.innerText.trim() : pagePath.replace('/', '').replace('.html', '').replace(/-/g, ' ');
             
-            sendEvent('add_to_cart', { product_name: prodName });
+            window.trackEvent4D(prodId > 100 && prodId < 200 ? 'upsell_added' : 'add_to_cart', { product_name: prodName, product_id: prodId });
         }
 
-        if (onclickAttr.includes('MercadoPago') || text.includes('MercadoPago')) {
-            sendEvent('payment_initiated', { method: 'MercadoPago' });
-        } else if (onclickAttr.includes('PayPal') || text.includes('PayPal')) {
-            sendEvent('payment_initiated', { method: 'PayPal' });
+        // Selección de pasarelas
+        if (onclickAttr.includes('iniciarMercadoPago') || text.includes('MercadoPago')) {
+            const cartVal = JSON.parse(localStorage.getItem('laforesta_cart') || '[]').reduce((acc, item) => acc + (item.price * item.qty), 0);
+            const email = document.getElementById('buyer-email')?.value?.trim() || '';
+            window.trackEvent4D('payment_initiated', { method: 'MercadoPago', cart_value: cartVal, email: email });
+        } else if (onclickAttr.includes('iniciarPayPal') || text.includes('PayPal')) {
+            const cartVal = JSON.parse(localStorage.getItem('laforesta_cart') || '[]').reduce((acc, item) => acc + (item.price * item.qty), 0);
+            const email = document.getElementById('buyer-email')?.value?.trim() || '';
+            window.trackEvent4D('payment_initiated', { method: 'PayPal', cart_value: cartVal, email: email });
         }
     }, true);
 })();
