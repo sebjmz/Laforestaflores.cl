@@ -397,73 +397,63 @@
   loadTracking();
 </script>
 <script>
-    (function() {
+(function() {
     const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
     
-    // Generar o recuperar ID de sesión único
     let sid = sessionStorage.getItem('lf_sid');
     if (!sid) { 
-        sid = crypto.randomUUID ? crypto.randomUUID() : 'sid_' + Date.now() + Math.random(); 
+        sid = 'sid_' + Date.now() + '_' + Math.floor(Math.random()*100000); 
         sessionStorage.setItem('lf_sid', sid); 
     }
-    
-    // Función base de envío asíncrono silencioso
+
+    const pathActual = window.location.pathname || '/seguimiento.html';
+
     window.trackEvent4D = function(name, data = {}) {
         fetch(API_TRACK, { 
             method: 'POST', 
             headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ session_id: sid, event_name: name, event_data: data, url: window.location.pathname }),
-            keepalive: true // Asegura que el evento llegue aunque se cambie de página
+            body: JSON.stringify({ session_id: sid, event_name: name, event_data: data, url: pathActual }),
+            keepalive: true 
         }).catch(()=>{});
     };
 
-    // 1. Rastrear visita de página
     trackEvent4D('page_view');
 
-    // 2. Interceptar Embudo de Checkout
-    if (typeof window.goToStep === 'function') {
-        const originalGoToStep = window.goToStep;
-        window.goToStep = function(step) {
-            trackEvent4D('checkout_step', { step_target: step });
-            return originalGoToStep.apply(this, arguments);
-        };
-    }
+    document.addEventListener('click', function(e) {
+        const el = e.target.closest('button, a, [onclick]');
+        if (!el) return;
 
-    // 3. Interceptar Agregados al Carrito y Upsells
-    if (typeof window.addToCart === 'function') {
-        const originalAddToCart = window.addToCart;
-        window.addToCart = function(id, name, price, img) {
-            const isUpsell = id > 100 && id < 200; // Según lógica de upsellsCatalog
-            trackEvent4D(isUpsell ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name, price: price });
-            return originalAddToCart.apply(this, arguments);
-        };
-    }
+        const onclickAttr = el.getAttribute('onclick') || '';
+        const text = (el.innerText || el.textContent || '').trim();
 
-    // 4. Interceptar Fuga Financiera (Pasarelas)
-    ['iniciarMercadoPago', 'iniciarPayPal'].forEach(fnName => {
-        if (typeof window[fnName] === 'function') {
-            const originalFn = window[fnName];
-            window[fnName] = function() {
-                // Capturar el valor total del carrito abandonable
-                const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
-                const totalValue = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
-                const email = document.getElementById('buyer-email')?.value || 'desconocido';
-                
-                trackEvent4D('payment_initiated', { method: fnName, cart_value: totalValue, email: email });
-                return originalFn.apply(this, arguments);
-            };
+        // 1. Búsqueda manual de pedido
+        if (onclickAttr.includes('buscarManual') || text.includes('Buscar Pedido')) {
+            const orderInput = document.getElementById('manual-id')?.value || '';
+            trackEvent4D('tracking_manual_search', { order_id: orderInput });
         }
-    });
 
-    // 5. Interceptar envíos B2B
-    if (typeof window.sendB2BConsultation === 'function') {
-        const originalB2B = window.sendB2BConsultation;
-        window.sendB2BConsultation = function(e) {
-            const segment = document.getElementById("b2b-selected-segment")?.value || 'desconocido';
-            trackEvent4D('b2b_lead_submitted', { segment: segment });
-            return originalB2B.apply(this, arguments);
-        };
-    }
+        // 2. Envío detallado de Encuesta de Satisfacción (Estrellas + Motivos)
+        if (onclickAttr.includes('enviarEncuesta') || text.includes('ENVIAR MI OPINIÓN')) {
+            const rating = parseInt(document.getElementById('survey-rating-val')?.value) || 0;
+            
+            // Capturar los checkboxes de problemas o aspectos positivos seleccionados
+            const checkedBoxes = document.querySelectorAll('#survey-checkboxes input[type="checkbox"]:checked');
+            const selectedIssues = Array.from(checkedBoxes).map(cb => cb.value);
+            
+            const sentiment = rating >= 4 ? 'satisfaccion_alta' : 'insatisfaccion';
+
+            trackEvent4D('survey_detailed_submitted', { 
+                stars: rating, 
+                sentiment: sentiment, 
+                selected_reasons: selectedIssues 
+            });
+        }
+
+        // 3. Clic en Reseña de Google desde Seguimiento
+        if (onclickAttr.includes('registrarClicGoogle') || text.includes('DEJAR MI RESEÑA EN GOOGLE')) {
+            trackEvent4D('tracking_google_review_clicked', {});
+        }
+    }, true);
 })();
 </script>
 </body>
