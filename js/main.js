@@ -1752,23 +1752,20 @@ updateCountdown();
             url: pagePath
         });
 
-        if (navigator.sendBeacon) {
-            navigator.sendBeacon(API_TRACK, new Blob([payload], { type: 'application/json' }));
-        } else {
-            fetch(API_TRACK, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: payload,
-                keepalive: true
-            }).catch(() => {});
-        }
+        // Usamos fetch con keepalive para evitar el bloqueo CORS del navegador
+        fetch(API_TRACK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: payload,
+            keepalive: true
+        }).catch(() => {});
     };
 
     // 1. Registrar vista de página inmediata
     window.trackEvent4D('page_view');
 
-    // 2. Registrar tiempo de permanencia al salir (y abandono si hay carrito)
-    window.addEventListener('beforeunload', function() {
+    // 2. Heartbeat para registrar el tiempo real sin perder datos
+    function reportTime(event) {
         const seconds = Math.round((Date.now() - pageStartTime) / 1000);
         const cart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
         const cartVal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
@@ -1786,7 +1783,8 @@ updateCountdown();
             phone: phone
         });
 
-        if (email && cartVal > 0) {
+        // Registrar abandono solo si están saliendo definitivamente y hay valor en el carrito
+        if (event && (event.type === 'beforeunload' || event.type === 'pagehide') && email && cartVal > 0) {
             window.trackEvent4D('abandonment_or_close', {
                 step_name: currentStep,
                 cart_value: cartVal,
@@ -1795,7 +1793,13 @@ updateCountdown();
                 phone: phone
             });
         }
-    });
+    }
+
+    // Reportar tiempo cada 15 segundos y al salir/minimizar
+    setInterval(reportTime, 15000);
+    window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') reportTime(event); });
+    window.addEventListener('pagehide', reportTime);
+    window.addEventListener('beforeunload', reportTime);
 
     // 3. Interceptar avances en el checkout para el embudo
     if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
@@ -1807,35 +1811,51 @@ updateCountdown();
         window.goToStep._tracked4d = true;
     }
 
-    // 4. Sensor de clics (Añadir al carro, Upsells, Pasarelas)
+    // 4. Sensor de Clics e Interacciones Generales
     document.addEventListener('click', function(e) {
         const target = e.target.closest('button, a, .step-option, .product-card');
         if (!target) return;
 
-        const text = (target.innerText || target.textContent || '').trim();
+        const text = (target.innerText || target.textContent || '').trim().substring(0, 50);
         const onclickAttr = target.getAttribute('onclick') || '';
+        const hrefAttr = target.getAttribute('href') || '';
 
-        // Añadir producto al carrito
+        // Añadir producto o Upsell al carrito
         if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || text === 'Añadir' || text.includes('Añadir al Atelier')) {
             const matchId = onclickAttr.match(/(?:addToCart|agregarYVolver)\s*\(\s*(\d+)/);
             const prodId = matchId ? parseInt(matchId[1], 10) : 0;
             
             const card = target.closest('.product-card') || document;
-            const titleEl = card.querySelector('h1, h3, .product-title');
+            const titleEl = card.querySelector('h1, h3, h6, .product-title');
             const prodName = titleEl ? titleEl.innerText.trim() : pagePath.replace('/', '').replace('.html', '').replace(/-/g, ' ');
             
-            window.trackEvent4D(prodId > 100 && prodId < 200 ? 'upsell_added' : 'add_to_cart', { product_name: prodName, product_id: prodId });
+            if (prodId > 100 && prodId < 200) {
+                window.trackEvent4D('upsell_added', { product_name: prodName, target: prodName, product_id: prodId });
+            } else {
+                window.trackEvent4D('add_to_cart', { product_name: prodName, target: prodName, product_id: prodId });
+            }
+            return; // Detenemos aquí para no duplicar evento
         }
 
         // Selección de pasarelas
         if (onclickAttr.includes('iniciarMercadoPago') || text.includes('MercadoPago')) {
             const cartVal = JSON.parse(localStorage.getItem('laforesta_cart') || '[]').reduce((acc, item) => acc + (item.price * item.qty), 0);
             const email = document.getElementById('buyer-email')?.value?.trim() || '';
-            window.trackEvent4D('payment_initiated', { method: 'MercadoPago', cart_value: cartVal, email: email });
+            window.trackEvent4D('payment_initiated', { method: 'MercadoPago', target: 'MercadoPago', cart_value: cartVal, email: email });
+            return;
         } else if (onclickAttr.includes('iniciarPayPal') || text.includes('PayPal')) {
             const cartVal = JSON.parse(localStorage.getItem('laforesta_cart') || '[]').reduce((acc, item) => acc + (item.price * item.qty), 0);
             const email = document.getElementById('buyer-email')?.value?.trim() || '';
-            window.trackEvent4D('payment_initiated', { method: 'PayPal', cart_value: cartVal, email: email });
+            window.trackEvent4D('payment_initiated', { method: 'PayPal', target: 'PayPal', cart_value: cartVal, email: email });
+            return;
+        }
+
+        // Otras interacciones internas (Menús, Categorías, Utilidad)
+        let clickTarget = text;
+        if (!clickTarget && hrefAttr) clickTarget = hrefAttr;
+        
+        if (clickTarget && clickTarget.length > 0 && clickTarget.length < 40) {
+            window.trackEvent4D('click', { target: clickTarget });
         }
     }, true);
 })();
