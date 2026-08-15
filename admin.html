@@ -19,6 +19,8 @@
   td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
   tr:hover td { background: rgba(255,255,255,0.02); }
   .hidden-panel { display: none !important; }
+  .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+  .hide-scroll::-webkit-scrollbar { display: none; }
 </style>
 </head>
 <body class="flex h-screen overflow-hidden">
@@ -50,6 +52,7 @@
 
   <main class="flex-1 h-full overflow-y-auto bg-[#050f0e] p-8 hidden" id="main-content">
     
+    <!-- VISTA DASHBOARD -->
     <div id="view-dashboard" class="hidden-panel space-y-6">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-2">
         <div>
@@ -69,27 +72,22 @@
         <div class="card p-5">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Nuevos Registros</p>
           <p class="text-2xl font-serif" id="kpi-signups">0</p>
-          <p class="text-[10px] opacity-40 mt-1">En el rango seleccionado</p>
         </div>
         <div class="card p-5">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Invitaciones (Referidos)</p>
           <p class="text-2xl font-serif text-blue-400" id="kpi-referrals">0</p>
-          <p class="text-[10px] opacity-40 mt-1">Códigos compartidos activos</p>
         </div>
         <div class="card p-5">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Puntos Emitidos</p>
-          <p class="text-2xl font-serif text-[#c5a059]" id="kpi-points">0 pts</p>
-          <p class="text-[10px] opacity-40 mt-1">Cashback y recompensas</p>
+          <p class="text-2xl font-serif text-[#c5a059]" id="kpi-points">0</p>
         </div>
         <div class="card p-5">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Encuestas Respondidas</p>
           <p class="text-2xl font-serif text-emerald-400" id="kpi-surveys">0</p>
-          <p class="text-[10px] opacity-40 mt-1">Feedback de clientes</p>
         </div>
         <div class="card p-5">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Clics Reseña Google</p>
           <p class="text-2xl font-serif text-[#c5a059]" id="kpi-google-clicks">0</p>
-          <p class="text-[10px] opacity-40 mt-1">Intenciones de reseña</p>
         </div>
       </div>
 
@@ -108,14 +106,14 @@
           <p class="text-xs opacity-50 mt-2">Puntos pendientes de canje global</p>
         </div>
         <div class="card p-6">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Descuentos Entregados</p>
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Ahorro Histórico Entregado</p>
           <p class="text-3xl font-serif text-emerald-400" id="stat-savings">$0</p>
-          <p class="text-xs opacity-50 mt-2">Ahorro histórico transferido</p>
+          <p class="text-xs opacity-50 mt-2">Transferido a clientes</p>
         </div>
         <div class="card p-6">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">LTV Base Clientes</p>
           <p class="text-3xl font-serif text-blue-400" id="stat-ltv">$0</p>
-          <p class="text-xs opacity-50 mt-2">Total ventas registradas en CRM</p>
+          <p class="text-xs opacity-50 mt-2">Ventas registradas en CRM</p>
         </div>
       </div>
 
@@ -132,95 +130,48 @@
     </div>
 
     <!-- VISTA ANALYTICS 4D -->
-    <div id="view-analytics" class="hidden-panel space-y-6">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-4 gap-4">
+    <div id="view-analytics" class="hidden-panel space-y-8">
+      <div class="flex justify-between items-end mb-4 border-b border-white/10 pb-4">
         <div>
-          <h2 class="text-2xl font-bold text-white">Monitor 4D de Fugas y Adopción</h2>
-          <p class="text-xs opacity-50 mt-1">Rastreo crudo en tiempo real. Análisis transaccional y rendimiento detallado.</p>
+          <h2 class="text-2xl font-bold text-white mb-1">Monitor Analítico de Rendimiento (4D)</h2>
+          <p class="text-xs opacity-50">Distribución de catálogo maestro. Orden estricto por volumen y conversión.</p>
         </div>
-        <div>
-          <button onclick="loadAnalytics()" class="py-2.5 px-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs uppercase tracking-widest font-bold transition cursor-pointer text-[#c5a059]">Refrescar Ahora</button>
-        </div>
+        <button onclick="loadAnalytics()" class="py-2.5 px-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs uppercase tracking-widest font-bold text-[#c5a059] transition cursor-pointer">Refrescar Ahora</button>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="card p-6 border border-red-900/50 bg-red-900/10 relative overflow-hidden">
-          <div class="absolute top-0 right-0 w-16 h-16 bg-red-500/10 rounded-bl-full"></div>
-          <p class="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-1">Carritos Abandonados (24h)</p>
-          <p class="text-3xl font-serif text-white" id="abandoned-total">$0</p>
-          <p class="text-[10px] opacity-60 mt-1"><span id="abandoned-count" class="font-bold text-white">0</span> intentos fallidos de pago</p>
-        </div>
+      <section>
+        <h3 class="text-sm font-bold text-[#c5a059] uppercase tracking-widest mb-4 flex items-center gap-2">🛒 Matriz de Productos (Convertidores)</h3>
+        <div id="products-grid" class="grid-cards"></div>
+      </section>
 
-        <!-- SELECTOR DE PRODUCTOS -->
-        <div class="card p-6 border border-[#c5a059]/30 flex flex-col justify-between">
-          <div>
-            <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Rendimiento por Producto</p>
-            <select id="product-selector" onchange="loadAnalytics()" class="input-dark w-full p-2.5 text-xs font-medium cursor-pointer">
-              <option value="">Todos los productos (Global)</option>
-            </select>
-          </div>
-          <p class="text-[10px] opacity-50 mt-2">Ordenado de mayor a menor tráfico y conversión.</p>
-        </div>
+      <section>
+        <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-widest mb-4 flex items-center gap-2">📂 Rendimiento Vitrinas (Categorías)</h3>
+        <div id="categories-grid" class="grid-cards"></div>
+      </section>
 
-        <!-- SELECTOR DE CATEGORÍAS -->
-        <div class="card p-6 border border-emerald-900/30 flex flex-col justify-between">
-          <div>
-            <p class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-2">Rendimiento por Categoría</p>
-            <select id="category-selector" onchange="loadAnalytics()" class="input-dark w-full p-2.5 text-xs font-medium cursor-pointer">
-              <option value="">Todas las categorías (Global)</option>
-            </select>
-          </div>
-          <p class="text-[10px] opacity-50 mt-2">Ordenado por volumen de visitas.</p>
-        </div>
-      </div>
+      <section>
+        <h3 class="text-sm font-bold text-blue-400 uppercase tracking-widest mb-4 flex items-center gap-2">📄 Páginas de Utilidad (Terciarias)</h3>
+        <div id="tertiary-grid" class="grid-cards"></div>
+      </section>
 
-      <!-- PANEL DE RAYOS X (DETALLE INDIVIDUAL SELECCIONADO) -->
-      <div id="deep-dive-panel" class="grid grid-cols-1 md:grid-cols-2 gap-6 hidden-panel">
-        <div class="card p-6 border border-[#c5a059]/20 bg-[#c5a059]/5">
-          <h3 class="text-xs uppercase tracking-widest font-bold text-[#c5a059] mb-4 pb-2 border-b border-white/10" id="deep-dive-prod-title">Análisis de Producto</h3>
-          <div id="product-deep-content" class="space-y-4 text-xs">
-            <p class="opacity-50 italic">Selecciona un producto arriba para ver sus upsells y dinero perdido en checkout.</p>
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="card p-6">
+          <h3 class="text-xs font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-white/10 pb-2">Embudo de Fuga de Checkout</h3>
+          <div class="h-64 relative"><canvas id="funnelChart"></canvas></div>
+        </div>
+        <div class="card p-6 border-red-900/50 bg-red-900/10">
+          <h3 class="text-xs font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-red-900/30 pb-2">Rescate de Carritos (Últimas 24h)</h3>
+          <p class="text-2xl font-serif text-white mb-4" id="abandoned-total">$0 <span class="text-xs opacity-50 block mt-1" id="abandoned-count">0 intentos fallidos</span></p>
+          <div class="overflow-y-auto max-h-48 hide-scroll text-xs">
+            <table class="w-full text-left">
+              <tbody id="abandoned-body"></tbody>
+            </table>
           </div>
         </div>
-        <div class="card p-6 border border-emerald-500/20 bg-emerald-900/5">
-          <h3 class="text-xs uppercase tracking-widest font-bold text-emerald-400 mb-4 pb-2 border-b border-white/10" id="deep-dive-cat-title">Análisis de Categoría / Sección</h3>
-          <div id="category-deep-content" class="space-y-4 text-xs">
-            <p class="opacity-50 italic">Selecciona una categoría arriba para ver el comportamiento y clics internos.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="card p-6 md:col-span-2 flex flex-col h-96">
-          <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest text-red-400 border-b border-white/10 pb-2">Embudo de Fuga de Checkout (Global)</p>
-          <div class="relative flex-1 w-full"><canvas id="funnelChart"></canvas></div>
-        </div>
-        <div class="card p-6 flex flex-col h-96">
-          <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest border-b border-white/10 pb-2">Adopción Global de Upsells</p>
-          <div id="upsell-list" class="overflow-y-auto pr-2 space-y-2 flex-1 hide-scroll">
-            <p class="text-xs opacity-50 italic">Cargando datos...</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="card overflow-x-auto border-red-900/30">
-        <div class="p-4 border-b border-white/10 bg-red-900/20">
-          <h3 class="text-sm uppercase tracking-widest font-bold text-red-400">🚨 Rescate de Carritos (Últimas 24h)</h3>
-        </div>
-        <table id="abandoned-table">
-          <thead>
-            <tr>
-              <th>Hora</th>
-              <th>Email de Contacto</th>
-              <th>Valor Abandonado</th>
-              <th>Pasarela</th>
-            </tr>
-          </thead>
-          <tbody id="abandoned-body"></tbody>
-        </table>
-      </div>
+      </section>
     </div>
 
+    <!-- VISTA CLIENTES -->
     <div id="view-customers" class="hidden-panel space-y-6">
       <div class="flex justify-between items-end">
         <h2 class="text-2xl font-bold text-white">Billetera de Clientes</h2>
@@ -244,6 +195,7 @@
       </div>
     </div>
 
+    <!-- VISTA ENCUESTAS -->
     <div id="view-surveys" class="hidden-panel space-y-6">
       <div class="flex justify-between items-end">
         <h2 class="text-2xl font-bold text-white">Auditoría de Calidad</h2>
@@ -264,6 +216,7 @@
       </div>
     </div>
 
+    <!-- VISTA OPERACIONES -->
     <div id="view-ops" class="hidden-panel space-y-6">
       <h2 class="text-2xl font-bold text-white">Operaciones Logísticas</h2>
       <div class="grid grid-cols-2 gap-6">
@@ -290,6 +243,7 @@
 
   </main>
 
+  <!-- MODAL DE PUNTOS -->
   <div id="points-modal" class="fixed inset-0 bg-[#050f0e]/90 backdrop-blur-sm z-[100] hidden-panel flex items-center justify-center">
     <div class="card p-8 w-[400px]">
       <h3 class="text-xl font-bold text-[#c5a059] mb-2">Ajuste Manual de Puntos</h3>
@@ -304,7 +258,7 @@
       <input type="hidden" id="modal-customer-id">
       
       <div class="flex gap-4">
-        <button onclick="document.getElementById('points-modal').classList.add('hidden-panel')" class="flex-1 p-3 rounded-lg border border-white/20 text-xs font-bold uppercase hover:bg-white/5 cursor-pointer">Cancelar</button>
+        <button onclick="document.getElementById('points-modal').classList.add('hidden-panel')" class="flex-1 p-3 rounded-lg border border-white/20 text-xs font-bold uppercase hover:bg-white/5 cursor-pointer transition">Cancelar</button>
         <button onclick="submitPoints()" class="flex-1 p-3 rounded-lg btn-gold text-xs font-bold uppercase">Ejecutar</button>
       </div>
     </div>
@@ -361,10 +315,11 @@
       activeBtn.classList.add('bg-white/5', 'text-[#c5a059]');
       activeBtn.classList.remove('text-white/70');
     }
+    
     if(view === 'dashboard') loadStats();
+    if(view === 'analytics') loadAnalytics();
     if(view === 'customers') loadCustomers();
     if(view === 'surveys') loadSurveys();
-    if(view === 'analytics') loadAnalytics();
   }
 
   function searchDebounce(func) {
@@ -392,9 +347,9 @@
       const res = await apicall(`/api/admin/stats?period=${currentPeriod}`);
       const data = await res.json();
       
-      document.getElementById('stat-points').innerText = parseInt(data.financial.pasivo_circulante || 0).toLocaleString('es-CL');
-      document.getElementById('stat-savings').innerText = '$' + parseInt(data.financial.ahorro_entregado || 0).toLocaleString('es-CL');
-      document.getElementById('stat-ltv').innerText = '$' + parseInt(data.financial.ltv_total || 0).toLocaleString('es-CL');
+      document.getElementById('stat-points').innerText = parseInt(data.financial?.pasivo_circulante || 0).toLocaleString('es-CL');
+      document.getElementById('stat-savings').innerText = '$' + parseInt(data.financial?.ahorro_entregado || 0).toLocaleString('es-CL');
+      document.getElementById('stat-ltv').innerText = '$' + parseInt(data.financial?.ltv_total || 0).toLocaleString('es-CL');
 
       const totalSignups = (data.trend || []).reduce((acc, curr) => acc + curr.total, 0);
       document.getElementById('kpi-signups').innerText = totalSignups.toLocaleString('es-CL');
@@ -420,9 +375,7 @@
           }]
         },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
+          responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
           scales: {
             y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888', font: { size: 10 } } },
             x: { grid: { display: false }, ticks: { color: '#888', font: { size: 10 } } }
@@ -456,105 +409,80 @@
 
   async function loadAnalytics() {
     try {
-      const selectedProd = document.getElementById('product-selector').value;
-      const selectedCat = document.getElementById('category-selector').value;
-
-      const res = await apicall(`/api/admin/analytics?product=${encodeURIComponent(selectedProd)}&category=${encodeURIComponent(selectedCat)}`);
+      const res = await apicall('/api/admin/analytics');
       const data = await res.json();
       
-      const prodSelect = document.getElementById('product-selector');
-      const currentProdVal = prodSelect.value;
-      prodSelect.innerHTML = '<option value="">Todos los productos (Global)</option>' + 
-        (data.products || []).map(p => `<option value="${p.name}">${p.name} — [Visitas: ${p.views} | Agregados: ${p.adds} | Conv: ${p.conversion}%]</option>`).join('');
-      prodSelect.value = currentProdVal;
-
-      const catSelect = document.getElementById('category-selector');
-      const currentCatVal = catSelect.value;
-      catSelect.innerHTML = '<option value="">Todas las categorías (Global)</option>' + 
-        (data.categories || []).map(c => `<option value="${c.category}">${c.category} — [Visitas: ${c.views}]</option>`).join('');
-      catSelect.value = currentCatVal;
-
-      const deepPanel = document.getElementById('deep-dive-panel');
-      if (selectedProd || selectedCat) {
-        deepPanel.classList.remove('hidden-panel');
+      const pGrid = document.getElementById('products-grid');
+      pGrid.innerHTML = data.products.map(p => {
+        const topUpsells = p.clicks.filter(c => c.event_name === 'upsell_added' || c.event_name === 'add_to_cart').sort((a,b)=>b.count-a.count).slice(0,3);
+        const uHtml = topUpsells.length ? topUpsells.map(u => `<div class="flex justify-between border-b border-white/5 pb-1"><span>${u.target}</span><span class="text-[#c5a059] font-bold">${u.count}</span></div>`).join('') : '<span class="opacity-30">Sin adicionales asociados</span>';
         
-        const prodContent = document.getElementById('product-deep-content');
-        if (selectedProd && data.product_deep_dive) {
-          document.getElementById('deep-dive-prod-title').innerText = `Análisis de Producto: ${selectedProd}`;
-          const upsellsHtml = (data.product_deep_dive.upsells || []).map(u => `<div class="flex justify-between border-b border-white/5 pb-1"><span>${u.name || 'Adicional'}</span><span class="text-[#c5a059] font-bold">${u.count} ventas</span></div>`).join('') || '<p class="opacity-40">Sin upsells registrados para este ítem.</p>';
-          const abandonedHtml = (data.product_deep_dive.abandoned_steps || []).map(s => `<div class="flex justify-between border-b border-white/5 pb-1 text-red-400"><span>Paso: ${s.step}</span><span class="font-bold">$${parseInt(s.lost_money||0).toLocaleString('es-CL')} (${s.attempts} abandonos)</span></div>`).join('') || '<p class="opacity-40">Sin fugas de pago registradas.</p>';
-          
-          prodContent.innerHTML = `
-            <div><p class="font-bold text-white mb-2">🎁 Upsells más vendidos junto a este producto:</p>${upsellsHtml}</div>
-            <div class="mt-4"><p class="font-bold text-red-400 mb-2">💸 Dinero perdido por etapa de checkout:</p>${abandonedHtml}</div>
-          `;
-        } else {
-          prodContent.innerHTML = `<p class="opacity-40 italic">Selecciona un producto arriba para ver su desglose individual.</p>`;
-        }
+        return `
+        <div class="card p-5 border border-[#c5a059]/20 bg-[#c5a059]/5 hover:bg-[#c5a059]/10 transition-colors">
+          <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-3">
+             <h4 class="font-serif italic text-base text-[#c5a059] truncate pr-2 capitalize">${p.name}</h4>
+             <span class="bg-[#c5a059] text-[#0a1f1c] px-2 py-1 rounded text-[10px] font-bold">${p.conversion}% Conv</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4 text-xs mb-4">
+             <div><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Vistas Totales</span><strong class="text-white text-sm">${p.views}</strong></div>
+             <div><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Compras</span><strong class="text-white text-sm">${p.purchases} <span class="text-[9px] font-normal opacity-50">(${p.adds} adds)</span></strong></div>
+             <div class="col-span-2"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Retención Promedio</span><strong class="text-white">${p.avg_time} segs</strong></div>
+          </div>
+          <div class="text-[10px] space-y-1">
+             <span class="text-[#c5a059] block mb-2 font-bold uppercase tracking-widest">Adicionales / Clics:</span>
+             ${uHtml}
+          </div>
+        </div>`;
+      }).join('');
 
-        const catContent = document.getElementById('category-deep-content');
-        if (selectedCat && data.category_deep_dive) {
-          document.getElementById('deep-dive-cat-title').innerText = `Comportamiento en Categoría: ${selectedCat}`;
-          const interHtml = (data.category_deep_dive.interactions || []).map(i => `<div class="flex justify-between border-b border-white/5 pb-1"><span>${i.event_name} ${i.target ? '('+i.target+')' : ''}</span><span class="text-emerald-400 font-bold">${i.count} clics</span></div>`).join('') || '<p class="opacity-40">Sin interacciones registradas en esta sección.</p>';
-          
-          catContent.innerHTML = `
-            <div><p class="font-bold text-white mb-2">🔍 Qué se abre o clica más estando en esta categoría:</p>${interHtml}</div>
-            <p class="text-[10px] opacity-50 mt-4">Muestra el producto o elemento con mayor atención dentro de esta sección.</p>
-          `;
-        } else {
-          catContent.innerHTML = `<p class="opacity-40 italic">Selecciona una categoría arriba para ver su desglose individual.</p>`;
-        }
-      } else {
-        deepPanel.classList.add('hidden-panel');
-      }
+      const cGrid = document.getElementById('categories-grid');
+      cGrid.innerHTML = data.categories.map(c => {
+        const topClicks = c.clicks.sort((a,b)=>b.count-a.count).slice(0,4);
+        const cHtml = topClicks.length ? topClicks.map(u => `<div class="flex justify-between border-b border-white/5 pb-1"><span>${u.target}</span><span class="text-emerald-400 font-bold">${u.count}</span></div>`).join('') : '<span class="opacity-30">Sin interacción interna</span>';
+        
+        return `
+        <div class="card p-5 border border-emerald-900/30 bg-emerald-900/10 hover:bg-emerald-900/20 transition-colors">
+          <h4 class="font-bold text-emerald-400 uppercase text-xs border-b border-white/10 pb-3 mb-3">${c.url.replace('/','').replace('.html', '')}</h4>
+          <div class="grid grid-cols-2 gap-4 text-xs mb-4">
+             <div><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Vistas</span><strong class="text-white text-sm">${c.views}</strong></div>
+             <div><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Tiempo Prom.</span><strong class="text-white text-sm">${c.avg_time} segs</strong></div>
+          </div>
+          <div class="text-[10px] space-y-1">
+             <span class="text-emerald-400 block mb-2 font-bold uppercase tracking-widest">Atención / Clics (Top):</span>
+             ${cHtml}
+          </div>
+        </div>`;
+      }).join('');
 
-      const abandonedTotal = data.abandoned.reduce((acc, curr) => acc + parseInt(curr.value || 0), 0);
-      document.getElementById('abandoned-total').innerText = '$' + abandonedTotal.toLocaleString('es-CL');
-      document.getElementById('abandoned-count').innerText = data.abandoned.length;
-      
-      const tbody = document.getElementById('abandoned-body');
-      tbody.innerHTML = data.abandoned.map(c => `
-        <tr class="hover:bg-red-900/30">
-          <td>${new Date(c.created_at).toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})}</td>
-          <td><strong class="text-[#c5a059]">${c.email}</strong></td>
-          <td class="font-serif">$${parseInt(c.value || 0).toLocaleString('es-CL')}</td>
-          <td class="opacity-50 text-[10px] uppercase">${c.method}</td>
-        </tr>
+      const tGrid = document.getElementById('tertiary-grid');
+      tGrid.innerHTML = data.tertiary.map(t => `
+        <div class="card p-4 border border-blue-900/30 bg-blue-900/10 flex justify-between items-center hover:bg-blue-900/20 transition-colors">
+          <span class="font-bold text-blue-400 uppercase text-[10px] tracking-widest">${t.url.replace('/','').replace('.html', '')}</span>
+          <div class="text-right">
+            <span class="block text-white text-sm font-bold">${t.views} vistas</span>
+            <span class="block text-[9px] opacity-50">${t.avg_time} segs de lectura</span>
+          </div>
+        </div>
       `).join('');
 
-      const upsellList = document.getElementById('upsell-list');
-      upsellList.innerHTML = (data.product_deep_dive?.upsells || []).length > 0 
-        ? data.product_deep_dive.upsells.map(u => `<div class="flex justify-between border-b border-white/10 pb-2 mb-2"><span class="text-sm opacity-80">${u.name || 'Adicional'}</span><span class="text-[#c5a059] font-bold">${u.count} uds</span></div>`).join('')
-        : '<p class="text-xs opacity-50 italic">Selecciona un producto específico para ver sus upsells asociados o acumula tráfico global.</p>';
+      document.getElementById('abandoned-total').innerText = '$' + data.abandoned.reduce((a, c) => a + parseInt(c.value || 0), 0).toLocaleString('es-CL');
+      document.getElementById('abandoned-count').innerText = data.abandoned.length + ' abandonos (24h)';
+      document.getElementById('abandoned-body').innerHTML = data.abandoned.map(c => `
+        <tr class="border-b border-red-900/20 last:border-0 hover:bg-red-900/30 transition-colors">
+          <td class="py-2 text-[10px] opacity-60 w-16">${new Date(c.created_at).toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})}</td>
+          <td class="py-2 text-white font-bold">${c.email}</td>
+          <td class="py-2 text-[#c5a059] text-right">$${parseInt(c.value || 0).toLocaleString('es-CL')}</td>
+        </tr>`).join('');
 
       if(chartFunnel) chartFunnel.destroy();
       const ctxF = document.getElementById('funnelChart').getContext('2d');
       chartFunnel = new Chart(ctxF, {
         type: 'bar',
-        data: {
-          labels: data.funnel.map(f => f.step),
-          datasets: [{
-            label: 'Usuarios en este paso',
-            data: data.funnel.map(f => f.count),
-            backgroundColor: 'rgba(239, 68, 68, 0.7)',
-            borderColor: 'rgb(239, 68, 68)',
-            borderWidth: 1,
-            borderRadius: 4
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } },
-            y: { grid: { display: false }, ticks: { color: '#888', font: { size: 10 } } }
-          }
-        }
+        data: { labels: data.funnel.map(f => f.step), datasets: [{ data: data.funnel.map(f => f.count), backgroundColor: 'rgba(239, 68, 68, 0.7)', borderRadius: 4 }] },
+        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } }, y: { grid: { display: false }, ticks: { color: '#888', font: { size: 10 } } } } }
       });
 
-    } catch(e) { console.error(e); }
+    } catch(e) {}
   }
 
   async function loadCustomers() {
