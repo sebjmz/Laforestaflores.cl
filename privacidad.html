@@ -45,7 +45,7 @@
         </div>
     </div>
 <script>
-    (function() {
+(function() {
     const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
     
     // Generar o recuperar ID de sesión único
@@ -61,57 +61,12 @@
             method: 'POST', 
             headers: { 'Content-Type': 'application/json' }, 
             body: JSON.stringify({ session_id: sid, event_name: name, event_data: data, url: window.location.pathname }),
-            keepalive: true // Asegura que el evento llegue aunque se cambie de página
+            keepalive: true
         }).catch(()=>{});
     };
 
-    // 1. Rastrear visita de página
+    // 1. Rastrear únicamente la visita de la página de lectura
     trackEvent4D('page_view');
-
-    // 2. Interceptar Embudo de Checkout
-    if (typeof window.goToStep === 'function') {
-        const originalGoToStep = window.goToStep;
-        window.goToStep = function(step) {
-            trackEvent4D('checkout_step', { step_target: step });
-            return originalGoToStep.apply(this, arguments);
-        };
-    }
-
-    // 3. Interceptar Agregados al Carrito y Upsells
-    if (typeof window.addToCart === 'function') {
-        const originalAddToCart = window.addToCart;
-        window.addToCart = function(id, name, price, img) {
-            const isUpsell = id > 100 && id < 200; // Según lógica de upsellsCatalog
-            trackEvent4D(isUpsell ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name, price: price });
-            return originalAddToCart.apply(this, arguments);
-        };
-    }
-
-    // 4. Interceptar Fuga Financiera (Pasarelas)
-    ['iniciarMercadoPago', 'iniciarPayPal'].forEach(fnName => {
-        if (typeof window[fnName] === 'function') {
-            const originalFn = window[fnName];
-            window[fnName] = function() {
-                // Capturar el valor total del carrito abandonable
-                const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
-                const totalValue = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
-                const email = document.getElementById('buyer-email')?.value || 'desconocido';
-                
-                trackEvent4D('payment_initiated', { method: fnName, cart_value: totalValue, email: email });
-                return originalFn.apply(this, arguments);
-            };
-        }
-    });
-
-    // 5. Interceptar envíos B2B
-    if (typeof window.sendB2BConsultation === 'function') {
-        const originalB2B = window.sendB2BConsultation;
-        window.sendB2BConsultation = function(e) {
-            const segment = document.getElementById("b2b-selected-segment")?.value || 'desconocido';
-            trackEvent4D('b2b_lead_submitted', { segment: segment });
-            return originalB2B.apply(this, arguments);
-        };
-    }
 })();
 </script>
 </body>
