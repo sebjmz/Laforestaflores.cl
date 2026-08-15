@@ -66,7 +66,7 @@
       </div>
       
       <!-- KPIs Principales del Periodo -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div class="card p-5">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Nuevos Registros</p>
           <p class="text-2xl font-serif" id="kpi-signups">0</p>
@@ -86,6 +86,11 @@
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Encuestas Respondidas</p>
           <p class="text-2xl font-serif text-emerald-400" id="kpi-surveys">0</p>
           <p class="text-[10px] opacity-40 mt-1">Feedback de clientes</p>
+        </div>
+        <div class="card p-5">
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Clics Reseña Google</p>
+          <p class="text-2xl font-serif text-[#c5a059]" id="kpi-google-clicks">0</p>
+          <p class="text-[10px] opacity-40 mt-1">Intenciones de reseña</p>
         </div>
       </div>
 
@@ -309,6 +314,7 @@
       document.getElementById('kpi-referrals').innerText = (data.kpis?.referrals || 0).toLocaleString('es-CL');
       document.getElementById('kpi-points').innerText = (data.kpis?.pointsIssued || 0).toLocaleString('es-CL') + ' pts';
       document.getElementById('kpi-surveys').innerText = (data.kpis?.surveysCompleted || 0).toLocaleString('es-CL');
+      document.getElementById('kpi-google-clicks').innerText = (data.kpis?.googleReviewsClicked || 0).toLocaleString('es-CL');
 
       if(chartTrend) chartTrend.destroy();
       const ctxTrend = document.getElementById('mainTrendChart').getContext('2d');
