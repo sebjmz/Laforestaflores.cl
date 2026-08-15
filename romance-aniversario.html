@@ -382,88 +382,80 @@
         sessionStorage.setItem('lf_sid', sid); 
     }
 
-    const pathActual = (window.location.pathname === '/' || window.location.pathname === '') ? '/index.html' : window.location.pathname;
+    let pathActual = window.location.pathname;
+    if (pathActual === '/' || pathActual === '') pathActual = '/index.html';
+    const startTime = Date.now();
 
     window.trackEvent4D = function(name, data = {}) {
-        const payload = JSON.stringify({ 
-            session_id: sid, 
-            event_name: name, 
-            event_data: data, 
-            url: pathActual 
-        });
-
-        fetch(API_TRACK, { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: payload, 
-            keepalive: true 
-        }).catch(()=>{});
+        const payload = JSON.stringify({ session_id: sid, event_name: name, event_data: data, url: pathActual });
+        if (navigator.sendBeacon && name === 'time_on_page') {
+            navigator.sendBeacon(API_TRACK, new Blob([payload], { type: 'application/json' }));
+        } else {
+            fetch(API_TRACK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(()=>{});
+        }
     };
 
-    // 1. Registrar vista de página
+    // 1. Registro de Visita
     trackEvent4D('page_view');
 
-    // 2. Interceptar funciones globales si existen en la página
+    // 2. Registro de Conversión Real (Solo se ejecuta en gracias.html)
+    if (pathActual.includes('gracias.html')) {
+        const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+        cartData.forEach(item => {
+            trackEvent4D('purchase', { product_id: item.id, product_name: item.name, price: item.price, qty: item.qty });
+        });
+        // Si tienes una función para vaciar el carro tras pago, asegúrate de que corra DESPUÉS de este bloque.
+    }
+
+    // 3. Captura exacta de retención en segundos (Time-on-Page)
+    window.addEventListener('beforeunload', function() {
+        const secondsSpent = Math.round((Date.now() - startTime) / 1000);
+        trackEvent4D('time_on_page', { seconds: secondsSpent });
+    });
+
+    // 4. Interceptores Funcionales (Checkout y AddToCart globales)
     function engancharFuncionesGlobales() {
         if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
             const originalGoToStep = window.goToStep;
-            window.goToStep = function(step) {
-                trackEvent4D('checkout_step', { step_target: String(step) });
-                return originalGoToStep.apply(this, arguments);
-            };
+            window.goToStep = function(step) { trackEvent4D('checkout_step', { step_target: String(step) }); return originalGoToStep.apply(this, arguments); };
             window.goToStep._tracked4d = true;
         }
-
         if (typeof window.addToCart === 'function' && !window.addToCart._tracked4d) {
             const originalAddToCart = window.addToCart;
             window.addToCart = function(id, name, price, img) {
-                const isUpsell = id > 100 && id < 200;
-                if (isUpsell) {
-                    trackEvent4D('upsell_added', { product_id: id, product_name: name || 'Upsell' });
-                } else {
-                    trackEvent4D('add_to_cart', { product_id: id, product_name: name || 'Producto' });
-                }
+                trackEvent4D(id > 100 && id < 200 ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name });
                 return originalAddToCart.apply(this, arguments);
             };
             window.addToCart._tracked4d = true;
         }
     }
-    
     setInterval(engancharFuncionesGlobales, 500);
 
-    // 3. Escucha Global por Clics en el DOM (Cubre grillas de productos, tarjetas y botones directos)
+    // 5. Escucha de interacciones orgánicas en el DOM
     document.addEventListener('click', function(e) {
-        // Capturar tarjetas de producto y botones de añadir en catálogos y fichas
-        const productCard = e.target.closest('.product-card, main, section');
         const el = e.target.closest('button, a, .step-option, [onclick]');
         if (!el) return;
 
         const onclickAttr = el.getAttribute('onclick') || '';
         const text = (el.innerText || el.textContent || '').trim();
 
-        // Detectar clics en botones de añadir (incluyendo agregarYVolver y addToCart)
         if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || text === 'Añadir' || text.includes('Añadir al Atelier')) {
             const matchId = onclickAttr.match(/(?:addToCart|agregarYVolver)\s*\(\s*(\d+)/);
             const prodId = matchId ? parseInt(matchId[1], 10) : 0;
-            const isUpsell = prodId > 100 && prodId < 200;
-
-            // Intentar extraer el nombre del producto desde la tarjeta o título cercano
             let prodName = 'Producto';
-            const cardContainer = el.closest('.product-card') || el.closest('section') || el.closest('main');
+            
+            const cardContainer = el.closest('.product-card, section, main');
             if (cardContainer) {
                 const titleEl = cardContainer.querySelector('h1, h3, .product-title');
                 if (titleEl) prodName = titleEl.innerText.trim();
             }
-
-            if (isUpsell) {
-                trackEvent4D('upsell_added', { product_id: prodId, product_name: prodName });
-            } else {
-                trackEvent4D('add_to_cart', { product_id: prodId, product_name: prodName });
+            if(prodName === 'Producto' && !pathActual.includes('index') && !pathActual.includes('categoria')) {
+                prodName = pathActual.replace('/', '').replace('.html', '').replace(/-/g, ' ');
             }
+            trackEvent4D(prodId > 100 && prodId < 200 ? 'upsell_added' : 'add_to_cart', { product_id: prodId, product_name: prodName });
             return;
         }
 
-        // Detectar Pasos del Checkout
         if (onclickAttr.includes('goToStep') || onclickAttr.includes('seleccionarModalidad') || onclickAttr.includes('seleccionarZona') || onclickAttr.includes('seleccionarFecha') || onclickAttr.includes('openCheckout') || onclickAttr.includes('cargarPasarelas')) {
             let targetStep = 'interaccion_checkout';
             const matchStep = onclickAttr.match(/goToStep\s*\(\s*['"]?([^'")]+)['"]?\s*\)/);
@@ -472,28 +464,16 @@
             else if (onclickAttr.includes('seleccionarZona')) targetStep = 'seleccion_zona';
             else if (onclickAttr.includes('seleccionarFecha')) targetStep = 'seleccion_fecha';
             else if (onclickAttr.includes('openCheckout') || onclickAttr.includes('cargarPasarelas')) targetStep = 'step-1';
-
             trackEvent4D('checkout_step', { step_target: String(targetStep) });
             return;
         }
 
-        // Detectar Pasarelas de Pago
-        if (onclickAttr.includes('iniciarMercadoPago') || text.includes('MercadoPago')) {
+        if (onclickAttr.includes('iniciarMercadoPago') || onclickAttr.includes('iniciarPayPal') || text.includes('MercadoPago') || text.includes('PayPal')) {
             const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
             const totalVal = cartData.reduce((acc, item) => acc + (item.price * item.qty), 0);
             const email = document.getElementById('buyer-email')?.value || 'desconocido';
-            trackEvent4D('payment_initiated', { method: 'MercadoPago', cart_value: totalVal, email: email });
-            return;
+            trackEvent4D('payment_initiated', { method: text.includes('PayPal') ? 'PayPal' : 'MercadoPago', cart_value: totalVal, email: email });
         }
-
-        if (onclickAttr.includes('iniciarPayPal') || text.includes('PayPal')) {
-            const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
-            const totalVal = cartData.reduce((acc, item) => acc + (item.price * item.qty), 0);
-            const email = document.getElementById('buyer-email')?.value || 'desconocido';
-            trackEvent4D('payment_initiated', { method: 'PayPal', cart_value: totalVal, email: email });
-            return;
-        }
-
     }, true);
 })();
 </script>
