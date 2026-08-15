@@ -438,11 +438,10 @@
     
     let sid = sessionStorage.getItem('lf_sid');
     if (!sid) { 
-        sid = crypto.randomUUID ? crypto.randomUUID() : 'sid_' + Date.now() + '_' + Math.floor(Math.random()*100000); 
+        sid = 'sid_' + Date.now() + '_' + Math.floor(Math.random()*100000); 
         sessionStorage.setItem('lf_sid', sid); 
     }
 
-    // Normalizar ruta: si es "/" lo guarda como "/index.html" para que el filtro coincida siempre
     const pathActual = (window.location.pathname === '/' || window.location.pathname === '') ? '/index.html' : window.location.pathname;
 
     window.trackEvent4D = function(name, data = {}) {
@@ -453,42 +452,79 @@
             url: pathActual 
         });
 
-        // sendBeacon garantiza que la data llegue incluso si el usuario cambia de página o cierra la pestaña
-        if (navigator.sendBeacon) {
-            const blob = new Blob([payload], { type: 'application/json' });
-            navigator.sendBeacon(API_TRACK, blob);
-        } else {
-            fetch(API_TRACK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(()=>{});
-        }
+        fetch(API_TRACK, { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: payload, 
+            keepalive: true 
+        }).catch(()=>{});
     };
 
     // 1. Registrar vista de página
     trackEvent4D('page_view');
 
-    // 2. Escucha Global Inteligente de Clics (Fase de Captura)
+    // 2. Interceptar funciones globales si existen en la página
+    function engancharFuncionesGlobales() {
+        if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
+            const originalGoToStep = window.goToStep;
+            window.goToStep = function(step) {
+                trackEvent4D('checkout_step', { step_target: String(step) });
+                return originalGoToStep.apply(this, arguments);
+            };
+            window.goToStep._tracked4d = true;
+        }
+
+        if (typeof window.addToCart === 'function' && !window.addToCart._tracked4d) {
+            const originalAddToCart = window.addToCart;
+            window.addToCart = function(id, name, price, img) {
+                const isUpsell = id > 100 && id < 200;
+                if (isUpsell) {
+                    trackEvent4D('upsell_added', { product_id: id, product_name: name || 'Upsell' });
+                } else {
+                    trackEvent4D('add_to_cart', { product_id: id, product_name: name || 'Producto' });
+                }
+                return originalAddToCart.apply(this, arguments);
+            };
+            window.addToCart._tracked4d = true;
+        }
+    }
+    
+    setInterval(engancharFuncionesGlobales, 500);
+
+    // 3. Escucha Global por Clics en el DOM (Cubre grillas de productos, tarjetas y botones directos)
     document.addEventListener('click', function(e) {
+        // Capturar tarjetas de producto y botones de añadir en catálogos y fichas
+        const productCard = e.target.closest('.product-card, main, section');
         const el = e.target.closest('button, a, .step-option, [onclick]');
         if (!el) return;
 
         const onclickAttr = el.getAttribute('onclick') || '';
         const text = (el.innerText || el.textContent || '').trim();
 
-        // Detectar Añadir Producto Principal / Bestseller
-        if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver')) {
+        // Detectar clics en botones de añadir (incluyendo agregarYVolver y addToCart)
+        if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || text === 'Añadir' || text.includes('Añadir al Atelier')) {
             const matchId = onclickAttr.match(/(?:addToCart|agregarYVolver)\s*\(\s*(\d+)/);
             const prodId = matchId ? parseInt(matchId[1], 10) : 0;
             const isUpsell = prodId > 100 && prodId < 200;
 
+            // Intentar extraer el nombre del producto desde la tarjeta o título cercano
+            let prodName = 'Producto';
+            const cardContainer = el.closest('.product-card') || el.closest('section') || el.closest('main');
+            if (cardContainer) {
+                const titleEl = cardContainer.querySelector('h1, h3, .product-title');
+                if (titleEl) prodName = titleEl.innerText.trim();
+            }
+
             if (isUpsell) {
-                trackEvent4D('upsell_added', { product_id: prodId, product_name: text.split('\n')[0] || 'Upsell' });
+                trackEvent4D('upsell_added', { product_id: prodId, product_name: prodName });
             } else {
-                trackEvent4D('add_to_cart', { product_id: prodId, product_name: text.split('\n')[0] || 'Producto' });
+                trackEvent4D('add_to_cart', { product_id: prodId, product_name: prodName });
             }
             return;
         }
 
-        // Detectar Pasos del Checkout (por función o botones de paso)
-        if (onclickAttr.includes('goToStep') || onclickAttr.includes('seleccionar') || onclickAttr.includes('confirmar') || onclickAttr.includes('openCheckout') || onclickAttr.includes('cargarPasarelas')) {
+        // Detectar Pasos del Checkout
+        if (onclickAttr.includes('goToStep') || onclickAttr.includes('seleccionarModalidad') || onclickAttr.includes('seleccionarZona') || onclickAttr.includes('seleccionarFecha') || onclickAttr.includes('openCheckout') || onclickAttr.includes('cargarPasarelas')) {
             let targetStep = 'interaccion_checkout';
             const matchStep = onclickAttr.match(/goToStep\s*\(\s*['"]?([^'")]+)['"]?\s*\)/);
             if (matchStep) targetStep = matchStep[1];
@@ -497,11 +533,11 @@
             else if (onclickAttr.includes('seleccionarFecha')) targetStep = 'seleccion_fecha';
             else if (onclickAttr.includes('openCheckout') || onclickAttr.includes('cargarPasarelas')) targetStep = 'step-1';
 
-            trackEvent4D('checkout_step', { step_target: String(targetStep), label: text.slice(0, 30) });
+            trackEvent4D('checkout_step', { step_target: String(targetStep) });
             return;
         }
 
-        // Detectar Clic en Pasarelas de Pago
+        // Detectar Pasarelas de Pago
         if (onclickAttr.includes('iniciarMercadoPago') || text.includes('MercadoPago')) {
             const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
             const totalVal = cartData.reduce((acc, item) => acc + (item.price * item.qty), 0);
@@ -518,14 +554,7 @@
             return;
         }
 
-        // Detectar Formulario B2B
-        if (onclickAttr.includes('sendB2B') || onclickAttr.includes('openB2B') || text.includes('Membresía')) {
-            const seg = document.getElementById('b2b-selected-segment')?.value || text.slice(0, 30);
-            trackEvent4D('b2b_interaction', { detail: seg });
-            return;
-        }
-
-    }, true); // true = fase de captura (se ejecuta antes que cualquier otra función)
+    }, true);
 })();
 </script>
 </body>
