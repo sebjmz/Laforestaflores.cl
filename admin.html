@@ -50,60 +50,13 @@
   <main class="flex-1 h-full overflow-y-auto bg-[#050f0e] p-8 hidden" id="main-content">
     
     <div id="view-dashboard" class="hidden-panel space-y-6">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-        <div>
-          <h2 class="text-2xl font-bold text-white">Rendimiento y Eficiencia del Club</h2>
-          <p class="text-xs opacity-50 mt-1">Métricas clave de adopción, interacciones y satisfacción.</p>
-        </div>
-        <!-- Selector de rango de tiempo estilo Analytics -->
-        <div class="flex items-center gap-2 bg-black/40 p-1.5 rounded-xl border border-white/10">
-          <button onclick="changePeriod('7')" id="p-7" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white">Última semana</button>
-          <button onclick="changePeriod('30')" id="p-30" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e]">Último mes</button>
-          <button onclick="changePeriod('90')" id="p-90" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white">3 meses</button>
-          <button onclick="changePeriod('180')" id="p-180" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white">6 meses</button>
-          <button onclick="changePeriod('365')" id="p-365" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white">12 meses</button>
-        </div>
-      </div>
+      <h2 class="text-2xl font-bold text-white mb-6">Métricas de Negocio</h2>
       
-      <!-- KPIs Principales del Periodo -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="card p-5">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Nuevos Registros</p>
-          <p class="text-2xl font-serif" id="kpi-signups">0</p>
-          <p class="text-[10px] opacity-40 mt-1">En el rango seleccionado</p>
-        </div>
-        <div class="card p-5">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Invitaciones (Referidos)</p>
-          <p class="text-2xl font-serif text-blue-400" id="kpi-referrals">0</p>
-          <p class="text-[10px] opacity-40 mt-1">Códigos compartidos activos</p>
-        </div>
-        <div class="card p-5">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Puntos Emitidos</p>
-          <p class="text-2xl font-serif text-[#c5a059]" id="kpi-points">0 pts</p>
-          <p class="text-[10px] opacity-40 mt-1">Cashback y recompensas</p>
-        </div>
-        <div class="card p-5">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Encuestas Respondidas</p>
-          <p class="text-2xl font-serif text-emerald-400" id="kpi-surveys">0</p>
-          <p class="text-[10px] opacity-40 mt-1">Feedback de clientes</p>
-        </div>
-      </div>
-
-      <!-- Gráfico de Tendencia Principal (Estilo GA4 de la imagen) -->
-      <div class="card p-6 flex flex-col h-80">
-        <div class="flex justify-between items-center mb-4">
-          <p class="text-xs font-bold text-white uppercase tracking-widest">Evolución de Adquisición de Miembros</p>
-          <span class="text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded text-[#c5a059]" id="trend-label">Último mes</span>
-        </div>
-        <div class="relative flex-1 w-full"><canvas id="mainTrendChart"></canvas></div>
-      </div>
-
-      <!-- Métricas Financieras y Anillos secundarios -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-3 gap-6">
         <div class="card p-6">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Pasivo Circulante (Puntos)</p>
           <p class="text-3xl font-serif" id="stat-points">0</p>
-          <p class="text-xs opacity-50 mt-2">Puntos pendientes de canje global</p>
+          <p class="text-xs opacity-50 mt-2">Puntos pendientes de canje</p>
         </div>
         <div class="card p-6">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Descuentos Entregados</p>
@@ -117,7 +70,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-80">
+      <div class="grid grid-cols-2 gap-6 h-80">
         <div class="card p-6 flex flex-col">
           <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest">Distribución de Niveles</p>
           <div class="relative flex-1 w-full"><canvas id="tierChart"></canvas></div>
@@ -125,6 +78,73 @@
         <div class="card p-6 flex flex-col">
           <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest">Distribución de Satisfacción</p>
           <div class="relative flex-1 w-full"><canvas id="ratingChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-customers" class="hidden-panel space-y-6">
+      <div class="flex justify-between items-end">
+        <h2 class="text-2xl font-bold text-white">Billetera de Clientes</h2>
+        <div class="w-72">
+          <input type="text" id="search-customer" class="input-dark w-full p-2 text-sm" placeholder="Buscar por email o nombre..." oninput="searchDebounce(loadCustomers)">
+        </div>
+      </div>
+      <div class="card overflow-x-auto">
+        <table id="customers-table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Nivel</th>
+              <th>LTV (Gasto)</th>
+              <th>Saldo Puntos</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="customers-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="view-surveys" class="hidden-panel space-y-6">
+      <div class="flex justify-between items-end">
+        <h2 class="text-2xl font-bold text-white">Auditoría de Calidad</h2>
+      </div>
+      <div class="card overflow-x-auto">
+        <table id="surveys-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Cliente</th>
+              <th>Calificación</th>
+              <th>Feedback</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="surveys-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="view-ops" class="hidden-panel space-y-6">
+      <h2 class="text-2xl font-bold text-white">Operaciones Logísticas</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="card p-6">
+          <h3 class="font-bold text-[#c5a059] mb-4">Actualizar Tracking</h3>
+          <input type="text" id="track-order" class="input-dark w-full p-3 mb-3 text-sm" placeholder="ID del Pedido">
+          <select id="track-status" class="input-dark w-full p-3 mb-3 text-sm">
+            <option value="transito">En Tránsito</option>
+            <option value="entregado">Entregado</option>
+          </select>
+          <input type="file" id="track-photo" accept="image/*" class="input-dark w-full p-2 mb-4 text-sm">
+          <button onclick="updateTracking()" class="btn-gold w-full p-3 rounded-lg text-sm font-bold uppercase tracking-widest">Notificar al Cliente</button>
+          <p id="track-msg" class="text-xs mt-3 text-center"></p>
+        </div>
+        
+        <div class="card p-6">
+          <h3 class="font-bold text-[#c5a059] mb-4">Auditoría WhatsApp</h3>
+          <input type="text" id="wa-code" class="input-dark w-full p-3 mb-4 text-sm" placeholder="Código OTP (Ej: LF-1234)">
+          <button onclick="verifyWA()" class="btn-gold w-full p-3 rounded-lg text-sm font-bold uppercase tracking-widest">Enlazar Número</button>
+          <p id="wa-msg" class="text-xs mt-3 text-center"></p>
         </div>
       </div>
     </div>
@@ -153,9 +173,7 @@
 
 <script>
   const API_URL = 'https://club-laforesta.sebjmz.workers.dev';
-  // Declaramos las variables una sola vez con let
-  let chartTrend, chartTiers, chartRatings;
-  let currentPeriod = '30';
+  let chartTiers, chartRatings;
   let timer;
 
   function login() {
@@ -192,17 +210,14 @@
     ['dashboard', 'customers', 'surveys', 'ops'].forEach(v => {
       document.getElementById(`view-${v}`).classList.add('hidden-panel');
       const btn = document.getElementById(`nav-${v}`);
-      if(btn) {
-        btn.classList.remove('bg-white/5', 'text-[#c5a059]');
-        btn.classList.add('text-white/70');
-      }
+      btn.classList.remove('bg-white/5', 'text-[#c5a059]');
+      btn.classList.add('text-white/70');
     });
     document.getElementById(`view-${view}`).classList.remove('hidden-panel');
     const activeBtn = document.getElementById(`nav-${view}`);
-    if(activeBtn) {
-      activeBtn.classList.add('bg-white/5', 'text-[#c5a059]');
-      activeBtn.classList.remove('text-white/70');
-    }
+    activeBtn.classList.add('bg-white/5', 'text-[#c5a059]');
+    activeBtn.classList.remove('text-white/70');
+
     if(view === 'dashboard') loadStats();
     if(view === 'customers') loadCustomers();
     if(view === 'surveys') loadSurveys();
@@ -213,43 +228,14 @@
     timer = setTimeout(func, 500);
   }
 
-  function changePeriod(p) {
-    currentPeriod = p;
-    ['7', '30', '90', '180', '365'].forEach(days => {
-      const btn = document.getElementById(`p-${days}`);
-      if(btn) {
-        if (days === p) btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e]";
-        else btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white";
-      }
-    });
-    loadStats();
-  }
-
   async function loadStats() {
     try {
-      const res = await apicall(`/api/admin/stats?period=${currentPeriod}`);
+      const res = await apicall('/api/admin/stats');
       const data = await res.json();
       
       document.getElementById('stat-points').innerText = parseInt(data.financial.pasivo_circulante || 0).toLocaleString('es-CL');
       document.getElementById('stat-savings').innerText = '$' + parseInt(data.financial.ahorro_entregado || 0).toLocaleString('es-CL');
       document.getElementById('stat-ltv').innerText = '$' + parseInt(data.financial.ltv_total || 0).toLocaleString('es-CL');
-
-      const totalSignups = data.trend.reduce((acc, curr) => acc + curr.total, 0);
-      document.getElementById('kpi-signups').innerText = totalSignups.toLocaleString('es-CL');
-      document.getElementById('kpi-referrals').innerText = (data.kpis.referrals || 0).toLocaleString('es-CL');
-      document.getElementById('kpi-points').innerText = (data.kpis.pointsIssued || 0).toLocaleString('es-CL') + ' pts';
-      document.getElementById('kpi-surveys').innerText = (data.kpis.surveysCompleted || 0).toLocaleString('es-CL');
-
-      if(chartTrend) chartTrend.destroy();
-      const ctxTrend = document.getElementById('mainTrendChart').getContext('2d');
-      chartTrend = new Chart(ctxTrend, {
-        type: 'line',
-        data: {
-          labels: data.trend.map(t => t.fecha),
-          datasets: [{ label: 'Nuevos Registros', data: data.trend.map(t => t.total), borderColor: '#c5a059', backgroundColor: 'rgba(197,160,89,0.1)', fill: true, tension: 0.3 }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
-      });
 
       if(chartTiers) chartTiers.destroy();
       const ctxT = document.getElementById('tierChart').getContext('2d');
@@ -268,14 +254,101 @@
         type: 'bar',
         data: {
           labels: data.ratings.map(r => r.rating + ' Estrellas'),
-          datasets: [{ data: data.ratings.map(r => r.count), backgroundColor: '#c5a059', borderRadius: 4 }]
+          datasets: [{ label: 'Respuestas', data: data.ratings.map(r => r.count), backgroundColor: '#c5a059', borderRadius: 4 }]
         },
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
       });
-    } catch(e) { console.error(e); }
+    } catch(e) {}
   }
 
-  // ... (incluir aquí el resto de funciones como loadCustomers, loadSurveys, updateTracking, etc)
+  async function loadCustomers() {
+    const q = document.getElementById('search-customer').value;
+    const res = await apicall(`/api/admin/customers?q=${encodeURIComponent(q)}`);
+    const data = await res.json();
+    const tbody = document.getElementById('customers-body');
+    
+    tbody.innerHTML = data.customers.map(c => `
+      <tr>
+        <td><strong class="block">${c.full_name || '-'}</strong><span class="text-[10px] opacity-50">${c.email}</span></td>
+        <td><span class="bg-white/5 border border-white/10 px-2 py-1 rounded text-[10px] uppercase text-[#c5a059]">${c.tier || 'Cuarzo'}</span></td>
+        <td class="font-serif">$${(c.lifetime_flowers_clp || 0).toLocaleString('es-CL')}</td>
+        <td class="font-bold font-serif text-[#c5a059]">${(c.points_balance || 0).toLocaleString('es-CL')} pts</td>
+        <td><button onclick="openPointsModal('${c.id}', '${c.full_name || c.email}')" class="text-[10px] border border-[#c5a059] text-[#c5a059] px-3 py-1.5 rounded hover:bg-[#c5a059] hover:text-[#050f0e] uppercase tracking-widest font-bold transition">Ajustar Saldo</button></td>
+      </tr>
+    `).join('');
+  }
+
+  function openPointsModal(id, name) {
+    document.getElementById('modal-customer-id').value = id;
+    document.getElementById('modal-customer-name').innerText = name;
+    document.getElementById('modal-points-val').value = '';
+    document.getElementById('modal-points-reason').value = '';
+    document.getElementById('points-modal').classList.remove('hidden-panel');
+  }
+
+  async function submitPoints() {
+    const id = document.getElementById('modal-customer-id').value;
+    const pts = document.getElementById('modal-points-val').value;
+    const reason = document.getElementById('modal-points-reason').value;
+    if(!pts) return;
+
+    await apicall('/api/admin/customers/points', 'POST', { customer_id: id, points: pts, reason });
+    document.getElementById('points-modal').classList.add('hidden-panel');
+    loadCustomers();
+  }
+
+  async function loadSurveys() {
+    const res = await apicall('/api/admin/surveys');
+    const data = await res.json();
+    const tbody = document.getElementById('surveys-body');
+    
+    tbody.innerHTML = data.surveys.map(s => {
+      const estrellas = '★'.repeat(s.rating) + '<span class="opacity-20">' + '★'.repeat(5-s.rating) + '</span>';
+      const critico = s.rating <= 3 ? 'bg-red-500/10' : '';
+      let aspec = ''; try { aspec = JSON.parse(s.issues || '[]').join(', '); } catch(e){}
+      
+      return `
+        <tr class="${critico}">
+          <td class="text-[10px] opacity-60">${new Date(s.answered_at).toLocaleDateString('es-CL')}</td>
+          <td><strong class="block">${s.full_name || 'Anónimo'}</strong><span class="text-[10px] opacity-50">${s.email}</span></td>
+          <td class="text-[#c5a059] text-lg tracking-widest">${estrellas}</td>
+          <td><span class="block text-xs text-white/80">${aspec}</span><span class="text-[10px] opacity-50 italic block mt-1">"${s.suggestion || '-'}"</span></td>
+          <td>
+            ${s.rating <= 3 && s.customer_id ? `<button onclick="openPointsModal('${s.customer_id}', '${s.full_name || s.email}')" class="text-[10px] bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1.5 rounded hover:bg-red-500 hover:text-white uppercase tracking-widest font-bold transition">Compensar</button>` : '<span class="text-[10px] opacity-30 uppercase tracking-widest">N/A</span>'}
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async function updateTracking() {
+    const form = new FormData();
+    form.append('order_id', document.getElementById('track-order').value);
+    form.append('status', document.getElementById('track-status').value);
+    const photo = document.getElementById('track-photo').files[0];
+    if(photo) form.append('photo', photo);
+
+    const msg = document.getElementById('track-msg');
+    msg.innerText = 'Subiendo...'; msg.className = 'text-xs mt-3 text-center text-yellow-400';
+
+    try {
+      const res = await apicall('/api/admin/tracking', 'POST', form);
+      const data = await res.json();
+      if(res.ok) { msg.innerText = '✅ Listo: ' + data.tracking_link; msg.className = 'text-xs mt-3 text-center text-emerald-400 break-all'; }
+      else { msg.innerText = '❌ ' + data.error; msg.className = 'text-xs mt-3 text-center text-red-400'; }
+    } catch(e) { msg.innerText = '❌ Error de red'; msg.className = 'text-xs mt-3 text-center text-red-400'; }
+  }
+
+  async function verifyWA() {
+    const msg = document.getElementById('wa-msg');
+    msg.innerText = 'Verificando...'; msg.className = 'text-xs mt-3 text-center text-yellow-400';
+    try {
+      const res = await apicall('/api/verify-phone', 'POST', { message_text: document.getElementById('wa-code').value });
+      if(res.ok) { msg.innerText = '✅ Verificado'; msg.className = 'text-xs mt-3 text-center text-emerald-400'; }
+      else { msg.innerText = '❌ Código inválido'; msg.className = 'text-xs mt-3 text-center text-red-400'; }
+    } catch(e) { msg.innerText = '❌ Error de red'; msg.className = 'text-xs mt-3 text-center text-red-400'; }
+  }
+
   initApp();
 </script>
 </body>
