@@ -7,26 +7,80 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  body { background: #050f0e; color: #fcfaf7; font-family: 'Inter', sans-serif; }
-  .sidebar { background: #0a1f1c; border-right: 1px solid rgba(197,160,89,0.2); }
-  .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; }
-  .btn-gold { background: #c5a059; color: #0a1f1c; font-weight: bold; transition: 0.2s; cursor: pointer; }
-  .btn-gold:hover { background: #fff; }
-  .input-dark { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 8px; outline: none; }
-  .input-dark:focus { border-color: #c5a059; }
-  table { width: 100%; text-align: left; font-size: 13px; }
-  th { padding: 12px 16px; color: #c5a059; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em; }
-  td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-  tr:hover td { background: rgba(255,255,255,0.02); }
-  .hidden-panel { display: none !important; }
-  .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
-  .hide-scroll::-webkit-scrollbar { display: none; }
+  body { 
+    background: #050f0e; 
+    color: #fcfaf7; 
+    font-family: 'Inter', sans-serif; 
+  }
+  .sidebar { 
+    background: #0a1f1c; 
+    border-right: 1px solid rgba(197,160,89,0.2); 
+  }
+  .card { 
+    background: rgba(255,255,255,0.03); 
+    border: 1px solid rgba(255,255,255,0.08); 
+    border-radius: 12px; 
+  }
+  .btn-gold { 
+    background: #c5a059; 
+    color: #0a1f1c; 
+    font-weight: bold; 
+    transition: 0.2s; 
+    cursor: pointer; 
+  }
+  .btn-gold:hover { 
+    background: #fff; 
+  }
+  .input-dark { 
+    background: rgba(0,0,0,0.3); 
+    border: 1px solid rgba(255,255,255,0.1); 
+    color: #fff; 
+    border-radius: 8px; 
+    outline: none; 
+  }
+  .input-dark:focus { 
+    border-color: #c5a059; 
+  }
+  table { 
+    width: 100%; 
+    text-align: left; 
+    font-size: 13px; 
+  }
+  th { 
+    padding: 12px 16px; 
+    color: #c5a059; 
+    border-bottom: 1px solid rgba(255,255,255,0.1); 
+    font-weight: 600; 
+    text-transform: uppercase; 
+    font-size: 10px; 
+    letter-spacing: 0.1em; 
+  }
+  td { 
+    padding: 16px; 
+    border-bottom: 1px solid rgba(255,255,255,0.05); 
+  }
+  tr:hover td { 
+    background: rgba(255,255,255,0.02); 
+  }
+  .hidden-panel { 
+    display: none !important; 
+  }
+  .grid-cards { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
+    gap: 1.5rem; 
+  }
+  .hide-scroll::-webkit-scrollbar { 
+    display: none; 
+  }
 </style>
 </head>
 <body class="flex h-screen overflow-hidden relative">
 
-  <button onclick="loadAnalytics()" id="floating-refresh" class="hidden-panel fixed bottom-8 right-8 z-[100] py-4 px-6 bg-[#c5a059] text-[#0a1f1c] hover:bg-white rounded-full text-xs uppercase tracking-widest font-bold shadow-[0_4px_20px_rgba(197,160,89,0.4)] transition-all cursor-pointer flex items-center gap-2">
-    ↻ Refrescar 4D
+  <!-- BOTÓN FLOTANTE GLOBAL DE ACTUALIZACIÓN 4D -->
+  <button onclick="loadAnalytics()" id="floating-refresh" class="hidden-panel fixed bottom-10 right-10 z-[100] py-4 px-8 bg-[#c5a059] text-[#0a1f1c] hover:bg-white rounded-full text-sm uppercase tracking-widest font-bold shadow-[0_10px_30px_rgba(197,160,89,0.5)] transition-all cursor-pointer flex items-center gap-2 hover:scale-105 active:scale-95">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+    Refrescar Monitor
   </button>
 
   <div id="auth-overlay" class="fixed inset-0 bg-[#050f0e] z-50 flex items-center justify-center">
@@ -56,6 +110,7 @@
 
   <main class="flex-1 h-full overflow-y-auto bg-[#050f0e] p-8 hidden" id="main-content">
     
+    <!-- VISTA DASHBOARD -->
     <div id="view-dashboard" class="hidden-panel space-y-6">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-2">
         <div>
@@ -118,6 +173,7 @@
       </div>
     </div>
 
+    <!-- VISTA ANALYTICS 4D -->
     <div id="view-analytics" class="hidden-panel space-y-10">
       <div class="flex justify-between items-end border-b border-white/10 pb-6">
         <div>
@@ -181,6 +237,7 @@
       </section>
     </div>
 
+    <!-- VISTA CLIENTES -->
     <div id="view-customers" class="hidden-panel space-y-6">
       <div class="flex justify-between items-end border-b border-white/10 pb-4">
         <h2 class="text-2xl font-bold text-white">Billetera de Clientes</h2>
@@ -204,6 +261,7 @@
       </div>
     </div>
 
+    <!-- VISTA ENCUESTAS -->
     <div id="view-surveys" class="hidden-panel space-y-6">
       <div class="flex justify-between items-end border-b border-white/10 pb-4">
         <h2 class="text-2xl font-bold text-white">Auditoría de Calidad</h2>
@@ -224,6 +282,7 @@
       </div>
     </div>
 
+    <!-- VISTA OPERACIONES -->
     <div id="view-ops" class="hidden-panel space-y-6">
       <h2 class="text-2xl font-bold text-white border-b border-white/10 pb-4">Operaciones Logísticas</h2>
       <div class="grid grid-cols-2 gap-8">
@@ -278,7 +337,7 @@
 
   function login() {
     const sec = document.getElementById('secret-key').value;
-    if(!sec) return;
+    if (!sec) return;
     localStorage.setItem('lf_admin_secret', sec);
     initApp();
   }
@@ -289,20 +348,36 @@
   }
 
   function initApp() {
-    if(!localStorage.getItem('lf_admin_secret')) return;
+    if (!localStorage.getItem('lf_admin_secret')) return;
     document.getElementById('auth-overlay').classList.add('hidden');
     document.getElementById('sidebar').classList.remove('hidden');
     document.getElementById('main-content').classList.remove('hidden');
     nav('dashboard');
   }
 
-  async function apicall(path, method='GET', body=null) {
+  async function apicall(path, method = 'GET', body = null) {
     const sec = localStorage.getItem('lf_admin_secret');
-    const opts = { method, headers: { 'X-Internal-Secret': sec, 'Content-Type': 'application/json' }};
-    if (body && !(body instanceof FormData)) opts.body = JSON.stringify(body);
-    if (body instanceof FormData) { opts.body = body; delete opts.headers['Content-Type']; }
+    const opts = { 
+        method, 
+        headers: { 
+            'X-Internal-Secret': sec, 
+            'Content-Type': 'application/json' 
+        }
+    };
+
+    if (body && !(body instanceof FormData)) {
+        opts.body = JSON.stringify(body);
+    }
+    if (body instanceof FormData) { 
+        opts.body = body; 
+        delete opts.headers['Content-Type']; 
+    }
     const res = await fetch(`${API_URL}${path}`, opts);
-    if(res.status === 401) { logout(); throw new Error("No autorizado"); }
+    
+    if (res.status === 401) { 
+        logout(); 
+        throw new Error("No autorizado"); 
+    }
     return res;
   }
 
@@ -310,7 +385,7 @@
     ['dashboard', 'customers', 'surveys', 'analytics', 'ops'].forEach(v => {
       document.getElementById(`view-${v}`).classList.add('hidden-panel');
       const btn = document.getElementById(`nav-${v}`);
-      if(btn) {
+      if (btn) {
         btn.classList.remove('bg-white/5', 'text-[#c5a059]');
         btn.classList.add('text-white/70');
       }
@@ -319,19 +394,22 @@
     document.getElementById(`view-${view}`).classList.remove('hidden-panel');
     const activeBtn = document.getElementById(`nav-${view}`);
     
-    if(activeBtn) {
+    if (activeBtn) {
       activeBtn.classList.add('bg-white/5', 'text-[#c5a059]');
       activeBtn.classList.remove('text-white/70');
     }
 
     const floatBtn = document.getElementById('floating-refresh');
-    if (view === 'analytics') floatBtn.classList.remove('hidden-panel');
-    else floatBtn.classList.add('hidden-panel');
+    if (view === 'analytics') {
+        floatBtn.classList.remove('hidden-panel');
+    } else {
+        floatBtn.classList.add('hidden-panel');
+    }
     
-    if(view === 'dashboard') loadStats();
-    if(view === 'analytics') loadAnalytics();
-    if(view === 'customers') loadCustomers();
-    if(view === 'surveys') loadSurveys();
+    if (view === 'dashboard') loadStats();
+    if (view === 'analytics') loadAnalytics();
+    if (view === 'customers') loadCustomers();
+    if (view === 'surveys') loadSurveys();
   }
 
   function searchDebounce(func) {
@@ -343,12 +421,27 @@
     currentPeriod = p;
     ['7', '30', '90', '180', '365'].forEach(days => {
       const btn = document.getElementById(`p-${days}`);
-      if(btn) btn.className = days === p ? "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e] cursor-pointer" : "px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white cursor-pointer";
+      if (btn) {
+          if (days === p) {
+              btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e] cursor-pointer";
+          } else {
+              btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white cursor-pointer";
+          }
+      }
     });
     
-    const labelsMap = { '7': 'Última semana', '30': 'Último mes', '90': 'Últimos 3 meses', '180': 'Últimos 6 meses', '365': 'Últimos 12 meses' };
+    const labelsMap = { 
+        '7': 'Última semana', 
+        '30': 'Último mes', 
+        '90': 'Últimos 3 meses', 
+        '180': 'Últimos 6 meses', 
+        '365': 'Últimos 12 meses' 
+    };
+    
     const labelEl = document.getElementById('trend-label');
-    if(labelEl) labelEl.innerText = labelsMap[p];
+    if (labelEl) {
+        labelEl.innerText = labelsMap[p];
+    }
     
     loadStats();
   }
@@ -369,35 +462,81 @@
       document.getElementById('kpi-surveys').innerText = (data.kpis?.surveysCompleted || 0).toLocaleString('es-CL');
       document.getElementById('kpi-google-clicks').innerText = (data.kpis?.googleReviewsClicked || 0).toLocaleString('es-CL');
 
-      if(chartTrend) chartTrend.destroy();
+      if (chartTrend) chartTrend.destroy();
       const ctxTrend = document.getElementById('mainTrendChart').getContext('2d');
       chartTrend = new Chart(ctxTrend, {
         type: 'line',
-        data: { labels: (data.trend || []).map(t => t.fecha), datasets: [{ data: (data.trend || []).map(t => t.total), borderColor: '#c5a059', backgroundColor: 'rgba(197,160,89,0.1)', borderWidth: 2, fill: true, tension: 0.3 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888', font: { size: 10 } } }, x: { grid: { display: false }, ticks: { color: '#888', font: { size: 10 } } } } }
+        data: { 
+            labels: (data.trend || []).map(t => t.fecha), 
+            datasets: [{ 
+                data: (data.trend || []).map(t => t.total), 
+                borderColor: '#c5a059', 
+                backgroundColor: 'rgba(197,160,89,0.1)', 
+                borderWidth: 2, 
+                fill: true, 
+                tension: 0.3 
+            }] 
+        },
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { legend: { display: false } }, 
+            scales: { 
+                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888', font: { size: 10 } } }, 
+                x: { grid: { display: false }, ticks: { color: '#888', font: { size: 10 } } } 
+            } 
+        }
       });
 
-      if(chartTiers) chartTiers.destroy();
+      if (chartTiers) chartTiers.destroy();
       const ctxT = document.getElementById('tierChart').getContext('2d');
       chartTiers = new Chart(ctxT, {
         type: 'doughnut',
-        data: { labels: (data.tiers || []).map(t => t.tier || 'Sin Nivel'), datasets: [{ data: (data.tiers || []).map(t => t.count), backgroundColor: ['#c5a059', '#3b82f6', '#10b981', '#4b5563'], borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#fff', font: { size: 10 } } } } }
+        data: { 
+            labels: (data.tiers || []).map(t => t.tier || 'Sin Nivel'), 
+            datasets: [{ 
+                data: (data.tiers || []).map(t => t.count), 
+                backgroundColor: ['#c5a059', '#3b82f6', '#10b981', '#4b5563'], 
+                borderWidth: 0 
+            }] 
+        },
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { legend: { position: 'right', labels: { color: '#fff', font: { size: 10 } } } } 
+        }
       });
 
-      if(chartRatings) chartRatings.destroy();
+      if (chartRatings) chartRatings.destroy();
       const ctxR = document.getElementById('ratingChart').getContext('2d');
       chartRatings = new Chart(ctxR, {
         type: 'bar',
-        data: { labels: (data.ratings || []).map(r => r.rating + ' Estrellas'), datasets: [{ data: (data.ratings || []).map(r => r.count), backgroundColor: '#c5a059', borderRadius: 4 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
+        data: { 
+            labels: (data.ratings || []).map(r => r.rating + ' Estrellas'), 
+            datasets: [{ 
+                data: (data.ratings || []).map(r => r.count), 
+                backgroundColor: '#c5a059', 
+                borderRadius: 4 
+            }] 
+        },
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { legend: { display: false } }, 
+            scales: { 
+                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, 
+                x: { grid: { display: false } } 
+            } 
+        }
       });
-    } catch(e) {}
+    } catch(e) {
+        console.error(e);
+    }
   }
 
   async function loadAnalytics() {
     const floatBtn = document.getElementById('floating-refresh');
-    floatBtn.innerText = "⏳ Cargando...";
+    floatBtn.innerHTML = `<svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Cargando...`;
     floatBtn.classList.add('opacity-50', 'pointer-events-none');
 
     try {
@@ -409,7 +548,17 @@
       if (data.products && data.products.length > 0) {
           htmlProducts = data.products.map(p => {
               const topUpsells = p.clicks.filter(c => c.event_name === 'upsell_added' || c.event_name === 'add_to_cart').sort((a, b) => b.count - a.count).slice(0, 3);
-              const uHtml = topUpsells.length > 0 ? topUpsells.map(u => `<div class="flex justify-between border-b border-[#c5a059]/10 pb-2 mb-2"><span class="opacity-90">${u.target}</span><span class="text-[#c5a059] font-bold">${u.count}</span></div>`).join('') : '<span class="opacity-30 text-xs">Sin adicionales asociados</span>';
+              
+              let uHtml = '<span class="opacity-30 text-xs">Sin adicionales asociados</span>';
+              if (topUpsells.length > 0) {
+                  uHtml = topUpsells.map(u => `
+                      <div class="flex justify-between border-b border-[#c5a059]/10 pb-2 mb-2">
+                          <span class="opacity-90">${u.target}</span>
+                          <span class="text-[#c5a059] font-bold">${u.count}</span>
+                      </div>
+                  `).join('');
+              }
+
               return `
               <div class="card p-6 border border-[#c5a059]/30 bg-gradient-to-b from-[#c5a059]/10 to-transparent hover:border-[#c5a059]/60 transition-all duration-300">
                   <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
@@ -417,71 +566,153 @@
                       <span class="bg-[#c5a059] text-[#0a1f1c] px-3 py-1.5 rounded-md text-[11px] font-bold shadow-lg">${p.conversion}% Conv</span>
                   </div>
                   <div class="grid grid-cols-2 gap-6 text-sm mb-6">
-                      <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Vistas</span><strong class="text-white text-lg">${p.views}</strong></div>
-                      <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Compras</span><strong class="text-white text-lg">${p.purchases} <span class="text-[10px] font-normal opacity-50 ml-1">(${p.adds} adds)</span></strong></div>
-                      <div class="col-span-2 bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Retención Promedio</span><strong class="text-white">${p.avg_time} segundos</strong></div>
+                      <div class="bg-black/20 p-3 rounded-lg">
+                          <span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Vistas Totales</span>
+                          <strong class="text-white text-lg">${p.views}</strong>
+                      </div>
+                      <div class="bg-black/20 p-3 rounded-lg">
+                          <span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Agregados</span>
+                          <strong class="text-white text-lg">${p.adds} <span class="text-[10px] font-normal opacity-50 ml-1">al carro</span></strong>
+                      </div>
+                      <div class="col-span-2 bg-black/20 p-3 rounded-lg">
+                          <span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Retención Promedio</span>
+                          <strong class="text-white">${p.avg_time} segundos de lectura</strong>
+                      </div>
                   </div>
-                  <div class="text-xs space-y-2 mt-4"><span class="text-[#c5a059] block mb-3 font-bold uppercase tracking-widest text-[10px]">Adicionales / Clics:</span>${uHtml}</div>
+                  <div class="text-xs space-y-2 mt-4">
+                      <span class="text-[#c5a059] block mb-3 font-bold uppercase tracking-widest text-[10px]">Adicionales / Clics vinculados:</span>
+                      ${uHtml}
+                  </div>
               </div>`;
           }).join('');
-      } else htmlProducts = '<p class="opacity-50 text-sm italic">Esperando tráfico...</p>';
+      } else {
+          htmlProducts = '<p class="opacity-50 text-sm italic">Esperando datos de tráfico...</p>';
+      }
       pGrid.innerHTML = htmlProducts;
 
       const cGrid = document.getElementById('categories-grid');
-      cGrid.innerHTML = data.categories.map(c => {
-          const topClicks = c.clicks.sort((a, b) => b.count - a.count).slice(0, 4);
-          const cHtml = topClicks.length > 0 ? topClicks.map(u => `<div class="flex justify-between border-b border-emerald-500/10 pb-2 mb-2"><span class="opacity-90">${u.target}</span><span class="text-emerald-400 font-bold">${u.count}</span></div>`).join('') : '<span class="opacity-30 text-xs">Sin interacción interna</span>';
-          const title = c.url.replace('/', '').replace('.html', '').replace(/-/g, ' ');
-          return `
-          <div class="card p-6 border border-emerald-900/50 bg-gradient-to-b from-emerald-900/20 to-transparent hover:border-emerald-500/50 transition-all duration-300">
-              <h4 class="font-bold text-emerald-400 uppercase text-sm border-b border-white/10 pb-4 mb-4 capitalize">${title}</h4>
-              <div class="grid grid-cols-2 gap-6 text-sm mb-6">
-                  <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Visitas</span><strong class="text-white text-lg">${c.views}</strong></div>
-                  <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Tiempo Prom.</span><strong class="text-white text-lg">${c.avg_time}s</strong></div>
-              </div>
-              <div class="text-xs space-y-2 mt-4"><span class="text-emerald-400 block mb-3 font-bold uppercase tracking-widest text-[10px]">Interacción Interna:</span>${cHtml}</div>
-          </div>`;
-      }).join('');
+      let htmlCategories = '';
+      if (data.categories && data.categories.length > 0) {
+          htmlCategories = data.categories.map(c => {
+              const topClicks = c.clicks.sort((a, b) => b.count - a.count).slice(0, 4);
+              
+              let cHtml = '<span class="opacity-30 text-xs">Sin interacción interna</span>';
+              if (topClicks.length > 0) {
+                  cHtml = topClicks.map(u => `
+                      <div class="flex justify-between border-b border-emerald-500/10 pb-2 mb-2">
+                          <span class="opacity-90">${u.target}</span>
+                          <span class="text-emerald-400 font-bold">${u.count}</span>
+                      </div>
+                  `).join('');
+              }
+              
+              const title = c.url.replace('/', '').replace('.html', '').replace(/-/g, ' ');
+              return `
+              <div class="card p-6 border border-emerald-900/50 bg-gradient-to-b from-emerald-900/20 to-transparent hover:border-emerald-500/50 transition-all duration-300">
+                  <h4 class="font-bold text-emerald-400 uppercase text-sm border-b border-white/10 pb-4 mb-4 capitalize">${title}</h4>
+                  <div class="grid grid-cols-2 gap-6 text-sm mb-6">
+                      <div class="bg-black/20 p-3 rounded-lg">
+                          <span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Visitas</span>
+                          <strong class="text-white text-lg">${c.views}</strong>
+                      </div>
+                      <div class="bg-black/20 p-3 rounded-lg">
+                          <span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Tiempo Prom.</span>
+                          <strong class="text-white text-lg">${c.avg_time}s</strong>
+                      </div>
+                  </div>
+                  <div class="text-xs space-y-2 mt-4">
+                      <span class="text-emerald-400 block mb-3 font-bold uppercase tracking-widest text-[10px]">Interacción Interna:</span>
+                      ${cHtml}
+                  </div>
+              </div>`;
+          }).join('');
+      }
+      cGrid.innerHTML = htmlCategories;
 
       const tGrid = document.getElementById('tertiary-grid');
-      tGrid.innerHTML = data.tertiary.map(t => `
-          <div class="card p-5 border border-blue-900/50 bg-blue-900/10 flex justify-between items-center hover:bg-blue-900/30 transition-all duration-300">
-              <span class="font-bold text-blue-400 uppercase text-[11px] tracking-widest">${t.url.replace('/', '').replace('.html', '').replace(/-/g, ' ')}</span>
-              <div class="text-right">
-                  <span class="block text-white text-lg font-bold">${t.views} <span class="text-[10px] font-normal opacity-50 uppercase tracking-widest">Vistas</span></span>
-                  <span class="block text-[10px] opacity-60 mt-1">${t.avg_time} segs de retención</span>
-              </div>
-          </div>`).join('');
+      let htmlTertiary = '';
+      if (data.tertiary && data.tertiary.length > 0) {
+          htmlTertiary = data.tertiary.map(t => {
+              const title = t.url.replace('/', '').replace('.html', '').replace(/-/g, ' ');
+              return `
+              <div class="card p-5 border border-blue-900/50 bg-blue-900/10 flex justify-between items-center hover:bg-blue-900/30 transition-all duration-300">
+                  <span class="font-bold text-blue-400 uppercase text-[11px] tracking-widest">${title}</span>
+                  <div class="text-right">
+                      <span class="block text-white text-lg font-bold">${t.views} <span class="text-[10px] font-normal opacity-50 uppercase tracking-widest">Vistas</span></span>
+                      <span class="block text-[10px] opacity-60 mt-1">${t.avg_time} segs de retención</span>
+                  </div>
+              </div>`;
+          }).join('');
+      }
+      tGrid.innerHTML = htmlTertiary;
 
       const uList = document.getElementById('global-upsells-list');
-      uList.innerHTML = data.global_upsells.length > 0 ? data.global_upsells.map(u => `
-        <div class="flex justify-between items-center border-b border-white/5 pb-3">
-          <span class="text-sm text-white/80">${u.name}</span>
-          <span class="text-[#c5a059] font-bold text-sm">${u.count} uds</span>
-        </div>`).join('') : '<p class="opacity-50 text-xs">Sin upsells registrados.</p>';
+      if (data.global_upsells && data.global_upsells.length > 0) {
+          uList.innerHTML = data.global_upsells.map(u => `
+            <div class="flex justify-between items-center border-b border-white/5 pb-3">
+              <span class="text-sm text-white/80">${u.name}</span>
+              <span class="text-[#c5a059] font-bold text-sm">${u.count} uds</span>
+            </div>
+          `).join('');
+      } else {
+          uList.innerHTML = '<p class="opacity-50 text-xs">Sin upsells registrados.</p>';
+      }
 
       const abandonedTotal = data.abandoned.reduce((acc, curr) => acc + parseInt(curr.value || 0), 0);
       document.getElementById('abandoned-total').innerText = '$' + abandonedTotal.toLocaleString('es-CL');
       document.getElementById('abandoned-count').innerText = data.abandoned.length + ' intentos fallidos (24h)';
       
-      document.getElementById('abandoned-body').innerHTML = data.abandoned.length > 0 ? data.abandoned.map(c => `
-          <tr class="border-b border-red-900/30 last:border-0 hover:bg-red-900/40 transition-colors">
-              <td class="py-3 px-2 text-[11px] opacity-60 w-20">${new Date(c.created_at).toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})}</td>
-              <td class="py-3 px-2 text-white font-medium">${c.email}</td>
-              <td class="py-3 px-2 text-[#c5a059] text-right font-bold">$${parseInt(c.value || 0).toLocaleString('es-CL')}</td>
-          </tr>`).join('') : '<tr><td colspan="3" class="py-4 text-center opacity-50 text-xs italic">No hay carritos abandonados recientes.</td></tr>';
+      const tbody = document.getElementById('abandoned-body');
+      if (data.abandoned && data.abandoned.length > 0) {
+          tbody.innerHTML = data.abandoned.map(c => `
+              <tr class="border-b border-red-900/30 last:border-0 hover:bg-red-900/40 transition-colors">
+                  <td class="py-3 px-2 text-[11px] opacity-60 w-20">${new Date(c.created_at).toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})}</td>
+                  <td class="py-3 px-2 text-white font-medium">${c.email}</td>
+                  <td class="py-3 px-2 text-[#c5a059] text-right font-bold">$${parseInt(c.value || 0).toLocaleString('es-CL')}</td>
+              </tr>
+          `).join('');
+      } else {
+          tbody.innerHTML = '<tr><td colspan="3" class="py-4 text-center opacity-50 text-xs italic">No hay carritos abandonados recientes.</td></tr>';
+      }
 
-      if(chartFunnel) chartFunnel.destroy();
+      if (chartFunnel) chartFunnel.destroy();
       const ctxF = document.getElementById('funnelChart').getContext('2d');
       chartFunnel = new Chart(ctxF, {
         type: 'bar',
-        data: { labels: data.funnel.map(f => f.step.replace(/step-/g, 'Paso: ')), datasets: [{ data: data.funnel.map(f => f.count), backgroundColor: 'rgba(239, 68, 68, 0.8)', borderRadius: 6 }] },
-        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: true } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } }, y: { grid: { display: false }, ticks: { color: '#ccc', font: { size: 11 } } } } }
+        data: { 
+            labels: data.funnel.map(f => f.step), 
+            datasets: [{ 
+                data: data.funnel.map(f => f.count), 
+                backgroundColor: [
+                  '#3b82f6', // Azul - Agregado
+                  '#10b981', // Verde - Checkout
+                  '#f59e0b', // Amarillo - Llenó datos
+                  '#f97316', // Naranja - Pasarela
+                  '#ef4444'  // Rojo - Exito
+                ], 
+                borderRadius: 4 
+            }] 
+        },
+        options: { 
+            indexAxis: 'y', 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { 
+                legend: { display: false }, 
+                tooltip: { enabled: true } 
+            }, 
+            scales: { 
+                x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } }, 
+                y: { grid: { display: false }, ticks: { color: '#ccc', font: { size: 11, weight: 'bold' } } } 
+            } 
+        }
       });
 
-    } catch(e) { }
+    } catch(e) { 
+        console.error(e); 
+    }
 
-    floatBtn.innerText = "↻ Refrescar 4D";
+    floatBtn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Refrescar Monitor`;
     floatBtn.classList.remove('opacity-50', 'pointer-events-none');
   }
 
@@ -490,15 +721,24 @@
     const res = await apicall(`/api/admin/customers?q=${encodeURIComponent(q)}`);
     const data = await res.json();
     const tbody = document.getElementById('customers-body');
+    
     if (data.customers && Array.isArray(data.customers)) {
         tbody.innerHTML = data.customers.map(c => `
           <tr>
-            <td><strong class="block text-sm">${c.full_name || '-'}</strong><span class="text-[11px] opacity-50">${c.email}</span></td>
-            <td><span class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-md text-[10px] uppercase font-bold text-[#c5a059]">${c.tier || 'Cuarzo'}</span></td>
+            <td>
+              <strong class="block text-sm">${c.full_name || '-'}</strong>
+              <span class="text-[11px] opacity-50">${c.email}</span>
+            </td>
+            <td>
+              <span class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-md text-[10px] uppercase font-bold text-[#c5a059]">${c.tier || 'Cuarzo'}</span>
+            </td>
             <td class="font-serif text-sm">$${(c.lifetime_flowers_clp || 0).toLocaleString('es-CL')}</td>
             <td class="font-bold font-serif text-[#c5a059] text-sm">${(c.points_balance || 0).toLocaleString('es-CL')} pts</td>
-            <td><button onclick="openPointsModal('${c.id}', '${c.full_name || c.email}')" class="text-[10px] border border-[#c5a059] text-[#c5a059] px-4 py-2 rounded-md hover:bg-[#c5a059] hover:text-[#050f0e] uppercase tracking-widest font-bold transition cursor-pointer">Ajustar Saldo</button></td>
-          </tr>`).join('');
+            <td>
+              <button onclick="openPointsModal('${c.id}', '${c.full_name || c.email}')" class="text-[10px] border border-[#c5a059] text-[#c5a059] px-4 py-2 rounded-md hover:bg-[#c5a059] hover:text-[#050f0e] uppercase tracking-widest font-bold transition cursor-pointer">Ajustar Saldo</button>
+            </td>
+          </tr>
+        `).join('');
     }
   }
 
@@ -514,7 +754,8 @@
     const id = document.getElementById('modal-customer-id').value;
     const pts = document.getElementById('modal-points-val').value;
     const reason = document.getElementById('modal-points-reason').value;
-    if(!pts) return;
+    if (!pts) return;
+
     await apicall('/api/admin/customers/points', 'POST', { customer_id: id, points: pts, reason });
     document.getElementById('points-modal').classList.add('hidden-panel');
     loadCustomers();
@@ -524,18 +765,35 @@
     const res = await apicall('/api/admin/surveys');
     const data = await res.json();
     const tbody = document.getElementById('surveys-body');
+    
     tbody.innerHTML = (data.surveys || []).map(s => {
       const estrellas = '★'.repeat(s.rating) + '<span class="opacity-20">' + '★'.repeat(5-s.rating) + '</span>';
       const critico = s.rating <= 3 ? 'bg-red-500/10' : '';
-      let aspec = ''; try { aspec = JSON.parse(s.issues || '[]').join(', '); } catch(e){}
+      
+      let aspec = ''; 
+      try { 
+          aspec = JSON.parse(s.issues || '[]').join(', '); 
+      } catch(e) {}
+      
       return `
         <tr class="${critico}">
           <td class="text-[11px] opacity-60">${new Date(s.answered_at).toLocaleDateString('es-CL')}</td>
-          <td><strong class="block text-sm">${s.full_name || 'Anónimo'}</strong><span class="text-[11px] opacity-50">${s.email}</span></td>
+          <td>
+            <strong class="block text-sm">${s.full_name || 'Anónimo'}</strong>
+            <span class="text-[11px] opacity-50">${s.email}</span>
+          </td>
           <td class="text-[#c5a059] text-xl tracking-widest">${estrellas}</td>
-          <td><span class="block text-sm text-white/90">${aspec}</span><span class="text-xs opacity-60 italic block mt-1">"${s.suggestion || '-'}"</span></td>
-          <td>${s.rating <= 3 && s.customer_id ? `<button onclick="openPointsModal('${s.customer_id}', '${s.full_name || s.email}')" class="text-[10px] bg-red-500/20 text-red-400 border border-red-500/40 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white uppercase tracking-widest font-bold transition cursor-pointer">Compensar</button>` : '<span class="text-[10px] opacity-30 uppercase tracking-widest">N/A</span>'}</td>
-        </tr>`;
+          <td>
+            <span class="block text-sm text-white/90">${aspec}</span>
+            <span class="text-xs opacity-60 italic block mt-1">"${s.suggestion || '-'}"</span>
+          </td>
+          <td>
+            ${s.rating <= 3 && s.customer_id 
+              ? `<button onclick="openPointsModal('${s.customer_id}', '${s.full_name || s.email}')" class="text-[10px] bg-red-500/20 text-red-400 border border-red-500/40 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white uppercase tracking-widest font-bold transition cursor-pointer">Compensar</button>` 
+              : '<span class="text-[10px] opacity-30 uppercase tracking-widest">N/A</span>'}
+          </td>
+        </tr>
+      `;
     }).join('');
   }
 
@@ -543,26 +801,50 @@
     const form = new FormData();
     form.append('order_id', document.getElementById('track-order').value);
     form.append('status', document.getElementById('track-status').value);
+    
     const photo = document.getElementById('track-photo').files[0];
-    if(photo) form.append('photo', photo);
+    if (photo) form.append('photo', photo);
+
     const msg = document.getElementById('track-msg');
-    msg.innerText = 'Subiendo...'; msg.className = 'text-sm mt-4 text-center text-yellow-400';
+    msg.innerText = 'Subiendo...'; 
+    msg.className = 'text-sm mt-4 text-center text-yellow-400';
+
     try {
       const res = await apicall('/api/admin/tracking', 'POST', form);
       const data = await res.json();
-      if(res.ok) { msg.innerText = '✅ Listo: ' + data.tracking_link; msg.className = 'text-sm mt-4 text-center text-emerald-400 break-all'; }
-      else { msg.innerText = '❌ ' + data.error; msg.className = 'text-sm mt-4 text-center text-red-400'; }
-    } catch(e) { msg.innerText = '❌ Error de red'; msg.className = 'text-sm mt-4 text-center text-red-400'; }
+      
+      if (res.ok) { 
+          msg.innerText = '✅ Listo: ' + data.tracking_link; 
+          msg.className = 'text-sm mt-4 text-center text-emerald-400 break-all'; 
+      } else { 
+          msg.innerText = '❌ ' + data.error; 
+          msg.className = 'text-sm mt-4 text-center text-red-400'; 
+      }
+    } catch(e) { 
+        msg.innerText = '❌ Error de red'; 
+        msg.className = 'text-sm mt-4 text-center text-red-400'; 
+    }
   }
 
   async function verifyWA() {
     const msg = document.getElementById('wa-msg');
-    msg.innerText = 'Verificando...'; msg.className = 'text-sm mt-4 text-center text-yellow-400';
+    msg.innerText = 'Verificando...'; 
+    msg.className = 'text-sm mt-4 text-center text-yellow-400';
+    
     try {
       const res = await apicall('/api/verify-phone', 'POST', { message_text: document.getElementById('wa-code').value });
-      if(res.ok) { msg.innerText = '✅ Verificado'; msg.className = 'text-sm mt-4 text-center text-emerald-400'; }
-      else { msg.innerText = '❌ Código inválido'; msg.className = 'text-sm mt-4 text-center text-red-400'; }
-    } catch(e) { msg.innerText = '❌ Error de red'; msg.className = 'text-sm mt-4 text-center text-red-400'; }
+      
+      if (res.ok) { 
+          msg.innerText = '✅ Verificado'; 
+          msg.className = 'text-sm mt-4 text-center text-emerald-400'; 
+      } else { 
+          msg.innerText = '❌ Código inválido'; 
+          msg.className = 'text-sm mt-4 text-center text-red-400'; 
+      }
+    } catch(e) { 
+        msg.innerText = '❌ Error de red'; 
+        msg.className = 'text-sm mt-4 text-center text-red-400'; 
+    }
   }
 
   initApp();
