@@ -50,13 +50,60 @@
   <main class="flex-1 h-full overflow-y-auto bg-[#050f0e] p-8 hidden" id="main-content">
     
     <div id="view-dashboard" class="hidden-panel space-y-6">
-      <h2 class="text-2xl font-bold text-white mb-6">Métricas de Negocio</h2>
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Rendimiento y Eficiencia del Club</h2>
+          <p class="text-xs opacity-50 mt-1">Métricas clave de adopción, interacciones y satisfacción.</p>
+        </div>
+        <!-- Selector de rango de tiempo estilo Analytics -->
+        <div class="flex items-center gap-2 bg-black/40 p-1.5 rounded-xl border border-white/10">
+          <button onclick="changePeriod('7')" id="p-7" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white">Última semana</button>
+          <button onclick="changePeriod('30')" id="p-30" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e]">Último mes</button>
+          <button onclick="changePeriod('90')" id="p-90" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white">3 meses</button>
+          <button onclick="changePeriod('180')" id="p-180" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white">6 meses</button>
+          <button onclick="changePeriod('365')" id="p-365" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white">12 meses</button>
+        </div>
+      </div>
       
-      <div class="grid grid-cols-3 gap-6">
+      <!-- KPIs Principales del Periodo -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="card p-5">
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Nuevos Registros</p>
+          <p class="text-2xl font-serif" id="kpi-signups">0</p>
+          <p class="text-[10px] opacity-40 mt-1">En el rango seleccionado</p>
+        </div>
+        <div class="card p-5">
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Invitaciones (Referidos)</p>
+          <p class="text-2xl font-serif text-blue-400" id="kpi-referrals">0</p>
+          <p class="text-[10px] opacity-40 mt-1">Códigos compartidos activos</p>
+        </div>
+        <div class="card p-5">
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Puntos Emitidos</p>
+          <p class="text-2xl font-serif text-[#c5a059]" id="kpi-points">0 pts</p>
+          <p class="text-[10px] opacity-40 mt-1">Cashback y recompensas</p>
+        </div>
+        <div class="card p-5">
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Encuestas Respondidas</p>
+          <p class="text-2xl font-serif text-emerald-400" id="kpi-surveys">0</p>
+          <p class="text-[10px] opacity-40 mt-1">Feedback de clientes</p>
+        </div>
+      </div>
+
+      <!-- Gráfico de Tendencia Principal (Estilo GA4 de la imagen) -->
+      <div class="card p-6 flex flex-col h-80">
+        <div class="flex justify-between items-center mb-4">
+          <p class="text-xs font-bold text-white uppercase tracking-widest">Evolución de Adquisición de Miembros</p>
+          <span class="text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded text-[#c5a059]" id="trend-label">Último mes</span>
+        </div>
+        <div class="relative flex-1 w-full"><canvas id="mainTrendChart"></canvas></div>
+      </div>
+
+      <!-- Métricas Financieras y Anillos secundarios -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="card p-6">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Pasivo Circulante (Puntos)</p>
           <p class="text-3xl font-serif" id="stat-points">0</p>
-          <p class="text-xs opacity-50 mt-2">Puntos pendientes de canje</p>
+          <p class="text-xs opacity-50 mt-2">Puntos pendientes de canje global</p>
         </div>
         <div class="card p-6">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Descuentos Entregados</p>
@@ -70,7 +117,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-6 h-80">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-80">
         <div class="card p-6 flex flex-col">
           <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest">Distribución de Niveles</p>
           <div class="relative flex-1 w-full"><canvas id="tierChart"></canvas></div>
@@ -78,73 +125,6 @@
         <div class="card p-6 flex flex-col">
           <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest">Distribución de Satisfacción</p>
           <div class="relative flex-1 w-full"><canvas id="ratingChart"></canvas></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="view-customers" class="hidden-panel space-y-6">
-      <div class="flex justify-between items-end">
-        <h2 class="text-2xl font-bold text-white">Billetera de Clientes</h2>
-        <div class="w-72">
-          <input type="text" id="search-customer" class="input-dark w-full p-2 text-sm" placeholder="Buscar por email o nombre..." oninput="searchDebounce(loadCustomers)">
-        </div>
-      </div>
-      <div class="card overflow-x-auto">
-        <table id="customers-table">
-          <thead>
-            <tr>
-              <th>Cliente</th>
-              <th>Nivel</th>
-              <th>LTV (Gasto)</th>
-              <th>Saldo Puntos</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody id="customers-body"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div id="view-surveys" class="hidden-panel space-y-6">
-      <div class="flex justify-between items-end">
-        <h2 class="text-2xl font-bold text-white">Auditoría de Calidad</h2>
-      </div>
-      <div class="card overflow-x-auto">
-        <table id="surveys-table">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Cliente</th>
-              <th>Calificación</th>
-              <th>Feedback</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody id="surveys-body"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div id="view-ops" class="hidden-panel space-y-6">
-      <h2 class="text-2xl font-bold text-white">Operaciones Logísticas</h2>
-      <div class="grid grid-cols-2 gap-6">
-        <div class="card p-6">
-          <h3 class="font-bold text-[#c5a059] mb-4">Actualizar Tracking</h3>
-          <input type="text" id="track-order" class="input-dark w-full p-3 mb-3 text-sm" placeholder="ID del Pedido">
-          <select id="track-status" class="input-dark w-full p-3 mb-3 text-sm">
-            <option value="transito">En Tránsito</option>
-            <option value="entregado">Entregado</option>
-          </select>
-          <input type="file" id="track-photo" accept="image/*" class="input-dark w-full p-2 mb-4 text-sm">
-          <button onclick="updateTracking()" class="btn-gold w-full p-3 rounded-lg text-sm font-bold uppercase tracking-widest">Notificar al Cliente</button>
-          <p id="track-msg" class="text-xs mt-3 text-center"></p>
-        </div>
-        
-        <div class="card p-6">
-          <h3 class="font-bold text-[#c5a059] mb-4">Auditoría WhatsApp</h3>
-          <input type="text" id="wa-code" class="input-dark w-full p-3 mb-4 text-sm" placeholder="Código OTP (Ej: LF-1234)">
-          <button onclick="verifyWA()" class="btn-gold w-full p-3 rounded-lg text-sm font-bold uppercase tracking-widest">Enlazar Número</button>
-          <p id="wa-msg" class="text-xs mt-3 text-center"></p>
         </div>
       </div>
     </div>
@@ -183,6 +163,94 @@
     initApp();
   }
 
+  let currentPeriod = '30';
+  let chartTrend, chartTiers, chartRatings;
+
+  function changePeriod(p) {
+    currentPeriod = p;
+    ['7', '30', '90', '180', '365'].forEach(days => {
+      const btn = document.getElementById(`p-${days}`);
+      if (days === p) {
+        btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e]";
+      } else {
+        btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white";
+      }
+    });
+    const labelsMap = { '7': 'Última semana', '30': 'Último mes', '90': 'Últimos 3 meses', '180': 'Últimos 6 meses', '365': 'Últimos 12 meses' };
+    document.getElementById('trend-label').innerText = labelsMap[p];
+    loadStats();
+  }
+
+  async function loadStats() {
+    try {
+      const res = await apicall(`/api/admin/stats?period=${currentPeriod}`);
+      const data = await res.json();
+      
+      document.getElementById('stat-points').innerText = parseInt(data.financial.pasivo_circulante || 0).toLocaleString('es-CL');
+      document.getElementById('stat-savings').innerText = '$' + parseInt(data.financial.ahorro_entregado || 0).toLocaleString('es-CL');
+      document.getElementById('stat-ltv').innerText = '$' + parseInt(data.financial.ltv_total || 0).toLocaleString('es-CL');
+
+      // KPIs del periodo
+      const totalSignups = data.trend.reduce((acc, curr) => acc + curr.total, 0);
+      document.getElementById('kpi-signups').innerText = totalSignups.toLocaleString('es-CL');
+      document.getElementById('kpi-referrals').innerText = (data.kpis.referrals || 0).toLocaleString('es-CL');
+      document.getElementById('kpi-points').innerText = (data.kpis.pointsIssued || 0).toLocaleString('es-CL') + ' pts';
+      document.getElementById('kpi-surveys').innerText = (data.kpis.surveysCompleted || 0).toLocaleString('es-CL');
+
+      // Gráfico de Líneas Principal (Estilo GA4)
+      if(chartTrend) chartTrend.destroy();
+      const ctxTrend = document.getElementById('mainTrendChart').getContext('2d');
+      chartTrend = new Chart(ctxTrend, {
+        type: 'line',
+        data: {
+          labels: data.trend.map(t => t.fecha),
+          datasets: [{
+            label: 'Nuevos Registros',
+            data: data.trend.map(t => t.total),
+            borderColor: '#c5a059',
+            backgroundColor: 'rgba(197,160,89,0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888', font: { size: 10 } } },
+            x: { grid: { display: false }, ticks: { color: '#888', font: { size: 10 } } }
+          }
+        }
+      });
+
+      // Gráfico de Niveles (Doughnut)
+      if(chartTiers) chartTiers.destroy();
+      const ctxT = document.getElementById('tierChart').getContext('2d');
+      chartTiers = new Chart(ctxT, {
+        type: 'doughnut',
+        data: {
+          labels: data.tiers.map(t => t.tier || 'Sin Nivel'),
+          datasets: [{ data: data.tiers.map(t => t.count), backgroundColor: ['#c5a059', '#3b82f6', '#10b981', '#4b5563'], borderWidth: 0 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#fff', font: { size: 10 } } } } }
+      });
+
+      // Gráfico de Satisfacción (Bar)
+      if(chartRatings) chartRatings.destroy();
+      const ctxR = document.getElementById('ratingChart').getContext('2d');
+      chartRatings = new Chart(ctxR, {
+        type: 'bar',
+        data: {
+          labels: data.ratings.map(r => r.rating + ' Estrellas'),
+          datasets: [{ label: 'Respuestas', data: data.ratings.map(r => r.count), backgroundColor: '#c5a059', borderRadius: 4 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
+      });
+    } catch(e) { console.error(e); }
+  }
+  
   function logout() {
     localStorage.removeItem('lf_admin_secret');
     location.reload();
