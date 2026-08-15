@@ -1731,101 +1731,71 @@ document.addEventListener("DOMContentLoaded", () => {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// ========================================================
-// MOTOR DE TELEMETRÍA 4D (TIEMPOS QUIRÚRGICOS & ABANDONO)
-// ========================================================
+// ==========================================
+// SENSOR ACTIVO D1 - LA FORESTA
+// ==========================================
 (function() {
-    const API_TRACK_4D = 'https://club-laforesta.sebjmz.workers.dev/api/track-advanced';
-
+    const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
+    
     let sid = sessionStorage.getItem('lf_sid_4d');
     if (!sid) {
-        sid = 'sid_4d_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+        sid = 'sid_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
         sessionStorage.setItem('lf_sid_4d', sid);
     }
 
-    let stepStartTime = Date.now();
-    let currentStepName = 'landing_index';
+    let pagePath = window.location.pathname;
+    if (pagePath === '/' || pagePath === '') pagePath = '/index.html';
+    const pageStartTime = Date.now();
 
-    // Función global para enviar telemetría a D1
-    window.track4DAdvanced = function(type, data = {}) {
-        const payload = {
+    function sendEvent(name, data = {}) {
+        const payload = JSON.stringify({
             session_id: sid,
-            type: type,
-            url: window.location.pathname || '/index.html',
-            ...data
-        };
+            event_name: name,
+            event_data: data,
+            url: pagePath
+        });
 
         if (navigator.sendBeacon) {
-            navigator.sendBeacon(API_TRACK_4D, new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+            navigator.sendBeacon(API_TRACK, new Blob([payload], { type: 'application/json' }));
         } else {
-            fetch(API_TRACK_4D, {
+            fetch(API_TRACK, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
+                body: payload,
                 keepalive: true
             }).catch(() => {});
         }
-    };
+    }
 
-    // 1. Interceptar el avance y retroceso entre pasos del checkout
-    const originalGoToStep = window.goToStep;
-    window.goToStep = function(step) {
-        const duration = Date.now() - stepStartTime;
-        const targetStep = typeof step === 'number' ? `step-${step}` : String(step);
+    // 1. Registrar vista inmediata
+    sendEvent('page_view');
 
-        // Guardar tiempo del paso anterior
-        window.track4DAdvanced('timing', {
-            step_name: currentStepName,
-            duration_ms: duration,
-            action: 'step_transition'
-        });
+    // 2. Registrar tiempo de lectura al salir
+    window.addEventListener('beforeunload', function() {
+        const seconds = Math.round((Date.now() - pageStartTime) / 1000);
+        sendEvent('time_on_page', { seconds: seconds });
+    });
 
-        currentStepName = targetStep;
-        stepStartTime = Date.now();
-
-        return originalGoToStep.apply(this, arguments);
-    };
-
-    // 2. Registro de interacción orgánica (Sliders, Testimonios, Colección, Políticas)
+    // 3. Sensor de clics (Añadir al carro, upsells y pasarelas)
     document.addEventListener('click', function(e) {
-        const el = e.target.closest('a, button, .step-option, .slide-item, .collage-page');
-        if (!el) return;
+        const target = e.target.closest('button, a, .product-card, .step-option');
+        if (!target) return;
 
-        let elementType = null;
-        let targetName = (el.innerText || el.textContent || '').trim().slice(0, 50);
+        const text = (target.innerText || target.textContent || '').trim();
+        const onclickAttr = target.getAttribute('onclick') || '';
 
-        if (el.closest('#hero-slider') || el.classList.contains('slide-item')) {
-            elementType = 'slider';
-            targetName = el.getAttribute('aria-label') || 'slide_click';
-        } else if (el.closest('#testimonios') || el.classList.contains('collage-page')) {
-            elementType = 'testimonial';
-            targetName = 'testimonio_interaccion';
-        } else if (el.tagName === 'A' && (el.href.includes('terminos') || el.href.includes('privacidad') || el.href.includes('devoluciones'))) {
-            elementType = 'wander_legal';
-            targetName = el.pathname;
+        if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || text.includes('Añadir')) {
+            const card = target.closest('.product-card') || document;
+            const titleEl = card.querySelector('h1, h3, .product-title');
+            let prodName = titleEl ? titleEl.innerText.trim() : pagePath.replace('/', '').replace('.html', '').replace(/-/g, ' ');
+            
+            sendEvent('add_to_cart', { product_name: prodName });
         }
 
-        if (elementType) {
-            window.track4DAdvanced('interaction', {
-                element_type: elementType,
-                target_name: targetName
-            });
+        if (onclickAttr.includes('MercadoPago') || text.includes('MercadoPago')) {
+            sendEvent('payment_initiated', { method: 'MercadoPago' });
+        } else if (onclickAttr.includes('PayPal') || text.includes('PayPal')) {
+            sendEvent('payment_initiated', { method: 'PayPal' });
         }
     }, true);
-
-    // 3. Captura exacta de abandono y dinero retenido al cerrar pestaña o ventana
-    window.addEventListener('beforeunload', function() {
-        const duration = Date.now() - stepStartTime;
-        const cart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
-        const cartValue = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-
-        window.track4DAdvanced('abandonment_or_close', {
-            step_name: currentStepName,
-            duration_ms: duration,
-            cart_value: cartValue,
-            email: document.getElementById('buyer-email')?.value?.trim() || '',
-            name: document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || '',
-            phone: document.getElementById('receiver-phone')?.value?.trim() || ''
-        });
-    });
 })();
