@@ -594,15 +594,21 @@ function guardarProgresoCheckout() {
     localStorage.setItem("laforesta_selectedZoneName", selectedZoneName);
     localStorage.setItem("laforesta_selectedPalette", selectedPalette);
 
-    // INYECCIÓN: Captura de Lead Silenciosa
-    if (typeof trackEvent4D === 'function') {
-        const tempName = document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || 'Cliente';
-        const tempEmail = document.getElementById('buyer-email')?.value || '';
-        const tempCart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
-        const tempVal = tempCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-        if (tempEmail && tempEmail.includes('@')) {
-            trackEvent4D('lead_captured', { name: tempName, email: tempEmail, cart_value: tempVal });
-        }
+    // Captura silenciosa inmediata del prospecto al escribir datos clave
+    const tempName = document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || '';
+    const tempEmail = document.getElementById('buyer-email')?.value?.trim() || '';
+    const tempPhone = document.getElementById('receiver-phone')?.value?.trim() || '';
+    const currentCart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+    const tempVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+
+    if (tempEmail && tempEmail.includes('@') && typeof window.track4DAdvanced === 'function') {
+        window.track4DAdvanced('abandonment_or_close', {
+            step_name: e.currentStep,
+            cart_value: tempVal,
+            email: tempEmail,
+            name: tempName,
+            phone: tempPhone
+        });
     }
 }
 
@@ -1724,3 +1730,102 @@ document.addEventListener("DOMContentLoaded", () => {
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
+
+// ========================================================
+// MOTOR DE TELEMETRÍA 4D (TIEMPOS QUIRÚRGICOS & ABANDONO)
+// ========================================================
+(function() {
+    const API_TRACK_4D = 'https://club-laforesta.sebjmz.workers.dev/api/track-advanced';
+
+    let sid = sessionStorage.getItem('lf_sid_4d');
+    if (!sid) {
+        sid = 'sid_4d_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+        sessionStorage.setItem('lf_sid_4d', sid);
+    }
+
+    let stepStartTime = Date.now();
+    let currentStepName = 'landing_index';
+
+    // Función global para enviar telemetría a D1
+    window.track4DAdvanced = function(type, data = {}) {
+        const payload = {
+            session_id: sid,
+            type: type,
+            url: window.location.pathname || '/index.html',
+            ...data
+        };
+
+        if (navigator.sendBeacon) {
+            navigator.sendBeacon(API_TRACK_4D, new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+        } else {
+            fetch(API_TRACK_4D, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                keepalive: true
+            }).catch(() => {});
+        }
+    };
+
+    // 1. Interceptar el avance y retroceso entre pasos del checkout
+    const originalGoToStep = window.goToStep;
+    window.goToStep = function(step) {
+        const duration = Date.now() - stepStartTime;
+        const targetStep = typeof step === 'number' ? `step-${step}` : String(step);
+
+        // Guardar tiempo del paso anterior
+        window.track4DAdvanced('timing', {
+            step_name: currentStepName,
+            duration_ms: duration,
+            action: 'step_transition'
+        });
+
+        currentStepName = targetStep;
+        stepStartTime = Date.now();
+
+        return originalGoToStep.apply(this, arguments);
+    };
+
+    // 2. Registro de interacción orgánica (Sliders, Testimonios, Colección, Políticas)
+    document.addEventListener('click', function(e) {
+        const el = e.target.closest('a, button, .step-option, .slide-item, .collage-page');
+        if (!el) return;
+
+        let elementType = null;
+        let targetName = (el.innerText || el.textContent || '').trim().slice(0, 50);
+
+        if (el.closest('#hero-slider') || el.classList.contains('slide-item')) {
+            elementType = 'slider';
+            targetName = el.getAttribute('aria-label') || 'slide_click';
+        } else if (el.closest('#testimonios') || el.classList.contains('collage-page')) {
+            elementType = 'testimonial';
+            targetName = 'testimonio_interaccion';
+        } else if (el.tagName === 'A' && (el.href.includes('terminos') || el.href.includes('privacidad') || el.href.includes('devoluciones'))) {
+            elementType = 'wander_legal';
+            targetName = el.pathname;
+        }
+
+        if (elementType) {
+            window.track4DAdvanced('interaction', {
+                element_type: elementType,
+                target_name: targetName
+            });
+        }
+    }, true);
+
+    // 3. Captura exacta de abandono y dinero retenido al cerrar pestaña o ventana
+    window.addEventListener('beforeunload', function() {
+        const duration = Date.now() - stepStartTime;
+        const cart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+        const cartValue = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+
+        window.track4DAdvanced('abandonment_or_close', {
+            step_name: currentStepName,
+            duration_ms: duration,
+            cart_value: cartValue,
+            email: document.getElementById('buyer-email')?.value?.trim() || '',
+            name: document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || '',
+            phone: document.getElementById('receiver-phone')?.value?.trim() || ''
+        });
+    });
+})();
