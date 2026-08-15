@@ -39,7 +39,8 @@
     <nav class="flex-1 p-4 space-y-2">
       <button onclick="nav('dashboard')" id="nav-dashboard" class="w-full text-left p-3 rounded-lg bg-white/5 text-[#c5a059] font-medium text-sm transition">📊 Dashboard</button>
       <button onclick="nav('customers')" id="nav-customers" class="w-full text-left p-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white font-medium text-sm transition">👥 Clientes & Billetera</button>
-      <button onclick="nav('surveys')" id="nav-surveys" class="w-full text-left p-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white font-medium text-sm transition">⭐ Calidad & Compensaciones</button>
+      <button onclick="nav('surveys')" id="nav-surveys" class="w-full text-left p-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white font-medium text-sm transition">⭐ Calidad & Compens.</button>
+      <button onclick="nav('analytics')" id="nav-analytics" class="w-full text-left p-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white font-medium text-sm transition">👁️ Monitor 4D</button>
       <button onclick="nav('ops')" id="nav-ops" class="w-full text-left p-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white font-medium text-sm transition">🚚 Logística</button>
     </nav>
     <div class="p-4 border-t border-white/10">
@@ -55,7 +56,6 @@
           <h2 class="text-2xl font-bold text-white">Rendimiento y Eficiencia del Club</h2>
           <p class="text-xs opacity-50 mt-1">Métricas clave de adopción, interacciones y satisfacción.</p>
         </div>
-        <!-- Selector de rango de tiempo estilo Analytics -->
         <div class="flex items-center gap-1 bg-black/40 p-1.5 rounded-xl border border-white/10 overflow-x-auto max-w-full">
           <button onclick="changePeriod('7')" id="p-7" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white cursor-pointer">Última semana</button>
           <button onclick="changePeriod('30')" id="p-30" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e] cursor-pointer">Último mes</button>
@@ -65,7 +65,6 @@
         </div>
       </div>
       
-      <!-- KPIs Principales del Periodo -->
       <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div class="card p-5">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Nuevos Registros</p>
@@ -94,7 +93,6 @@
         </div>
       </div>
 
-      <!-- Gráfico de Tendencia Principal (Estilo Analítica Avanzada) -->
       <div class="card p-6 flex flex-col h-80">
         <div class="flex justify-between items-center mb-4">
           <p class="text-xs font-bold text-white uppercase tracking-widest">Evolución de Adquisición de Miembros</p>
@@ -103,7 +101,6 @@
         <div class="relative flex-1 w-full"><canvas id="mainTrendChart"></canvas></div>
       </div>
 
-      <!-- Métricas Financieras Globales -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="card p-6">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Pasivo Circulante (Puntos)</p>
@@ -122,7 +119,6 @@
         </div>
       </div>
 
-      <!-- Anillos y Barras de Distribución -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-80">
         <div class="card p-6 flex flex-col">
           <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest">Distribución de Niveles</p>
@@ -132,6 +128,65 @@
           <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest">Distribución de Satisfacción</p>
           <div class="relative flex-1 w-full"><canvas id="ratingChart"></canvas></div>
         </div>
+      </div>
+    </div>
+
+    <!-- VISTA ANALYTICS 4D -->
+    <div id="view-analytics" class="hidden-panel space-y-6">
+      <div class="flex justify-between items-end mb-4">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Monitor 4D de Fugas y Adopción</h2>
+          <p class="text-xs opacity-50 mt-1">Rastreo crudo en tiempo real. Análisis transaccional y embudos de conversión.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="card p-6 border border-red-900/50 bg-red-900/10 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-16 h-16 bg-red-500/10 rounded-bl-full"></div>
+          <p class="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-1">Carritos Abandonados (24h)</p>
+          <p class="text-3xl font-serif text-white" id="abandoned-total">$0</p>
+          <p class="text-[10px] opacity-60 mt-1"><span id="abandoned-count" class="font-bold text-white">0</span> intentos fallidos de pago</p>
+        </div>
+        <div class="card p-6 border border-[#c5a059]/30">
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Conversión Amor Eterno (Bestseller)</p>
+          <p class="text-3xl font-serif text-white" id="ae-rate">0%</p>
+          <p class="text-[10px] opacity-60 mt-1"><span id="ae-views" class="font-bold text-white">0</span> Vistas vs <span id="ae-adds" class="font-bold text-white">0</span> Agregados</p>
+        </div>
+        <div class="card p-6">
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Actualizar Data</p>
+          <button onclick="loadAnalytics()" class="mt-2 w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs uppercase tracking-widest font-bold transition">Refrescar Ahora</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="card p-6 md:col-span-2 flex flex-col h-96">
+          <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest text-red-400 border-b border-white/10 pb-2">Embudo de Fuga de Checkout</p>
+          <div class="relative flex-1 w-full"><canvas id="funnelChart"></canvas></div>
+        </div>
+        
+        <div class="card p-6 flex flex-col h-96">
+          <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest border-b border-white/10 pb-2">Adopción de Upsells</p>
+          <div id="upsell-list" class="overflow-y-auto pr-2 space-y-2 flex-1 hide-scroll">
+            <p class="text-xs opacity-50 italic">Cargando datos...</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card overflow-x-auto border-red-900/30">
+        <div class="p-4 border-b border-white/10 bg-red-900/20">
+          <h3 class="text-sm uppercase tracking-widest font-bold text-red-400">🚨 Rescate de Carritos (Últimas 24h)</h3>
+        </div>
+        <table id="abandoned-table">
+          <thead>
+            <tr>
+              <th>Hora</th>
+              <th>Email de Contacto</th>
+              <th>Valor Abandonado</th>
+              <th>Pasarela</th>
+            </tr>
+          </thead>
+          <tbody id="abandoned-body"></tbody>
+        </table>
       </div>
     </div>
 
@@ -226,7 +281,7 @@
 
 <script>
   const API_URL = 'https://club-laforesta.sebjmz.workers.dev';
-  let chartTrend, chartTiers, chartRatings;
+  let chartTrend, chartTiers, chartRatings, chartFunnel;
   let currentPeriod = '30';
   let timer;
 
@@ -261,7 +316,7 @@
   }
 
   function nav(view) {
-    ['dashboard', 'customers', 'surveys', 'ops'].forEach(v => {
+    ['dashboard', 'customers', 'surveys', 'analytics', 'ops'].forEach(v => {
       document.getElementById(`view-${v}`).classList.add('hidden-panel');
       const btn = document.getElementById(`nav-${v}`);
       if(btn) {
@@ -278,6 +333,7 @@
     if(view === 'dashboard') loadStats();
     if(view === 'customers') loadCustomers();
     if(view === 'surveys') loadSurveys();
+    if(view === 'analytics') loadAnalytics();
   }
 
   function searchDebounce(func) {
@@ -367,13 +423,75 @@
     } catch(e) { console.error(e); }
   }
 
+  async function loadAnalytics() {
+    try {
+      const res = await apicall('/api/admin/analytics');
+      const data = await res.json();
+      
+      const aeRate = data.conversion_ae.views > 0 ? ((data.conversion_ae.adds / data.conversion_ae.views) * 100).toFixed(1) : 0;
+      document.getElementById('ae-views').innerText = data.conversion_ae.views;
+      document.getElementById('ae-adds').innerText = data.conversion_ae.adds;
+      document.getElementById('ae-rate').innerText = aeRate + '%';
+
+      const abandonedTotal = data.abandoned.reduce((acc, curr) => acc + parseInt(curr.value || 0), 0);
+      document.getElementById('abandoned-total').innerText = '$' + abandonedTotal.toLocaleString('es-CL');
+      document.getElementById('abandoned-count').innerText = data.abandoned.length;
+      
+      const tbody = document.getElementById('abandoned-body');
+      tbody.innerHTML = data.abandoned.map(c => `
+        <tr class="hover:bg-red-900/30">
+          <td>${new Date(c.created_at).toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})}</td>
+          <td><strong class="text-[#c5a059]">${c.email}</strong></td>
+          <td class="font-serif">$${parseInt(c.value || 0).toLocaleString('es-CL')}</td>
+          <td class="opacity-50 text-[10px] uppercase">${c.method}</td>
+        </tr>
+      `).join('');
+
+      const upsellList = document.getElementById('upsell-list');
+      upsellList.innerHTML = data.upsells.map(u => `
+        <div class="flex justify-between border-b border-white/10 pb-2 mb-2 last:border-0 last:mb-0 last:pb-0">
+          <span class="text-sm opacity-80 truncate pr-2">${u.name}</span>
+          <span class="text-[#c5a059] font-bold shrink-0">${u.count} uds</span>
+        </div>
+      `).join('');
+
+      if(chartFunnel) chartFunnel.destroy();
+      const ctxF = document.getElementById('funnelChart').getContext('2d');
+      
+      chartFunnel = new Chart(ctxF, {
+        type: 'bar',
+        data: {
+          labels: data.funnel.map(f => f.step),
+          datasets: [{
+            label: 'Usuarios en este paso',
+            data: data.funnel.map(f => f.count),
+            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+            borderColor: 'rgb(239, 68, 68)',
+            borderWidth: 1,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } },
+            y: { grid: { display: false }, ticks: { color: '#888', font: { size: 10 } } }
+          }
+        }
+      });
+
+    } catch(e) { console.error(e); }
+  }
+
   async function loadCustomers() {
     const q = document.getElementById('search-customer').value;
     const res = await apicall(`/api/admin/customers?q=${encodeURIComponent(q)}`);
     const data = await res.json();
     const tbody = document.getElementById('customers-body');
     
-    // Aseguramos que data.customers exista antes de hacer map
     if (data.customers && Array.isArray(data.customers)) {
         tbody.innerHTML = data.customers.map(c => `
           <tr>
