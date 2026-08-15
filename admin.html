@@ -577,129 +577,156 @@
 
   async function loadAnalytics() {
     const floatBtn = document.getElementById('floating-refresh');
-    floatBtn.innerHTML = `<svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Cargando...`;
-    floatBtn.classList.add('opacity-50', 'pointer-events-none');
+    if (floatBtn) {
+      floatBtn.innerHTML = `<svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Cargando...`;
+      floatBtn.classList.add('opacity-50', 'pointer-events-none');
+    }
 
     try {
       const res = await apicall('/api/admin/analytics');
       const data = await res.json();
       
-      renderPlegableGrid('products-grid', data.products || [], p => {
-          const topUpsells = p.clicks.filter(c => c.event_name === 'upsell_added' || c.event_name === 'add_to_cart').sort((a, b) => b.count - a.count).slice(0, 3);
-          let uHtml = '<span class="opacity-30 text-xs">Sin adicionales asociados</span>';
-          if (topUpsells.length > 0) {
-              uHtml = topUpsells.map(u => `<div class="flex justify-between border-b border-[#c5a059]/10 pb-2 mb-2"><span class="opacity-90">${u.target}</span><span class="text-[#c5a059] font-bold">${u.count}</span></div>`).join('');
-          }
-          return `
-          <div class="card p-6 border border-[#c5a059]/30 bg-gradient-to-b from-[#c5a059]/10 to-transparent hover:border-[#c5a059]/60 transition-all duration-300">
-              <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
-                  <h4 class="font-serif italic text-xl text-[#c5a059] truncate pr-2 capitalize">${p.name}</h4>
-                  <span class="bg-[#c5a059] text-[#0a1f1c] px-3 py-1.5 rounded-md text-[11px] font-bold shadow-lg">${p.conversion}% Conv</span>
-              </div>
-              <div class="grid grid-cols-2 gap-6 text-sm mb-6">
-                  <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Vistas Totales</span><strong class="text-white text-lg">${p.views}</strong></div>
-                  <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Agregados</span><strong class="text-white text-lg">${p.adds} <span class="text-[10px] font-normal opacity-50 ml-1">al carro</span></strong></div>
-                  <div class="col-span-2 bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Retención Promedio</span><strong class="text-white">${p.avg_time} segundos de lectura</strong></div>
-              </div>
-              <div class="text-xs space-y-2 mt-4"><span class="text-[#c5a059] block mb-3 font-bold uppercase tracking-widest text-[10px]">Adicionales / Clics vinculados:</span>${uHtml}</div>
-          </div>`;
-      });
-
-      renderPlegableGrid('categories-grid', data.categories || [], c => {
-          const topClicks = c.clicks.sort((a, b) => b.count - a.count).slice(0, 4);
-          let cHtml = '<span class="opacity-30 text-xs">Sin interacción interna</span>';
-          if (topClicks.length > 0) {
-              cHtml = topClicks.map(u => `<div class="flex justify-between border-b border-emerald-500/10 pb-2 mb-2"><span class="opacity-90">${u.target}</span><span class="text-emerald-400 font-bold">${u.count}</span></div>`).join('');
-          }
-          return `
-          <div class="card p-6 border border-emerald-900/50 bg-gradient-to-b from-emerald-900/20 to-transparent hover:border-emerald-500/50 transition-all duration-300">
-              <h4 class="font-bold text-emerald-400 uppercase text-sm border-b border-white/10 pb-4 mb-4 capitalize">${c.url.replace('/', '').replace('.html', '').replace(/-/g, ' ')}</h4>
-              <div class="grid grid-cols-2 gap-6 text-sm mb-6">
-                  <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Visitas</span><strong class="text-white text-lg">${c.views}</strong></div>
-                  <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Tiempo Prom.</span><strong class="text-white text-lg">${c.avg_time}s</strong></div>
-              </div>
-              <div class="text-xs space-y-2 mt-4"><span class="text-emerald-400 block mb-3 font-bold uppercase tracking-widest text-[10px]">Interacción Interna:</span>${cHtml}</div>
-          </div>`;
-      });
-
-      renderPlegableGrid('tertiary-grid', data.tertiary || [], t => `
-          <div class="card p-5 border border-blue-900/50 bg-blue-900/10 flex justify-between items-center hover:bg-blue-900/30 transition-all duration-300">
-              <span class="font-bold text-blue-400 uppercase text-[11px] tracking-widest">${t.url.replace('/', '').replace('.html', '').replace(/-/g, ' ')}</span>
-              <div class="text-right"><span class="block text-white text-lg font-bold">${t.views} <span class="text-[10px] font-normal opacity-50 uppercase tracking-widest">Vistas</span></span><span class="block text-[10px] opacity-60 mt-1">${t.avg_time} segs de retención</span></div>
-          </div>`
-      );
-
-      const uList = document.getElementById('global-upsells-list');
-      if (data.global_upsells && data.global_upsells.length > 0) {
-          uList.innerHTML = data.global_upsells.map(u => {
-              const conv = u.agregados > 0 ? Math.round((u.compras / u.agregados) * 100) : 0;
-              return `
-              <div class="border-b border-white/5 pb-4 mb-4">
-                  <div class="flex justify-between items-center mb-2">
-                      <span class="text-sm text-white font-bold">${u.name}</span>
-                      <span class="text-[#c5a059] font-bold text-xs bg-[#c5a059]/10 px-2 py-1 rounded">${u.agregados} Agregados</span>
-                  </div>
-                  <div class="flex justify-between items-center text-xs opacity-70 mb-2">
-                      <span>Llegaron a Pago: ${u.intentos_pago}</span>
-                      <span>Comprados: <strong class="${u.compras > 0 ? 'text-emerald-400' : ''}">${u.compras}</strong> (${conv}%)</span>
-                  </div>
-                  <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                      <div class="bg-gradient-to-r from-[#c5a059]/50 to-[#c5a059] h-full" style="width: ${conv}%"></div>
-                  </div>
-              </div>`;
-          }).join('');
-      } else {
-          uList.innerHTML = '<p class="opacity-50 text-xs">Sin upsells registrados.</p>';
+      // 1. Matriz de Productos
+      if (document.getElementById('products-grid')) {
+        renderPlegableGrid('products-grid', data.products || [], p => {
+            const topUpsells = (p.clicks || []).filter(c => c.event_name === 'upsell_added' || c.event_name === 'add_to_cart').sort((a, b) => b.count - a.count).slice(0, 3);
+            let uHtml = '<span class="opacity-30 text-xs">Sin adicionales asociados</span>';
+            if (topUpsells.length > 0) {
+                uHtml = topUpsells.map(u => `<div class="flex justify-between border-b border-[#c5a059]/10 pb-2 mb-2"><span class="opacity-90">${u.target}</span><span class="text-[#c5a059] font-bold">${u.count}</span></div>`).join('');
+            }
+            return `
+            <div class="card p-6 border border-[#c5a059]/30 bg-gradient-to-b from-[#c5a059]/10 to-transparent hover:border-[#c5a059]/60 transition-all duration-300">
+                <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
+                    <h4 class="font-serif italic text-xl text-[#c5a059] truncate pr-2 capitalize">${p.name}</h4>
+                    <span class="bg-[#c5a059] text-[#0a1f1c] px-3 py-1.5 rounded-md text-[11px] font-bold shadow-lg">${p.conversion}% Conv</span>
+                </div>
+                <div class="grid grid-cols-2 gap-6 text-sm mb-6">
+                    <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Vistas Totales</span><strong class="text-white text-lg">${p.views}</strong></div>
+                    <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Agregados</span><strong class="text-white text-lg">${p.adds} <span class="text-[10px] font-normal opacity-50 ml-1">al carro</span></strong></div>
+                    <div class="col-span-2 bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Retención Promedio</span><strong class="text-white">${p.avg_time} segundos de lectura</strong></div>
+                </div>
+                <div class="text-xs space-y-2 mt-4"><span class="text-[#c5a059] block mb-3 font-bold uppercase tracking-widest text-[10px]">Adicionales / Clics vinculados:</span>${uHtml}</div>
+            </div>`;
+        });
       }
 
-      const abandonedTotal = data.abandoned.reduce((acc, curr) => acc + parseInt(curr.value || 0), 0);
-      document.getElementById('abandoned-total').innerText = '$' + abandonedTotal.toLocaleString('es-CL');
-      document.getElementById('abandoned-count').innerText = data.abandoned.length + ' leads detectados';
+      // 2. Rendimiento Categorías
+      if (document.getElementById('categories-grid')) {
+        renderPlegableGrid('categories-grid', data.categories || [], c => {
+            const topClicks = (c.clicks || []).sort((a, b) => b.count - a.count).slice(0, 4);
+            let cHtml = '<span class="opacity-30 text-xs">Sin interacción interna</span>';
+            if (topClicks.length > 0) {
+                cHtml = topClicks.map(u => `<div class="flex justify-between border-b border-emerald-500/10 pb-2 mb-2"><span class="opacity-90">${u.target}</span><span class="text-emerald-400 font-bold">${u.count}</span></div>`).join('');
+            }
+            return `
+            <div class="card p-6 border border-emerald-900/50 bg-gradient-to-b from-emerald-900/20 to-transparent hover:border-emerald-500/50 transition-all duration-300">
+                <h4 class="font-bold text-emerald-400 uppercase text-sm border-b border-white/10 pb-4 mb-4 capitalize">${c.url.replace('/', '').replace('.html', '').replace(/-/g, ' ')}</h4>
+                <div class="grid grid-cols-2 gap-6 text-sm mb-6">
+                    <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Visitas</span><strong class="text-white text-lg">${c.views}</strong></div>
+                    <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Tiempo Prom.</span><strong class="text-white text-lg">${c.avg_time}s</strong></div>
+                </div>
+                <div class="text-xs space-y-2 mt-4"><span class="text-emerald-400 block mb-3 font-bold uppercase tracking-widest text-[10px]">Interacción Interna:</span>${cHtml}</div>
+            </div>`;
+        });
+      }
+
+      // 3. Páginas Terciarias
+      if (document.getElementById('tertiary-grid')) {
+        renderPlegableGrid('tertiary-grid', data.tertiary || [], t => `
+            <div class="card p-5 border border-blue-900/50 bg-blue-900/10 flex justify-between items-center hover:bg-blue-900/30 transition-all duration-300">
+                <span class="font-bold text-blue-400 uppercase text-[11px] tracking-widest">${t.url.replace('/', '').replace('.html', '').replace(/-/g, ' ')}</span>
+                <div class="text-right"><span class="block text-white text-lg font-bold">${t.views} <span class="text-[10px] font-normal opacity-50 uppercase tracking-widest">Vistas</span></span><span class="block text-[10px] opacity-60 mt-1">${t.avg_time} segs de retención</span></div>
+            </div>`
+        );
+      }
+
+      // 4. Upsells Globales
+      const uList = document.getElementById('global-upsells-list');
+      if (uList) {
+        if (data.global_upsells && data.global_upsells.length > 0) {
+            uList.innerHTML = data.global_upsells.map(u => {
+                const conv = u.agregados > 0 ? Math.round((u.compras / u.agregados) * 100) : 0;
+                return `
+                <div class="border-b border-white/5 pb-4 mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm text-white font-bold">${u.name}</span>
+                        <span class="text-[#c5a059] font-bold text-xs bg-[#c5a059]/10 px-2 py-1 rounded">${u.agregados} Agregados</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs opacity-70 mb-2">
+                        <span>Llegaron a Pago: ${u.intentos_pago}</span>
+                        <span>Comprados: <strong class="${u.compras > 0 ? 'text-emerald-400' : ''}">${u.compras}</strong> (${conv}%)</span>
+                    </div>
+                    <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-gradient-to-r from-[#c5a059]/50 to-[#c5a059] h-full" style="width: ${conv}%"></div>
+                    </div>
+                </div>`;
+            }).join('');
+        } else {
+            uList.innerHTML = '<p class="opacity-50 text-xs">Sin upsells registrados.</p>';
+        }
+      }
+
+      // 5. Carritos Abandonados
+      const abandonedList = data.abandoned || [];
+      const abandonedTotal = abandonedList.reduce((acc, curr) => acc + parseInt(curr.value || 0), 0);
+      
+      const elAbTotal = document.getElementById('abandoned-total');
+      const elAbCount = document.getElementById('abandoned-count');
+      if (elAbTotal) elAbTotal.innerText = '$' + abandonedTotal.toLocaleString('es-CL');
+      if (elAbCount) elAbCount.innerText = abandonedList.length + ' leads detectados';
       
       const tbody = document.getElementById('abandoned-body');
-      if (data.abandoned && data.abandoned.length > 0) {
-          tbody.innerHTML = data.abandoned.map(c => `
-              <tr class="border-b border-red-900/30 last:border-0 hover:bg-red-900/40 transition-colors">
-                  <td class="py-3 px-2 text-[11px] opacity-60 w-16">${new Date(c.created_at).toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})}</td>
-                  <td class="py-3 px-2">
-                    <span class="text-white font-medium block text-sm">${c.name}</span>
-                    <span class="text-xs opacity-50 block">${c.email}</span>
-                  </td>
-                  <td class="py-3 px-2 text-[#c5a059] text-right font-bold text-base">$${parseInt(c.value || 0).toLocaleString('es-CL')}</td>
-              </tr>
-          `).join('');
-      } else {
-          tbody.innerHTML = '<tr><td colspan="3" class="py-4 text-center opacity-50 text-xs italic">No hay correos detectados recientemente.</td></tr>';
+      if (tbody) {
+          if (abandonedList.length > 0) {
+              tbody.innerHTML = abandonedList.map(c => `
+                  <tr class="border-b border-red-900/30 last:border-0 hover:bg-red-900/40 transition-colors">
+                      <td class="py-3 px-2 text-[11px] opacity-60 w-16">${new Date(c.created_at).toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})}</td>
+                      <td class="py-3 px-2">
+                        <span class="text-white font-medium block text-sm">${c.name || 'Cliente'}</span>
+                        <span class="text-xs opacity-50 block">${c.email}</span>
+                      </td>
+                      <td class="py-3 px-2 text-[#c5a059] text-right font-bold text-base">$${parseInt(c.value || 0).toLocaleString('es-CL')}</td>
+                  </tr>
+              `).join('');
+          } else {
+              tbody.innerHTML = '<tr><td colspan="3" class="py-4 text-center opacity-50 text-xs italic">No hay correos detectados recientemente.</td></tr>';
+          }
       }
 
-      if (chartFunnel) chartFunnel.destroy();
-      const ctxF = document.getElementById('funnelChart').getContext('2d');
-      chartFunnel = new Chart(ctxF, {
-        type: 'bar',
-        data: { 
-            labels: data.funnel.map(f => f.step), 
-            datasets: [{ 
-                data: data.funnel.map(f => f.count), 
-                backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#f97316', '#ef4444'], 
-                borderRadius: 6 
-            }] 
-        },
-        options: { 
-            indexAxis: 'y', responsive: true, maintainAspectRatio: false, 
-            plugins: { legend: { display: false }, tooltip: { enabled: true } }, 
-            scales: { 
-                x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } }, 
-                y: { grid: { display: false }, ticks: { color: '#ccc', font: { size: 11, weight: 'bold' } } } 
+      // 6. Gráfico de Embudo (Funnel)
+      const funnelCanvas = document.getElementById('funnelChart');
+      if (funnelCanvas && data.funnel && data.funnel.length > 0) {
+          if (chartFunnel) chartFunnel.destroy();
+          const ctxF = funnelCanvas.getContext('2d');
+          chartFunnel = new Chart(ctxF, {
+            type: 'bar',
+            data: { 
+                labels: data.funnel.map(f => f.step), 
+                datasets: [{ 
+                    data: data.funnel.map(f => f.count), 
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#f97316', '#ef4444'], 
+                    borderRadius: 6 
+                }] 
+            },
+            options: { 
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false, 
+                plugins: { legend: { display: false }, tooltip: { enabled: true } }, 
+                scales: { 
+                    x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } }, 
+                    y: { grid: { display: false }, ticks: { color: '#ccc', font: { size: 11, weight: 'bold' } } } 
+                } 
             } 
-        }
-      });
+          });
+      }
 
     } catch(e) { 
-        console.error(e); 
+        console.error("Error al procesar analítica:", e); 
     }
 
-    floatBtn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Refrescar Monitor`;
-    floatBtn.classList.remove('opacity-50', 'pointer-events-none');
+    if (floatBtn) {
+      floatBtn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Refrescar Monitor`;
+      floatBtn.classList.remove('opacity-50', 'pointer-events-none');
+    }
   }
 
   async function loadCustomers() {
