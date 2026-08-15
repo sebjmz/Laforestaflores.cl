@@ -367,15 +367,18 @@
     const data = await res.json();
     const tbody = document.getElementById('customers-body');
     
-    tbody.innerHTML = (data.customers || []).map(c => `
-      <tr>
-        <td><strong class="block">${c.full_name || '-'}</strong><span class="text-[10px] opacity-50">${c.email}</span></td>
-        <td><span class="bg-white/5 border border-white/10 px-2 py-1 rounded text-[10px] uppercase text-[#c5a059]">${c.tier || 'Cuarzo'}</span></td>
-        <td class="font-serif">$${(c.lifetime_flowers_clp || 0).toLocaleString('es-CL')}</td>
-        <td class="font-bold font-serif text-[#c5a059]">${(c.points_balance || 0).toLocaleString('es-CL')} pts</td>
-        <td><button onclick="openPointsModal('${c.id}', '${c.full_name || c.email}')" class="text-[10px] border border-[#c5a059] text-[#c5a059] px-3 py-1.5 rounded hover:bg-[#c5a059] hover:text-[#050f0e] uppercase tracking-widest font-bold transition cursor-pointer">Ajustar Saldo</button></td>
-      </tr>
-    `).join('');
+    // Aseguramos que data.customers exista antes de hacer map
+    if (data.customers && Array.isArray(data.customers)) {
+        tbody.innerHTML = data.customers.map(c => `
+          <tr>
+            <td><strong class="block">${c.full_name || '-'}</strong><span class="text-[10px] opacity-50">${c.email}</span></td>
+            <td><span class="bg-white/5 border border-white/10 px-2 py-1 rounded text-[10px] uppercase text-[#c5a059]">${c.tier || 'Cuarzo'}</span></td>
+            <td class="font-serif">$${(c.lifetime_flowers_clp || 0).toLocaleString('es-CL')}</td>
+            <td class="font-bold font-serif text-[#c5a059]">${(c.points_balance || 0).toLocaleString('es-CL')} pts</td>
+            <td><button onclick="openPointsModal('${c.id}', '${c.full_name || c.email}')" class="text-[10px] border border-[#c5a059] text-[#c5a059] px-3 py-1.5 rounded hover:bg-[#c5a059] hover:text-[#050f0e] uppercase tracking-widest font-bold transition cursor-pointer">Ajustar Saldo</button></td>
+          </tr>
+        `).join('');
+    }
   }
 
   function openPointsModal(id, name) {
