@@ -7,20 +7,72 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  body { background: #050f0e; color: #fcfaf7; font-family: 'Inter', sans-serif; }
-  .sidebar { background: #0a1f1c; border-right: 1px solid rgba(197,160,89,0.2); }
-  .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; }
-  .btn-gold { background: #c5a059; color: #0a1f1c; font-weight: bold; transition: 0.2s; cursor: pointer; }
-  .btn-gold:hover { background: #fff; }
-  .input-dark { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 8px; outline: none; }
-  .input-dark:focus { border-color: #c5a059; }
-  table { width: 100%; text-align: left; font-size: 13px; }
-  th { padding: 12px 16px; color: #c5a059; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em; }
-  td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-  tr:hover td { background: rgba(255,255,255,0.02); }
-  .hidden-panel { display: none !important; }
-  .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
-  .hide-scroll::-webkit-scrollbar { display: none; }
+  body { 
+    background: #050f0e; 
+    color: #fcfaf7; 
+    font-family: 'Inter', sans-serif; 
+  }
+  .sidebar { 
+    background: #0a1f1c; 
+    border-right: 1px solid rgba(197,160,89,0.2); 
+  }
+  .card { 
+    background: rgba(255,255,255,0.03); 
+    border: 1px solid rgba(255,255,255,0.08); 
+    border-radius: 12px; 
+  }
+  .btn-gold { 
+    background: #c5a059; 
+    color: #0a1f1c; 
+    font-weight: bold; 
+    transition: 0.2s; 
+    cursor: pointer; 
+  }
+  .btn-gold:hover { 
+    background: #fff; 
+  }
+  .input-dark { 
+    background: rgba(0,0,0,0.3); 
+    border: 1px solid rgba(255,255,255,0.1); 
+    color: #fff; 
+    border-radius: 8px; 
+    outline: none; 
+  }
+  .input-dark:focus { 
+    border-color: #c5a059; 
+  }
+  table { 
+    width: 100%; 
+    text-align: left; 
+    font-size: 13px; 
+  }
+  th { 
+    padding: 12px 16px; 
+    color: #c5a059; 
+    border-bottom: 1px solid rgba(255,255,255,0.1); 
+    font-weight: 600; 
+    text-transform: uppercase; 
+    font-size: 10px; 
+    letter-spacing: 0.1em; 
+  }
+  td { 
+    padding: 16px; 
+    border-bottom: 1px solid rgba(255,255,255,0.05); 
+  }
+  tr:hover td { 
+    background: rgba(255,255,255,0.02); 
+  }
+  .hidden-panel { 
+    display: none !important; 
+  }
+  .grid-cards { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
+    gap: 1.5rem; 
+  }
+  .hide-scroll::-webkit-scrollbar { 
+    display: none; 
+  }
 </style>
 </head>
 <body class="flex h-screen overflow-hidden">
@@ -52,7 +104,6 @@
 
   <main class="flex-1 h-full overflow-y-auto bg-[#050f0e] p-8 hidden" id="main-content">
     
-    <!-- VISTA DASHBOARD -->
     <div id="view-dashboard" class="hidden-panel space-y-6">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-2">
         <div>
@@ -79,7 +130,7 @@
         </div>
         <div class="card p-5">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Puntos Emitidos</p>
-          <p class="text-2xl font-serif text-[#c5a059]" id="kpi-points">0</p>
+          <p class="text-2xl font-serif text-[#c5a059]" id="kpi-points">0 pts</p>
         </div>
         <div class="card p-5">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Encuestas Respondidas</p>
@@ -129,57 +180,80 @@
       </div>
     </div>
 
-    <!-- VISTA ANALYTICS 4D -->
-    <div id="view-analytics" class="hidden-panel space-y-8">
-      <div class="flex justify-between items-end mb-4 border-b border-white/10 pb-4">
+    <div id="view-analytics" class="hidden-panel space-y-10">
+      <div class="flex justify-between items-end border-b border-white/10 pb-6">
         <div>
-          <h2 class="text-2xl font-bold text-white mb-1">Monitor Analítico de Rendimiento (4D)</h2>
-          <p class="text-xs opacity-50">Distribución de catálogo maestro. Orden estricto por volumen y conversión.</p>
+          <h2 class="text-3xl font-bold text-white mb-2">Monitor Analítico de Rendimiento (4D)</h2>
+          <p class="text-sm opacity-50">Distribución de catálogo maestro. Orden estricto por volumen y conversión.</p>
         </div>
-        <button onclick="loadAnalytics()" class="py-2.5 px-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs uppercase tracking-widest font-bold text-[#c5a059] transition cursor-pointer">Refrescar Ahora</button>
+        <button onclick="loadAnalytics()" class="py-3 px-6 bg-[#c5a059]/10 hover:bg-[#c5a059]/20 border border-[#c5a059]/50 rounded-lg text-xs uppercase tracking-widest font-bold text-[#c5a059] transition cursor-pointer">
+          Refrescar Ahora
+        </button>
       </div>
 
       <section>
-        <h3 class="text-sm font-bold text-[#c5a059] uppercase tracking-widest mb-4 flex items-center gap-2">🛒 Matriz de Productos (Convertidores)</h3>
-        <div id="products-grid" class="grid-cards"></div>
-      </section>
-
-      <section>
-        <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-widest mb-4 flex items-center gap-2">📂 Rendimiento Vitrinas (Categorías)</h3>
-        <div id="categories-grid" class="grid-cards"></div>
-      </section>
-
-      <section>
-        <h3 class="text-sm font-bold text-blue-400 uppercase tracking-widest mb-4 flex items-center gap-2">📄 Páginas de Utilidad (Terciarias)</h3>
-        <div id="tertiary-grid" class="grid-cards"></div>
-      </section>
-
-      <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="card p-6">
-          <h3 class="text-xs font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-white/10 pb-2">Embudo de Fuga de Checkout</h3>
-          <div class="h-64 relative"><canvas id="funnelChart"></canvas></div>
+        <h3 class="text-sm font-bold text-[#c5a059] uppercase tracking-widest mb-6 flex items-center gap-2">🛒 Matriz de Productos (Convertidores)</h3>
+        <div id="products-grid" class="grid-cards">
         </div>
-        <div class="card p-6 border-red-900/50 bg-red-900/10">
-          <h3 class="text-xs font-bold text-red-400 uppercase tracking-widest mb-4 border-b border-red-900/30 pb-2">Rescate de Carritos (Últimas 24h)</h3>
-          <p class="text-2xl font-serif text-white mb-4" id="abandoned-total">$0 <span class="text-xs opacity-50 block mt-1" id="abandoned-count">0 intentos fallidos</span></p>
-          <div class="overflow-y-auto max-h-48 hide-scroll text-xs">
-            <table class="w-full text-left">
-              <tbody id="abandoned-body"></tbody>
-            </table>
+      </section>
+
+      <hr class="border-white/10">
+
+      <section>
+        <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-widest mb-6 flex items-center gap-2">📂 Rendimiento Vitrinas (Categorías)</h3>
+        <div id="categories-grid" class="grid-cards">
+        </div>
+      </section>
+
+      <hr class="border-white/10">
+
+      <section>
+        <h3 class="text-sm font-bold text-blue-400 uppercase tracking-widest mb-6 flex items-center gap-2">📄 Páginas de Utilidad (Terciarias)</h3>
+        <div id="tertiary-grid" class="grid-cards">
+        </div>
+      </section>
+
+      <hr class="border-white/10">
+
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="card p-8 md:col-span-2">
+          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-6 border-b border-white/10 pb-3">Embudo de Fuga de Checkout</h3>
+          <div class="h-80 relative">
+            <canvas id="funnelChart"></canvas>
+          </div>
+        </div>
+        <div class="card p-8 border-[#c5a059]/30">
+          <h3 class="text-sm font-bold text-[#c5a059] uppercase tracking-widest mb-6 border-b border-[#c5a059]/30 pb-3">Adopción Global Upsells</h3>
+          <div id="global-upsells-list" class="space-y-4 overflow-y-auto max-h-80 hide-scroll">
           </div>
         </div>
       </section>
+
+      <section>
+          <div class="card p-8 border-red-900/50 bg-red-900/10">
+            <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-6 border-b border-red-900/30 pb-3">Rescate de Carritos (Últimas 24h)</h3>
+            <p class="text-4xl font-serif text-white mb-6" id="abandoned-total">
+              $0 
+              <span class="text-sm font-sans opacity-50 block mt-2" id="abandoned-count">0 intentos fallidos</span>
+            </p>
+            <div class="overflow-y-auto max-h-64 hide-scroll text-sm bg-black/20 p-4 rounded-lg">
+              <table class="w-full text-left">
+                <tbody id="abandoned-body">
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </section>
     </div>
 
-    <!-- VISTA CLIENTES -->
     <div id="view-customers" class="hidden-panel space-y-6">
-      <div class="flex justify-between items-end">
+      <div class="flex justify-between items-end border-b border-white/10 pb-4">
         <h2 class="text-2xl font-bold text-white">Billetera de Clientes</h2>
-        <div class="w-72">
-          <input type="text" id="search-customer" class="input-dark w-full p-2 text-sm" placeholder="Buscar por email o nombre..." oninput="searchDebounce(loadCustomers)">
+        <div class="w-80">
+          <input type="text" id="search-customer" class="input-dark w-full p-3 text-sm" placeholder="Buscar por email o nombre..." oninput="searchDebounce(loadCustomers)">
         </div>
       </div>
-      <div class="card overflow-x-auto">
+      <div class="card overflow-x-auto p-4">
         <table id="customers-table">
           <thead>
             <tr>
@@ -195,12 +269,11 @@
       </div>
     </div>
 
-    <!-- VISTA ENCUESTAS -->
     <div id="view-surveys" class="hidden-panel space-y-6">
-      <div class="flex justify-between items-end">
+      <div class="flex justify-between items-end border-b border-white/10 pb-4">
         <h2 class="text-2xl font-bold text-white">Auditoría de Calidad</h2>
       </div>
-      <div class="card overflow-x-auto">
+      <div class="card overflow-x-auto p-4">
         <table id="surveys-table">
           <thead>
             <tr>
@@ -216,50 +289,48 @@
       </div>
     </div>
 
-    <!-- VISTA OPERACIONES -->
     <div id="view-ops" class="hidden-panel space-y-6">
-      <h2 class="text-2xl font-bold text-white">Operaciones Logísticas</h2>
-      <div class="grid grid-cols-2 gap-6">
-        <div class="card p-6">
-          <h3 class="font-bold text-[#c5a059] mb-4">Actualizar Tracking</h3>
-          <input type="text" id="track-order" class="input-dark w-full p-3 mb-3 text-sm" placeholder="ID del Pedido">
-          <select id="track-status" class="input-dark w-full p-3 mb-3 text-sm" style="background:#050f0e;">
+      <h2 class="text-2xl font-bold text-white border-b border-white/10 pb-4">Operaciones Logísticas</h2>
+      <div class="grid grid-cols-2 gap-8">
+        <div class="card p-8">
+          <h3 class="font-bold text-[#c5a059] mb-6 text-lg">Actualizar Tracking</h3>
+          <input type="text" id="track-order" class="input-dark w-full p-4 mb-4 text-sm" placeholder="ID del Pedido">
+          <select id="track-status" class="input-dark w-full p-4 mb-4 text-sm" style="background:#050f0e;">
             <option value="transito">En Tránsito</option>
             <option value="entregado">Entregado</option>
           </select>
-          <input type="file" id="track-photo" accept="image/*" class="input-dark w-full p-2 mb-4 text-sm">
-          <button onclick="updateTracking()" class="btn-gold w-full p-3 rounded-lg text-sm font-bold uppercase tracking-widest">Notificar al Cliente</button>
-          <p id="track-msg" class="text-xs mt-3 text-center"></p>
+          <input type="file" id="track-photo" accept="image/*" class="input-dark w-full p-3 mb-6 text-sm">
+          <button onclick="updateTracking()" class="btn-gold w-full p-4 rounded-lg text-sm font-bold uppercase tracking-widest">Notificar al Cliente</button>
+          <p id="track-msg" class="text-sm mt-4 text-center"></p>
         </div>
         
-        <div class="card p-6">
-          <h3 class="font-bold text-[#c5a059] mb-4">Auditoría WhatsApp</h3>
-          <input type="text" id="wa-code" class="input-dark w-full p-3 mb-4 text-sm" placeholder="Código OTP (Ej: LF-1234)">
-          <button onclick="verifyWA()" class="btn-gold w-full p-3 rounded-lg text-sm font-bold uppercase tracking-widest">Enlazar Número</button>
-          <p id="wa-msg" class="text-xs mt-3 text-center"></p>
+        <div class="card p-8">
+          <h3 class="font-bold text-[#c5a059] mb-6 text-lg">Auditoría WhatsApp</h3>
+          <input type="text" id="wa-code" class="input-dark w-full p-4 mb-6 text-sm" placeholder="Código OTP (Ej: LF-1234)">
+          <button onclick="verifyWA()" class="btn-gold w-full p-4 rounded-lg text-sm font-bold uppercase tracking-widest">Enlazar Número</button>
+          <p id="wa-msg" class="text-sm mt-4 text-center"></p>
         </div>
       </div>
     </div>
 
   </main>
 
-  <!-- MODAL DE PUNTOS -->
   <div id="points-modal" class="fixed inset-0 bg-[#050f0e]/90 backdrop-blur-sm z-[100] hidden-panel flex items-center justify-center">
-    <div class="card p-8 w-[400px]">
+    <div class="card p-8 w-[450px]">
       <h3 class="text-xl font-bold text-[#c5a059] mb-2">Ajuste Manual de Puntos</h3>
       <p id="modal-customer-name" class="text-sm opacity-70 mb-6"></p>
       
       <label class="block text-xs uppercase tracking-widest font-bold opacity-50 mb-2">Cantidad (Usar signo - para restar)</label>
-      <input type="number" id="modal-points-val" class="input-dark w-full p-3 mb-4 text-lg text-center" placeholder="Ej: 5000">
+      <input type="number" id="modal-points-val" class="input-dark w-full p-4 mb-6 text-xl text-center font-serif" placeholder="Ej: 5000">
       
       <label class="block text-xs uppercase tracking-widest font-bold opacity-50 mb-2">Motivo Interno</label>
-      <input type="text" id="modal-points-reason" class="input-dark w-full p-3 mb-6" placeholder="Ej: Compensación atraso">
+      <input type="text" id="modal-points-reason" class="input-dark w-full p-4 mb-8 text-sm" placeholder="Ej: Compensación atraso">
       
       <input type="hidden" id="modal-customer-id">
       
       <div class="flex gap-4">
-        <button onclick="document.getElementById('points-modal').classList.add('hidden-panel')" class="flex-1 p-3 rounded-lg border border-white/20 text-xs font-bold uppercase hover:bg-white/5 cursor-pointer transition">Cancelar</button>
-        <button onclick="submitPoints()" class="flex-1 p-3 rounded-lg btn-gold text-xs font-bold uppercase">Ejecutar</button>
+        <button onclick="document.getElementById('points-modal').classList.add('hidden-panel')" class="flex-1 p-4 rounded-lg border border-white/20 text-xs font-bold uppercase hover:bg-white/5 cursor-pointer transition">Cancelar</button>
+        <button onclick="submitPoints()" class="flex-1 p-4 rounded-lg btn-gold text-xs font-bold uppercase">Ejecutar</button>
       </div>
     </div>
   </div>
@@ -294,9 +365,15 @@
     const sec = localStorage.getItem('lf_admin_secret');
     const opts = { method, headers: { 'X-Internal-Secret': sec, 'Content-Type': 'application/json' }};
     if (body && !(body instanceof FormData)) opts.body = JSON.stringify(body);
-    if (body instanceof FormData) { opts.body = body; delete opts.headers['Content-Type']; }
+    if (body instanceof FormData) { 
+        opts.body = body; 
+        delete opts.headers['Content-Type']; 
+    }
     const res = await fetch(`${API_URL}${path}`, opts);
-    if(res.status === 401) { logout(); throw new Error("No autorizado"); }
+    if(res.status === 401) { 
+        logout(); 
+        throw new Error("No autorizado"); 
+    }
     return res;
   }
 
@@ -309,8 +386,10 @@
         btn.classList.add('text-white/70');
       }
     });
+    
     document.getElementById(`view-${view}`).classList.remove('hidden-panel');
     const activeBtn = document.getElementById(`nav-${view}`);
+    
     if(activeBtn) {
       activeBtn.classList.add('bg-white/5', 'text-[#c5a059]');
       activeBtn.classList.remove('text-white/70');
@@ -332,13 +411,25 @@
     ['7', '30', '90', '180', '365'].forEach(days => {
       const btn = document.getElementById(`p-${days}`);
       if(btn) {
-        if (days === p) btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e] cursor-pointer";
-        else btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white cursor-pointer";
+        if (days === p) {
+            btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e] cursor-pointer";
+        } else {
+            btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white cursor-pointer";
+        }
       }
     });
-    const labelsMap = { '7': 'Última semana', '30': 'Último mes', '90': 'Últimos 3 meses', '180': 'Últimos 6 meses', '365': 'Últimos 12 meses' };
+    
+    const labelsMap = { 
+        '7': 'Última semana', 
+        '30': 'Último mes', 
+        '90': 'Últimos 3 meses', 
+        '180': 'Últimos 6 meses', 
+        '365': 'Últimos 12 meses' 
+    };
+    
     const labelEl = document.getElementById('trend-label');
     if(labelEl) labelEl.innerText = labelsMap[p];
+    
     loadStats();
   }
 
@@ -375,7 +466,9 @@
           }]
         },
         options: {
-          responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+          responsive: true, 
+          maintainAspectRatio: false, 
+          plugins: { legend: { display: false } },
           scales: {
             y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888', font: { size: 10 } } },
             x: { grid: { display: false }, ticks: { color: '#888', font: { size: 10 } } }
@@ -391,7 +484,11 @@
           labels: (data.tiers || []).map(t => t.tier || 'Sin Nivel'),
           datasets: [{ data: (data.tiers || []).map(t => t.count), backgroundColor: ['#c5a059', '#3b82f6', '#10b981', '#4b5563'], borderWidth: 0 }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#fff', font: { size: 10 } } } } }
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { legend: { position: 'right', labels: { color: '#fff', font: { size: 10 } } } } 
+        }
       });
 
       if(chartRatings) chartRatings.destroy();
@@ -402,7 +499,15 @@
           labels: (data.ratings || []).map(r => r.rating + ' Estrellas'),
           datasets: [{ label: 'Respuestas', data: (data.ratings || []).map(r => r.count), backgroundColor: '#c5a059', borderRadius: 4 }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { legend: { display: false } }, 
+            scales: { 
+                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, 
+                x: { grid: { display: false } } 
+            } 
+        }
       });
     } catch(e) { console.error(e); }
   }
@@ -413,76 +518,172 @@
       const data = await res.json();
       
       const pGrid = document.getElementById('products-grid');
-      pGrid.innerHTML = data.products.map(p => {
-        const topUpsells = p.clicks.filter(c => c.event_name === 'upsell_added' || c.event_name === 'add_to_cart').sort((a,b)=>b.count-a.count).slice(0,3);
-        const uHtml = topUpsells.length ? topUpsells.map(u => `<div class="flex justify-between border-b border-white/5 pb-1"><span>${u.target}</span><span class="text-[#c5a059] font-bold">${u.count}</span></div>`).join('') : '<span class="opacity-30">Sin adicionales asociados</span>';
-        
-        return `
-        <div class="card p-5 border border-[#c5a059]/20 bg-[#c5a059]/5 hover:bg-[#c5a059]/10 transition-colors">
-          <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-3">
-             <h4 class="font-serif italic text-base text-[#c5a059] truncate pr-2 capitalize">${p.name}</h4>
-             <span class="bg-[#c5a059] text-[#0a1f1c] px-2 py-1 rounded text-[10px] font-bold">${p.conversion}% Conv</span>
-          </div>
-          <div class="grid grid-cols-2 gap-4 text-xs mb-4">
-             <div><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Vistas Totales</span><strong class="text-white text-sm">${p.views}</strong></div>
-             <div><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Compras</span><strong class="text-white text-sm">${p.purchases} <span class="text-[9px] font-normal opacity-50">(${p.adds} adds)</span></strong></div>
-             <div class="col-span-2"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Retención Promedio</span><strong class="text-white">${p.avg_time} segs</strong></div>
-          </div>
-          <div class="text-[10px] space-y-1">
-             <span class="text-[#c5a059] block mb-2 font-bold uppercase tracking-widest">Adicionales / Clics:</span>
-             ${uHtml}
-          </div>
-        </div>`;
-      }).join('');
+      let htmlProducts = '';
+      
+      if (data.products && data.products.length > 0) {
+          for (const p of data.products) {
+              const topUpsells = p.clicks.filter(c => c.event_name === 'upsell_added' || c.event_name === 'add_to_cart').sort((a, b) => b.count - a.count).slice(0, 3);
+              
+              let uHtml = '<span class="opacity-30 text-xs">Sin adicionales asociados</span>';
+              if (topUpsells.length > 0) {
+                  uHtml = topUpsells.map(u => `
+                      <div class="flex justify-between border-b border-[#c5a059]/10 pb-2 mb-2">
+                          <span class="opacity-90">${u.target}</span>
+                          <span class="text-[#c5a059] font-bold">${u.count}</span>
+                      </div>
+                  `).join('');
+              }
+              
+              htmlProducts += `
+              <div class="card p-6 border border-[#c5a059]/30 bg-gradient-to-b from-[#c5a059]/10 to-transparent hover:border-[#c5a059]/60 transition-all duration-300">
+                  <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
+                      <h4 class="font-serif italic text-xl text-[#c5a059] truncate pr-2 capitalize">${p.name}</h4>
+                      <span class="bg-[#c5a059] text-[#0a1f1c] px-3 py-1.5 rounded-md text-[11px] font-bold shadow-lg">${p.conversion}% Conv</span>
+                  </div>
+                  
+                  <div class="grid grid-cols-2 gap-6 text-sm mb-6">
+                      <div class="bg-black/20 p-3 rounded-lg">
+                          <span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Vistas Totales</span>
+                          <strong class="text-white text-lg">${p.views}</strong>
+                      </div>
+                      <div class="bg-black/20 p-3 rounded-lg">
+                          <span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Agregados</span>
+                          <strong class="text-white text-lg">${p.adds} <span class="text-[10px] font-normal opacity-50 ml-1">al carro</span></strong>
+                      </div>
+                      <div class="col-span-2 bg-black/20 p-3 rounded-lg">
+                          <span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Retención Promedio</span>
+                          <strong class="text-white">${p.avg_time} segundos de lectura</strong>
+                      </div>
+                  </div>
+                  
+                  <div class="text-xs space-y-2 mt-4">
+                      <span class="text-[#c5a059] block mb-3 font-bold uppercase tracking-widest text-[10px]">Adicionales / Clics vinculados:</span>
+                      ${uHtml}
+                  </div>
+              </div>`;
+          }
+      } else {
+          htmlProducts = '<p class="opacity-50 text-sm italic">Esperando datos de tráfico...</p>';
+      }
+      pGrid.innerHTML = htmlProducts;
 
       const cGrid = document.getElementById('categories-grid');
-      cGrid.innerHTML = data.categories.map(c => {
-        const topClicks = c.clicks.sort((a,b)=>b.count-a.count).slice(0,4);
-        const cHtml = topClicks.length ? topClicks.map(u => `<div class="flex justify-between border-b border-white/5 pb-1"><span>${u.target}</span><span class="text-emerald-400 font-bold">${u.count}</span></div>`).join('') : '<span class="opacity-30">Sin interacción interna</span>';
-        
-        return `
-        <div class="card p-5 border border-emerald-900/30 bg-emerald-900/10 hover:bg-emerald-900/20 transition-colors">
-          <h4 class="font-bold text-emerald-400 uppercase text-xs border-b border-white/10 pb-3 mb-3">${c.url.replace('/','').replace('.html', '')}</h4>
-          <div class="grid grid-cols-2 gap-4 text-xs mb-4">
-             <div><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Vistas</span><strong class="text-white text-sm">${c.views}</strong></div>
-             <div><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Tiempo Prom.</span><strong class="text-white text-sm">${c.avg_time} segs</strong></div>
-          </div>
-          <div class="text-[10px] space-y-1">
-             <span class="text-emerald-400 block mb-2 font-bold uppercase tracking-widest">Atención / Clics (Top):</span>
-             ${cHtml}
-          </div>
-        </div>`;
-      }).join('');
+      let htmlCategories = '';
+      
+      if (data.categories && data.categories.length > 0) {
+          for (const c of data.categories) {
+              const topClicks = c.clicks.sort((a, b) => b.count - a.count).slice(0, 4);
+              
+              let cHtml = '<span class="opacity-30 text-xs">Sin interacción interna</span>';
+              if (topClicks.length > 0) {
+                  cHtml = topClicks.map(u => `
+                      <div class="flex justify-between border-b border-emerald-500/10 pb-2 mb-2">
+                          <span class="opacity-90">${u.target}</span>
+                          <span class="text-emerald-400 font-bold">${u.count}</span>
+                      </div>
+                  `).join('');
+              }
+              
+              const title = c.url.replace('/', '').replace('.html', '').replace(/-/g, ' ');
+              
+              htmlCategories += `
+              <div class="card p-6 border border-emerald-900/50 bg-gradient-to-b from-emerald-900/20 to-transparent hover:border-emerald-500/50 transition-all duration-300">
+                  <h4 class="font-bold text-emerald-400 uppercase text-sm border-b border-white/10 pb-4 mb-4 capitalize">${title}</h4>
+                  
+                  <div class="grid grid-cols-2 gap-6 text-sm mb-6">
+                      <div class="bg-black/20 p-3 rounded-lg">
+                          <span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Visitas</span>
+                          <strong class="text-white text-lg">${c.views}</strong>
+                      </div>
+                      <div class="bg-black/20 p-3 rounded-lg">
+                          <span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Tiempo Prom.</span>
+                          <strong class="text-white text-lg">${c.avg_time}s</strong>
+                      </div>
+                  </div>
+                  
+                  <div class="text-xs space-y-2 mt-4">
+                      <span class="text-emerald-400 block mb-3 font-bold uppercase tracking-widest text-[10px]">Elementos más clicados:</span>
+                      ${cHtml}
+                  </div>
+              </div>`;
+          }
+      }
+      cGrid.innerHTML = htmlCategories;
 
       const tGrid = document.getElementById('tertiary-grid');
-      tGrid.innerHTML = data.tertiary.map(t => `
-        <div class="card p-4 border border-blue-900/30 bg-blue-900/10 flex justify-between items-center hover:bg-blue-900/20 transition-colors">
-          <span class="font-bold text-blue-400 uppercase text-[10px] tracking-widest">${t.url.replace('/','').replace('.html', '')}</span>
-          <div class="text-right">
-            <span class="block text-white text-sm font-bold">${t.views} vistas</span>
-            <span class="block text-[9px] opacity-50">${t.avg_time} segs de lectura</span>
-          </div>
-        </div>
-      `).join('');
+      let htmlTertiary = '';
+      
+      if (data.tertiary && data.tertiary.length > 0) {
+          for (const t of data.tertiary) {
+              const title = t.url.replace('/', '').replace('.html', '').replace(/-/g, ' ');
+              htmlTertiary += `
+              <div class="card p-5 border border-blue-900/50 bg-blue-900/10 flex justify-between items-center hover:bg-blue-900/30 transition-all duration-300">
+                  <span class="font-bold text-blue-400 uppercase text-[11px] tracking-widest">${title}</span>
+                  <div class="text-right">
+                      <span class="block text-white text-lg font-bold">${t.views} <span class="text-[10px] font-normal opacity-50 uppercase tracking-widest">Vistas</span></span>
+                      <span class="block text-[10px] opacity-60 mt-1">${t.avg_time} segs de retención</span>
+                  </div>
+              </div>`;
+          }
+      }
+      tGrid.innerHTML = htmlTertiary;
 
-      document.getElementById('abandoned-total').innerText = '$' + data.abandoned.reduce((a, c) => a + parseInt(c.value || 0), 0).toLocaleString('es-CL');
-      document.getElementById('abandoned-count').innerText = data.abandoned.length + ' abandonos (24h)';
-      document.getElementById('abandoned-body').innerHTML = data.abandoned.map(c => `
-        <tr class="border-b border-red-900/20 last:border-0 hover:bg-red-900/30 transition-colors">
-          <td class="py-2 text-[10px] opacity-60 w-16">${new Date(c.created_at).toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})}</td>
-          <td class="py-2 text-white font-bold">${c.email}</td>
-          <td class="py-2 text-[#c5a059] text-right">$${parseInt(c.value || 0).toLocaleString('es-CL')}</td>
-        </tr>`).join('');
+      const uList = document.getElementById('global-upsells-list');
+      if(data.global_upsells && data.global_upsells.length > 0){
+          uList.innerHTML = data.global_upsells.map(u => `
+            <div class="flex justify-between items-center border-b border-white/5 pb-3">
+              <span class="text-sm text-white/80">${u.name}</span>
+              <span class="text-[#c5a059] font-bold text-sm">${u.count} uds</span>
+            </div>
+          `).join('');
+      } else {
+          uList.innerHTML = '<p class="opacity-50 text-xs">Sin upsells registrados.</p>';
+      }
+
+      const abandonedTotal = data.abandoned.reduce((acc, curr) => acc + parseInt(curr.value || 0), 0);
+      document.getElementById('abandoned-total').innerText = '$' + abandonedTotal.toLocaleString('es-CL');
+      document.getElementById('abandoned-count').innerText = data.abandoned.length + ' intentos fallidos (24h)';
+      
+      const tbody = document.getElementById('abandoned-body');
+      let htmlAbandoned = '';
+      if (data.abandoned && data.abandoned.length > 0) {
+          htmlAbandoned = data.abandoned.map(c => `
+              <tr class="border-b border-red-900/30 last:border-0 hover:bg-red-900/40 transition-colors">
+                  <td class="py-3 px-2 text-[11px] opacity-60 w-20">${new Date(c.created_at).toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})}</td>
+                  <td class="py-3 px-2 text-white font-medium">${c.email}</td>
+                  <td class="py-3 px-2 text-[#c5a059] text-right font-bold">$${parseInt(c.value || 0).toLocaleString('es-CL')}</td>
+              </tr>
+          `).join('');
+      } else {
+          htmlAbandoned = '<tr><td colspan="3" class="py-4 text-center opacity-50 text-xs italic">No hay carritos abandonados recientes.</td></tr>';
+      }
+      tbody.innerHTML = htmlAbandoned;
 
       if(chartFunnel) chartFunnel.destroy();
       const ctxF = document.getElementById('funnelChart').getContext('2d');
       chartFunnel = new Chart(ctxF, {
         type: 'bar',
-        data: { labels: data.funnel.map(f => f.step), datasets: [{ data: data.funnel.map(f => f.count), backgroundColor: 'rgba(239, 68, 68, 0.7)', borderRadius: 4 }] },
-        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } }, y: { grid: { display: false }, ticks: { color: '#888', font: { size: 10 } } } } }
+        data: { 
+            labels: data.funnel.map(f => f.step), 
+            datasets: [{ 
+                data: data.funnel.map(f => f.count), 
+                backgroundColor: 'rgba(239, 68, 68, 0.8)', 
+                borderRadius: 6 
+            }] 
+        },
+        options: { 
+            indexAxis: 'y', 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { legend: { display: false } }, 
+            scales: { 
+                x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } }, 
+                y: { grid: { display: false }, ticks: { color: '#ccc', font: { size: 11 } } } 
+            } 
+        }
       });
 
-    } catch(e) {}
+    } catch(e) { console.error(e); }
   }
 
   async function loadCustomers() {
@@ -494,11 +695,11 @@
     if (data.customers && Array.isArray(data.customers)) {
         tbody.innerHTML = data.customers.map(c => `
           <tr>
-            <td><strong class="block">${c.full_name || '-'}</strong><span class="text-[10px] opacity-50">${c.email}</span></td>
-            <td><span class="bg-white/5 border border-white/10 px-2 py-1 rounded text-[10px] uppercase text-[#c5a059]">${c.tier || 'Cuarzo'}</span></td>
-            <td class="font-serif">$${(c.lifetime_flowers_clp || 0).toLocaleString('es-CL')}</td>
-            <td class="font-bold font-serif text-[#c5a059]">${(c.points_balance || 0).toLocaleString('es-CL')} pts</td>
-            <td><button onclick="openPointsModal('${c.id}', '${c.full_name || c.email}')" class="text-[10px] border border-[#c5a059] text-[#c5a059] px-3 py-1.5 rounded hover:bg-[#c5a059] hover:text-[#050f0e] uppercase tracking-widest font-bold transition cursor-pointer">Ajustar Saldo</button></td>
+            <td><strong class="block text-sm">${c.full_name || '-'}</strong><span class="text-[11px] opacity-50">${c.email}</span></td>
+            <td><span class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-md text-[10px] uppercase font-bold text-[#c5a059]">${c.tier || 'Cuarzo'}</span></td>
+            <td class="font-serif text-sm">$${(c.lifetime_flowers_clp || 0).toLocaleString('es-CL')}</td>
+            <td class="font-bold font-serif text-[#c5a059] text-sm">${(c.points_balance || 0).toLocaleString('es-CL')} pts</td>
+            <td><button onclick="openPointsModal('${c.id}', '${c.full_name || c.email}')" class="text-[10px] border border-[#c5a059] text-[#c5a059] px-4 py-2 rounded-md hover:bg-[#c5a059] hover:text-[#050f0e] uppercase tracking-widest font-bold transition cursor-pointer">Ajustar Saldo</button></td>
           </tr>
         `).join('');
     }
@@ -531,16 +732,17 @@
     tbody.innerHTML = (data.surveys || []).map(s => {
       const estrellas = '★'.repeat(s.rating) + '<span class="opacity-20">' + '★'.repeat(5-s.rating) + '</span>';
       const critico = s.rating <= 3 ? 'bg-red-500/10' : '';
-      let aspec = ''; try { aspec = JSON.parse(s.issues || '[]').join(', '); } catch(e){}
+      let aspec = ''; 
+      try { aspec = JSON.parse(s.issues || '[]').join(', '); } catch(e){}
       
       return `
         <tr class="${critico}">
-          <td class="text-[10px] opacity-60">${new Date(s.answered_at).toLocaleDateString('es-CL')}</td>
-          <td><strong class="block">${s.full_name || 'Anónimo'}</strong><span class="text-[10px] opacity-50">${s.email}</span></td>
-          <td class="text-[#c5a059] text-lg tracking-widest">${estrellas}</td>
-          <td><span class="block text-xs text-white/80">${aspec}</span><span class="text-[10px] opacity-50 italic block mt-1">"${s.suggestion || '-'}"</span></td>
+          <td class="text-[11px] opacity-60">${new Date(s.answered_at).toLocaleDateString('es-CL')}</td>
+          <td><strong class="block text-sm">${s.full_name || 'Anónimo'}</strong><span class="text-[11px] opacity-50">${s.email}</span></td>
+          <td class="text-[#c5a059] text-xl tracking-widest">${estrellas}</td>
+          <td><span class="block text-sm text-white/90">${aspec}</span><span class="text-xs opacity-60 italic block mt-1">"${s.suggestion || '-'}"</span></td>
           <td>
-            ${s.rating <= 3 && s.customer_id ? `<button onclick="openPointsModal('${s.customer_id}', '${s.full_name || s.email}')" class="text-[10px] bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1.5 rounded hover:bg-red-500 hover:text-white uppercase tracking-widest font-bold transition cursor-pointer">Compensar</button>` : '<span class="text-[10px] opacity-30 uppercase tracking-widest">N/A</span>'}
+            ${s.rating <= 3 && s.customer_id ? `<button onclick="openPointsModal('${s.customer_id}', '${s.full_name || s.email}')" class="text-[10px] bg-red-500/20 text-red-400 border border-red-500/40 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white uppercase tracking-widest font-bold transition cursor-pointer">Compensar</button>` : '<span class="text-[10px] opacity-30 uppercase tracking-widest">N/A</span>'}
           </td>
         </tr>
       `;
@@ -555,24 +757,40 @@
     if(photo) form.append('photo', photo);
 
     const msg = document.getElementById('track-msg');
-    msg.innerText = 'Subiendo...'; msg.className = 'text-xs mt-3 text-center text-yellow-400';
+    msg.innerText = 'Subiendo...'; msg.className = 'text-sm mt-4 text-center text-yellow-400';
 
     try {
       const res = await apicall('/api/admin/tracking', 'POST', form);
       const data = await res.json();
-      if(res.ok) { msg.innerText = '✅ Listo: ' + data.tracking_link; msg.className = 'text-xs mt-3 text-center text-emerald-400 break-all'; }
-      else { msg.innerText = '❌ ' + data.error; msg.className = 'text-xs mt-3 text-center text-red-400'; }
-    } catch(e) { msg.innerText = '❌ Error de red'; msg.className = 'text-xs mt-3 text-center text-red-400'; }
+      if(res.ok) { 
+          msg.innerText = '✅ Listo: ' + data.tracking_link; 
+          msg.className = 'text-sm mt-4 text-center text-emerald-400 break-all'; 
+      } else { 
+          msg.innerText = '❌ ' + data.error; 
+          msg.className = 'text-sm mt-4 text-center text-red-400'; 
+      }
+    } catch(e) { 
+        msg.innerText = '❌ Error de red'; 
+        msg.className = 'text-sm mt-4 text-center text-red-400'; 
+    }
   }
 
   async function verifyWA() {
     const msg = document.getElementById('wa-msg');
-    msg.innerText = 'Verificando...'; msg.className = 'text-xs mt-3 text-center text-yellow-400';
+    msg.innerText = 'Verificando...'; msg.className = 'text-sm mt-4 text-center text-yellow-400';
     try {
       const res = await apicall('/api/verify-phone', 'POST', { message_text: document.getElementById('wa-code').value });
-      if(res.ok) { msg.innerText = '✅ Verificado'; msg.className = 'text-xs mt-3 text-center text-emerald-400'; }
-      else { msg.innerText = '❌ Código inválido'; msg.className = 'text-xs mt-3 text-center text-red-400'; }
-    } catch(e) { msg.innerText = '❌ Error de red'; msg.className = 'text-xs mt-3 text-center text-red-400'; }
+      if(res.ok) { 
+          msg.innerText = '✅ Verificado'; 
+          msg.className = 'text-sm mt-4 text-center text-emerald-400'; 
+      } else { 
+          msg.innerText = '❌ Código inválido'; 
+          msg.className = 'text-sm mt-4 text-center text-red-400'; 
+      }
+    } catch(e) { 
+        msg.innerText = '❌ Error de red'; 
+        msg.className = 'text-sm mt-4 text-center text-red-400'; 
+    }
   }
 
   initApp();
