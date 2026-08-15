@@ -138,6 +138,9 @@
           <h2 class="text-2xl font-bold text-white">Monitor 4D de Fugas y Adopción</h2>
           <p class="text-xs opacity-50 mt-1">Rastreo crudo en tiempo real. Análisis transaccional y rendimiento detallado.</p>
         </div>
+        <div>
+          <button onclick="loadAnalytics()" class="py-2.5 px-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs uppercase tracking-widest font-bold transition cursor-pointer text-[#c5a059]">Refrescar Ahora</button>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -153,7 +156,7 @@
           <div>
             <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Rendimiento por Producto</p>
             <select id="product-selector" onchange="loadAnalytics()" class="input-dark w-full p-2.5 text-xs font-medium cursor-pointer">
-              <option value="">Seleccionar producto...</option>
+              <option value="">Todos los productos (Global)</option>
             </select>
           </div>
           <p class="text-[10px] opacity-50 mt-2">Ordenado de mayor a menor tráfico y conversión.</p>
@@ -164,7 +167,7 @@
           <div>
             <p class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-2">Rendimiento por Categoría</p>
             <select id="category-selector" onchange="loadAnalytics()" class="input-dark w-full p-2.5 text-xs font-medium cursor-pointer">
-              <option value="">Seleccionar categoría / página...</option>
+              <option value="">Todas las categorías (Global)</option>
             </select>
           </div>
           <p class="text-[10px] opacity-50 mt-2">Ordenado por volumen de visitas.</p>
@@ -459,21 +462,18 @@
       const res = await apicall(`/api/admin/analytics?product=${encodeURIComponent(selectedProd)}&category=${encodeURIComponent(selectedCat)}`);
       const data = await res.json();
       
-      // Poblar Selector de Productos ordenados con % de conversión
       const prodSelect = document.getElementById('product-selector');
       const currentProdVal = prodSelect.value;
       prodSelect.innerHTML = '<option value="">Todos los productos (Global)</option>' + 
         (data.products || []).map(p => `<option value="${p.name}">${p.name} — [Visitas: ${p.views} | Agregados: ${p.adds} | Conv: ${p.conversion}%]</option>`).join('');
       prodSelect.value = currentProdVal;
 
-      // Poblar Selector de Categorías ordenadas por tráfico
       const catSelect = document.getElementById('category-selector');
       const currentCatVal = catSelect.value;
       catSelect.innerHTML = '<option value="">Todas las categorías (Global)</option>' + 
         (data.categories || []).map(c => `<option value="${c.category}">${c.category} — [Visitas: ${c.views}]</option>`).join('');
       catSelect.value = currentCatVal;
 
-      // Panel de Rayos X Individual
       const deepPanel = document.getElementById('deep-dive-panel');
       if (selectedProd || selectedCat) {
         deepPanel.classList.remove('hidden-panel');
@@ -556,7 +556,7 @@
 
     } catch(e) { console.error(e); }
   }
-  
+
   async function loadCustomers() {
     const q = document.getElementById('search-customer').value;
     const res = await apicall(`/api/admin/customers?q=${encodeURIComponent(q)}`);
