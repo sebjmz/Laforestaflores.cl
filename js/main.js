@@ -593,6 +593,17 @@ function guardarProgresoCheckout() {
     localStorage.setItem("laforesta_shippingCost", shippingCost);
     localStorage.setItem("laforesta_selectedZoneName", selectedZoneName);
     localStorage.setItem("laforesta_selectedPalette", selectedPalette);
+
+    // INYECCIÓN: Captura de Lead Silenciosa
+    if (typeof trackEvent4D === 'function') {
+        const tempName = document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || 'Cliente';
+        const tempEmail = document.getElementById('buyer-email')?.value || '';
+        const tempCart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+        const tempVal = tempCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+        if (tempEmail && tempEmail.includes('@')) {
+            trackEvent4D('lead_captured', { name: tempName, email: tempEmail, cart_value: tempVal });
+        }
+    }
 }
 
 function restaurarProgresoCheckout() {
