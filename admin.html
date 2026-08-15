@@ -222,7 +222,6 @@
       <section class="grid grid-cols-1 xl:grid-cols-3 gap-8 pb-12">
         <div class="card p-8 xl:col-span-2 flex flex-col">
           <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-6 border-b border-white/10 pb-3">Embudo de Fuga de Checkout</h3>
-          <!-- Nuevo contenedor para el embudo HTML interactivo -->
           <div id="funnel-container" class="flex-1 w-full relative min-h-[350px]"></div>
         </div>
         <div class="card p-8 border-[#c5a059]/30 flex flex-col">
@@ -484,25 +483,22 @@
   }
 
   function formatearPasoCheckout(stepName) {
-      const nombres = {
-          'step-1': '1. Datos del Emisor',
-          'step-buyer-email': '2. Correo del Comprador',
-          'step-2': '3. Datos del Receptor',
-          'step-palette': '4. Tono / Paleta Floral',
-          'modalidad_logistica': '5. Tipo de Logística',
-          'seleccion_zona': '6. Selección de Zona',
-          'step-zona': '6. Selección de Zona',
-          'step-direccion': '7. Dirección Exacta',
-          'step-fecha': '8. Día de Entrega',
-          'step-time': '9. Horario / Express',
-          'step-4': '10. Mensaje / Tarjeta',
-          'step-5': '11. Teléfono Destino',
-          'step-6': '12. Cierre y Pasarela',
-          'payment_initiated': 'Intento de Pago (MercadoPago/PayPal)',
-          'purchase': 'Compra Finalizada',
-          'time_on_page': 'Tiempo Promedio General'
-      };
-      return nombres[stepName] || stepName;
+      const str = String(stepName).toLowerCase().trim();
+      if (str === 'step-1' || str === '1') return '1. Datos del Emisor';
+      if (str === 'step-buyer-email') return '2. Correo del Comprador';
+      if (str === 'step-2' || str === '2') return '3. Datos del Receptor';
+      if (str === 'step-palette') return '4. Tono / Paleta Floral';
+      if (str === 'modalidad_logistica') return '5. Tipo de Logística';
+      if (str === 'seleccion_zona' || str === 'step-zona') return '6. Selección de Zona';
+      if (str === 'step-direccion') return '7. Dirección Exacta';
+      if (str === 'step-fecha' || str === 'seleccion_fecha' || str === 'step-calendario') return '8. Día de Entrega';
+      if (str === 'step-time') return '9. Horario / Express';
+      if (str === 'step-4' || str === '4') return '10. Mensaje / Tarjeta';
+      if (str === 'step-5' || str === '5') return '11. Teléfono Destino';
+      if (str === 'step-6' || str === '6') return '12. Cierre y Pasarela';
+      if (str === 'payment_initiated') return 'Intento de Pago (MercadoPago/PayPal)';
+      if (str === 'purchase') return 'Compra Finalizada';
+      return stepName;
   }
 
   function renderEmbudoInteractivo(funnelData, detailedData) {
@@ -544,11 +540,11 @@
                   </div>
                   <button onclick="document.getElementById('funnel-detalles-panel').classList.add('hidden')" class="text-zinc-500 hover:text-[#c5a059] text-2xl font-light">×</button>
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                   ${detailedData.map(d => {
                       const retencion = Math.round((d.unique_visits / maxVisits) * 100);
                       const fuga = 100 - retencion;
-                      const tiempoStr = d.avg_time_sec ? `${d.avg_time_sec}s pro.` : '0s pro.';
+                      const tiempoStr = d.avg_time_sec ? `${Math.round(d.avg_time_sec)}s pro.` : '0s pro.';
                       
                       return `
                       <div class="bg-white/5 border border-white/10 p-5 rounded-lg hover:border-[#c5a059]/50 transition-colors hover:bg-white/10 relative overflow-hidden">
@@ -585,22 +581,40 @@
       const container = document.getElementById(containerId);
       if (!container) return;
       
-      const visible = items.slice(0, limit);
-      const hidden = items.slice(limit);
-      
-      let html = visible.map(renderFn).join('');
-      
-      if (hidden.length > 0) {
-          html += `
-          <div id="${containerId}-hidden" class="hidden-panel col-span-full w-full" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
-              ${hidden.map(renderFn).join('')}
-          </div>
-          <div class="col-span-full flex justify-center mt-6">
-              <button onclick="document.getElementById('${containerId}-hidden').classList.remove('hidden-panel'); this.style.display='none'" class="px-8 py-3 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] text-xs font-bold uppercase tracking-widest rounded-full transition-all duration-300 shadow-md">Ver ${hidden.length} más</button>
-          </div>`;
+      let wrapper = container.parentElement.querySelector(`.toggle-btn-${containerId}`);
+      if (!wrapper) {
+          wrapper = document.createElement('div');
+          wrapper.className = `toggle-btn-${containerId} text-center mt-6`;
+          container.parentElement.appendChild(wrapper);
+      }
+
+      let isExpanded = container.dataset.expanded === 'true';
+
+      function render() {
+          const visibleItems = isExpanded ? items : items.slice(0, limit);
+          container.innerHTML = visibleItems.map(renderFn).join('');
+          
+          if (items.length > limit) {
+              const remaining = items.length - limit;
+              wrapper.innerHTML = `
+                  <button type="button" class="px-6 py-2.5 rounded-full border border-[#c5a059]/40 text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] font-bold text-[10px] uppercase tracking-widest transition-all duration-300 shadow-sm">
+                      ${isExpanded ? 'Ver Menos ↑' : `Ver ${remaining} Más ↓`}
+                  </button>`;
+              
+              wrapper.querySelector('button').onclick = () => {
+                  isExpanded = !isExpanded;
+                  container.dataset.expanded = isExpanded ? 'true' : 'false';
+                  render();
+                  if (!isExpanded) {
+                      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+              };
+          } else {
+              wrapper.innerHTML = '';
+          }
       }
       
-      container.innerHTML = html;
+      render();
   }
 
   async function loadStats() {
@@ -762,8 +776,8 @@
                         <span class="text-[#c5a059] text-[10px] font-bold bg-[#c5a059]/10 px-2 py-1 rounded">${u.agregados} Agregados</span>
                     </div>
                     <div class="flex justify-between items-center text-xs opacity-70 mb-2">
-                        <span>Llegaron a Pago: ${u.intentos_pago}</span>
-                        <span>Comprados: <strong class="${u.compras > 0 ? 'text-emerald-400' : ''}">${u.compras}</strong> <span class="text-emerald-400 font-bold ml-1">(${ingresos})</span></span>
+                        <span>Llegaron a Pago: ${u.intentos_pago || 0}</span>
+                        <span>Comprados: <strong class="${u.compras > 0 ? 'text-emerald-400' : ''}">${u.compras || 0}</strong> <span class="text-emerald-400 font-bold ml-1">(${ingresos})</span></span>
                     </div>
                     <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
                         <div class="bg-gradient-to-r from-[#c5a059]/50 to-[#c5a059] h-full" style="width: ${conv}%"></div>
@@ -865,35 +879,39 @@
     const data = await res.json();
     const tbody = document.getElementById('surveys-body');
     
-    tbody.innerHTML = (data.surveys || []).map(s => {
-      const estrellas = '★'.repeat(s.rating) + '<span class="opacity-20">' + '★'.repeat(5-s.rating) + '</span>';
-      const critico = s.rating <= 3 ? 'bg-red-500/10' : '';
-      
-      let aspec = ''; 
-      try { 
-          aspec = JSON.parse(s.issues || '[]').join(', '); 
-      } catch(e) {}
-      
-      return `
-        <tr class="${critico}">
-          <td class="text-[11px] opacity-60">${new Date(s.answered_at).toLocaleDateString('es-CL')}</td>
-          <td>
-            <strong class="block text-sm">${s.full_name || 'Anónimo'}</strong>
-            <span class="text-[11px] opacity-50">${s.email}</span>
-          </td>
-          <td class="text-[#c5a059] text-xl tracking-widest">${estrellas}</td>
-          <td>
-            <span class="block text-sm text-white/90">${aspec}</span>
-            <span class="text-xs opacity-60 italic block mt-1">"${s.suggestion || '-'}"</span>
-          </td>
-          <td>
-            ${s.rating <= 3 && s.customer_id 
-              ? `<button onclick="openPointsModal('${s.customer_id}', '${s.full_name || s.email}')" class="text-[10px] bg-red-500/20 text-red-400 border border-red-500/40 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white uppercase tracking-widest font-bold transition cursor-pointer">Compensar</button>` 
-              : '<span class="text-[10px] opacity-30 uppercase tracking-widest">N/A</span>'}
-          </td>
-        </tr>
-      `;
-    }).join('');
+    if (data.surveys && Array.isArray(data.surveys)) {
+      tbody.innerHTML = data.surveys.map(s => {
+        const estrellas = '★'.repeat(s.rating) + '<span class="opacity-20">' + '★'.repeat(5-s.rating) + '</span>';
+        const critico = s.rating <= 3 ? 'bg-red-500/10' : '';
+        
+        let aspec = ''; 
+        try { 
+            aspec = JSON.parse(s.issues || '[]').join(', '); 
+        } catch(e) {}
+        
+        return `
+          <tr class="${critico}">
+            <td class="text-[11px] opacity-60">${new Date(s.answered_at).toLocaleDateString('es-CL')}</td>
+            <td>
+              <strong class="block text-sm">${s.full_name || 'Anónimo'}</strong>
+              <span class="text-[11px] opacity-50">${s.email}</span>
+            </td>
+            <td class="text-[#c5a059] text-xl tracking-widest">${estrellas}</td>
+            <td>
+              <span class="block text-sm text-white/90">${aspec}</span>
+              <span class="text-xs opacity-60 italic block mt-1">"${s.suggestion || '-'}"</span>
+            </td>
+            <td>
+              ${s.rating <= 3 && s.customer_id 
+                ? `<button onclick="openPointsModal('${s.customer_id}', '${s.full_name || s.email}')" class="text-[10px] bg-red-500/20 text-red-400 border border-red-500/40 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white uppercase tracking-widest font-bold transition cursor-pointer">Compensar</button>` 
+                : '<span class="text-[10px] opacity-30 uppercase tracking-widest">N/A</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    } else {
+        tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center opacity-50 text-xs italic">No hay encuestas para mostrar.</td></tr>';
+    }
   }
 
   async function updateTracking() {
