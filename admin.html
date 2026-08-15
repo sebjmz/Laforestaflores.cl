@@ -222,9 +222,8 @@
       <section class="grid grid-cols-1 xl:grid-cols-3 gap-8 pb-12">
         <div class="card p-8 xl:col-span-2 flex flex-col">
           <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-6 border-b border-white/10 pb-3">Embudo de Fuga de Checkout</h3>
-          <div class="flex-1 w-full relative min-h-[350px]">
-            <canvas id="funnelChart"></canvas>
-          </div>
+          <!-- Nuevo contenedor para el embudo HTML interactivo -->
+          <div id="funnel-container" class="flex-1 w-full relative min-h-[350px]"></div>
         </div>
         <div class="card p-8 border-[#c5a059]/30 flex flex-col">
           <h3 class="text-sm font-bold text-[#c5a059] uppercase tracking-widest mb-6 border-b border-[#c5a059]/30 pb-3">Adopción Global Upsells</h3>
@@ -343,7 +342,7 @@
 
 <script>
   const API_URL = 'https://club-laforesta.sebjmz.workers.dev';
-  let chartTrend, chartTiers, chartRatings, chartFunnel;
+  let chartTrend, chartTiers, chartRatings;
   let currentPeriod = '30';
   let timer;
 
@@ -465,6 +464,145 @@
     loadStats();
   }
 
+  // Funciones Auxiliares Analíticas
+  function renderInteracciones(clicks) {
+      if (!clicks || clicks.length === 0) return '<span class="text-zinc-600 text-[10px]">Sin interacción interna asociada</span>';
+      
+      const agrupados = clicks.reduce((acc, c) => {
+          acc[c.target] = (acc[c.target] || 0) + c.count;
+          return acc;
+      }, {});
+
+      const topClicks = Object.entries(agrupados).sort((a, b) => b[1] - a[1]).slice(0, 3);
+
+      return topClicks.map(([target, count]) => `
+          <div class="flex justify-between items-center bg-black/20 px-2 py-1.5 rounded mb-1 border border-white/5">
+              <span class="text-[9px] uppercase tracking-wider text-zinc-400 truncate w-32" title="${target}">${target}</span>
+              <span class="text-[9px] font-bold text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded">${count} clics</span>
+          </div>
+      `).join('');
+  }
+
+  function formatearPasoCheckout(stepName) {
+      const nombres = {
+          'step-1': '1. Datos del Emisor',
+          'step-buyer-email': '2. Correo del Comprador',
+          'step-2': '3. Datos del Receptor',
+          'step-palette': '4. Tono / Paleta Floral',
+          'modalidad_logistica': '5. Tipo de Logística',
+          'seleccion_zona': '6. Selección de Zona',
+          'step-zona': '6. Selección de Zona',
+          'step-direccion': '7. Dirección Exacta',
+          'step-fecha': '8. Día de Entrega',
+          'step-time': '9. Horario / Express',
+          'step-4': '10. Mensaje / Tarjeta',
+          'step-5': '11. Teléfono Destino',
+          'step-6': '12. Cierre y Pasarela',
+          'payment_initiated': 'Intento de Pago (MercadoPago/PayPal)',
+          'purchase': 'Compra Finalizada',
+          'time_on_page': 'Tiempo Promedio General'
+      };
+      return nombres[stepName] || stepName;
+  }
+
+  function renderEmbudoInteractivo(funnelData, detailedData) {
+      const container = document.getElementById('funnel-container');
+      if (!container) return;
+
+      if (!funnelData || funnelData.length === 0) {
+          container.innerHTML = '<p class="text-zinc-500 text-xs">Sin datos de embudo.</p>';
+          return;
+      }
+
+      let html = funnelData.map((item, index) => {
+          const max = funnelData[0].count || 1;
+          const pct = Math.round((item.count / max) * 100);
+          const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-orange-500', 'bg-rose-500'];
+          
+          return `
+          <div class="mb-6 cursor-pointer group" onclick="document.getElementById('funnel-detalles-panel').classList.toggle('hidden')">
+              <div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">
+                  <span>${item.step}</span>
+                  <span class="group-hover:text-[#c5a059] transition-colors">${item.count} (${pct}%)</span>
+              </div>
+              <div class="w-full bg-white/5 rounded-full h-8 overflow-hidden flex items-center relative border border-transparent group-hover:border-[#c5a059]/50 transition-colors shadow-inner">
+                  <div class="${colors[index % colors.length]} h-full transition-all duration-1000" style="width: ${pct}%"></div>
+                  <span class="absolute right-4 text-[9px] font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity tracking-widest uppercase shadow-md">Ver Desglose 🔍</span>
+              </div>
+          </div>`;
+      }).join('');
+
+      if (detailedData && detailedData.length > 0) {
+          const maxVisits = detailedData[0].unique_visits || 1;
+          html += `
+          <div id="funnel-detalles-panel" class="hidden mt-8 bg-[#0a1f1c] border border-[#c5a059]/30 rounded-xl p-6 shadow-2xl transition-all duration-500 relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-64 h-64 bg-[#c5a059]/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+              <div class="flex justify-between items-center mb-6 border-b border-[#c5a059]/20 pb-4">
+                  <div>
+                      <h4 class="text-[#c5a059] font-bold text-[12px] uppercase tracking-[0.2em] mb-1">Desglose Analítico de Pantallas</h4>
+                      <span class="text-zinc-500 text-[9px] uppercase tracking-widest block">Tráfico, interacción y fuga exacta por formulario</span>
+                  </div>
+                  <button onclick="document.getElementById('funnel-detalles-panel').classList.add('hidden')" class="text-zinc-500 hover:text-[#c5a059] text-2xl font-light">×</button>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  ${detailedData.map(d => {
+                      const retencion = Math.round((d.unique_visits / maxVisits) * 100);
+                      const fuga = 100 - retencion;
+                      const tiempoStr = d.avg_time_sec ? `${d.avg_time_sec}s pro.` : '0s pro.';
+                      
+                      return `
+                      <div class="bg-white/5 border border-white/10 p-5 rounded-lg hover:border-[#c5a059]/50 transition-colors hover:bg-white/10 relative overflow-hidden">
+                          <div class="absolute bottom-0 left-0 h-1 bg-[#c5a059]/20 w-full">
+                              <div class="h-full bg-[#c5a059]" style="width: ${retencion}%"></div>
+                          </div>
+                          <span class="text-[9px] uppercase tracking-widest text-zinc-400 block mb-2">Pantalla / Paso</span>
+                          <h5 class="text-[#fcfaf7] font-bold text-sm mb-4 truncate" title="${formatearPasoCheckout(d.step_name)}">${formatearPasoCheckout(d.step_name)}</h5>
+                          <div class="grid grid-cols-2 gap-4">
+                              <div>
+                                  <span class="text-[20px] font-serif text-[#c5a059] block leading-none mb-1">${d.unique_visits}</span>
+                                  <span class="text-[8px] uppercase tracking-wider text-zinc-500 block leading-tight">Usuarios<br>Únicos</span>
+                              </div>
+                              <div class="text-right">
+                                  <span class="text-[20px] font-serif text-white block leading-none mb-1">${tiempoStr}</span>
+                                  <span class="text-[8px] uppercase tracking-wider text-zinc-500 block leading-tight">Tiempo<br>Invertido</span>
+                              </div>
+                          </div>
+                          <div class="mt-4 pt-3 border-t border-white/10 flex justify-between items-center">
+                              <span class="text-[9px] font-bold uppercase tracking-widest ${fuga > 50 ? 'text-rose-400' : 'text-emerald-400'}">${fuga}% Fuga</span>
+                              <span class="text-[9px] uppercase tracking-widest text-zinc-500 border border-zinc-600 px-1.5 py-0.5 rounded">Retiene: ${retencion}%</span>
+                          </div>
+                      </div>
+                      `;
+                  }).join('')}
+              </div>
+          </div>
+          `;
+      }
+      container.innerHTML = html;
+  }
+
+  function renderPlegableGrid(containerId, items, renderFn, limit = 4) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      
+      const visible = items.slice(0, limit);
+      const hidden = items.slice(limit);
+      
+      let html = visible.map(renderFn).join('');
+      
+      if (hidden.length > 0) {
+          html += `
+          <div id="${containerId}-hidden" class="hidden-panel col-span-full w-full" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+              ${hidden.map(renderFn).join('')}
+          </div>
+          <div class="col-span-full flex justify-center mt-6">
+              <button onclick="document.getElementById('${containerId}-hidden').classList.remove('hidden-panel'); this.style.display='none'" class="px-8 py-3 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] text-xs font-bold uppercase tracking-widest rounded-full transition-all duration-300 shadow-md">Ver ${hidden.length} más</button>
+          </div>`;
+      }
+      
+      container.innerHTML = html;
+  }
+
   async function loadStats() {
     try {
       const res = await apicall(`/api/admin/stats?period=${currentPeriod}`);
@@ -476,10 +614,10 @@
 
       const totalSignups = (data.trend || []).reduce((acc, curr) => acc + curr.total, 0);
       document.getElementById('kpi-signups').innerText = totalSignups.toLocaleString('es-CL');
-      document.getElementById('kpi-referrals').innerText = (data.kpis?.referrals || 0).toLocaleString('es-CL');
-      document.getElementById('kpi-points').innerText = (data.kpis?.pointsIssued || 0).toLocaleString('es-CL') + ' pts';
-      document.getElementById('kpi-surveys').innerText = (data.kpis?.surveysCompleted || 0).toLocaleString('es-CL');
-      document.getElementById('kpi-google-clicks').innerText = (data.kpis?.googleReviewsClicked || 0).toLocaleString('es-CL');
+      document.getElementById('kpi-referrals').innerText = (data.referrals || 0).toLocaleString('es-CL');
+      document.getElementById('kpi-points').innerText = (data.pointsIssued || 0).toLocaleString('es-CL') + ' pts';
+      document.getElementById('kpi-surveys').innerText = (data.surveysCompleted || 0).toLocaleString('es-CL');
+      document.getElementById('kpi-google-clicks').innerText = (data.googleReviewsClicked || 0).toLocaleString('es-CL');
 
       if (chartTrend) chartTrend.destroy();
       const ctxTrend = document.getElementById('mainTrendChart').getContext('2d');
@@ -551,28 +689,8 @@
         }
       });
     } catch(e) {
-        console.error(e);
+        console.error("Error al procesar stats:", e);
     }
-  }
-
-  function renderPlegableGrid(containerId, items, renderFn, limit = 4) {
-      const container = document.getElementById(containerId);
-      const visible = items.slice(0, limit);
-      const hidden = items.slice(limit);
-      
-      let html = visible.map(renderFn).join('');
-      
-      if (hidden.length > 0) {
-          html += `
-          <div id="${containerId}-hidden" class="hidden-panel col-span-full w-full" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
-              ${hidden.map(renderFn).join('')}
-          </div>
-          <div class="col-span-full flex justify-center mt-6">
-              <button onclick="document.getElementById('${containerId}-hidden').classList.remove('hidden-panel'); this.style.display='none'" class="px-8 py-3 border border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059] hover:text-[#0a1f1c] text-xs font-bold uppercase tracking-widest rounded-full transition-all duration-300 shadow-md">Ver ${hidden.length} más</button>
-          </div>`;
-      }
-      
-      container.innerHTML = html;
   }
 
   async function loadAnalytics() {
@@ -589,11 +707,6 @@
       // 1. Matriz de Productos
       if (document.getElementById('products-grid')) {
         renderPlegableGrid('products-grid', data.products || [], p => {
-            const topUpsells = (p.clicks || []).filter(c => c.event_name === 'upsell_added' || c.event_name === 'add_to_cart').sort((a, b) => b.count - a.count).slice(0, 3);
-            let uHtml = '<span class="opacity-30 text-xs">Sin adicionales asociados</span>';
-            if (topUpsells.length > 0) {
-                uHtml = topUpsells.map(u => `<div class="flex justify-between border-b border-[#c5a059]/10 pb-2 mb-2"><span class="opacity-90">${u.target}</span><span class="text-[#c5a059] font-bold">${u.count}</span></div>`).join('');
-            }
             return `
             <div class="card p-6 border border-[#c5a059]/30 bg-gradient-to-b from-[#c5a059]/10 to-transparent hover:border-[#c5a059]/60 transition-all duration-300">
                 <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
@@ -605,7 +718,7 @@
                     <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Agregados</span><strong class="text-white text-lg">${p.adds} <span class="text-[10px] font-normal opacity-50 ml-1">al carro</span></strong></div>
                     <div class="col-span-2 bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Retención Promedio</span><strong class="text-white">${p.avg_time} segundos de lectura</strong></div>
                 </div>
-                <div class="text-xs space-y-2 mt-4"><span class="text-[#c5a059] block mb-3 font-bold uppercase tracking-widest text-[10px]">Adicionales / Clics vinculados:</span>${uHtml}</div>
+                <div class="text-xs space-y-2 mt-4"><span class="text-[#c5a059] block mb-3 font-bold uppercase tracking-widest text-[10px]">Adicionales / Clics vinculados:</span>${renderInteracciones(p.clicks)}</div>
             </div>`;
         });
       }
@@ -613,11 +726,6 @@
       // 2. Rendimiento Categorías
       if (document.getElementById('categories-grid')) {
         renderPlegableGrid('categories-grid', data.categories || [], c => {
-            const topClicks = (c.clicks || []).sort((a, b) => b.count - a.count).slice(0, 4);
-            let cHtml = '<span class="opacity-30 text-xs">Sin interacción interna</span>';
-            if (topClicks.length > 0) {
-                cHtml = topClicks.map(u => `<div class="flex justify-between border-b border-emerald-500/10 pb-2 mb-2"><span class="opacity-90">${u.target}</span><span class="text-emerald-400 font-bold">${u.count}</span></div>`).join('');
-            }
             return `
             <div class="card p-6 border border-emerald-900/50 bg-gradient-to-b from-emerald-900/20 to-transparent hover:border-emerald-500/50 transition-all duration-300">
                 <h4 class="font-bold text-emerald-400 uppercase text-sm border-b border-white/10 pb-4 mb-4 capitalize">${c.url.replace('/', '').replace('.html', '').replace(/-/g, ' ')}</h4>
@@ -625,7 +733,7 @@
                     <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Visitas</span><strong class="text-white text-lg">${c.views}</strong></div>
                     <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Tiempo Prom.</span><strong class="text-white text-lg">${c.avg_time}s</strong></div>
                 </div>
-                <div class="text-xs space-y-2 mt-4"><span class="text-emerald-400 block mb-3 font-bold uppercase tracking-widest text-[10px]">Interacción Interna:</span>${cHtml}</div>
+                <div class="text-xs space-y-2 mt-4"><span class="text-emerald-400 block mb-3 font-bold uppercase tracking-widest text-[10px]">Interacción Interna:</span>${renderInteracciones(c.clicks)}</div>
             </div>`;
         });
       }
@@ -646,15 +754,16 @@
         if (data.global_upsells && data.global_upsells.length > 0) {
             uList.innerHTML = data.global_upsells.map(u => {
                 const conv = u.agregados > 0 ? Math.round((u.compras / u.agregados) * 100) : 0;
+                const ingresos = u.ingresos_potenciales ? `$${parseInt(u.ingresos_potenciales).toLocaleString('es-CL')}` : 'Por calcular';
                 return `
-                <div class="border-b border-white/5 pb-4 mb-4">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm text-white font-bold">${u.name}</span>
-                        <span class="text-[#c5a059] font-bold text-xs bg-[#c5a059]/10 px-2 py-1 rounded">${u.agregados} Agregados</span>
+                <div class="border-b border-white/5 pb-4 mb-4 last:border-0 last:mb-0 last:pb-0">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-white font-bold text-[13px] w-2/3 leading-tight">${u.name}</span>
+                        <span class="text-[#c5a059] text-[10px] font-bold bg-[#c5a059]/10 px-2 py-1 rounded">${u.agregados} Agregados</span>
                     </div>
                     <div class="flex justify-between items-center text-xs opacity-70 mb-2">
                         <span>Llegaron a Pago: ${u.intentos_pago}</span>
-                        <span>Comprados: <strong class="${u.compras > 0 ? 'text-emerald-400' : ''}">${u.compras}</strong> (${conv}%)</span>
+                        <span>Comprados: <strong class="${u.compras > 0 ? 'text-emerald-400' : ''}">${u.compras}</strong> <span class="text-emerald-400 font-bold ml-1">(${ingresos})</span></span>
                     </div>
                     <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
                         <div class="bg-gradient-to-r from-[#c5a059]/50 to-[#c5a059] h-full" style="width: ${conv}%"></div>
@@ -693,31 +802,8 @@
           }
       }
 
-      // 6. Gráfico de Embudo (Funnel)
-      const funnelCanvas = document.getElementById('funnelChart');
-      if (funnelCanvas && data.funnel && data.funnel.length > 0) {
-          if (chartFunnel) chartFunnel.destroy();
-          const ctxF = funnelCanvas.getContext('2d');
-          chartFunnel = new Chart(ctxF, {
-            type: 'bar',
-            data: { 
-                labels: data.funnel.map(f => f.step), 
-                datasets: [{ 
-                    data: data.funnel.map(f => f.count), 
-                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#f97316', '#ef4444'], 
-                    borderRadius: 6 
-                }] 
-            },
-            options: { 
-                indexAxis: 'y', responsive: true, maintainAspectRatio: false, 
-                plugins: { legend: { display: false }, tooltip: { enabled: true } }, 
-                scales: { 
-                    x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } }, 
-                    y: { grid: { display: false }, ticks: { color: '#ccc', font: { size: 11, weight: 'bold' } } } 
-                } 
-            } 
-          });
-      }
+      // 6. Embudo Interactivo HTML
+      renderEmbudoInteractivo(data.funnel || [], data.detailed_funnel || []);
 
     } catch(e) { 
         console.error("Error al procesar analítica:", e); 
@@ -861,154 +947,6 @@
   }
 
   initApp();
-</script>
-
-  
-  <script>
-// Función para renderizar los clics e interacciones internas de manera bonita
-function renderInteracciones(clicks) {
-    if (!clicks || clicks.length === 0) return '<span class="text-zinc-600 text-[10px]">Sin interacción interna asociada</span>';
-    
-    // Agrupamos los clics por objetivo
-    const agrupados = clicks.reduce((acc, c) => {
-        acc[c.target] = (acc[c.target] || 0) + c.count;
-        return acc;
-    }, {});
-
-    const topClicks = Object.entries(agrupados).sort((a, b) => b[1] - a[1]).slice(0, 3); // Mostrar Top 3
-
-    return topClicks.map(([target, count]) => `
-        <div class="flex justify-between items-center bg-black/20 px-2 py-1.5 rounded mb-1 border border-white/5">
-            <span class="text-[9px] uppercase tracking-wider text-zinc-400 truncate w-32" title="${target}">${target}</span>
-            <span class="text-[9px] font-bold text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded">${count} clics</span>
-        </div>
-    `).join('');
-}
-
-// Función para mapear nombres técnicos a nombres reales de las pantallas
-function formatearPasoCheckout(stepName) {
-    const nombres = {
-        'step-1': '1. Datos del Emisor',
-        'step-buyer-email': '2. Correo del Comprador',
-        'step-2': '3. Datos del Receptor',
-        'step-palette': '4. Tono / Paleta Floral',
-        'modalidad_logistica': '5. Tipo de Logística',
-        'seleccion_zona': '6. Selección de Zona',
-        'step-zona': '6. Selección de Zona',
-        'step-direccion': '7. Dirección Exacta',
-        'step-fecha': '8. Día de Entrega',
-        'step-time': '9. Horario / Express',
-        'step-4': '10. Mensaje / Tarjeta',
-        'step-5': '11. Teléfono Destino',
-        'step-6': '12. Cierre y Pasarela',
-        'payment_initiated': 'Intento de Pago (MercadoPago/PayPal)',
-        'purchase': 'Compra Finalizada'
-    };
-    return nombres[stepName] || stepName;
-}
-
-// Nueva función maestra para dibujar el Embudo y su Desplegable
-function renderEmbudoInteractivo(funnelData, detailedData) {
-    const container = document.getElementById('funnel-container'); // Asegúrate que tu div de barras tenga este ID
-    if(!container) return;
-
-    // 1. Barras Principales (Se mantienen igual de limpias)
-    let html = funnelData.map((item, index) => {
-        const max = funnelData[0].count || 1;
-        const pct = Math.round((item.count / max) * 100);
-        const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-orange-500', 'bg-rose-500'];
-        
-        return `
-        <div class="mb-6 cursor-pointer group" onclick="document.getElementById('funnel-detalles-panel').classList.toggle('hidden')">
-            <div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">
-                <span>${item.step}</span>
-                <span class="group-hover:text-[#c5a059] transition-colors">${item.count} (${pct}%)</span>
-            </div>
-            <div class="w-full bg-white/5 rounded-full h-8 overflow-hidden flex items-center relative border border-transparent group-hover:border-[#c5a059]/50 transition-colors shadow-inner">
-                <div class="${colors[index % colors.length]} h-full transition-all duration-1000" style="width: ${pct}%"></div>
-                <span class="absolute right-4 text-[9px] font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity tracking-widest uppercase shadow-md">Ver Desglose 🔍</span>
-            </div>
-        </div>`;
-    }).join('');
-
-    // 2. El Recuadro Desplegable (Oculto por defecto)
-    if (detailedData && detailedData.length > 0) {
-        // Calculamos abandono estimado
-        const maxVisits = detailedData[0].unique_visits || 1;
-
-        html += `
-        <div id="funnel-detalles-panel" class="hidden mt-8 bg-[#0a1f1c] border border-[#c5a059]/30 rounded-xl p-6 shadow-2xl transition-all duration-500 relative overflow-hidden">
-            <!-- Brillo de fondo -->
-            <div class="absolute top-0 right-0 w-64 h-64 bg-[#c5a059]/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
-            
-            <div class="flex justify-between items-center mb-6 border-b border-[#c5a059]/20 pb-4">
-                <div>
-                    <h4 class="text-[#c5a059] font-bold text-[12px] uppercase tracking-[0.2em] mb-1">Desglose Analítico de Pantallas</h4>
-                    <span class="text-zinc-500 text-[9px] uppercase tracking-widest block">Tráfico, interacción y fuga exacta por formulario</span>
-                </div>
-                <button onclick="document.getElementById('funnel-detalles-panel').classList.add('hidden')" class="text-zinc-500 hover:text-[#c5a059] text-2xl font-light">×</button>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                ${detailedData.map(d => {
-                    const retencion = Math.round((d.unique_visits / maxVisits) * 100);
-                    const fuga = 100 - retencion;
-                    
-                    return `
-                    <div class="bg-white/5 border border-white/10 p-5 rounded-lg hover:border-[#c5a059]/50 transition-colors hover:bg-white/10 relative overflow-hidden">
-                        
-                        <!-- Barra de retención miniatura de fondo -->
-                        <div class="absolute bottom-0 left-0 h-1 bg-[#c5a059]/20 w-full">
-                            <div class="h-full bg-[#c5a059]" style="width: ${retencion}%"></div>
-                        </div>
-
-                        <span class="text-[9px] uppercase tracking-widest text-zinc-400 block mb-2">Pantalla</span>
-                        <h5 class="text-[#fcfaf7] font-bold text-sm mb-4 truncate" title="${formatearPasoCheckout(d.step_name)}">${formatearPasoCheckout(d.step_name)}</h5>
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <span class="text-[20px] font-serif text-[#c5a059] block leading-none mb-1">${d.unique_visits}</span>
-                                <span class="text-[8px] uppercase tracking-wider text-zinc-500 block leading-tight">Usuarios<br>Únicos</span>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-[20px] font-serif text-white block leading-none mb-1">${d.total_actions}</span>
-                                <span class="text-[8px] uppercase tracking-wider text-zinc-500 block leading-tight">Total de<br>Acciones</span>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-4 pt-3 border-t border-white/10 flex justify-between items-center">
-                            <span class="text-[9px] font-bold uppercase tracking-widest ${fuga > 50 ? 'text-rose-400' : 'text-emerald-400'}">${fuga}% Fuga</span>
-                            <span class="text-[9px] uppercase tracking-widest text-zinc-500 border border-zinc-600 px-1.5 py-0.5 rounded">Retiene: ${retencion}%</span>
-                        </div>
-                    </div>
-                    `;
-                }).join('')}
-            </div>
-        </div>
-        `;
-    }
-
-    container.innerHTML = html;
-}
-
-// ==========================================
-// EJEMPLO DE CÓMO LLAMAR ESTO EN TU FETCH DE ADMIN
-// (Solo debes asegurarte de pasar las variables al dibujar tus tarjetas)
-// ==========================================
-/*
-  fetch('/api/admin/analytics', { headers: { 'X-Internal-Secret': 'TU_SECRETO' } })
-    .then(r => r.json())
-    .then(data => {
-        // Dibujar el embudo con desglose
-        renderEmbudoInteractivo(data.funnel, data.detailed_funnel);
-
-        // Para tus tarjetas de productos, donde antes decías "0 segundos", ahora usas:
-        // \`${producto.avg_time} segundos de lectura\`
-
-        // Para los clics vinculados de la tarjeta, usas la nueva función:
-        // renderInteracciones(producto.clicks)
-    });
-*/
 </script>
 </body>
 </html>
