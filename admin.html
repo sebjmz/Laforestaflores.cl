@@ -459,18 +459,18 @@
       const res = await apicall(`/api/admin/analytics?product=${encodeURIComponent(selectedProd)}&category=${encodeURIComponent(selectedCat)}`);
       const data = await res.json();
       
-      // Poblar Selector de Productos (Ordenado por vistas DESC, luego adds DESC)
+      // Poblar Selector de Productos ordenados con % de conversión
       const prodSelect = document.getElementById('product-selector');
       const currentProdVal = prodSelect.value;
       prodSelect.innerHTML = '<option value="">Todos los productos (Global)</option>' + 
-        (data.products || []).map(p => `<option value="${p.name}">${p.name} — (Vistas: ${p.views} | Agregados: ${p.adds})</option>`).join('');
+        (data.products || []).map(p => `<option value="${p.name}">${p.name} — [Visitas: ${p.views} | Agregados: ${p.adds} | Conv: ${p.conversion}%]</option>`).join('');
       prodSelect.value = currentProdVal;
 
-      // Poblar Selector de Categorías / Páginas (Ordenado por tráfico DESC)
+      // Poblar Selector de Categorías ordenadas por tráfico
       const catSelect = document.getElementById('category-selector');
       const currentCatVal = catSelect.value;
       catSelect.innerHTML = '<option value="">Todas las categorías (Global)</option>' + 
-        (data.categories || []).map(c => `<option value="${c.category}">${c.category} — (Vistas: ${c.views})</option>`).join('');
+        (data.categories || []).map(c => `<option value="${c.category}">${c.category} — [Visitas: ${c.views}]</option>`).join('');
       catSelect.value = currentCatVal;
 
       // Panel de Rayos X Individual
@@ -481,7 +481,7 @@
         const prodContent = document.getElementById('product-deep-content');
         if (selectedProd && data.product_deep_dive) {
           document.getElementById('deep-dive-prod-title').innerText = `Análisis de Producto: ${selectedProd}`;
-          const upsellsHtml = (data.product_deep_dive.upsells || []).map(u => `<div class="flex justify-between border-b border-white/5 pb-1"><span>${u.name}</span><span class="text-[#c5a059] font-bold">${u.count} ventas</span></div>`).join('') || '<p class="opacity-40">Sin upsells registrados para este ítem.</p>';
+          const upsellsHtml = (data.product_deep_dive.upsells || []).map(u => `<div class="flex justify-between border-b border-white/5 pb-1"><span>${u.name || 'Adicional'}</span><span class="text-[#c5a059] font-bold">${u.count} ventas</span></div>`).join('') || '<p class="opacity-40">Sin upsells registrados para este ítem.</p>';
           const abandonedHtml = (data.product_deep_dive.abandoned_steps || []).map(s => `<div class="flex justify-between border-b border-white/5 pb-1 text-red-400"><span>Paso: ${s.step}</span><span class="font-bold">$${parseInt(s.lost_money||0).toLocaleString('es-CL')} (${s.attempts} abandonos)</span></div>`).join('') || '<p class="opacity-40">Sin fugas de pago registradas.</p>';
           
           prodContent.innerHTML = `
@@ -494,12 +494,12 @@
 
         const catContent = document.getElementById('category-deep-content');
         if (selectedCat && data.category_deep_dive) {
-          document.getElementById('deep-dive-cat-title').innerText = `Comportamiento en: ${selectedCat}`;
-          const interHtml = (data.category_deep_dive.interactions || []).map(i => `<div class="flex justify-between border-b border-white/5 pb-1"><span>Acción: ${i.event_name}</span><span class="text-emerald-400 font-bold">${i.count} veces</span></div>`).join('') || '<p class="opacity-40">Sin interacciones registradas en esta sección.</p>';
+          document.getElementById('deep-dive-cat-title').innerText = `Comportamiento en Categoría: ${selectedCat}`;
+          const interHtml = (data.category_deep_dive.interactions || []).map(i => `<div class="flex justify-between border-b border-white/5 pb-1"><span>${i.event_name} ${i.target ? '('+i.target+')' : ''}</span><span class="text-emerald-400 font-bold">${i.count} clics</span></div>`).join('') || '<p class="opacity-40">Sin interacciones registradas en esta sección.</p>';
           
           catContent.innerHTML = `
-            <div><p class="font-bold text-white mb-2">🔍 Elementos y botones más presionados en esta sección:</p>${interHtml}</div>
-            <p class="text-[10px] opacity-50 mt-4">Muestra el flujo de atención del usuario al navegar por esta categoría o página.</p>
+            <div><p class="font-bold text-white mb-2">🔍 Qué se abre o clica más estando en esta categoría:</p>${interHtml}</div>
+            <p class="text-[10px] opacity-50 mt-4">Muestra el producto o elemento con mayor atención dentro de esta sección.</p>
           `;
         } else {
           catContent.innerHTML = `<p class="opacity-40 italic">Selecciona una categoría arriba para ver su desglose individual.</p>`;
@@ -524,7 +524,7 @@
 
       const upsellList = document.getElementById('upsell-list');
       upsellList.innerHTML = (data.product_deep_dive?.upsells || []).length > 0 
-        ? data.product_deep_dive.upsells.map(u => `<div class="flex justify-between border-b border-white/10 pb-2 mb-2"><span class="text-sm opacity-80">${u.name}</span><span class="text-[#c5a059] font-bold">${u.count} uds</span></div>`).join('')
+        ? data.product_deep_dive.upsells.map(u => `<div class="flex justify-between border-b border-white/10 pb-2 mb-2"><span class="text-sm opacity-80">${u.name || 'Adicional'}</span><span class="text-[#c5a059] font-bold">${u.count} uds</span></div>`).join('')
         : '<p class="text-xs opacity-50 italic">Selecciona un producto específico para ver sus upsells asociados o acumula tráfico global.</p>';
 
       if(chartFunnel) chartFunnel.destroy();
@@ -556,7 +556,7 @@
 
     } catch(e) { console.error(e); }
   }
-
+  
   async function loadCustomers() {
     const q = document.getElementById('search-customer').value;
     const res = await apicall(`/api/admin/customers?q=${encodeURIComponent(q)}`);
