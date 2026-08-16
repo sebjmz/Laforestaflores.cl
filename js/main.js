@@ -2,6 +2,7 @@ window.stopAutoPlay = null;
 window.descuentoPuntos = 0;
 window.maxPuntosCanjeables = 0;
 window.tierDiscount = 0;
+window.puntosTotalesUsuario = 0;
 
 let mapasCargados = false;
 let pasarelasCargadas = false;
@@ -635,10 +636,11 @@ async function cargarVistaPreviaPuntosNativo() {
             const container = document.getElementById('points-redemption-container');
             if (container && data.points_balance > 0) {
                 container.classList.remove('hidden');
-                const ptsVisual = window.descuentoPuntos > 0 ? 0 : data.points_balance;
+                window.puntosTotalesUsuario = data.points_balance;
+                window.maxPuntosCanjeables = data.max_redeemable_clp;
+                const ptsVisual = window.puntosTotalesUsuario - window.descuentoPuntos;
                 let balEl = document.getElementById('checkout-points-balance');
                 if (balEl) balEl.innerText = `${ptsVisual.toLocaleString("es-CL")} pts`;
-                window.maxPuntosCanjeables = data.max_redeemable_clp;
 
                 let txt = `Puedes usar hasta ${data.max_redeemable_clp.toLocaleString("es-CL")} pts en esta compra (Cubre hasta el ${data.cap_pct}% del arreglo).`;
                 if (data.es_cumpleanos) txt = `¡Feliz Cumpleaños! Hoy puedes cubrir el 100% de tus flores con tus puntos. (Máx: ${data.max_redeemable_clp.toLocaleString("es-CL")})`;
@@ -677,7 +679,7 @@ window.aplicarPuntos = function() {
         window.descuentoPuntos = 0;
         let pDisc = document.getElementById('checkout-points-discount');
         if(pDisc) pDisc.classList.add('hidden');
-        if(balanceEl) balanceEl.innerText = `${(window.maxPuntosCanjeables || 0).toLocaleString("es-CL")} pts`; 
+        if(balanceEl) balanceEl.innerText = `${window.puntosTotalesUsuario.toLocaleString("es-CL")} pts`; 
         if(btn) {
             btn.innerText = "Usar mi saldo en esta compra";
             btn.classList.add('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
@@ -690,7 +692,7 @@ window.aplicarPuntos = function() {
         if(pDisc) pDisc.classList.remove('hidden');
         let pAmt = document.getElementById('checkout-points-amount');
         if(pAmt) pAmt.innerText = `-$${window.descuentoPuntos.toLocaleString("es-CL")}`;
-        if(balanceEl) balanceEl.innerText = `0 pts`;
+        if(balanceEl) balanceEl.innerText = `${(window.puntosTotalesUsuario - window.descuentoPuntos).toLocaleString("es-CL")} pts`;
         if(btn) {
             btn.innerText = "✓ Saldo Aplicado (Hacer clic para anular)";
             btn.classList.remove('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
