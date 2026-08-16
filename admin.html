@@ -2,188 +2,206 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Admin Dashboard | La Foresta</title>
+<link rel="icon" type="image/webp" href="/img/favicon.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  // Inicialización del Modo Oscuro
+  function initTheme() {
+    const savedTheme = localStorage.getItem('lf_admin_theme');
+    const hour = new Date().getHours();
+    const isNight = hour < 7 || hour >= 19;
+    if (savedTheme === 'dark' || (!savedTheme && isNight)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }
+  initTheme();
+  
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: { gold: { DEFAULT: '#c5a059' } }
+      }
+    }
+  }
+</script>
+
 <style>
-  body { 
-    background: #050f0e; 
-    color: #fcfaf7; 
-    font-family: 'Inter', sans-serif; 
-  }
-  .sidebar { 
-    background: #0a1f1c; 
-    border-right: 1px solid rgba(197,160,89,0.2); 
-  }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+  .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+  
   .card { 
+    background: #ffffff; 
+    border: 1px solid rgba(10,31,28,0.08); 
+    border-radius: 12px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    transition: all 0.4s ease;
+  }
+  .dark .card { 
     background: rgba(255,255,255,0.03); 
     border: 1px solid rgba(255,255,255,0.08); 
-    border-radius: 12px; 
+    box-shadow: none;
   }
-  .btn-gold { 
-    background: #c5a059; 
-    color: #0a1f1c; 
-    font-weight: bold; 
-    transition: 0.2s; 
-    cursor: pointer; 
-  }
-  .btn-gold:hover { 
-    background: #fff; 
-  }
+  
+  .btn-gold { background: #c5a059; color: #0a1f1c; font-weight: bold; transition: 0.3s; cursor: pointer; }
+  .btn-gold:hover { background: #ffffff; color: #0a1f1c; box-shadow: 0 4px 15px rgba(197,160,89,0.3); }
+  .dark .btn-gold:hover { background: #ffffff; }
+
   .input-dark { 
+    background: #ffffff; 
+    border: 1px solid rgba(10,31,28,0.15); 
+    color: #0a1f1c; 
+    border-radius: 8px; 
+    outline: none; 
+    transition: 0.3s;
+  }
+  .dark .input-dark { 
     background: rgba(0,0,0,0.3); 
     border: 1px solid rgba(255,255,255,0.1); 
     color: #fff; 
-    border-radius: 8px; 
-    outline: none; 
   }
-  .input-dark:focus { 
-    border-color: #c5a059; 
-  }
-  table { 
-    width: 100%; 
-    text-align: left; 
-    font-size: 13px; 
-  }
-  th { 
-    padding: 12px 16px; 
-    color: #c5a059; 
-    border-bottom: 1px solid rgba(255,255,255,0.1); 
-    font-weight: 600; 
-    text-transform: uppercase; 
-    font-size: 10px; 
-    letter-spacing: 0.1em; 
-  }
-  td { 
-    padding: 16px; 
-    border-bottom: 1px solid rgba(255,255,255,0.05); 
-  }
-  tr:hover td { 
-    background: rgba(255,255,255,0.02); 
-  }
-  .hidden-panel { 
-    display: none !important; 
-  }
-  .grid-cards { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
-    gap: 1.5rem; 
-  }
-  .hide-scroll::-webkit-scrollbar { 
-    display: none; 
-  }
+  .input-dark:focus { border-color: #c5a059; }
+  
+  table { width: 100%; text-align: left; font-size: 13px; }
+  th { padding: 12px 16px; color: #c5a059; border-bottom: 1px solid rgba(10,31,28,0.1); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em; white-space: nowrap; }
+  .dark th { border-bottom: 1px solid rgba(255,255,255,0.1); }
+  td { padding: 16px; border-bottom: 1px solid rgba(10,31,28,0.05); white-space: nowrap; }
+  .dark td { border-bottom: 1px solid rgba(255,255,255,0.05); }
+  tr:hover td { background: rgba(10,31,28,0.02); }
+  .dark tr:hover td { background: rgba(255,255,255,0.02); }
+  
+  .hidden-panel { display: none !important; }
+  .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .hide-scroll::-webkit-scrollbar { display: none; }
 </style>
 </head>
-<body class="flex h-screen overflow-hidden relative">
+<body class="bg-[#fcfaf7] dark:bg-[#050f0e] text-[#0a1f1c] dark:text-[#fcfaf7] transition-colors duration-500 h-screen flex flex-col md:flex-row overflow-hidden relative">
 
-  <!-- BOTÓN FLOTANTE GLOBAL DE ACTUALIZACIÓN 4D -->
-  <button onclick="loadAnalytics()" id="floating-refresh" class="hidden-panel fixed bottom-10 right-10 z-[100] py-4 px-8 bg-[#c5a059] text-[#0a1f1c] hover:bg-white rounded-full text-sm uppercase tracking-widest font-bold shadow-[0_10px_30px_rgba(197,160,89,0.5)] transition-all cursor-pointer flex items-center gap-2 hover:scale-105 active:scale-95">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-    </svg>
-    Refrescar Monitor
+  <!-- BOTÓN FLOTANTE MODO DÍA/NOCHE -->
+  <button onclick="toggleTheme()" aria-label="Cambiar Modo" class="fixed bottom-6 left-6 z-[100] p-4 rounded-full bg-[#ffffff] dark:bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] shadow-[0_4px_20px_rgba(0,0,0,0.15)] flex items-center justify-center hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">
+      <svg id="theme-icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+      <svg id="theme-icon-moon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
   </button>
 
-  <div id="auth-overlay" class="fixed inset-0 bg-[#050f0e] z-50 flex items-center justify-center">
-    <div class="card p-8 w-96 text-center shadow-2xl">
+  <!-- BOTÓN FLOTANTE GLOBAL DE ACTUALIZACIÓN 4D -->
+  <button onclick="loadAnalytics()" id="floating-refresh" class="hidden-panel fixed bottom-6 right-6 z-[100] py-3 md:py-4 px-6 md:px-8 bg-[#c5a059] text-[#0a1f1c] hover:bg-white rounded-full text-xs md:text-sm uppercase tracking-widest font-bold shadow-[0_10px_30px_rgba(197,160,89,0.3)] transition-all cursor-pointer flex items-center gap-2 hover:scale-105 active:scale-95">
+    <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+    </svg>
+    <span class="hidden md:inline">Refrescar Monitor</span>
+  </button>
+
+  <div id="auth-overlay" class="fixed inset-0 bg-[#fcfaf7] dark:bg-[#050f0e] z-[200] flex items-center justify-center">
+    <div class="card p-8 w-[90%] md:w-96 text-center shadow-2xl">
       <h2 class="text-xl font-bold text-[#c5a059] mb-6">Credenciales de Acceso</h2>
-      <input type="password" id="secret-key" class="input-dark w-full p-3 mb-4 text-center" placeholder="INTERNAL_SECRET">
-      <button onclick="login()" class="btn-gold w-full p-3 rounded-lg uppercase tracking-widest text-xs">Acceder</button>
+      <input type="password" id="secret-key" class="input-dark w-full p-4 mb-6 text-center tracking-widest font-bold" placeholder="INTERNAL_SECRET">
+      <button onclick="login()" class="btn-gold w-full p-4 rounded-lg uppercase tracking-widest text-xs shadow-md">Acceder al Panel</button>
     </div>
   </div>
 
-  <aside class="sidebar w-64 h-full flex flex-col hidden" id="sidebar">
-    <div class="p-6 border-b border-white/10">
-      <h1 class="text-xl font-serif italic text-[#c5a059]">La Foresta</h1>
-      <p class="text-[9px] uppercase tracking-widest opacity-50 mt-1">Control Operations</p>
+  <aside class="w-full md:w-64 flex-shrink-0 flex flex-col hidden border-b md:border-b-0 md:border-r border-[#0a1f1c]/10 dark:border-white/10 bg-[#fcfaf7] dark:bg-[#0a1f1c] z-20" id="sidebar">
+    <div class="p-4 md:p-6 border-b border-[#0a1f1c]/10 dark:border-white/10 flex justify-between items-center md:block">
+      <div>
+        <h1 class="text-lg md:text-xl font-serif italic text-[#c5a059]">La Foresta</h1>
+        <p class="text-[9px] uppercase tracking-widest opacity-50 mt-1">Control Operations</p>
+      </div>
+      <button onclick="logout()" class="md:hidden text-xs text-[#0a1f1c]/50 dark:text-white/40 hover:text-red-500 uppercase tracking-widest font-bold">Salir</button>
     </div>
-    <nav class="flex-1 p-4 space-y-2">
-      <button onclick="nav('dashboard')" id="nav-dashboard" class="w-full text-left p-3 rounded-lg bg-white/5 text-[#c5a059] font-medium text-sm transition">📊 Dashboard</button>
-      <button onclick="nav('customers')" id="nav-customers" class="w-full text-left p-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white font-medium text-sm transition">👥 Clientes & Billetera</button>
-      <button onclick="nav('surveys')" id="nav-surveys" class="w-full text-left p-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white font-medium text-sm transition">⭐ Calidad & Compens.</button>
-      <button onclick="nav('analytics')" id="nav-analytics" class="w-full text-left p-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white font-medium text-sm transition">👁️ Monitor 4D</button>
-      <button onclick="nav('ops')" id="nav-ops" class="w-full text-left p-3 rounded-lg hover:bg-white/5 text-white/70 hover:text-white font-medium text-sm transition">🚚 Logística</button>
+    <nav class="flex-1 p-3 md:p-4 flex flex-row md:flex-col gap-2 overflow-x-auto hide-scroll">
+      <button onclick="nav('dashboard')" id="nav-dashboard" class="whitespace-nowrap flex-shrink-0 md:w-full text-left p-3 rounded-lg bg-[#0a1f1c]/5 dark:bg-white/5 text-[#c5a059] font-bold text-sm transition">📊 Dashboard</button>
+      <button onclick="nav('customers')" id="nav-customers" class="whitespace-nowrap flex-shrink-0 md:w-full text-left p-3 rounded-lg hover:bg-[#0a1f1c]/5 dark:hover:bg-white/5 text-[#0a1f1c]/70 dark:text-white/70 hover:text-[#0a1f1c] dark:hover:text-white font-medium text-sm transition">👥 Clientes</button>
+      <button onclick="nav('surveys')" id="nav-surveys" class="whitespace-nowrap flex-shrink-0 md:w-full text-left p-3 rounded-lg hover:bg-[#0a1f1c]/5 dark:hover:bg-white/5 text-[#0a1f1c]/70 dark:text-white/70 hover:text-[#0a1f1c] dark:hover:text-white font-medium text-sm transition">⭐ Calidad</button>
+      <button onclick="nav('analytics')" id="nav-analytics" class="whitespace-nowrap flex-shrink-0 md:w-full text-left p-3 rounded-lg hover:bg-[#0a1f1c]/5 dark:hover:bg-white/5 text-[#0a1f1c]/70 dark:text-white/70 hover:text-[#0a1f1c] dark:hover:text-white font-medium text-sm transition">👁️ Monitor 4D</button>
+      <button onclick="nav('ops')" id="nav-ops" class="whitespace-nowrap flex-shrink-0 md:w-full text-left p-3 rounded-lg hover:bg-[#0a1f1c]/5 dark:hover:bg-white/5 text-[#0a1f1c]/70 dark:text-white/70 hover:text-[#0a1f1c] dark:hover:text-white font-medium text-sm transition">🚚 Logística</button>
     </nav>
-    <div class="p-4 border-t border-white/10">
-      <button onclick="logout()" class="w-full text-xs text-white/40 hover:text-red-400 text-left p-2 cursor-pointer">Cerrar Sesión</button>
+    <div class="p-4 border-t border-[#0a1f1c]/10 dark:border-white/10 hidden md:block">
+      <button onclick="logout()" class="w-full text-xs text-[#0a1f1c]/40 dark:text-white/40 hover:text-red-500 dark:hover:text-red-400 text-left p-2 transition uppercase tracking-widest font-bold">Cerrar Sesión</button>
     </div>
   </aside>
 
-  <main class="flex-1 h-full overflow-y-auto bg-[#050f0e] p-8 hidden" id="main-content">
+  <main class="flex-1 w-full h-full overflow-y-auto p-4 md:p-8 pb-28 md:pb-8 hidden" id="main-content">
     
     <!-- VISTA DASHBOARD -->
     <div id="view-dashboard" class="hidden-panel space-y-6">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-2">
+      <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-2">
         <div>
-          <h2 class="text-2xl font-bold text-white">Rendimiento y Eficiencia del Club</h2>
-          <p class="text-xs opacity-50 mt-1">Métricas clave de adopción, interacciones y satisfacción.</p>
+          <h2 class="text-2xl font-bold text-[#0a1f1c] dark:text-white">Rendimiento y Eficiencia del Club</h2>
+          <p class="text-xs opacity-60 mt-1">Métricas clave de adopción, interacciones y satisfacción.</p>
         </div>
-        <div class="flex items-center gap-1 bg-black/40 p-1.5 rounded-xl border border-white/10 overflow-x-auto max-w-full">
-          <button onclick="changePeriod('7')" id="p-7" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white cursor-pointer">Última semana</button>
-          <button onclick="changePeriod('30')" id="p-30" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e] cursor-pointer">Último mes</button>
-          <button onclick="changePeriod('90')" id="p-90" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white cursor-pointer">3 meses</button>
-          <button onclick="changePeriod('180')" id="p-180" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white cursor-pointer">6 meses</button>
-          <button onclick="changePeriod('365')" id="p-365" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white cursor-pointer">12 meses</button>
+        <div class="flex items-center gap-1 bg-[#0a1f1c]/5 dark:bg-black/40 p-1.5 rounded-xl border border-[#0a1f1c]/10 dark:border-white/10 overflow-x-auto max-w-full hide-scroll w-full xl:w-auto">
+          <button onclick="changePeriod('7')" id="p-7" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-[#0a1f1c]/60 dark:text-white/60 hover:text-[#0a1f1c] dark:hover:text-white whitespace-nowrap">Última semana</button>
+          <button onclick="changePeriod('30')" id="p-30" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e] whitespace-nowrap shadow-sm">Último mes</button>
+          <button onclick="changePeriod('90')" id="p-90" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-[#0a1f1c]/60 dark:text-white/60 hover:text-[#0a1f1c] dark:hover:text-white whitespace-nowrap">3 meses</button>
+          <button onclick="changePeriod('180')" id="p-180" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-[#0a1f1c]/60 dark:text-white/60 hover:text-[#0a1f1c] dark:hover:text-white whitespace-nowrap">6 meses</button>
+          <button onclick="changePeriod('365')" id="p-365" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-[#0a1f1c]/60 dark:text-white/60 hover:text-[#0a1f1c] dark:hover:text-white whitespace-nowrap">12 meses</button>
         </div>
       </div>
       
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <div class="card p-5">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Nuevos Registros</p>
-          <p class="text-2xl font-serif" id="kpi-signups">0</p>
+          <p class="text-[9px] md:text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Nuevos Registros</p>
+          <p class="text-2xl font-serif text-[#0a1f1c] dark:text-white" id="kpi-signups">0</p>
         </div>
         <div class="card p-5">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Invitaciones (Referidos)</p>
-          <p class="text-2xl font-serif text-blue-400" id="kpi-referrals">0</p>
+          <p class="text-[9px] md:text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Invitaciones</p>
+          <p class="text-2xl font-serif text-blue-500 dark:text-blue-400" id="kpi-referrals">0</p>
         </div>
         <div class="card p-5">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Puntos Emitidos</p>
+          <p class="text-[9px] md:text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Puntos Emitidos</p>
           <p class="text-2xl font-serif text-[#c5a059]" id="kpi-points">0 pts</p>
         </div>
         <div class="card p-5">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Encuestas Respondidas</p>
-          <p class="text-2xl font-serif text-emerald-400" id="kpi-surveys">0</p>
+          <p class="text-[9px] md:text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Encuestas</p>
+          <p class="text-2xl font-serif text-emerald-600 dark:text-emerald-400" id="kpi-surveys">0</p>
         </div>
         <div class="card p-5">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Clics Reseña Google</p>
+          <p class="text-[9px] md:text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Clics Reseña</p>
           <p class="text-2xl font-serif text-[#c5a059]" id="kpi-google-clicks">0</p>
         </div>
       </div>
 
       <div class="card p-6 flex flex-col h-80">
         <div class="flex justify-between items-center mb-4">
-          <p class="text-xs font-bold text-white uppercase tracking-widest">Evolución de Adquisición de Miembros</p>
-          <span class="text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded text-[#c5a059]" id="trend-label">Último mes</span>
+          <p class="text-xs font-bold text-[#0a1f1c] dark:text-white uppercase tracking-widest">Evolución de Adquisición</p>
+          <span class="text-[10px] bg-[#0a1f1c]/5 dark:bg-white/5 border border-[#0a1f1c]/10 dark:border-white/10 px-2.5 py-1 rounded text-[#c5a059] font-bold" id="trend-label">Último mes</span>
         </div>
         <div class="relative flex-1 w-full"><canvas id="mainTrendChart"></canvas></div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="card p-6">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Pasivo Circulante (Puntos)</p>
-          <p class="text-3xl font-serif" id="stat-points">0</p>
-          <p class="text-xs opacity-50 mt-2">Puntos pendientes de canje global</p>
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Pasivo Circulante</p>
+          <p class="text-3xl font-serif text-[#0a1f1c] dark:text-white" id="stat-points">0</p>
+          <p class="text-xs opacity-60 mt-2">Puntos pendientes de canje global</p>
         </div>
         <div class="card p-6">
-          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Ahorro Histórico Entregado</p>
-          <p class="text-3xl font-serif text-emerald-400" id="stat-savings">$0</p>
-          <p class="text-xs opacity-50 mt-2">Transferido a clientes</p>
+          <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Ahorro Entregado</p>
+          <p class="text-3xl font-serif text-emerald-600 dark:text-emerald-400" id="stat-savings">$0</p>
+          <p class="text-xs opacity-60 mt-2">Transferido a clientes</p>
         </div>
         <div class="card p-6">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">LTV Base Clientes</p>
-          <p class="text-3xl font-serif text-blue-400" id="stat-ltv">$0</p>
-          <p class="text-xs opacity-50 mt-2">Ventas registradas en CRM</p>
+          <p class="text-3xl font-serif text-blue-500 dark:text-blue-400" id="stat-ltv">$0</p>
+          <p class="text-xs opacity-60 mt-2">Ventas registradas en CRM</p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-80">
-        <div class="card p-6 flex flex-col">
-          <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest">Distribución de Niveles</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-auto md:h-80">
+        <div class="card p-6 flex flex-col h-80 md:h-full">
+          <p class="text-xs font-bold text-[#0a1f1c] dark:text-white mb-4 uppercase tracking-widest">Distribución de Niveles</p>
           <div class="relative flex-1 w-full"><canvas id="tierChart"></canvas></div>
         </div>
-        <div class="card p-6 flex flex-col">
-          <p class="text-xs font-bold text-white mb-4 uppercase tracking-widest">Distribución de Satisfacción</p>
+        <div class="card p-6 flex flex-col h-80 md:h-full">
+          <p class="text-xs font-bold text-[#0a1f1c] dark:text-white mb-4 uppercase tracking-widest">Distribución de Satisfacción</p>
           <div class="relative flex-1 w-full"><canvas id="ratingChart"></canvas></div>
         </div>
       </div>
@@ -191,20 +209,20 @@
 
     <!-- VISTA ANALYTICS 4D -->
     <div id="view-analytics" class="hidden-panel space-y-10">
-      <div class="flex justify-between items-end border-b border-white/10 pb-6">
+      <div class="flex justify-between items-end border-b border-[#0a1f1c]/10 dark:border-white/10 pb-6">
         <div>
-          <h2 class="text-3xl font-bold text-white mb-2">Monitor Analítico de Rendimiento (4D)</h2>
-          <p class="text-sm opacity-50">Distribución de catálogo maestro. Orden estricto por volumen y conversión.</p>
+          <h2 class="text-2xl md:text-3xl font-bold text-[#0a1f1c] dark:text-white mb-2">Monitor Analítico de Rendimiento (4D)</h2>
+          <p class="text-sm opacity-60">Distribución de catálogo maestro. Orden estricto por volumen y conversión.</p>
         </div>
       </div>
 
       <!-- TARJETA ESTELAR: INDEX -->
       <section>
-        <h3 class="text-sm font-bold text-yellow-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+        <h3 class="text-sm font-bold text-yellow-500 dark:text-yellow-400 uppercase tracking-widest mb-6 flex items-center gap-2">
             ⭐ Rendimiento Estelar (Index / Home)
         </h3>
         <div id="index-stats-container" class="w-full mb-8">
-            <div class="text-zinc-500 text-xs italic">Cargando métricas de la página principal...</div>
+            <div class="text-[#0a1f1c]/50 dark:text-zinc-500 text-xs italic">Cargando métricas de la página principal...</div>
         </div>
       </section>
 
@@ -213,42 +231,42 @@
         <div id="products-grid" class="grid-cards w-full"></div>
       </section>
 
-      <hr class="border-white/10">
+      <hr class="border-[#0a1f1c]/10 dark:border-white/10">
 
       <section>
-        <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-widest mb-6 flex items-center gap-2">📂 Rendimiento Vitrinas (Categorías)</h3>
+        <h3 class="text-sm font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest mb-6 flex items-center gap-2">📂 Rendimiento Vitrinas (Categorías)</h3>
         <div id="categories-grid" class="grid-cards w-full"></div>
       </section>
 
-      <hr class="border-white/10">
+      <hr class="border-[#0a1f1c]/10 dark:border-white/10">
 
       <section>
-        <h3 class="text-sm font-bold text-blue-400 uppercase tracking-widest mb-6 flex items-center gap-2">📄 Páginas de Utilidad (Terciarias)</h3>
+        <h3 class="text-sm font-bold text-blue-500 dark:text-blue-400 uppercase tracking-widest mb-6 flex items-center gap-2">📄 Páginas de Utilidad (Terciarias)</h3>
         <div id="tertiary-grid" class="grid-cards w-full"></div>
       </section>
 
-      <hr class="border-white/10">
+      <hr class="border-[#0a1f1c]/10 dark:border-white/10">
 
       <section class="grid grid-cols-1 xl:grid-cols-3 gap-8 pb-12">
-        <div class="card p-8 xl:col-span-2 flex flex-col">
-          <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-6 border-b border-white/10 pb-3">Embudo de Fuga de Checkout</h3>
+        <div class="card p-6 md:p-8 xl:col-span-2 flex flex-col">
+          <h3 class="text-sm font-bold text-red-500 dark:text-red-400 uppercase tracking-widest mb-6 border-b border-[#0a1f1c]/10 dark:border-white/10 pb-3">Embudo de Fuga de Checkout</h3>
           <div id="funnel-container" class="flex-1 w-full relative min-h-[350px]"></div>
         </div>
-        <div class="card p-8 border-[#c5a059]/30 flex flex-col">
+        <div class="card p-6 md:p-8 border-[#c5a059]/30 flex flex-col">
           <h3 class="text-sm font-bold text-[#c5a059] uppercase tracking-widest mb-6 border-b border-[#c5a059]/30 pb-3">Adopción Global Upsells</h3>
-          <div id="global-upsells-list" class="space-y-4 overflow-y-auto max-h-[350px] hide-scroll flex-1"></div>
+          <div id="global-upsells-list" class="space-y-4 overflow-y-auto max-h-[350px] hide-scroll flex-1 pr-2"></div>
         </div>
       </section>
 
-      <section class="pb-24">
-          <div class="card p-8 border-red-900/50 bg-red-900/10">
-            <h3 class="text-sm font-bold text-red-400 uppercase tracking-widest mb-6 border-b border-red-900/30 pb-3">Rescate de Carritos Abandonados con Correo</h3>
-            <p class="text-4xl font-serif text-white mb-6" id="abandoned-total">
+      <section class="pb-12 md:pb-24">
+          <div class="card p-6 md:p-8 border-red-500/30 dark:border-red-900/50 bg-red-50 dark:bg-red-900/10">
+            <h3 class="text-sm font-bold text-red-600 dark:text-red-400 uppercase tracking-widest mb-6 border-b border-red-500/20 dark:border-red-900/30 pb-3">Rescate de Carritos Abandonados con Correo</h3>
+            <p class="text-3xl md:text-4xl font-serif text-[#0a1f1c] dark:text-white mb-6" id="abandoned-total">
               $0 
-              <span class="text-sm font-sans opacity-50 block mt-2" id="abandoned-count">0 intentos fallidos</span>
+              <span class="text-sm font-sans opacity-60 block mt-2" id="abandoned-count">0 intentos fallidos</span>
             </p>
-            <div class="overflow-y-auto max-h-64 hide-scroll text-sm bg-black/20 p-4 rounded-lg">
-              <table class="w-full text-left">
+            <div class="overflow-x-auto overflow-y-auto max-h-64 hide-scroll text-sm bg-white/50 dark:bg-black/20 p-4 rounded-lg border border-[#0a1f1c]/5 dark:border-transparent">
+              <table class="w-full text-left min-w-[300px]">
                 <tbody id="abandoned-body"></tbody>
               </table>
             </div>
@@ -258,14 +276,14 @@
 
     <!-- VISTA CLIENTES -->
     <div id="view-customers" class="hidden-panel space-y-6">
-      <div class="flex justify-between items-end border-b border-white/10 pb-4">
-        <h2 class="text-2xl font-bold text-white">Billetera de Clientes</h2>
-        <div class="w-80">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4">
+        <h2 class="text-2xl font-bold text-[#0a1f1c] dark:text-white">Billetera de Clientes</h2>
+        <div class="w-full md:w-80">
           <input type="text" id="search-customer" class="input-dark w-full p-3 text-sm" placeholder="Buscar por email o nombre..." oninput="searchDebounce(loadCustomers)">
         </div>
       </div>
-      <div class="card overflow-x-auto p-4">
-        <table id="customers-table">
+      <div class="card overflow-x-auto p-0 md:p-4">
+        <table id="customers-table" class="min-w-[600px]">
           <thead>
             <tr>
               <th>Cliente</th>
@@ -282,11 +300,11 @@
 
     <!-- VISTA ENCUESTAS -->
     <div id="view-surveys" class="hidden-panel space-y-6">
-      <div class="flex justify-between items-end border-b border-white/10 pb-4">
-        <h2 class="text-2xl font-bold text-white">Auditoría de Calidad</h2>
+      <div class="flex justify-between items-end border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4">
+        <h2 class="text-2xl font-bold text-[#0a1f1c] dark:text-white">Auditoría de Calidad</h2>
       </div>
-      <div class="card overflow-x-auto p-4">
-        <table id="surveys-table">
+      <div class="card overflow-x-auto p-0 md:p-4">
+        <table id="surveys-table" class="min-w-[700px]">
           <thead>
             <tr>
               <th>Fecha</th>
@@ -303,25 +321,48 @@
 
     <!-- VISTA OPERACIONES -->
     <div id="view-ops" class="hidden-panel space-y-6">
-      <h2 class="text-2xl font-bold text-white border-b border-white/10 pb-4">Operaciones Logísticas</h2>
-      <div class="grid grid-cols-2 gap-8">
-        <div class="card p-8">
-          <h3 class="font-bold text-[#c5a059] mb-6 text-lg">Actualizar Tracking</h3>
-          <input type="text" id="track-order" class="input-dark w-full p-4 mb-4 text-sm" placeholder="ID del Pedido">
-          <select id="track-status" class="input-dark w-full p-4 mb-4 text-sm" style="background:#050f0e;">
-            <option value="transito">En Tránsito</option>
-            <option value="entregado">Entregado</option>
-          </select>
-          <input type="file" id="track-photo" accept="image/*" class="input-dark w-full p-3 mb-6 text-sm">
-          <button onclick="updateTracking()" class="btn-gold w-full p-4 rounded-lg text-sm font-bold uppercase tracking-widest">Notificar al Cliente</button>
-          <p id="track-msg" class="text-sm mt-4 text-center"></p>
+      <h2 class="text-2xl font-bold text-[#0a1f1c] dark:text-white border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4">Operaciones Logísticas</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <div class="card p-6 md:p-8 border-[#c5a059]/30 relative overflow-hidden">
+          <div class="absolute -top-10 -right-10 w-32 h-32 bg-[#c5a059]/10 rounded-full blur-2xl pointer-events-none"></div>
+          <h3 class="font-bold text-[#c5a059] mb-6 text-lg relative z-10">Actualizar Tracking</h3>
+          
+          <div class="relative z-10 space-y-4">
+            <div>
+              <label class="block text-[10px] md:text-xs uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/60 font-bold mb-2">Número de Pedido</label>
+              <input type="text" id="track-order" class="input-dark w-full p-4 text-sm font-bold tracking-widest" placeholder="Ej: 173083635149">
+            </div>
+            
+            <div>
+              <label class="block text-[10px] md:text-xs uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/60 font-bold mb-2">Estado del Envío</label>
+              <select id="track-status" class="input-dark w-full p-4 text-sm font-bold cursor-pointer">
+                <option value="transito">🚚 En Tránsito (En Camino)</option>
+                <option value="entregado">🌸 Entregado</option>
+              </select>
+            </div>
+            
+            <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/10 dark:border-white/5">
+                <label class="block text-[10px] md:text-xs uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/60 font-bold mb-3">Evidencia Fotográfica (Opcional)</label>
+                <input type="file" id="track-photo" accept="image/*" class="block w-full text-sm text-[#0a1f1c]/70 dark:text-white/70 file:mr-4 file:py-3 file:px-6 file:rounded-lg file:border-0 file:text-xs file:font-bold file:uppercase file:tracking-widest file:bg-[#c5a059] file:text-[#0a1f1c] hover:file:bg-white hover:file:cursor-pointer transition-all">
+                <span class="text-xs opacity-60 italic mt-2 block">Se comprimirá automáticamente.</span>
+                
+                <div id="preview-container" class="hidden mt-4 text-center">
+                  <img id="preview-img" class="h-32 w-auto mx-auto rounded-lg shadow-md object-cover border border-[#c5a059]/30">
+                </div>
+            </div>
+
+            <button id="btn-track-submit" onclick="updateTracking()" class="btn-gold w-full p-4 rounded-lg text-sm font-bold uppercase tracking-widest mt-2 shadow-md hover:scale-[1.02]">Notificar al Cliente</button>
+            <p id="track-msg" class="text-sm mt-4 text-center font-bold tracking-widest"></p>
+          </div>
         </div>
         
-        <div class="card p-8">
+        <div class="card p-6 md:p-8 h-fit">
           <h3 class="font-bold text-[#c5a059] mb-6 text-lg">Auditoría WhatsApp</h3>
-          <input type="text" id="wa-code" class="input-dark w-full p-4 mb-6 text-sm" placeholder="Código OTP (Ej: LF-1234)">
-          <button onclick="verifyWA()" class="btn-gold w-full p-4 rounded-lg text-sm font-bold uppercase tracking-widest">Enlazar Número</button>
-          <p id="wa-msg" class="text-sm mt-4 text-center"></p>
+          <label class="block text-[10px] md:text-xs uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/60 font-bold mb-2">Código OTP</label>
+          <input type="text" id="wa-code" class="input-dark w-full p-4 mb-6 text-sm font-bold tracking-widest" placeholder="Ej: LF-1234">
+          <button onclick="verifyWA()" class="btn-gold w-full p-4 rounded-lg text-sm font-bold uppercase tracking-widest shadow-md">Enlazar Número</button>
+          <p id="wa-msg" class="text-sm mt-4 text-center font-bold tracking-widest"></p>
         </div>
       </div>
     </div>
@@ -329,22 +370,22 @@
   </main>
 
   <!-- MODAL DE PUNTOS -->
-  <div id="points-modal" class="fixed inset-0 bg-[#050f0e]/90 backdrop-blur-sm z-[100] hidden-panel flex items-center justify-center">
-    <div class="card p-8 w-[450px]">
+  <div id="points-modal" class="fixed inset-0 bg-[#fcfaf7]/90 dark:bg-[#050f0e]/90 backdrop-blur-sm z-[200] hidden-panel flex items-center justify-center p-4">
+    <div class="card p-6 md:p-8 w-full max-w-[450px] shadow-2xl">
       <h3 class="text-xl font-bold text-[#c5a059] mb-2">Ajuste Manual de Puntos</h3>
-      <p id="modal-customer-name" class="text-sm opacity-70 mb-6"></p>
+      <p id="modal-customer-name" class="text-sm text-[#0a1f1c]/70 dark:text-white/70 mb-6"></p>
       
-      <label class="block text-xs uppercase tracking-widest font-bold opacity-50 mb-2">Cantidad (Usar signo - para restar)</label>
+      <label class="block text-xs uppercase tracking-widest font-bold text-[#0a1f1c]/60 dark:text-white/50 mb-2">Cantidad (Usar signo - para restar)</label>
       <input type="number" id="modal-points-val" class="input-dark w-full p-4 mb-6 text-xl text-center font-serif" placeholder="Ej: 5000">
       
-      <label class="block text-xs uppercase tracking-widest font-bold opacity-50 mb-2">Motivo Interno</label>
+      <label class="block text-xs uppercase tracking-widest font-bold text-[#0a1f1c]/60 dark:text-white/50 mb-2">Motivo Interno</label>
       <input type="text" id="modal-points-reason" class="input-dark w-full p-4 mb-8 text-sm" placeholder="Ej: Compensación atraso">
       
       <input type="hidden" id="modal-customer-id">
       
-      <div class="flex gap-4">
-        <button onclick="document.getElementById('points-modal').classList.add('hidden-panel')" class="flex-1 p-4 rounded-lg border border-white/20 text-xs font-bold uppercase hover:bg-white/5 cursor-pointer transition">Cancelar</button>
-        <button onclick="submitPoints()" class="flex-1 p-4 rounded-lg btn-gold text-xs font-bold uppercase">Ejecutar</button>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <button onclick="document.getElementById('points-modal').classList.add('hidden-panel')" class="flex-1 p-4 rounded-lg border border-[#0a1f1c]/20 dark:border-white/20 text-[#0a1f1c] dark:text-white text-xs font-bold uppercase hover:bg-[#0a1f1c]/5 dark:hover:bg-white/5 cursor-pointer transition">Cancelar</button>
+        <button onclick="submitPoints()" class="flex-1 p-4 rounded-lg btn-gold text-xs font-bold uppercase shadow-md">Ejecutar</button>
       </div>
     </div>
   </div>
@@ -354,6 +395,13 @@
   let chartTrend, chartTiers, chartRatings;
   let currentPeriod = '30';
   let timer;
+
+  function toggleTheme() {
+    const html = document.documentElement;
+    html.classList.toggle('dark');
+    localStorage.setItem('lf_admin_theme', html.classList.contains('dark') ? 'dark' : 'light');
+    if (chartTrend || chartTiers || chartRatings) loadStats(); // Re-render charts for colors
+  }
 
   function login() {
     const sec = document.getElementById('secret-key').value;
@@ -411,8 +459,8 @@
       document.getElementById(`view-${v}`).classList.add('hidden-panel');
       const btn = document.getElementById(`nav-${v}`);
       if (btn) {
-        btn.classList.remove('bg-white/5', 'text-[#c5a059]');
-        btn.classList.add('text-white/70');
+        btn.classList.remove('bg-[#0a1f1c]/5', 'dark:bg-white/5', 'text-[#c5a059]', 'font-bold');
+        btn.classList.add('text-[#0a1f1c]/70', 'dark:text-white/70');
       }
     });
     
@@ -420,8 +468,8 @@
     const activeBtn = document.getElementById(`nav-${view}`);
     
     if (activeBtn) {
-      activeBtn.classList.add('bg-white/5', 'text-[#c5a059]');
-      activeBtn.classList.remove('text-white/70');
+      activeBtn.classList.add('bg-[#0a1f1c]/5', 'dark:bg-white/5', 'text-[#c5a059]', 'font-bold');
+      activeBtn.classList.remove('text-[#0a1f1c]/70', 'dark:text-white/70');
     }
 
     const floatBtn = document.getElementById('floating-refresh');
@@ -450,9 +498,9 @@
       const btn = document.getElementById(`p-${days}`);
       if (btn) {
           if (days === p) {
-              btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e] cursor-pointer";
+              btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-[#c5a059] text-[#050f0e] whitespace-nowrap shadow-sm";
           } else {
-              btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-white/60 hover:text-white cursor-pointer";
+              btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-[#0a1f1c]/60 dark:text-white/60 hover:text-[#0a1f1c] dark:hover:text-white whitespace-nowrap";
           }
       }
     });
@@ -473,9 +521,8 @@
     loadStats();
   }
 
-  // Funciones Auxiliares Analíticas
   function renderInteracciones(clicks, limit = 3) {
-      if (!clicks || clicks.length === 0) return '<span class="text-zinc-600 text-[10px]">Sin interacción interna asociada</span>';
+      if (!clicks || clicks.length === 0) return `<span class="text-[#0a1f1c]/50 dark:text-zinc-600 text-[10px]">Sin interacción interna asociada</span>`;
       
       const agrupados = clicks.reduce((acc, c) => {
           acc[c.target] = (acc[c.target] || 0) + c.count;
@@ -485,8 +532,8 @@
       const topClicks = Object.entries(agrupados).sort((a, b) => b[1] - a[1]).slice(0, limit);
 
       return topClicks.map(([target, count]) => `
-          <div class="flex justify-between items-center bg-black/20 px-2 py-1.5 rounded mb-1 border border-white/5">
-              <span class="text-[9px] uppercase tracking-wider text-zinc-400 truncate w-32" title="${target}">${target}</span>
+          <div class="flex justify-between items-center bg-[#0a1f1c]/5 dark:bg-black/20 px-2 py-1.5 rounded mb-1 border border-[#0a1f1c]/5 dark:border-white/5">
+              <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/60 dark:text-zinc-400 truncate w-32" title="${target}">${target}</span>
               <span class="text-[9px] font-bold text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded">${count} clics</span>
           </div>
       `).join('');
@@ -516,7 +563,7 @@
       if (!container) return;
 
       if (!funnelData || funnelData.length === 0) {
-          container.innerHTML = '<p class="text-zinc-500 text-xs">Sin datos de embudo.</p>';
+          container.innerHTML = '<p class="text-[#0a1f1c]/50 dark:text-zinc-500 text-xs">Sin datos de embudo.</p>';
           return;
       }
 
@@ -527,13 +574,13 @@
           
           return `
           <div class="mb-6 cursor-pointer group" onclick="document.getElementById('funnel-detalles-panel').classList.toggle('hidden')">
-              <div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">
+              <div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 mb-2">
                   <span>${item.step}</span>
-                  <span class="group-hover:text-[#c5a059] transition-colors">${item.count} (${pct}%)</span>
+                  <span class="group-hover:text-[#c5a059] transition-colors text-[#0a1f1c] dark:text-white">${item.count} (${pct}%)</span>
               </div>
-              <div class="w-full bg-white/5 rounded-full h-8 overflow-hidden flex items-center relative border border-transparent group-hover:border-[#c5a059]/50 transition-colors shadow-inner">
+              <div class="w-full bg-[#0a1f1c]/5 dark:bg-white/5 rounded-full h-8 overflow-hidden flex items-center relative border border-transparent group-hover:border-[#c5a059]/50 transition-colors shadow-inner">
                   <div class="${colors[index % colors.length]} h-full transition-all duration-1000" style="width: ${pct}%"></div>
-                  <span class="absolute right-4 text-[9px] font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity tracking-widest uppercase shadow-md">Ver Desglose 🔍</span>
+                  <span class="absolute right-4 text-[9px] font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity tracking-widest uppercase shadow-md drop-shadow-md">Ver Desglose 🔍</span>
               </div>
           </div>`;
       }).join('');
@@ -541,41 +588,41 @@
       if (detailedData && detailedData.length > 0) {
           const maxVisits = detailedData[0].unique_visits || 1;
           html += `
-          <div id="funnel-detalles-panel" class="hidden mt-8 bg-[#0a1f1c] border border-[#c5a059]/30 rounded-xl p-6 shadow-2xl transition-all duration-500 relative overflow-hidden">
+          <div id="funnel-detalles-panel" class="hidden mt-8 bg-[#fcfaf7] dark:bg-[#0a1f1c] border border-[#c5a059]/30 rounded-xl p-4 md:p-6 shadow-xl transition-all duration-500 relative overflow-hidden">
               <div class="absolute top-0 right-0 w-64 h-64 bg-[#c5a059]/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
               <div class="flex justify-between items-center mb-6 border-b border-[#c5a059]/20 pb-4">
                   <div>
-                      <h4 class="text-[#c5a059] font-bold text-[12px] uppercase tracking-[0.2em] mb-1">Desglose Analítico de Pantallas</h4>
-                      <span class="text-zinc-500 text-[9px] uppercase tracking-widest block">Tráfico, interacción y fuga exacta por formulario</span>
+                      <h4 class="text-[#c5a059] font-bold text-[11px] md:text-[12px] uppercase tracking-[0.2em] mb-1">Desglose Analítico</h4>
+                      <span class="text-[#0a1f1c]/50 dark:text-zinc-500 text-[9px] uppercase tracking-widest block">Tráfico, interacción y fuga exacta</span>
                   </div>
-                  <button onclick="document.getElementById('funnel-detalles-panel').classList.add('hidden')" class="text-zinc-500 hover:text-[#c5a059] text-2xl font-light">×</button>
+                  <button onclick="document.getElementById('funnel-detalles-panel').classList.add('hidden')" class="text-[#0a1f1c]/50 dark:text-zinc-500 hover:text-[#c5a059] text-2xl font-light">×</button>
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   ${detailedData.map(d => {
                       const retencion = Math.round((d.unique_visits / maxVisits) * 100);
                       const fuga = 100 - retencion;
                       const tiempoStr = d.avg_time_sec ? `${Math.round(d.avg_time_sec)}s pro.` : '0s pro.';
                       
                       return `
-                      <div class="bg-white/5 border border-white/10 p-5 rounded-lg hover:border-[#c5a059]/50 transition-colors hover:bg-white/10 relative overflow-hidden">
+                      <div class="bg-[#0a1f1c]/5 dark:bg-white/5 border border-[#0a1f1c]/10 dark:border-white/10 p-4 md:p-5 rounded-lg hover:border-[#c5a059]/50 transition-colors hover:bg-white/10 relative overflow-hidden">
                           <div class="absolute bottom-0 left-0 h-1 bg-[#c5a059]/20 w-full">
                               <div class="h-full bg-[#c5a059]" style="width: ${retencion}%"></div>
                           </div>
-                          <span class="text-[9px] uppercase tracking-widest text-zinc-400 block mb-2">Pantalla / Paso</span>
-                          <h5 class="text-[#fcfaf7] font-bold text-sm mb-4 truncate" title="${formatearPasoCheckout(d.step_name)}">${formatearPasoCheckout(d.step_name)}</h5>
+                          <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 block mb-2">Pantalla / Paso</span>
+                          <h5 class="text-[#0a1f1c] dark:text-[#fcfaf7] font-bold text-sm mb-4 truncate" title="${formatearPasoCheckout(d.step_name)}">${formatearPasoCheckout(d.step_name)}</h5>
                           <div class="grid grid-cols-2 gap-4">
                               <div>
-                                  <span class="text-[20px] font-serif text-[#c5a059] block leading-none mb-1">${d.unique_visits}</span>
-                                  <span class="text-[8px] uppercase tracking-wider text-zinc-500 block leading-tight">Usuarios<br>Únicos</span>
+                                  <span class="text-[18px] md:text-[20px] font-serif text-[#c5a059] block leading-none mb-1">${d.unique_visits}</span>
+                                  <span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Usuarios<br>Únicos</span>
                               </div>
                               <div class="text-right">
-                                  <span class="text-[20px] font-serif text-white block leading-none mb-1">${tiempoStr}</span>
-                                  <span class="text-[8px] uppercase tracking-wider text-zinc-500 block leading-tight">Tiempo<br>Invertido</span>
+                                  <span class="text-[18px] md:text-[20px] font-serif text-[#0a1f1c] dark:text-white block leading-none mb-1">${tiempoStr}</span>
+                                  <span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Tiempo<br>Invertido</span>
                               </div>
                           </div>
-                          <div class="mt-4 pt-3 border-t border-white/10 flex justify-between items-center">
-                              <span class="text-[9px] font-bold uppercase tracking-widest ${fuga > 50 ? 'text-rose-400' : 'text-emerald-400'}">${fuga}% Fuga</span>
-                              <span class="text-[9px] uppercase tracking-widest text-zinc-500 border border-zinc-600 px-1.5 py-0.5 rounded">Retiene: ${retencion}%</span>
+                          <div class="mt-4 pt-3 border-t border-[#0a1f1c]/10 dark:border-white/10 flex justify-between items-center">
+                              <span class="text-[9px] font-bold uppercase tracking-widest ${fuga > 50 ? 'text-red-500 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}">${fuga}% Fuga</span>
+                              <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/50 dark:text-zinc-500 border border-[#0a1f1c]/20 dark:border-zinc-600 px-1.5 py-0.5 rounded">Retiene: ${retencion}%</span>
                           </div>
                       </div>
                       `;
@@ -629,6 +676,10 @@
 
   async function loadStats() {
     try {
+      const isDark = document.documentElement.classList.contains('dark');
+      const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(10,31,28,0.05)';
+      const tickColor = isDark ? '#888' : '#666';
+
       const res = await apicall(`/api/admin/stats?period=${currentPeriod}`);
       const data = await res.json();
       
@@ -664,8 +715,8 @@
             maintainAspectRatio: false, 
             plugins: { legend: { display: false } }, 
             scales: { 
-                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888', font: { size: 10 } } }, 
-                x: { grid: { display: false }, ticks: { color: '#888', font: { size: 10 } } } 
+                y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } } }, 
+                x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 10 } } } 
             } 
         }
       });
@@ -685,7 +736,7 @@
         options: { 
             responsive: true, 
             maintainAspectRatio: false, 
-            plugins: { legend: { position: 'right', labels: { color: '#fff', font: { size: 10 } } } } 
+            plugins: { legend: { position: 'right', labels: { color: tickColor, font: { size: 10 } } } } 
         }
       });
 
@@ -707,8 +758,8 @@
             maintainAspectRatio: false, 
             plugins: { legend: { display: false } }, 
             scales: { 
-                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, 
-                x: { grid: { display: false } } 
+                y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: tickColor } }, 
+                x: { grid: { display: false }, ticks: { color: tickColor } } 
             } 
         }
       });
@@ -720,7 +771,7 @@
   async function loadAnalytics() {
     const floatBtn = document.getElementById('floating-refresh');
     if (floatBtn) {
-      floatBtn.innerHTML = `<svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Cargando...`;
+      floatBtn.innerHTML = `<svg class="w-4 h-4 md:w-5 md:h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> <span class="hidden md:inline">Cargando...</span>`;
       floatBtn.classList.add('opacity-50', 'pointer-events-none');
     }
 
@@ -728,7 +779,6 @@
       const res = await apicall('/api/admin/analytics');
       const data = await res.json();
       
-      // 0. Renderizar Tarjeta Estelar (Index)
       const idx = data.index_stats;
       const indexContainer = document.getElementById('index-stats-container');
       
@@ -742,56 +792,56 @@
           const anchorsHtml = Object.entries(idx.anchors || {})
               .sort((a, b) => b[1] - a[1])
               .map(([anchor, count]) => `
-              <div class="flex justify-between items-center bg-black/20 px-2 py-1.5 rounded mb-1 border border-white/5">
-                  <span class="text-[9px] uppercase tracking-wider text-emerald-400 truncate w-32">${anchor}</span>
-                  <span class="text-[9px] font-bold text-white bg-emerald-500/20 px-1.5 py-0.5 rounded">${count} clics</span>
+              <div class="flex justify-between items-center bg-[#0a1f1c]/5 dark:bg-black/20 px-2 py-1.5 rounded mb-1 border border-[#0a1f1c]/5 dark:border-white/5">
+                  <span class="text-[9px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 truncate w-32">${anchor}</span>
+                  <span class="text-[9px] font-bold text-[#0a1f1c] dark:text-white bg-emerald-500/20 px-1.5 py-0.5 rounded">${count} clics</span>
               </div>`).join('');
 
           indexContainer.innerHTML = `
-          <div class="card p-6 border border-[#c5a059]/50 bg-gradient-to-br from-[#c5a059]/10 to-transparent shadow-lg relative overflow-hidden">
+          <div class="card p-6 border border-[#c5a059]/50 bg-gradient-to-br from-[#c5a059]/5 dark:from-[#c5a059]/10 to-transparent shadow-lg relative overflow-hidden">
               <div class="absolute top-0 right-0 w-64 h-64 bg-[#c5a059]/10 rounded-full blur-3xl pointer-events-none"></div>
               <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 relative z-10">
                   
-                  <div class="bg-black/20 p-5 rounded-xl border border-white/5 flex flex-col justify-center">
-                      <span class="text-[9px] uppercase tracking-widest text-zinc-400 block mb-2">Tráfico General</span>
+                  <div class="bg-white/50 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/5 dark:border-white/5 flex flex-col justify-center">
+                      <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 block mb-2">Tráfico General</span>
                       <p class="text-4xl font-serif text-[#c5a059] mb-1">${idx.views}</p>
-                      <span class="text-[10px] text-zinc-500 uppercase tracking-widest block mb-4 border-b border-white/5 pb-4">Visitas Únicas</span>
+                      <span class="text-[10px] text-[#0a1f1c]/50 dark:text-zinc-500 uppercase tracking-widest block mb-4 border-b border-[#0a1f1c]/10 dark:border-white/5 pb-4">Visitas Únicas</span>
                       
-                      <p class="text-3xl font-serif text-white mb-1">${idx.avg_time}s</p>
-                      <span class="text-[10px] text-zinc-500 uppercase tracking-widest block">Tiempo de Lectura Promedio</span>
+                      <p class="text-3xl font-serif text-[#0a1f1c] dark:text-white mb-1">${idx.avg_time}s</p>
+                      <span class="text-[10px] text-[#0a1f1c]/50 dark:text-zinc-500 uppercase tracking-widest block">Tiempo de Lectura Prom.</span>
                   </div>
 
-                  <div class="bg-black/20 p-5 rounded-xl border border-white/5">
-                      <span class="text-[9px] uppercase tracking-widest text-zinc-400 block mb-4">Profundidad de Lectura (Scroll)</span>
+                  <div class="bg-white/50 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/5 dark:border-white/5">
+                      <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 block mb-4">Profundidad de Lectura (Scroll)</span>
                       <div class="space-y-4">
                           <div>
-                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-white">Bajaron al 25%</span><span class="text-[#c5a059] font-bold">${Math.round((s25/maxViews)*100)}%</span></div>
-                              <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s25/maxViews)*100}%"></div></div>
+                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-[#0a1f1c] dark:text-white">Bajaron al 25%</span><span class="text-[#c5a059] font-bold">${Math.round((s25/maxViews)*100)}%</span></div>
+                              <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s25/maxViews)*100}%"></div></div>
                           </div>
                           <div>
-                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-white">Bajaron al 50%</span><span class="text-[#c5a059] font-bold">${Math.round((s50/maxViews)*100)}%</span></div>
-                              <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s50/maxViews)*100}%"></div></div>
+                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-[#0a1f1c] dark:text-white">Bajaron al 50%</span><span class="text-[#c5a059] font-bold">${Math.round((s50/maxViews)*100)}%</span></div>
+                              <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s50/maxViews)*100}%"></div></div>
                           </div>
                           <div>
-                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-white">Bajaron al 75%</span><span class="text-[#c5a059] font-bold">${Math.round((s75/maxViews)*100)}%</span></div>
-                              <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s75/maxViews)*100}%"></div></div>
+                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-[#0a1f1c] dark:text-white">Bajaron al 75%</span><span class="text-[#c5a059] font-bold">${Math.round((s75/maxViews)*100)}%</span></div>
+                              <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s75/maxViews)*100}%"></div></div>
                           </div>
                           <div>
-                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-white">Llegaron al final (100%)</span><span class="text-[#c5a059] font-bold">${Math.round((s100/maxViews)*100)}%</span></div>
-                              <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s100/maxViews)*100}%"></div></div>
+                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-[#0a1f1c] dark:text-white">Llegaron al final</span><span class="text-[#c5a059] font-bold">${Math.round((s100/maxViews)*100)}%</span></div>
+                              <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s100/maxViews)*100}%"></div></div>
                           </div>
                       </div>
                   </div>
 
-                  <div class="bg-black/20 p-5 rounded-xl border border-white/5">
-                      <span class="text-[9px] uppercase tracking-widest text-zinc-400 block mb-4">Navegación Interna (Secciones)</span>
+                  <div class="bg-white/50 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/5 dark:border-white/5">
+                      <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 block mb-4">Navegación Interna (Secciones)</span>
                       <div class="space-y-1 overflow-y-auto max-h-[160px] hide-scroll pr-1">
-                          ${anchorsHtml || '<span class="text-zinc-600 text-[10px]">Sin datos de anclas aún</span>'}
+                          ${anchorsHtml || '<span class="text-[#0a1f1c]/50 dark:text-zinc-600 text-[10px]">Sin datos de anclas aún</span>'}
                       </div>
                   </div>
 
-                  <div class="bg-black/20 p-5 rounded-xl border border-white/5">
-                      <span class="text-[9px] uppercase tracking-widest text-zinc-400 block mb-4">Interacciones y Upsells</span>
+                  <div class="bg-white/50 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/5 dark:border-white/5">
+                      <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 block mb-4">Interacciones y Upsells</span>
                       <div class="space-y-1 overflow-y-auto max-h-[160px] hide-scroll pr-1">
                           ${renderInteracciones(idx.clicks, 6)}
                       </div>
@@ -800,51 +850,47 @@
           </div>`;
       }
 
-      // 1. Matriz de Productos
       if (document.getElementById('products-grid')) {
         renderPlegableGrid('products-grid', data.products || [], p => {
             return `
-            <div class="card p-6 border border-[#c5a059]/30 bg-gradient-to-b from-[#c5a059]/10 to-transparent hover:border-[#c5a059]/60 transition-all duration-300">
-                <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-4">
+            <div class="card p-6 border border-[#c5a059]/30 bg-gradient-to-b from-[#c5a059]/5 dark:from-[#c5a059]/10 to-transparent hover:border-[#c5a059]/60 transition-all duration-300">
+                <div class="flex justify-between items-center border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4 mb-4">
                     <h4 class="font-serif italic text-xl text-[#c5a059] truncate pr-2 capitalize">${p.name}</h4>
-                    <span class="bg-[#c5a059] text-[#0a1f1c] px-3 py-1.5 rounded-md text-[11px] font-bold shadow-lg">${p.conversion}% Conv</span>
+                    <span class="bg-[#c5a059] text-[#0a1f1c] px-3 py-1.5 rounded-md text-[11px] font-bold shadow-md">${p.conversion}% Conv</span>
                 </div>
-                <div class="grid grid-cols-2 gap-6 text-sm mb-6">
-                    <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Vistas Totales</span><strong class="text-white text-lg">${p.views}</strong></div>
-                    <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Agregados</span><strong class="text-white text-lg">${p.adds} <span class="text-[10px] font-normal opacity-50 ml-1">al carro</span></strong></div>
-                    <div class="col-span-2 bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Retención Promedio</span><strong class="text-white">${p.avg_time} segundos de lectura</strong></div>
+                <div class="grid grid-cols-2 gap-4 text-sm mb-6">
+                    <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Vistas Totales</span><strong class="text-[#0a1f1c] dark:text-white text-lg">${p.views}</strong></div>
+                    <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Agregados</span><strong class="text-[#0a1f1c] dark:text-white text-lg">${p.adds} <span class="text-[10px] font-normal opacity-60 ml-1 block md:inline">al carro</span></strong></div>
+                    <div class="col-span-2 bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Retención Promedio</span><strong class="text-[#0a1f1c] dark:text-white">${p.avg_time} segundos de lectura</strong></div>
                 </div>
                 <div class="text-xs space-y-2 mt-4"><span class="text-[#c5a059] block mb-3 font-bold uppercase tracking-widest text-[10px]">Adicionales / Clics vinculados:</span>${renderInteracciones(p.clicks)}</div>
             </div>`;
         });
       }
 
-      // 2. Rendimiento Categorías
       if (document.getElementById('categories-grid')) {
         renderPlegableGrid('categories-grid', data.categories || [], c => {
             return `
-            <div class="card p-6 border border-emerald-900/50 bg-gradient-to-b from-emerald-900/20 to-transparent hover:border-emerald-500/50 transition-all duration-300">
-                <h4 class="font-bold text-emerald-400 uppercase text-sm border-b border-white/10 pb-4 mb-4 capitalize">${c.url.replace('/', '').replace('.html', '').replace(/-/g, ' ')}</h4>
-                <div class="grid grid-cols-2 gap-6 text-sm mb-6">
-                    <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Visitas</span><strong class="text-white text-lg">${c.views}</strong></div>
-                    <div class="bg-black/20 p-3 rounded-lg"><span class="opacity-50 block text-[9px] uppercase tracking-widest mb-1">Tiempo Prom.</span><strong class="text-white text-lg">${c.avg_time}s</strong></div>
+            <div class="card p-6 border border-emerald-500/30 dark:border-emerald-900/50 bg-gradient-to-b from-emerald-500/10 dark:from-emerald-900/20 to-transparent hover:border-emerald-500/50 transition-all duration-300">
+                <h4 class="font-bold text-emerald-600 dark:text-emerald-400 uppercase text-sm border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4 mb-4 capitalize">${c.url.replace('/', '').replace('.html', '').replace(/-/g, ' ')}</h4>
+                <div class="grid grid-cols-2 gap-4 text-sm mb-6">
+                    <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Visitas</span><strong class="text-[#0a1f1c] dark:text-white text-lg">${c.views}</strong></div>
+                    <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Tiempo Prom.</span><strong class="text-[#0a1f1c] dark:text-white text-lg">${c.avg_time}s</strong></div>
                 </div>
-                <div class="text-xs space-y-2 mt-4"><span class="text-emerald-400 block mb-3 font-bold uppercase tracking-widest text-[10px]">Interacción Interna:</span>${renderInteracciones(c.clicks)}</div>
+                <div class="text-xs space-y-2 mt-4"><span class="text-emerald-600 dark:text-emerald-400 block mb-3 font-bold uppercase tracking-widest text-[10px]">Interacción Interna:</span>${renderInteracciones(c.clicks)}</div>
             </div>`;
         });
       }
 
-      // 3. Páginas Terciarias
       if (document.getElementById('tertiary-grid')) {
         renderPlegableGrid('tertiary-grid', data.tertiary || [], t => `
-            <div class="card p-5 border border-blue-900/50 bg-blue-900/10 flex justify-between items-center hover:bg-blue-900/30 transition-all duration-300">
-                <span class="font-bold text-blue-400 uppercase text-[11px] tracking-widest">${t.url.replace('/', '').replace('.html', '').replace(/-/g, ' ')}</span>
-                <div class="text-right"><span class="block text-white text-lg font-bold">${t.views} <span class="text-[10px] font-normal opacity-50 uppercase tracking-widest">Vistas</span></span><span class="block text-[10px] opacity-60 mt-1">${t.avg_time} segs de retención</span></div>
+            <div class="card p-5 border border-blue-500/30 dark:border-blue-900/50 bg-blue-50 dark:bg-blue-900/10 flex justify-between items-center hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all duration-300">
+                <span class="font-bold text-blue-600 dark:text-blue-400 uppercase text-[11px] tracking-widest">${t.url.replace('/', '').replace('.html', '').replace(/-/g, ' ')}</span>
+                <div class="text-right"><span class="block text-[#0a1f1c] dark:text-white text-lg font-bold">${t.views} <span class="text-[10px] font-normal opacity-60 uppercase tracking-widest">Vistas</span></span><span class="block text-[10px] opacity-60 mt-1">${t.avg_time} segs de retención</span></div>
             </div>`
         );
       }
 
-      // 4. Upsells Globales
       const uList = document.getElementById('global-upsells-list');
       if (uList) {
         if (data.global_upsells && data.global_upsells.length > 0) {
@@ -852,16 +898,16 @@
                 const conv = u.agregados > 0 ? Math.round((u.compras / u.agregados) * 100) : 0;
                 const ingresos = u.ingresos_potenciales ? `$${parseInt(u.ingresos_potenciales).toLocaleString('es-CL')}` : 'Por calcular';
                 return `
-                <div class="border-b border-white/5 pb-4 mb-4 last:border-0 last:mb-0 last:pb-0">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-white font-bold text-[13px] w-2/3 leading-tight">${u.name}</span>
-                        <span class="text-[#c5a059] text-[10px] font-bold bg-[#c5a059]/10 px-2 py-1 rounded">${u.agregados} Agregados</span>
+                <div class="border-b border-[#0a1f1c]/10 dark:border-white/5 pb-4 mb-4 last:border-0 last:mb-0 last:pb-0">
+                    <div class="flex justify-between items-start mb-2 gap-2">
+                        <span class="text-[#0a1f1c] dark:text-white font-bold text-[12px] md:text-[13px] leading-tight">${u.name}</span>
+                        <span class="text-[#c5a059] text-[9px] md:text-[10px] font-bold bg-[#c5a059]/10 px-2 py-1 rounded whitespace-nowrap">${u.agregados} Agregados</span>
                     </div>
-                    <div class="flex justify-between items-center text-xs opacity-70 mb-2">
+                    <div class="flex justify-between items-center text-[10px] md:text-xs opacity-70 mb-2">
                         <span>Llegaron a Pago: ${u.intentos_pago || 0}</span>
-                        <span>Comprados: <strong class="${u.compras > 0 ? 'text-emerald-400' : ''}">${u.compras || 0}</strong> <span class="text-emerald-400 font-bold ml-1">(${ingresos})</span></span>
+                        <span>Comprados: <strong class="${u.compras > 0 ? 'text-emerald-600 dark:text-emerald-400' : ''}">${u.compras || 0}</strong> <span class="text-emerald-600 dark:text-emerald-400 font-bold ml-1">(${ingresos})</span></span>
                     </div>
-                    <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                    <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
                         <div class="bg-gradient-to-r from-[#c5a059]/50 to-[#c5a059] h-full" style="width: ${conv}%"></div>
                     </div>
                 </div>`;
@@ -871,7 +917,6 @@
         }
       }
 
-      // 5. Carritos Abandonados
       const abandonedList = data.abandoned || [];
       const abandonedTotal = abandonedList.reduce((acc, curr) => acc + parseInt(curr.value || 0), 0);
       
@@ -884,21 +929,20 @@
       if (tbody) {
           if (abandonedList.length > 0) {
               tbody.innerHTML = abandonedList.map(c => `
-                  <tr class="border-b border-red-900/30 last:border-0 hover:bg-red-900/40 transition-colors">
+                  <tr class="border-b border-red-500/20 dark:border-red-900/30 last:border-0 hover:bg-red-500/10 dark:hover:bg-red-900/40 transition-colors">
                       <td class="py-3 px-2 text-[11px] opacity-60 w-16">${new Date(c.created_at).toLocaleTimeString('es-CL', {hour: '2-digit', minute:'2-digit'})}</td>
                       <td class="py-3 px-2">
-                        <span class="text-white font-medium block text-sm">${c.name || 'Cliente'}</span>
-                        <span class="text-xs opacity-50 block">${c.email}</span>
+                        <span class="text-[#0a1f1c] dark:text-white font-medium block text-sm">${c.name || 'Cliente'}</span>
+                        <span class="text-[11px] md:text-xs opacity-60 block">${c.email}</span>
                       </td>
-                      <td class="py-3 px-2 text-[#c5a059] text-right font-bold text-base">$${parseInt(c.value || 0).toLocaleString('es-CL')}</td>
+                      <td class="py-3 px-2 text-[#c5a059] text-right font-bold text-sm md:text-base">$${parseInt(c.value || 0).toLocaleString('es-CL')}</td>
                   </tr>
               `).join('');
           } else {
-              tbody.innerHTML = '<tr><td colspan="3" class="py-4 text-center opacity-50 text-xs italic">No hay correos detectados recientemente.</td></tr>';
+              tbody.innerHTML = '<tr><td colspan="3" class="py-4 text-center opacity-60 text-xs italic">No hay correos detectados recientemente.</td></tr>';
           }
       }
 
-      // 6. Embudo Interactivo HTML
       renderEmbudoInteractivo(data.funnel || [], data.detailed_funnel || []);
 
     } catch(e) { 
@@ -906,7 +950,7 @@
     }
 
     if (floatBtn) {
-      floatBtn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> Refrescar Monitor`;
+      floatBtn.innerHTML = `<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg> <span class="hidden md:inline">Refrescar Monitor</span>`;
       floatBtn.classList.remove('opacity-50', 'pointer-events-none');
     }
   }
@@ -922,15 +966,15 @@
           <tr>
             <td>
               <strong class="block text-sm">${c.full_name || '-'}</strong>
-              <span class="text-[11px] opacity-50">${c.email}</span>
+              <span class="text-[11px] opacity-60">${c.email}</span>
             </td>
             <td>
-              <span class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-md text-[10px] uppercase font-bold text-[#c5a059]">${c.tier || 'Cuarzo'}</span>
+              <span class="bg-[#0a1f1c]/5 dark:bg-white/5 border border-[#0a1f1c]/10 dark:border-white/10 px-3 py-1.5 rounded-md text-[10px] uppercase font-bold text-[#c5a059]">${c.tier || 'Cuarzo'}</span>
             </td>
             <td class="font-serif text-sm">$${(c.lifetime_flowers_clp || 0).toLocaleString('es-CL')}</td>
             <td class="font-bold font-serif text-[#c5a059] text-sm">${(c.points_balance || 0).toLocaleString('es-CL')} pts</td>
             <td>
-              <button onclick="openPointsModal('${c.id}', '${c.full_name || c.email}')" class="text-[10px] border border-[#c5a059] text-[#c5a059] px-4 py-2 rounded-md hover:bg-[#c5a059] hover:text-[#050f0e] uppercase tracking-widest font-bold transition cursor-pointer">Ajustar Saldo</button>
+              <button onclick="openPointsModal('${c.id}', '${c.full_name || c.email}')" class="text-[10px] border border-[#c5a059] text-[#c5a059] px-4 py-2 rounded-md hover:bg-[#c5a059] hover:text-[#0a1f1c] uppercase tracking-widest font-bold transition cursor-pointer">Ajustar</button>
             </td>
           </tr>
         `).join('');
@@ -964,7 +1008,7 @@
     if (data.surveys && Array.isArray(data.surveys)) {
       tbody.innerHTML = data.surveys.map(s => {
         const estrellas = '★'.repeat(s.rating) + '<span class="opacity-20">' + '★'.repeat(5-s.rating) + '</span>';
-        const critico = s.rating <= 3 ? 'bg-red-500/10' : '';
+        const critico = s.rating <= 3 ? 'bg-red-500/10 dark:bg-red-500/10' : '';
         
         let aspec = ''; 
         try { 
@@ -976,114 +1020,131 @@
             <td class="text-[11px] opacity-60">${new Date(s.answered_at).toLocaleDateString('es-CL')}</td>
             <td>
               <strong class="block text-sm">${s.full_name || 'Anónimo'}</strong>
-              <span class="text-[11px] opacity-50">${s.email}</span>
+              <span class="text-[11px] opacity-60">${s.email}</span>
             </td>
             <td class="text-[#c5a059] text-xl tracking-widest">${estrellas}</td>
             <td>
-              <span class="block text-sm text-white/90">${aspec}</span>
-              <span class="text-xs opacity-60 italic block mt-1">"${s.suggestion || '-'}"</span>
+              <span class="block text-sm text-[#0a1f1c]/90 dark:text-white/90">${aspec}</span>
+              <span class="text-xs opacity-70 italic block mt-1">"${s.suggestion || '-'}"</span>
             </td>
             <td>
               ${s.rating <= 3 && s.customer_id 
-                ? `<button onclick="openPointsModal('${s.customer_id}', '${s.full_name || s.email}')" class="text-[10px] bg-red-500/20 text-red-400 border border-red-500/40 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white uppercase tracking-widest font-bold transition cursor-pointer">Compensar</button>` 
-                : '<span class="text-[10px] opacity-30 uppercase tracking-widest">N/A</span>'}
+                ? `<button onclick="openPointsModal('${s.customer_id}', '${s.full_name || s.email}')" class="text-[10px] bg-red-500/10 dark:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/40 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white uppercase tracking-widest font-bold transition cursor-pointer">Compensar</button>` 
+                : '<span class="text-[10px] opacity-40 uppercase tracking-widest">N/A</span>'}
             </td>
           </tr>
         `;
       }).join('');
     } else {
-        tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center opacity-50 text-xs italic">No hay encuestas para mostrar.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center opacity-60 text-xs italic">No hay encuestas para mostrar.</td></tr>';
     }
   }
 
-  async function comprimirImagen(file, maxWidth = 600, quality = 0.6) {
-    return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-            const img = new Image();
-            img.src = event.target.result;
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                let width = img.width;
-                let height = img.height;
-                if (width > maxWidth) {
-                    height = Math.round((height * maxWidth) / width);
-                    width = maxWidth;
-                }
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-                // Devuelve la imagen comprimida en JPEG ultraligera
-                resolve(canvas.toDataURL('image/jpeg', quality));
-            };
-        };
-    });
-}
+  // Lógica de Previsualización y Compresión de Fotos Móviles
+  const photoInput = document.getElementById('track-photo');
+  const previewContainer = document.getElementById('preview-container');
+  const photoPreview = document.getElementById('preview-img');
+  let compressedBase64 = null;
 
-async function updateTracking() {
-    const orderId = document.getElementById('track-order').value.trim();
-    const status = document.getElementById('track-status').value;
-    const photoFile = document.getElementById('track-photo').files[0];
-    const msg = document.getElementById('track-msg');
+  photoInput.addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if (!file) {
+          previewContainer.classList.add('hidden');
+          compressedBase64 = null;
+          return;
+      }
 
-    if (!orderId) {
-        msg.innerText = '❌ Ingrese un ID de pedido válido';
-        msg.className = 'text-sm mt-4 text-center text-red-400';
-        return;
-    }
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function(event) {
+          const img = new Image();
+          img.src = event.target.result;
+          img.onload = function() {
+              const canvas = document.createElement('canvas');
+              const ctx = canvas.getContext('2d');
+              
+              const maxWidth = 800; // Resolución óptima web (ultraligera)
+              let scaleSize = maxWidth / img.width;
+              if (scaleSize > 1) scaleSize = 1;
 
-    msg.innerText = 'Optimizando imagen y subiendo...';
-    msg.className = 'text-sm mt-4 text-center text-yellow-400';
+              canvas.width = img.width * scaleSize;
+              canvas.height = img.height * scaleSize;
+              
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              
+              compressedBase64 = canvas.toDataURL('image/jpeg', 0.6); // 60% calidad
+              
+              photoPreview.src = compressedBase64;
+              previewContainer.classList.remove('hidden');
+          };
+      };
+  });
 
-    try {
-        let photoBase64 = '';
-        if (photoFile) {
-            // Comprime la imagen al tamaño ideal para la web consumiendo mínimos recursos
-            photoBase64 = await comprimirImagen(photoFile, 600, 0.6);
-        }
+  async function updateTracking() {
+      const orderId = document.getElementById('track-order').value.trim();
+      const status = document.getElementById('track-status').value;
+      const msg = document.getElementById('track-msg');
+      const btn = document.getElementById('btn-track-submit');
 
-        const payload = {
-            order_id: orderId,
-            status: status,
-            photo: photoBase64
-        };
+      if (!orderId) {
+          msg.innerText = '❌ Ingrese un ID válido';
+          msg.className = 'text-sm mt-4 text-center text-red-500 dark:text-red-400 font-bold tracking-widest';
+          return;
+      }
 
-        const res = await apicall('/api/admin/tracking', 'POST', payload);
-        const data = await res.json();
+      msg.innerText = 'Actualizando...';
+      msg.className = 'text-sm mt-4 text-center text-yellow-600 dark:text-yellow-400 font-bold tracking-widest';
+      btn.disabled = true;
 
-        if (res.ok) {
-            msg.innerText = '✅ Actualizado y publicado correctamente';
-            msg.className = 'text-sm mt-4 text-center text-emerald-400';
-        } else {
-            msg.innerText = '❌ ' + (data.error || 'Error al actualizar');
-            msg.className = 'text-sm mt-4 text-center text-red-400';
-        }
-    } catch(e) {
-        msg.innerText = '❌ Error de conexión al procesar la imagen';
-        msg.className = 'text-sm mt-4 text-center text-red-400';
-    }
-}
+      try {
+          const payload = {
+              order_id: orderId,
+              status: status,
+              photo: compressedBase64
+          };
+
+          const res = await apicall('/api/admin/tracking', 'POST', payload);
+          const data = await res.json();
+
+          if (res.ok) {
+              msg.innerHTML = `✅ Actualizado y Correo Enviado<br><a href="${data.tracking_link}" target="_blank" class="underline mt-2 inline-block lowercase font-normal opacity-80">Ver seguimiento público</a>`;
+              msg.className = 'text-sm mt-4 text-center text-emerald-600 dark:text-emerald-400 font-bold tracking-widest';
+              
+              document.getElementById('track-order').value = '';
+              photoInput.value = '';
+              previewContainer.classList.add('hidden');
+              compressedBase64 = null;
+          } else {
+              msg.innerText = '❌ ' + (data.error || 'Error al actualizar');
+              msg.className = 'text-sm mt-4 text-center text-red-500 dark:text-red-400 font-bold tracking-widest';
+          }
+      } catch(e) {
+          msg.innerText = '❌ Error de red';
+          msg.className = 'text-sm mt-4 text-center text-red-500 dark:text-red-400 font-bold tracking-widest';
+      } finally {
+          btn.disabled = false;
+      }
+  }
 
   async function verifyWA() {
     const msg = document.getElementById('wa-msg');
     msg.innerText = 'Verificando...'; 
-    msg.className = 'text-sm mt-4 text-center text-yellow-400';
+    msg.className = 'text-sm mt-4 text-center text-yellow-600 dark:text-yellow-400 font-bold tracking-widest';
     
     try {
       const res = await apicall('/api/verify-phone', 'POST', { message_text: document.getElementById('wa-code').value });
       
       if (res.ok) { 
-          msg.innerText = '✅ Verificado'; 
-          msg.className = 'text-sm mt-4 text-center text-emerald-400'; 
+          msg.innerText = '✅ Verificado con éxito'; 
+          msg.className = 'text-sm mt-4 text-center text-emerald-600 dark:text-emerald-400 font-bold tracking-widest'; 
+          document.getElementById('wa-code').value = '';
       } else { 
           msg.innerText = '❌ Código inválido'; 
-          msg.className = 'text-sm mt-4 text-center text-red-400'; 
+          msg.className = 'text-sm mt-4 text-center text-red-500 dark:text-red-400 font-bold tracking-widest'; 
       }
     } catch(e) { 
         msg.innerText = '❌ Error de red'; 
-        msg.className = 'text-sm mt-4 text-center text-red-400'; 
+        msg.className = 'text-sm mt-4 text-center text-red-500 dark:text-red-400 font-bold tracking-widest'; 
     }
   }
 
