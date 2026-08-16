@@ -677,12 +677,9 @@ async function cargarVistaPreviaPuntosNativo() {
 window.aplicarPuntos = function() {
     const btn = document.getElementById('btn-aplicar-puntos');
     const balanceEl = document.getElementById('checkout-points-balance');
-    
-    // Extraemos el saldo real que guardamos en el atributo
     const saldoTotal = parseInt(balanceEl ? balanceEl.getAttribute('data-saldo-total') : 0) || 0;
 
     if (window.descuentoPuntos > 0) {
-        // Al anular el canje
         window.descuentoPuntos = 0;
         let pDisc = document.getElementById('checkout-points-discount');
         if(pDisc) pDisc.classList.add('hidden');
@@ -693,7 +690,6 @@ window.aplicarPuntos = function() {
             btn.classList.remove('bg-[#c5a059]', 'border-transparent');
         }
     } else {
-        // Al aplicar el canje
         if(window.maxPuntosCanjeables <= 0) return;
         window.descuentoPuntos = window.maxPuntosCanjeables;
         let pDisc = document.getElementById('checkout-points-discount');
@@ -701,8 +697,7 @@ window.aplicarPuntos = function() {
         let pAmt = document.getElementById('checkout-points-amount');
         if(pAmt) pAmt.innerText = `-$${window.descuentoPuntos.toLocaleString("es-CL")}`;
         
-        // Resta visual exacta
-        const saldoRestante = saldoTotal - window.descuentoPuntos;
+        const saldoRestante = Math.max(0, saldoTotal - window.descuentoPuntos);
         if(balanceEl) balanceEl.innerText = `${saldoRestante.toLocaleString("es-CL")} pts`;
         
         if(btn) {
@@ -713,7 +708,6 @@ window.aplicarPuntos = function() {
     }
     actualizarTotalConDespacho();
 };
-
 function goToStep(e) {
     let t = typeof e === "number" ? `step-${e}` : e;
     document.querySelectorAll(".checkout-step").forEach(step => step.classList.remove("active"));
