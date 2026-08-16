@@ -243,8 +243,9 @@
       </details>
     </section>
 
+    <!-- SECCIÓN DE REFERIDOS ACTUALIZADA -->
     <section id="referral-section" class="card overflow-hidden border-[#c5a059]/40 mb-6 relative">
-        <div class="relative w-full h-[280px] md:h-[220px] overflow-hidden group">
+        <div class="relative w-full overflow-hidden group">
             <div class="absolute inset-0 z-0">
                 <img src="img/regalo-referido.webp" alt="Invita a tus amigos" class="w-full h-full object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-1000 opacity-40 group-hover:opacity-60">
                 <div class="absolute inset-0 bg-gradient-to-r from-[#fcfaf7] via-[#fcfaf7]/90 to-[#fcfaf7]/20 dark:from-[#0a1f1c] dark:via-[#0a1f1c]/90 dark:to-transparent"></div>
@@ -254,13 +255,21 @@
                 <div class="max-w-xl">
                     <span class="text-[10px] md:text-xs uppercase tracking-[0.25em] text-[#c5a059] font-bold block mb-2">Programa de Invitados</span>
                     <h3 class="font-serif text-2xl md:text-4xl italic text-[#0a1f1c] dark:text-[#fcfaf7] mb-2 drop-shadow-md">Invita a tus amigos y gana</h3>
-                    <p class="text-[#0a1f1c]/80 dark:text-[#fcfaf7]/80 text-xs md:text-base leading-relaxed font-medium">
+                    <p class="text-[#0a1f1c]/80 dark:text-[#fcfaf7]/80 text-xs md:text-base leading-relaxed font-medium mb-4">
                         Regálale $3.000 de descuento a un amigo en su primera compra. Cuando lo use, nosotros te regalaremos 3.000 puntos a ti.
                     </p>
+                    
+                    <div class="inline-flex items-center gap-3 bg-[#0a1f1c] dark:bg-black/60 border border-[#c5a059]/40 px-4 py-2.5 rounded-xl shadow-inner">
+                        <span class="text-xs uppercase tracking-widest text-white/70 font-bold">Tu código:</span>
+                        <span id="dash-referral-code" class="text-sm md:text-base font-bold tracking-widest text-[#c5a059]">—</span>
+                        <button onclick="copyDashboardReferralCode()" class="text-white/70 hover:text-[#c5a059] transition ml-2" title="Copiar código">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                        </button>
+                    </div>
                 </div>
-                <div class="w-full md:w-auto flex-shrink-0">
+                <div class="w-full md:w-auto flex-shrink-0 mt-4 md:mt-0">
                     <button onclick="abrirShareModal()" class="btn-gold w-full md:w-auto px-8 py-4 rounded-lg text-xs md:text-sm uppercase tracking-widest font-bold shadow-lg hover:scale-105 transition-transform">
-                        Compartir mi código ($3.000)
+                        Ver QR y WhatsApp
                     </button>
                 </div>
             </div>
@@ -424,6 +433,7 @@
         </div>
     </div>
 
+    <!-- MODAL DE COMPARTIR ACTUALIZADO -->
     <div id="share-modal" class="fixed inset-0 bg-[#fcfaf7]/90 dark:bg-black/80 z-[105] hidden-panel flex items-center justify-center p-6 backdrop-blur-sm">
       <div class="card p-8 md:p-10 max-w-[90%] md:max-w-md w-full text-center border-[#c5a059]/30 relative shadow-2xl">
         <button onclick="cerrarShareModal()" class="absolute top-5 right-5 text-[#0a1f1c]/50 dark:text-white/50 hover:text-[#c5a059] text-3xl font-light">×</button>
@@ -434,9 +444,9 @@
             <img id="referral-qr" src="" alt="Código QR VIP" class="w-48 h-48 md:w-56 md:h-56 object-contain mx-auto">
         </div>
 
-        <div class="bg-[#0a1f1c]/5 dark:bg-white/10 border border-[#0a1f1c]/10 dark:border-white/20 px-5 py-4 rounded-xl mb-6 flex justify-between items-center">
+        <div class="bg-[#0a1f1c] dark:bg-zinc-900 border border-[#c5a059]/40 px-5 py-4 rounded-xl mb-6 flex justify-between items-center shadow-md">
             <span id="modal-referral-code" class="text-base md:text-lg font-bold tracking-widest text-[#c5a059]">—</span>
-            <button onclick="copyReferralLinkModal()" class="text-[#0a1f1c]/50 dark:text-white/50 hover:text-[#c5a059] transition p-2" title="Copiar Enlace">
+            <button onclick="copyReferralLinkModal()" class="text-white/70 hover:text-[#c5a059] transition p-2" title="Copiar Enlace">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
             </button>
         </div>
@@ -670,6 +680,12 @@ function animatePoints(obj, start, end, duration, isCurrency = false) {
 function abrirShareModal() { document.getElementById('share-modal').classList.remove('hidden-panel'); }
 function cerrarShareModal() { document.getElementById('share-modal').classList.add('hidden-panel'); }
 
+function copyDashboardReferralCode() {
+  const code = document.getElementById('dash-referral-code').textContent;
+  navigator.clipboard.writeText(`${location.origin}/club.html?ref=${code}`);
+  alert('¡Enlace copiado! Ya puedes pegarlo y enviárselo a quien quieras.');
+}
+
 let currentCustomerData = null;
 
 const icons = {
@@ -738,6 +754,9 @@ async function renderDashboard(animate = false) {
   }
 
   document.getElementById('modal-referral-code').textContent = c.referral_code;
+  const dashRef = document.getElementById('dash-referral-code'); 
+  if (dashRef) dashRef.textContent = c.referral_code;
+  
   const link = `${location.origin}/club.html?ref=${c.referral_code}`;
   document.getElementById('modal-referral-wa').href = `https://wa.me/?text=${encodeURIComponent('Hola! Acabo de descubrir el secreto mejor guardado de Viña. Usa este enlace para obtener $3.000 de regalo en tu primer arreglo de La Foresta Flores: ' + link)}`;
   document.getElementById('referral-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&color=0a1f1c&bgcolor=ffffff&data=${encodeURIComponent(link)}&margin=4`;
@@ -1334,12 +1353,6 @@ function cerrarModalEliminar(){
   document.getElementById('delete-modal').classList.add('hidden-panel');
 }
 
-function copyReferralLinkModal() {
-  const code = document.getElementById('modal-referral-code').textContent;
-  navigator.clipboard.writeText(`${location.origin}/club.html?ref=${code}`);
-  alert('¡Enlace copiado! Ya puedes pegarlo y enviárselo a quien quieras.');
-}
-
 const refFromUrl = urlParams.get('ref') || localStorage.getItem('laforesta_referral_code');
 if (refFromUrl) {
   if(urlParams.get('ref')) localStorage.setItem('laforesta_referral_code', urlParams.get('ref'));
@@ -1444,10 +1457,10 @@ document.addEventListener('visibilitychange', async () => {
         }
 
         // 4. Referidos y Compartir (WhatsApp / Copiar Código / QR)
-        if (onclickAttr.includes('abrirShareModal') || text.includes('Compartir mi código')) {
+        if (onclickAttr.includes('abrirShareModal') || text.includes('Ver QR y WhatsApp')) {
             trackEvent4D('club_referral_modal_opened', {});
         }
-        if (onclickAttr.includes('copyReferralLinkModal') || el.title === 'Copiar Enlace') {
+        if (onclickAttr.includes('copyReferralLinkModal') || onclickAttr.includes('copyDashboardReferralCode') || el.title === 'Copiar Enlace' || el.title === 'Copiar código') {
             trackEvent4D('club_referral_link_copied', {});
         }
         if (el.id === 'modal-referral-wa' || onclickAttr.includes('modal-referral-wa')) {
