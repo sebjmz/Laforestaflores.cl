@@ -1820,13 +1820,8 @@
                 window.obtenerPayloadOrden = function() {
                     const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
                     const subtotalOriginal = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
-                    
                     const isAnon = document.getElementById('envio-anonimo') && document.getElementById('envio-anonimo').checked;
-                    
-                    // AQUI CAPTURAMOS EL NOMBRE REAL PARA MAKE.COM
-                    const emisorReal = document.getElementById("sender-name")?.value || "Cliente";
-                    const emisorAnonimo = isAnon ? "Alguien que te quiere (Anónimo)" : emisorReal;
-                    
+                    const emisorAnonimo = isAnon ? "Alguien que te quiere (Anónimo)" : (document.getElementById("sender-name")?.value || "No especificado");
                     const tEmail = document.getElementById("buyer-email")?.value.trim() || "";
                     const tReceiver = document.getElementById("receiver-name")?.value || "No especificado";
                     const tCard = document.getElementById("card-message")?.value || "";
@@ -1873,12 +1868,7 @@
                             fecha_entrega: tFecha,
                             valor_envio: envioFinal,
                             comprador_email: tEmail,
-                            ga_client_id: obtenerGA4ClientId(),
-                            
-                            // AQUI ESTA LA MAGIA: Alimentamos a Make y al Worker con las nuevas variables
-                            real_buyer_name: emisorReal,
-                            buyer_whatsapp: "No especificado", 
-                            card_format: "Estándar" 
+                            ga_client_id: obtenerGA4ClientId()
                         }
                     };
                 };
