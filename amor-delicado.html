@@ -432,6 +432,185 @@
             }
         }
     </script>
-    <script src="js/main.js?v=3" defer></script>
+    <script>
+// ==========================================
+// SENSOR MAESTRO 4D & TELEMETRÍA GLOBAL (INLINE)
+// ==========================================
+(function() {
+    // 1. Evitar ejecuciones duplicadas si la página carga dos veces
+    if (window.LF_TRACKER_INITIALIZED) return;
+    window.LF_TRACKER_INITIALIZED = true;
+
+    const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
+    
+    // 2. Generación o recuperación de ID de Sesión (Unificando variables)
+    let sid = sessionStorage.getItem('lf_sid_4d') || sessionStorage.getItem('lf_sid');
+    if (!sid) {
+        sid = 'sid_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+        sessionStorage.setItem('lf_sid_4d', sid);
+        sessionStorage.setItem('lf_sid', sid);
+    }
+
+    let pagePath = window.location.pathname;
+    if (pagePath === '/' || pagePath === '') pagePath = '/index.html';
+    const pageStartTime = Date.now();
+
+    // 3. Función Core de Despacho (Anti-CORS y Anti-Bloqueos móviles)
+    window.trackEvent4D = function(name, data = {}) {
+        const payload = JSON.stringify({
+            session_id: sid,
+            event_name: name,
+            event_data: data,
+            url: pagePath
+        });
+
+        // Usamos fetch con keepalive. Envía el dato aunque la página muera o salte.
+        fetch(API_TRACK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: payload,
+            keepalive: true
+        }).catch(() => {});
+    };
+
+    // 4. Registro de Vista Inicial
+    window.trackEvent4D('page_view');
+
+    // 5. Sensor de Profundidad de Lectura (Scroll Depth)
+    let scrollFlags = { 25: false, 50: false, 75: false, 100: false };
+    window.addEventListener('scroll', function() {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (docHeight <= 0) return;
+        const scrollPct = Math.round((window.scrollY / docHeight) * 100);
+        [25, 50, 75, 100].forEach(depth => {
+            if (scrollPct >= depth && !scrollFlags[depth]) {
+                scrollFlags[depth] = true;
+                window.trackEvent4D('scroll_depth', { depth: depth });
+            }
+        });
+    }, { passive: true });
+
+    // 6. Heartbeat: Tiempo real de lectura y detección de abandono
+    function reportTime(event) {
+        const seconds = Math.round((Date.now() - pageStartTime) / 1000);
+        const currentCart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+        const cartVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+        
+        // Extracción segura de datos
+        const emailEl = document.getElementById('buyer-email');
+        const senderEl = document.getElementById('sender-name');
+        const receiverEl = document.getElementById('receiver-name');
+        const phoneEl = document.getElementById('receiver-phone');
+        const activeStep = document.querySelector(".checkout-step.active");
+        
+        const email = emailEl ? emailEl.value.trim() : '';
+        const name = (senderEl && senderEl.value) ? senderEl.value : ((receiverEl && receiverEl.value) ? receiverEl.value : '');
+        const phone = phoneEl ? phoneEl.value.trim() : '';
+        const currentStep = activeStep ? activeStep.id : 'checkout';
+
+        window.trackEvent4D('time_on_page', { 
+            seconds: seconds,
+            cart_value: cartVal,
+            email: email,
+            name: name,
+            phone: phone
+        });
+
+        // Disparar abandono solo si el usuario cierra o cambia de página y dejó el carrito con valor
+        if (event && (event.type === 'beforeunload' || event.type === 'pagehide') && email && cartVal > 0) {
+            window.trackEvent4D('abandonment_or_close', {
+                step_name: currentStep,
+                cart_value: cartVal,
+                email: email,
+                name: name,
+                phone: phone
+            });
+        }
+    }
+
+    // Reporte cada 15 segundos y eventos de cierre
+    setInterval(reportTime, 15000);
+    window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') reportTime(event); });
+    window.addEventListener('pagehide', reportTime);
+    window.addEventListener('beforeunload', reportTime);
+
+    // 7. Conversiones Exitosas (Página de Gracias)
+    if (pagePath.includes('gracias.html')) {
+        const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+        cartData.forEach(item => {
+            window.trackEvent4D('purchase', { product_id: item.id, product_name: item.name, price: item.price, qty: item.qty });
+        });
+    }
+
+    // 8. INTERCEPTOR INTELIGENTE: Bloquea el salto, envía el dato y libera
+    const hookInterval = setInterval(() => {
+        // Interceptar Función: agregarYVolver (Páginas de Producto)
+        if (typeof window.agregarYVolver === 'function' && !window.agregarYVolver._tracked4d) {
+            const originalAgregar = window.agregarYVolver;
+            window.agregarYVolver = function(id, name, price, img) {
+                window.trackEvent4D(id > 100 && id < 200 ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name, target: name });
+                // Pausa de 250ms
+                setTimeout(() => { originalAgregar(id, name, price, img); }, 250);
+            };
+            window.agregarYVolver._tracked4d = true;
+        }
+        
+        // Interceptar Función: addToCart (Página Index y Categorías)
+        if (typeof window.addToCart === 'function' && !window.addToCart._tracked4d) {
+            const originalAddToCart = window.addToCart;
+            window.addToCart = function(id, name, price, img) {
+                window.trackEvent4D(id > 100 && id < 200 ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name, target: name });
+                return originalAddToCart.apply(this, arguments);
+            };
+            window.addToCart._tracked4d = true;
+        }
+        
+        // Interceptar Función: goToStep (Checkout)
+        if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
+            const originalGoToStep = window.goToStep;
+            window.goToStep = function(step) { 
+                window.trackEvent4D('checkout_step', { step_target: String(step) }); 
+                return originalGoToStep.apply(this, arguments); 
+            };
+            window.goToStep._tracked4d = true;
+        }
+    }, 500);
+
+    // 9. Sensor Universal de Clics y Pagos
+    document.addEventListener('click', function(e) {
+        const el = e.target.closest('button, a, .step-option, .product-card, [onclick]');
+        if (!el) return;
+
+        const text = (el.innerText || el.textContent || '').trim();
+        const textLower = text.toLowerCase();
+        const onclickAttr = el.getAttribute('onclick') || '';
+        const hrefAttr = el.getAttribute('href') || '';
+
+        // Rastrear navegación por Anclas (#vault, #garden)
+        if (hrefAttr.startsWith('#') || hrefAttr.includes('#')) {
+            const anchor = hrefAttr.includes('#') ? '#' + hrefAttr.split('#')[1] : hrefAttr;
+            if (anchor && anchor !== '#') window.trackEvent4D('click', { target: anchor });
+        }
+
+        // Rastrear inicio de pagos
+        if (onclickAttr.includes('iniciarMercadoPago') || textLower.includes('mercadopago') || onclickAttr.includes('iniciarPayPal') || textLower.includes('paypal')) {
+            const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+            const totalVal = cartData.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            const email = document.getElementById('buyer-email')?.value || 'desconocido';
+            const metodo = (onclickAttr.includes('PayPal') || textLower.includes('paypal')) ? 'PayPal' : 'MercadoPago';
+            
+            window.trackEvent4D('payment_initiated', { method: metodo, target: metodo, cart_value: totalVal, email: email });
+            return;
+        }
+
+        // Rastrear clics generales (Excluyendo "añadir" porque ya está interceptado arriba)
+        if (!onclickAttr.includes('agregarYVolver') && !onclickAttr.includes('addToCart') && !textLower.includes('añadir')) {
+            if (text && text.length > 0 && text.length < 40 && !hrefAttr.startsWith('#')) {
+                window.trackEvent4D('click', { target: text });
+            }
+        }
+    }, true);
+})();
+</script>
 </body>
 </html>
