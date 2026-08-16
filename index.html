@@ -412,6 +412,11 @@
             #hero-slider p { font-size: 0.9rem !important; margin-bottom: 1rem !important; }
             #hero-slider .btn-premium { padding: 0.6rem 1.5rem !important; font-size: 0.8rem !important; }
         }
+        .checkout-phase {
+            display: none;
+            animation: fadeInStep 0.6s ease forwards;
+        }
+        .checkout-phase.active { display: flex; }
     </style>
 </head>
 <body>
@@ -1295,213 +1300,198 @@
         </div>
     </footer>
 
-    <div id="checkout-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden">
-        <div class="px-6 md:px-8 py-4 flex justify-between items-center border-b border-black/5 shrink-0 bg-white">
-            <img src="img/logo-menu.webp" width="100" height="32" alt="La Foresta Flores" class="h-6 md:h-8 w-auto object-contain">
-            <button onclick="closeCheckout()" aria-label="Cerrar proceso de pago" class="text-3xl font-light hover:text-[#c5a059] transition-colors">×</button>
+    <div id="checkout-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden overflow-y-auto">
+        <div class="px-8 py-6 flex justify-between items-center border-b border-black/5 shrink-0">
+            <img src="img/logo-menu.webp" width="130" height="42" alt="La Foresta Flores" class="h-8 w-auto object-contain">
+            <button onclick="closeCheckout()" aria-label="Cerrar proceso de pago" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
         </div>
 
-        <div class="flex-grow flex flex-col justify-start md:justify-center items-center p-4 md:p-6 relative overflow-y-auto">
+        <div class="flex-grow flex flex-col justify-start md:justify-center items-center p-6 relative">
             
-            <!-- FASE 1: LOGÍSTICA -->
-            <div id="step-1" class="checkout-step active flex-col items-center w-full max-w-md text-center my-auto pb-12">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-4">Fase 1 de 3</span>
-                <h3 class="font-serif text-3xl md:text-4xl italic mb-8">Coordinación</h3>
+            <!-- FASE 1: COORDINACIÓN -->
+            <div id="phase-1" class="checkout-phase active flex-col items-center w-full max-w-md text-center my-auto pb-12">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Fase 1 de 3</span>
+                <h3 class="font-serif text-4xl italic mb-12">Coordinación</h3>
                 
-                <div class="w-full space-y-5 text-left">
-                    <div>
-                        <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-2">Modalidad de Entrega</label>
-                        <div class="flex gap-2 w-full">
-                            <button type="button" id="btn-envio" onclick="seleccionarModalidadUI('envio')" class="flex-1 border-2 border-[#c5a059] bg-[#c5a059]/5 text-[#0a1f1c] py-3 px-2 rounded-lg text-[10px] md:text-xs uppercase tracking-widest font-bold transition-all shadow-sm">Envío a domicilio</button>
-                            <button type="button" id="btn-retiro" onclick="seleccionarModalidadUI('retiro')" class="flex-1 border border-[#0a1f1c]/10 text-[#0a1f1c]/60 py-3 px-2 rounded-lg text-[10px] md:text-xs uppercase tracking-widest font-bold transition-all hover:bg-zinc-50">Retiro en Atelier</button>
-                        </div>
-                    </div>
-
-                    <div id="panel-envio" class="space-y-5 animate-[fadeInStep_0.4s_ease-out]">
-                        <div>
-                            <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-2">Sector / Comuna</label>
-                            <select id="checkout-zona" onchange="actualizarZonaUI()" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-3 focus:outline-none focus:border-[#c5a059] text-sm font-bold text-[#0a1f1c] cursor-pointer appearance-none">
-                                <option value="" disabled selected>Seleccione la zona de despacho...</option>
-                                <option value="3500|Zona Central">Reñaca / Jardín del Mar / Los Almendros (+$3.500)</option>
-                                <option value="5000|Zona Local">Gómez Carreño / Concón (+$5.000)</option>
-                                <option value="7500|Zona Intermedia">Cerros de Viña / Chorrillos / Miraflores (+$7.500)</option>
-                                <option value="10000|Zona Extendida">Plan Valparaíso / Paso Hondo / Quilpué (+$10.000)</option>
-                                <option value="15000|Zona Extendida+">Quintero / Curauma / Placilla / El Belloto (+$15.000)</option>
-                            </select>
-                            <p class="text-[9px] uppercase tracking-widest leading-relaxed text-blue-600/80 mt-2">❄️ Envíos exclusivos en vehículos climatizados para máxima frescura.</p>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-2">Dirección Exacta</label>
-                            <input type="text" id="address" placeholder="Calle, número, departamento o casa..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-3 focus:outline-none focus:border-[#c5a059] text-sm font-medium text-[#0a1f1c]">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4 pt-2">
-                        <div>
-                            <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-2">Día</label>
-                            <select id="checkout-dia" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-3 focus:outline-none focus:border-[#c5a059] text-sm font-bold text-[#0a1f1c] cursor-pointer appearance-none">
-                                <option value="Hoy">Hoy (Mismo Día)</option>
-                                <option value="Mañana">Mañana</option>
-                                <option value="Otro Día">Otra Fecha</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-2">Horario</label>
-                            <select id="checkout-horario" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-3 focus:outline-none focus:border-[#c5a059] text-sm font-bold text-[#0a1f1c] cursor-pointer appearance-none">
-                                <option value="Mañana (11:00 a 13:00)">Mañana (11-13h)</option>
-                                <option value="Tarde (14:00 a 17:00)">Tarde (14-17h)</option>
-                                <option value="Vespertino (18:00 a 21:00)">Vespertino (18-21h)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <p class="text-[9px] uppercase tracking-widest leading-relaxed text-[#0a1f1c]/60">🕒 Tranquilo/a: Puedes indicarnos por WhatsApp si la persona ya está en el lugar para flexibilizar la llegada.</p>
-
-                    <div class="pt-2">
-                        <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-2">¿Para quién es la sorpresa?</label>
-                        <input type="text" id="receiver-name" placeholder="Nombre y apellido de la persona homenajeada" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-3 focus:outline-none focus:border-[#c5a059] text-sm font-medium text-[#0a1f1c]">
-                    </div>
+                <div class="w-full space-y-4 mb-12">
+                    <button id="btn-envio" onclick="setLogisticaUI('envio')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold transition-all selected">Envío a domicilio</button>
+                    <button id="btn-retiro" onclick="setLogisticaUI('retiro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold transition-all">Retiro en Atelier</button>
                 </div>
 
-                <button onclick="validarFase1()" class="mt-10 btn-premium w-full shadow-md">Siguiente Paso</button>
+                <div id="panel-envio" class="w-full animate-[fadeInStep_0.4s_ease-out]">
+                    <select id="checkout-zona" onchange="window.actualizarZonaUI()" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-8 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c] appearance-none cursor-pointer">
+                        <option value="" disabled selected>Seleccione la zona de despacho...</option>
+                        <option value="3500|Zona Central">Reñaca / Jardín del Mar / Los Almendros (+$3.500)</option>
+                        <option value="5000|Zona Local">Gómez Carreño / Concón (+$5.000)</option>
+                        <option value="7500|Zona Intermedia">Cerros de Viña / Chorrillos (+$7.500)</option>
+                        <option value="10000|Zona Extendida">Plan Valparaíso / Quilpué (+$10.000)</option>
+                        <option value="15000|Zona Extendida+">Quintero / Curauma / El Belloto (+$15.000)</option>
+                    </select>
+                    <input type="text" id="address" placeholder="Dirección Exacta (Calle, número...)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-12 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                </div>
+
+                <h3 class="font-serif text-3xl italic mb-6">¿Cuándo entregamos?</h3>
+                <div id="date-buttons" class="w-full space-y-4 mb-12">
+                    <button class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold transition-all" onclick="window.seleccionarFechaFlujo('hoy')">Hoy (Mismo Día)</button>
+                    <button class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold transition-all" onclick="window.seleccionarFechaFlujo('futuro')">Elegir fecha en el calendario</button>
+                </div>
+
+                <!-- Contenedor Calendario Original -->
+                <div id="step-calendario-container" class="hidden w-full mb-12 animate-[fadeInStep_0.4s_ease-out]">
+                    <div class="flex justify-between items-center w-full mb-6 px-2">
+                        <button onclick="cambiarMesCalendario(-1)" id="cal-prev" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100 transition-colors">Anterior</button>
+                        <span id="cal-month-title" class="text-xs uppercase tracking-widest font-bold text-gold-leaf"></span>
+                        <button onclick="cambiarMesCalendario(1)" id="cal-next" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100 transition-colors">Siguiente</button>
+                    </div>
+                    <div class="grid grid-cols-7 gap-2 w-full text-center text-[9px] uppercase font-bold tracking-wider opacity-40 mb-2">
+                        <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div>
+                    </div>
+                    <div id="calendar-grid" class="grid grid-cols-7 gap-2 w-full"></div>
+                    <button onclick="window.restaurarFechas()" class="mt-10 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black transition-opacity">Volver a opciones de fecha</button>
+                </div>
+
+                <!-- Contenedor Horarios Original -->
+                <div id="step-time-container" class="hidden w-full mb-12 animate-[fadeInStep_0.4s_ease-out]">
+                    <h4 id="time-step-chosen-date" class="text-[10px] uppercase tracking-[0.2em] text-[#0a1f1c]/60 mb-8 font-bold"></h4>
+                    <div id="time-slots-container" class="space-y-4 w-full mb-6"></div>
+                    <button onclick="window.restaurarCalendario()" class="mt-8 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black transition-opacity">Cambiar de día</button>
+                </div>
+
+                <h3 class="font-serif text-3xl italic mb-6">¿Para quién es?</h3>
+                <input type="text" id="receiver-name" placeholder="Nombre y Apellido de quien recibe" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mb-12 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+
+                <button onclick="window.validarFase1()" class="btn-premium w-full py-5 text-sm uppercase tracking-widest">Siguiente Paso</button>
             </div>
 
             <!-- FASE 2: TARJETA -->
-            <div id="step-2" class="checkout-step flex-col items-center w-full max-w-md text-center my-auto pb-12">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-4">Fase 2 de 3</span>
-                <h3 class="font-serif text-3xl md:text-4xl italic mb-4">La Tarjeta</h3>
-                <p class="text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 mb-8 leading-relaxed">✍️ Opcional: Cada tarjeta se escribe a mano en nuestro taller con caligrafía artesanal y tinta clásica.</p>
+            <div id="phase-2" class="checkout-phase flex-col items-center w-full max-w-md text-center my-auto pb-12">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Fase 2 de 3</span>
+                <h3 class="font-serif text-4xl italic mb-6">La Tarjeta</h3>
+                <p class="text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 mb-12 leading-relaxed px-4">✍️ Cada tarjeta se escribe a mano en nuestro taller con caligrafía artesanal sobre papel de alto gramaje.</p>
 
-                <div class="w-full space-y-3 text-left">
-                    <label class="flex items-center gap-3 p-4 border border-[#c5a059] bg-[#c5a059]/5 rounded-lg cursor-pointer transition-all card-option-label">
-                        <input type="radio" name="card_option" value="escribir_ahora" checked onchange="toggleCardOptionsUI()" class="w-4 h-4 accent-[#c5a059]">
-                        <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Escribir dedicatoria ahora</span>
+                <div class="space-y-4 w-full mb-12 text-left">
+                    <label class="flex items-center gap-4 p-6 border border-[#c5a059] bg-[#c5a059]/5 cursor-pointer transition-all card-option-label">
+                        <input type="radio" name="card_option" value="escribir_ahora" checked onchange="toggleCardOptionsUI()" class="w-5 h-5 accent-[#c5a059]">
+                        <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Escribir ahora</span>
                     </label>
                     
-                    <div id="panel-dedicatoria" class="pl-2 pr-2 pb-2">
-                        <textarea id="card-message" placeholder="Escriba su dedicatoria aquí..." class="w-full bg-white border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-sm font-serif text-[#0a1f1c] h-28 resize-none mb-2 shadow-sm rounded-lg"></textarea>
-                        <p class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/50 mb-2 font-bold text-center">💡 Haz clic en una frase y luego personalízala a tu gusto:</p>
-                        <div class="flex flex-wrap justify-center gap-2">
-                            <button type="button" onclick="insertarFrase('Para la persona que ilumina mis días. Te amo infinitamente.')" class="text-[9px] uppercase tracking-widest font-bold py-1.5 px-3 border border-zinc-200 rounded-full text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Romance</button>
-                            <button type="button" onclick="insertarFrase('Que este nuevo año de vida esté lleno de luz y bendiciones. ¡Feliz Cumpleaños!')" class="text-[9px] uppercase tracking-widest font-bold py-1.5 px-3 border border-zinc-200 rounded-full text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Cumpleaños</button>
-                            <button type="button" onclick="insertarFrase('Acompañándote con mucho cariño en este momento tan difícil. Mis más sentidas condolencias.')" class="text-[9px] uppercase tracking-widest font-bold py-1.5 px-3 border border-zinc-200 rounded-full text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Condolencias</button>
-                            <button type="button" onclick="insertarFrase('Gracias por estar siempre ahí, por tu apoyo incondicional y tu cariño.')" class="text-[9px] uppercase tracking-widest font-bold py-1.5 px-3 border border-zinc-200 rounded-full text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Gratitud</button>
+                    <div id="panel-dedicatoria" class="w-full pb-4 animate-[fadeInStep_0.4s_ease-out]">
+                        <p class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/50 mb-6 font-bold text-center">💡 Haz clic para inspirarte (Se escribirá en vivo):</p>
+                        <div class="flex flex-wrap justify-center gap-3 mb-8">
+                            <button onclick="window.escribirAnimado('romance')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-4 border border-zinc-200 text-zinc-500 rounded-full hover:bg-[#c5a059] hover:border-[#c5a059] hover:text-[#0a1f1c] transition-colors">Romance</button>
+                            <button onclick="window.escribirAnimado('cumpleanos')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-4 border border-zinc-200 text-zinc-500 rounded-full hover:bg-[#c5a059] hover:border-[#c5a059] hover:text-[#0a1f1c] transition-colors">Cumpleaños</button>
+                            <button onclick="window.escribirAnimado('celebracion')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-4 border border-zinc-200 text-zinc-500 rounded-full hover:bg-[#c5a059] hover:border-[#c5a059] hover:text-[#0a1f1c] transition-colors">Celebración</button>
+                            <button onclick="window.escribirAnimado('condolencias')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-4 border border-zinc-200 text-zinc-500 rounded-full hover:bg-[#c5a059] hover:border-[#c5a059] hover:text-[#0a1f1c] transition-colors">Condolencias</button>
+                            <button onclick="window.escribirAnimado('agradecimiento')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-4 border border-zinc-200 text-zinc-500 rounded-full hover:bg-[#c5a059] hover:border-[#c5a059] hover:text-[#0a1f1c] transition-colors">Gratitud</button>
                         </div>
+                        <textarea id="card-message" placeholder="Querida/o..." class="w-full bg-transparent border border-[#0a1f1c]/20 p-6 focus:outline-none focus:border-[#c5a059] text-xl font-serif text-[#0a1f1c] h-48 resize-none leading-relaxed transition-colors"></textarea>
                     </div>
 
-                    <label class="flex items-center gap-3 p-4 border border-[#0a1f1c]/10 hover:border-[#c5a059]/50 rounded-lg cursor-pointer transition-all card-option-label">
-                        <input type="radio" name="card_option" value="whatsapp_luego" onchange="toggleCardOptionsUI()" class="w-4 h-4 accent-[#c5a059]">
-                        <div>
-                            <span class="block text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Enviar por WhatsApp luego</span>
-                        </div>
+                    <label class="flex items-center gap-4 p-6 border border-[#0a1f1c]/15 hover:border-[#c5a059]/50 cursor-pointer transition-all card-option-label">
+                        <input type="radio" name="card_option" value="whatsapp_luego" onchange="toggleCardOptionsUI()" class="w-5 h-5 accent-[#c5a059]">
+                        <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Enviar por WhatsApp luego</span>
                     </label>
 
-                    <label class="flex items-center gap-3 p-4 border border-[#0a1f1c]/10 hover:border-[#c5a059]/50 rounded-lg cursor-pointer transition-all card-option-label">
-                        <input type="radio" name="card_option" value="blanco" onchange="toggleCardOptionsUI()" class="w-4 h-4 accent-[#c5a059]">
-                        <div>
-                            <span class="block text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Tarjeta en blanco (Escribiré yo)</span>
-                        </div>
+                    <label class="flex items-center gap-4 p-6 border border-[#0a1f1c]/15 hover:border-[#c5a059]/50 cursor-pointer transition-all card-option-label">
+                        <input type="radio" name="card_option" value="blanco" onchange="toggleCardOptionsUI()" class="w-5 h-5 accent-[#c5a059]">
+                        <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Tarjeta en blanco (Escribiré yo)</span>
                     </label>
 
-                    <label class="flex items-center gap-3 p-4 border border-[#0a1f1c]/10 hover:border-[#c5a059]/50 rounded-lg cursor-pointer transition-all card-option-label">
-                        <input type="radio" name="card_option" value="tarjeta_autor" onchange="toggleCardOptionsUI()" class="w-4 h-4 accent-[#c5a059]">
-                        <div>
-                            <span class="block text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Tarjeta poética de La Foresta</span>
-                        </div>
+                    <label class="flex items-center gap-4 p-6 border border-[#0a1f1c]/15 hover:border-[#c5a059]/50 cursor-pointer transition-all card-option-label">
+                        <input type="radio" name="card_option" value="tarjeta_autor" onchange="toggleCardOptionsUI()" class="w-5 h-5 accent-[#c5a059]">
+                        <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Tarjeta poética de La Foresta</span>
                     </label>
                 </div>
 
-                <label class="flex items-start gap-4 mt-8 p-4 border border-[#0a1f1c]/10 bg-white rounded-lg cursor-pointer hover:border-[#c5a059]/50 transition-colors w-full text-left shadow-sm">
-                    <input type="checkbox" id="envio-anonimo" class="w-5 h-5 accent-[#c5a059] cursor-pointer mt-0.5 shrink-0" style="-webkit-appearance: checkbox; appearance: auto;">
-                    <div>
-                        <span class="block text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c] mb-1">Sorpresa 100% Anónima</span>
-                        <span class="block text-[10px] text-[#0a1f1c]/60 leading-relaxed font-light">Entregaremos el arreglo manteniendo tu identidad en absoluto secreto.</span>
+                <label class="flex items-center justify-center gap-4 w-full border border-[#0a1f1c]/20 p-6 cursor-pointer hover:border-[#c5a059]/80 transition-all mb-12 bg-white/40">
+                    <input type="checkbox" id="envio-anonimo" class="w-6 h-6 accent-[#c5a059]">
+                    <div class="text-left">
+                        <span class="block text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Sorpresa 100% Anónima</span>
+                        <span class="block text-[10px] text-[#0a1f1c]/60 mt-1 font-serif italic">Mantendremos tu identidad en absoluto secreto.</span>
                     </div>
                 </label>
 
-                <button onclick="goToStep('step-3')" class="mt-8 btn-premium w-full shadow-md">Último Paso</button>
-                <button onclick="goToStep('step-1')" class="mt-5 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+                <button onclick="window.cambiarFase('phase-3')" class="btn-premium w-full py-5 text-sm uppercase tracking-widest">Último Paso</button>
+                <button onclick="window.cambiarFase('phase-1')" class="mt-8 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black transition-opacity">Volver a Coordinación</button>
             </div>
 
             <!-- FASE 3: PAGO -->
-            <div id="step-3" class="checkout-step flex-col items-center w-full max-w-md text-center my-auto pb-12">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-4">Cierre</span>
-                <h3 class="font-serif text-3xl md:text-4xl italic mb-8">Tus Datos y Pago</h3>
+            <div id="phase-3" class="checkout-phase flex-col items-center w-full max-w-md text-center my-auto pb-12">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Cierre</span>
+                <h3 class="font-serif text-4xl italic mb-12">Tus Datos y Pago</h3>
 
-                <div class="w-full space-y-4 text-left">
-                    <input type="text" id="buyer-name" placeholder="Tu Nombre y Apellido (Comprador)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-3 focus:outline-none focus:border-[#c5a059] text-sm font-medium text-[#0a1f1c]">
-                    <input type="email" id="buyer-email" placeholder="Tu Correo (Para la boleta/comprobante)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-3 focus:outline-none focus:border-[#c5a059] text-sm font-medium text-[#0a1f1c]">
-                    
-                    <div class="pt-2">
-                        <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-1">Tu WhatsApp (Comprador)</label>
-                        <span class="block text-[9px] text-[#0a1f1c]/50 mb-2">📱 Para enviarte fotos del ramo y coordinar entrega.</span>
-                        <input type="tel" id="buyer-whatsapp" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-3 focus:outline-none focus:border-[#c5a059] text-sm font-medium text-[#0a1f1c]">
-                    </div>
-
-                    <div class="pt-2">
-                        <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-1">Teléfono Destinatario (Opcional)</label>
-                        <span class="block text-[9px] text-[#c5a059] font-bold mb-2">🔒 Solo emergencias de portería. ¡No arruinaremos la sorpresa!</span>
-                        <input type="tel" id="recipient-phone" placeholder="Opcional..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-3 focus:outline-none focus:border-[#c5a059] text-sm font-medium text-[#0a1f1c]">
-                    </div>
+                <input type="text" id="buyer-name" placeholder="Tu Nombre y Apellido (Comprador)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c] mb-12">
+                
+                <input type="email" id="buyer-email" placeholder="Tu Correo (Para la boleta)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c] mb-12">
+                
+                <div class="w-full mb-12">
+                    <p class="text-[9px] uppercase tracking-widest opacity-60 mb-3">📱 Para enviarte fotos del ramo y coordinar entrega:</p>
+                    <input type="tel" id="buyer-whatsapp" placeholder="Tu WhatsApp (Comprador)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
                 </div>
 
-                <!-- Resumen Financiero -->
-                <div class="mt-8 w-full">
-                    <div id="points-redemption-container" class="w-full bg-[#c5a059]/5 border border-[#c5a059]/30 p-5 mb-4 text-left shadow-sm rounded-lg hidden">
+                <div class="w-full mb-16">
+                    <p class="text-[9px] uppercase tracking-widest text-[#c5a059] font-bold mb-3">🔒 Solo emergencias de portería. ¡No arruinaremos la sorpresa!</p>
+                    <input type="tel" id="recipient-phone" placeholder="Teléfono Destinatario (Opcional)" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                </div>
+
+                <div class="w-full mb-12">
+                    <div id="points-redemption-container" class="w-full bg-[#c5a059]/5 border border-[#c5a059]/30 p-6 mb-8 text-left hidden">
                         <div class="flex justify-between items-center mb-3">
                             <span class="text-[10px] uppercase tracking-widest font-bold text-[#0a1f1c]">Tu Saldo Club</span>
-                            <span id="checkout-points-balance" class="font-serif text-sm text-[#0a1f1c] font-bold">$0</span>
+                            <span id="checkout-points-balance" class="font-serif text-lg text-[#0a1f1c] font-bold">$0</span>
                         </div>
-                        <p id="checkout-max-discount" class="text-[9px] text-[#0a1f1c]/70 mb-4 leading-relaxed font-light"></p>
-                        <button onclick="aplicarPuntos()" id="btn-aplicar-puntos" class="w-full py-2.5 text-[10px] font-bold uppercase tracking-widest rounded border border-[#0a1f1c]/30 text-[#0a1f1c] hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-all">Usar saldo</button>
+                        <p id="checkout-max-discount" class="text-[10px] text-[#0a1f1c]/70 mb-5 leading-relaxed font-light"></p>
+                        <button onclick="aplicarPuntos()" id="btn-aplicar-puntos" class="w-full py-3 text-[10px] font-bold uppercase tracking-widest border border-[#0a1f1c]/30 text-[#0a1f1c] hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-all">Usar saldo</button>
                     </div>
 
-                    <div id="checkout-summary" class="w-full bg-white border border-[#0a1f1c]/10 p-5 mb-6 text-left shadow-sm rounded-lg">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] uppercase tracking-widest text-zinc-500">Subtotal</span>
-                            <span id="checkout-subtotal" class="font-serif text-sm text-[#0a1f1c]">$0</span>
+                    <div id="checkout-summary" class="w-full bg-white border border-[#0a1f1c]/10 p-6 mb-8 text-left shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-[10px] uppercase tracking-widest text-zinc-500">Subtotal Original</span>
+                            <span id="checkout-subtotal" class="font-serif text-lg text-[#0a1f1c]">$0</span>
                         </div>
                         
-                        <div id="checkout-tier-discount" class="flex justify-between items-center mb-2 hidden">
+                        <div id="checkout-tier-discount" class="flex justify-between items-center mb-4 hidden">
                             <span id="checkout-tier-label" class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold">Beneficio VIP</span>
-                            <span id="checkout-tier-amount" class="font-serif text-sm text-[#c5a059] font-bold">-$0</span>
+                            <span id="checkout-tier-amount" class="font-serif text-lg text-[#c5a059] font-bold">-$0</span>
                         </div>
 
-                        <div id="checkout-points-discount" class="flex justify-between items-center mb-2 hidden">
-                            <span class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold">Puntos</span>
-                            <span id="checkout-points-amount" class="font-serif text-sm text-[#c5a059] font-bold">-$0</span>
+                        <div id="checkout-points-discount" class="flex justify-between items-center mb-4 hidden">
+                            <span class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold">Saldo Canjeado</span>
+                            <span id="checkout-points-amount" class="font-serif text-lg text-[#c5a059] font-bold">-$0</span>
                         </div>
 
-                        <div class="flex justify-between items-start mb-3 border-b border-[#0a1f1c]/10 pb-3">
-                            <span id="checkout-shipping-label" class="text-[10px] uppercase tracking-widest text-zinc-500">Despacho</span>
+                        <div class="flex justify-between items-start mb-6 border-b border-[#0a1f1c]/10 pb-6">
+                            <span id="checkout-shipping-label" class="text-[10px] uppercase tracking-widest text-zinc-500">Logística</span>
                             <div class="text-right">
-                                <span id="checkout-shipping" class="font-serif text-sm text-[#0a1f1c]">$0</span>
-                                <span id="checkout-shipping-notice" class="text-[8px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-0.5 hidden"></span>
+                                <span id="checkout-shipping" class="font-serif text-lg text-[#0a1f1c]">$0</span>
+                                <span id="checkout-shipping-notice" class="text-[8px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 hidden"></span>
                             </div>
                         </div>
                         
                         <div class="flex justify-between items-end">
-                            <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Total</span>
-                            <span id="checkout-final-total" class="font-serif text-2xl text-[#0a1f1c] font-bold">$0</span>
+                            <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Total a Pagar</span>
+                            <span id="checkout-final-total" class="font-serif text-3xl text-[#0a1f1c] italic">$0</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Pasarelas -->
-                <div class="w-full space-y-3">
-                    <button type="button" class="w-full py-4 bg-[#0a1f1c] text-white rounded-lg text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-zinc-800 transition-colors shadow-md flex items-center justify-center gap-2" onclick="procesarPago('mp')">
-                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" class="w-4 h-4 invert" alt=""> Pagar con Mercado Pago
+                <div class="w-full space-y-4">
+                    <button type="button" class="btn-premium w-full py-5 text-sm uppercase tracking-widest flex items-center justify-center gap-3 shadow-lg" onclick="procesarPago('mp')">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" class="w-4 h-4" style="filter: brightness(0) saturate(100%) invert(72%) sepia(19%) saturate(1142%) hue-rotate(1deg) brightness(88%) contrast(92%);" alt="">
+                        Pagar con Mercado Pago
                     </button>
-                    <button type="button" class="w-full py-4 bg-transparent border-2 border-[#0a1f1c] text-[#0a1f1c] rounded-lg text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-[#0a1f1c] hover:text-white transition-colors flex items-center justify-center gap-2" onclick="procesarPago('paypal')">
-                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" class="w-4 h-4" alt=""> Pagar con PayPal
+                    <button type="button" class="w-full py-5 bg-transparent border border-[#0a1f1c]/40 text-[#0a1f1c] hover:bg-[#0a1f1c] hover:text-white transition-all text-sm uppercase tracking-widest font-bold flex items-center justify-center gap-3 shadow-sm" onclick="procesarPago('paypal')">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" class="w-4 h-4" alt="">
+                        Pagar con PayPal
                     </button>
                 </div>
 
-                <div id="loading-payment" style="display: none;" class="mt-6 w-full text-center">
+                <div id="loading-payment" style="display: none;" class="mt-8 w-full text-center">
                     <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Procesando Pasarela Segura...</p>
                 </div>
-                <div id="paypal-container" class="w-full mt-4 hidden min-h-[150px]"></div>
+                <div id="paypal-container" class="w-full mt-6 hidden min-h-[150px]"></div>
 
-                <button onclick="goToStep('step-2')" class="mt-8 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
+                <button onclick="window.cambiarFase('phase-2')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black transition-opacity">Volver a la Tarjeta</button>
             </div>
 
         </div>
