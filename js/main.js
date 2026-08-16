@@ -1689,163 +1689,159 @@ setInterval(updateCountdown, 1000);
 updateCountdown();
 
 // ==========================================
-// SENSOR MAESTRO 4D & TELEMETRÍA 360° (LA FORESTA)
+// SENSOR MAESTRO 4D & TELEMETRÍA GLOBAL (LA FORESTA)
 // ==========================================
-(function() {
-    if (window.LF_TRACKER_INITIALIZED) return;
-    window.LF_TRACKER_INITIALIZED = true;
+window.LF_TRACKER_INITIALIZED = true;
 
-    const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
-    
-    let sid = sessionStorage.getItem('lf_sid_4d') || sessionStorage.getItem('lf_sid');
-    if (!sid) {
-        sid = 'sid_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
-        sessionStorage.setItem('lf_sid_4d', sid);
-        sessionStorage.setItem('lf_sid', sid);
-    }
+const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
 
-    let pagePath = window.location.pathname;
-    if (pagePath === '/' || pagePath === '') pagePath = '/index.html';
-    const pageStartTime = Date.now();
+let sid = sessionStorage.getItem('lf_sid_4d') || sessionStorage.getItem('lf_sid');
+if (!sid) {
+    sid = 'sid_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+    sessionStorage.setItem('lf_sid_4d', sid);
+    sessionStorage.setItem('lf_sid', sid);
+}
 
-    window.trackEvent4D = function(name, data = {}) {
-        const payload = JSON.stringify({
-            session_id: sid,
-            event_name: name,
-            event_data: data,
-            url: pagePath
-        });
+let pagePath = window.location.pathname;
+if (pagePath === '/' || pagePath === '') pagePath = '/index.html';
+const pageStartTime = Date.now();
 
-        // Fetch con keepalive es 100% compatible y evade cualquier bloqueo CORS del navegador
-        fetch(API_TRACK, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: payload,
-            keepalive: true
-        }).catch(() => {});
-    };
+// 1. Declaración global directa
+window.trackEvent4D = function(name, data = {}) {
+    const payload = JSON.stringify({
+        session_id: sid,
+        event_name: name,
+        event_data: data,
+        url: pagePath
+    });
 
-    // 1. Registro de vista inmediata
-    window.trackEvent4D('page_view');
+    fetch(API_TRACK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+        keepalive: true
+    }).catch(() => {});
+};
 
-    // 2. Registro de compra si está en gracias.html
-    if (pagePath.includes('gracias.html')) {
-        const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
-        cartData.forEach(item => {
-            window.trackEvent4D('purchase', { product_id: item.id, product_name: item.name, price: item.price, qty: item.qty });
-        });
-    }
+// 2. Registro de vista inmediata
+window.trackEvent4D('page_view');
 
-    // 3. Sensor de Profundidad de Lectura (Scroll Depth)
-    let scrollFlags = { 25: false, 50: false, 75: false, 100: false };
-    window.addEventListener('scroll', function() {
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        if (docHeight <= 0) return;
-        const scrollPct = Math.round((window.scrollY / docHeight) * 100);
-        [25, 50, 75, 100].forEach(depth => {
-            if (scrollPct >= depth && !scrollFlags[depth]) {
-                scrollFlags[depth] = true;
-                window.trackEvent4D('scroll_depth', { depth: depth });
-            }
-        });
-    }, { passive: true });
+// 3. Registro de compra en gracias.html
+if (pagePath.includes('gracias.html')) {
+    const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+    cartData.forEach(item => {
+        window.trackEvent4D('purchase', { product_id: item.id, product_name: item.name, price: item.price, qty: item.qty });
+    });
+}
 
-    // 4. Heartbeat continuo para registrar el tiempo real sin caídas
-    function reportTime(event) {
-        const seconds = Math.round((Date.now() - pageStartTime) / 1000);
-        const currentCart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
-        const cartVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-        const email = document.getElementById('buyer-email')?.value?.trim() || '';
-        const name = document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || '';
-        const phone = document.getElementById('receiver-phone')?.value?.trim() || '';
-        const currentStep = document.querySelector(".checkout-step.active")?.id || 'checkout';
+// 4. Sensor de Profundidad de Lectura (Scroll Depth)
+let scrollFlags = { 25: false, 50: false, 75: false, 100: false };
+window.addEventListener('scroll', function() {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) return;
+    const scrollPct = Math.round((window.scrollY / docHeight) * 100);
+    [25, 50, 75, 100].forEach(depth => {
+        if (scrollPct >= depth && !scrollFlags[depth]) {
+            scrollFlags[depth] = true;
+            window.trackEvent4D('scroll_depth', { depth: depth });
+        }
+    });
+}, { passive: true });
 
-        window.trackEvent4D('time_on_page', { 
-            seconds: seconds,
+// 5. Heartbeat y reporte de tiempo continuo
+function reportTime(event) {
+    const seconds = Math.round((Date.now() - pageStartTime) / 1000);
+    const currentCart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+    const cartVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+    const email = document.getElementById('buyer-email')?.value?.trim() || '';
+    const name = document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || '';
+    const phone = document.getElementById('receiver-phone')?.value?.trim() || '';
+    const currentStep = document.querySelector(".checkout-step.active")?.id || 'checkout';
+
+    window.trackEvent4D('time_on_page', { 
+        seconds: seconds,
+        cart_value: cartVal,
+        email: email,
+        name: name,
+        phone: phone
+    });
+
+    if (event && (event.type === 'beforeunload' || event.type === 'pagehide') && email && cartVal > 0) {
+        window.trackEvent4D('abandonment_or_close', {
+            step_name: currentStep,
             cart_value: cartVal,
             email: email,
             name: name,
             phone: phone
         });
+    }
+}
 
-        if (event && (event.type === 'beforeunload' || event.type === 'pagehide') && email && cartVal > 0) {
-            window.trackEvent4D('abandonment_or_close', {
-                step_name: currentStep,
-                cart_value: cartVal,
-                email: email,
-                name: name,
-                phone: phone
-            });
+setInterval(reportTime, 15000);
+window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') reportTime(event); });
+window.addEventListener('pagehide', reportTime);
+window.addEventListener('beforeunload', reportTime);
+
+// 6. Interceptores de Avance en el Checkout
+if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
+    const originalGoToStep = window.goToStep;
+    window.goToStep = function(step) { 
+        window.trackEvent4D('checkout_step', { step_target: String(step) }); 
+        return originalGoToStep.apply(this, arguments); 
+    };
+    window.goToStep._tracked4d = true;
+}
+
+// 7. Sensor Universal de Clics e Interacciones
+document.addEventListener('click', function(e) {
+    const target = e.target.closest('button, a, .step-option, .product-card');
+    if (!target) return;
+
+    const text = (target.innerText || target.textContent || '').trim();
+    const textLower = text.toLowerCase();
+    const onclickAttr = target.getAttribute('onclick') || '';
+    const hrefAttr = target.getAttribute('href') || '';
+
+    // Anclas
+    if (hrefAttr.startsWith('#') || hrefAttr.includes('#')) {
+        const anchor = hrefAttr.includes('#') ? '#' + hrefAttr.split('#')[1] : hrefAttr;
+        if (anchor && anchor !== '#') {
+            window.trackEvent4D('click', { target: anchor });
         }
     }
 
-    // Latido cada 15 segundos y al minimizar o cerrar pestaña
-    setInterval(reportTime, 15000);
-    window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') reportTime(event); });
-    window.addEventListener('pagehide', reportTime);
-    window.addEventListener('beforeunload', reportTime);
-
-    // 5. Interceptores de Avance en el Checkout
-    if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
-        const originalGoToStep = window.goToStep;
-        window.goToStep = function(step) { 
-            window.trackEvent4D('checkout_step', { step_target: String(step) }); 
-            return originalGoToStep.apply(this, arguments); 
-        };
-        window.goToStep._tracked4d = true;
+    // Agregar al carrito
+    if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || textLower === 'añadir' || textLower.includes('añadir al atelier') || textLower === 'anadir') {
+        const matchId = onclickAttr.match(/(?:addToCart|agregarYVolver)\s*\(\s*(\d+)/);
+        const prodId = matchId ? parseInt(matchId[1], 10) : 0;
+        
+        const card = target.closest('.product-card, section, main') || document;
+        const titleEl = card.querySelector('h1, h3, h6, .product-title');
+        let prodName = titleEl ? titleEl.innerText.trim() : pagePath.replace('/', '').replace('.html', '').replace(/-/g, ' ');
+        
+        if (prodId > 100 && prodId < 200) {
+            window.trackEvent4D('upsell_added', { product_name: prodName, target: prodName, product_id: prodId });
+        } else {
+            window.trackEvent4D('add_to_cart', { product_name: prodName, target: prodName, product_id: prodId });
+        }
+        return;
     }
 
-    // 6. Sensor Universal de Clics e Interacciones
-    document.addEventListener('click', function(e) {
-        const target = e.target.closest('button, a, .step-option, .product-card');
-        if (!target) return;
+    // Pasarelas
+    if (onclickAttr.includes('iniciarMercadoPago') || textLower.includes('mercadopago')) {
+        const cartVal = JSON.parse(localStorage.getItem('laforesta_cart') || '[]').reduce((acc, item) => acc + (item.price * item.qty), 0);
+        const email = document.getElementById('buyer-email')?.value?.trim() || '';
+        window.trackEvent4D('payment_initiated', { method: 'MercadoPago', target: 'MercadoPago', cart_value: cartVal, email: email });
+        return;
+    } else if (onclickAttr.includes('iniciarPayPal') || textLower.includes('paypal')) {
+        const cartVal = JSON.parse(localStorage.getItem('laforesta_cart') || '[]').reduce((acc, item) => acc + (item.price * item.qty), 0);
+        const email = document.getElementById('buyer-email')?.value?.trim() || '';
+        window.trackEvent4D('payment_initiated', { method: 'PayPal', target: 'PayPal', cart_value: cartVal, email: email });
+        return;
+    }
 
-        const text = (target.innerText || target.textContent || '').trim();
-        const textLower = text.toLowerCase();
-        const onclickAttr = target.getAttribute('onclick') || '';
-        const hrefAttr = target.getAttribute('href') || '';
-
-        // Detección de navegación por Anclas (#vault, #garden, etc.)
-        if (hrefAttr.startsWith('#') || hrefAttr.includes('#')) {
-            const anchor = hrefAttr.includes('#') ? '#' + hrefAttr.split('#')[1] : hrefAttr;
-            if (anchor && anchor !== '#') {
-                window.trackEvent4D('click', { target: anchor });
-            }
-        }
-
-        // Añadir producto o Upsell al carrito
-        if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || textLower === 'añadir' || textLower.includes('añadir al atelier') || textLower === 'anadir') {
-            const matchId = onclickAttr.match(/(?:addToCart|agregarYVolver)\s*\(\s*(\d+)/);
-            const prodId = matchId ? parseInt(matchId[1], 10) : 0;
-            
-            const card = target.closest('.product-card, section, main') || document;
-            const titleEl = card.querySelector('h1, h3, h6, .product-title');
-            let prodName = titleEl ? titleEl.innerText.trim() : pagePath.replace('/', '').replace('.html', '').replace(/-/g, ' ');
-            
-            if (prodId > 100 && prodId < 200) {
-                window.trackEvent4D('upsell_added', { product_name: prodName, target: prodName, product_id: prodId });
-            } else {
-                window.trackEvent4D('add_to_cart', { product_name: prodName, target: prodName, product_id: prodId });
-            }
-            return;
-        }
-
-        // Pasarelas de pago
-        if (onclickAttr.includes('iniciarMercadoPago') || textLower.includes('mercadopago')) {
-            const cartVal = JSON.parse(localStorage.getItem('laforesta_cart') || '[]').reduce((acc, item) => acc + (item.price * item.qty), 0);
-            const email = document.getElementById('buyer-email')?.value?.trim() || '';
-            window.trackEvent4D('payment_initiated', { method: 'MercadoPago', target: 'MercadoPago', cart_value: cartVal, email: email });
-            return;
-        } else if (onclickAttr.includes('iniciarPayPal') || textLower.includes('paypal')) {
-            const cartVal = JSON.parse(localStorage.getItem('laforesta_cart') || '[]').reduce((acc, item) => acc + (item.price * item.qty), 0);
-            const email = document.getElementById('buyer-email')?.value?.trim() || '';
-            window.trackEvent4D('payment_initiated', { method: 'PayPal', target: 'PayPal', cart_value: cartVal, email: email });
-            return;
-        }
-
-        // Otras interacciones generales de navegación
-        if (text && text.length > 0 && text.length < 40 && !hrefAttr.startsWith('#')) {
-            window.trackEvent4D('click', { target: text });
-        }
-    }, true);
-})();
+    // Clics generales
+    if (text && text.length > 0 && text.length < 40 && !hrefAttr.startsWith('#')) {
+        window.trackEvent4D('click', { target: text });
+    }
+}, true);
