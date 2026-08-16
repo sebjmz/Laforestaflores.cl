@@ -560,20 +560,6 @@ function guardarProgresoCheckout() {
     localStorage.setItem("laforesta_shippingCost", shippingCost);
     localStorage.setItem("laforesta_selectedZoneName", selectedZoneName);
     localStorage.setItem("laforesta_selectedPalette", selectedPalette);
-
-    const tempEmail = document.getElementById('buyer-email')?.value?.trim() || '';
-    const currentCart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
-    const tempVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-
-    if (tempEmail && tempEmail.includes('@') && typeof window.trackEvent4D === 'function') {
-        window.trackEvent4D('lead_captured', {
-            step_name: e.currentStep,
-            cart_value: tempVal,
-            email: tempEmail,
-            name: e.senderName || e.receiverName || '',
-            phone: e.receiverPhone || ''
-        });
-    }
 }
 
 function restaurarProgresoCheckout() {
@@ -721,6 +707,7 @@ function goToStep(e) {
     if (a) a.classList.add("active");
     guardarProgresoCheckout();
     
+    // Validar saldo y nivel si se entra al checkout de pago final
     if (t === "step-6") {
         cargarVistaPreviaPuntosNativo();
     }
@@ -1402,294 +1389,8 @@ function escribirMensaje(e) {
     }, 15);
 }
 
-if (!document.getElementById("fab-wave-style")) {
-    let style = document.createElement("style");
-    style.id = "fab-wave-style";
-    style.innerHTML = `
-    @keyframes oceanRipple {
-        0% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.8), 0 0 0 0 rgba(197, 160, 89, 0.4); }
-        70% { box-shadow: 0 0 0 15px rgba(197, 160, 89, 0), 0 0 0 30px rgba(197, 160, 89, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0), 0 0 0 0 rgba(197, 160, 89, 0); }
-    }
-    .fab-wave {
-        animation: oceanRipple 2s infinite cubic-bezier(0.4, 0, 0.6, 1) !important;
-        border-color: #c5a059 !important;
-    }
-    .hidden-panel { display: none !important; }`;
-    document.head.appendChild(style);
-}
-
-function toggleFabMenu() {
-    let fabBtn = document.getElementById("main-fab-btn") || document.querySelector('button[aria-label="Menú rápido"]');
-    if (fabBtn && !localStorage.getItem("laforesta_fab_interacted")) {
-        localStorage.setItem("laforesta_fab_interacted", "true");
-        fabBtn.classList.remove("fab-wave");
-    }
-    let e = document.getElementById("fab-menu");
-    let t = document.getElementById("fab-icon");
-    if (e && t) {
-        if (e.classList.contains("opacity-0")) {
-            e.classList.remove("opacity-0", "pointer-events-none", "invisible", "translate-y-4");
-            e.classList.add("opacity-100", "pointer-events-auto", "translate-y-0");
-            t.style.transform = "rotate(180deg)";
-        } else {
-            e.classList.add("opacity-0", "pointer-events-none", "invisible", "translate-y-4");
-            e.classList.remove("opacity-100", "pointer-events-auto", "translate-y-0");
-            t.style.transform = "rotate(0deg)";
-        }
-    }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    let grid = document.getElementById("product-grid");
-    if (grid) {
-        grid.innerHTML = catalog.map(e => {
-            let t = getLuxuryBadge(e.id);
-            let a = t ? `<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm">${t}</div>` : "";
-            let r = (e.id === 3 || e.id === 5) ? `<div class="urgency-tag">Últimas 2 unidades</div>` : "";
-            return `
-            <div class="product-card group flex flex-col h-full">
-                <a href="${e.url || "#"}" class="block">
-                    <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center rounded-xl">
-                        <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
-                        ${r}
-                        <img src="${e.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${e.name}" loading="lazy">
-                        ${a}
-                    </div>
-                </a>
-                <div class="flex flex-col flex-grow mb-3 md:mb-4">
-                    <a href="${e.url || "#"}" class="hover:text-[#c5a059] transition-colors inline-block py-1">
-                        <h3 class="font-serif text-sm md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${e.name}</h3>
-                    </a>
-                    <p class="text-[8px] md:text-[10px] uppercase tracking-widest opacity-70 mt-1 line-clamp-2"><span class="text-[#c5a059] mr-1">★★★★★</span> ${e.desc}</p>
-                </div>
-                <div class="mt-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-                    <span class="font-serif text-base md:text-xl text-[#0a1f1c]">$${e.price.toLocaleString("es-CL")}</span>
-                    <button onclick="addToCart(${e.id}, '${e.name}', ${e.price}, '${e.img}')" 
-                            class="w-full md:w-auto px-4 py-3 border border-[#0a1f1c] text-[#0a1f1c] text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors duration-300 text-center">
-                        Añadir
-                    </button>
-                </div>
-            </div>`;
-        }).join("");
-    }
-
-    let fabBtn = document.getElementById("main-fab-btn") || document.querySelector('button[aria-label="Menú rápido"]');
-    if (fabBtn && !localStorage.getItem("laforesta_fab_interacted")) {
-        fabBtn.classList.add("fab-wave");
-    }
-    
-    let urlParams = new URLSearchParams(window.location.search);
-    let payResult = urlParams.get("payment_result");
-    let status = urlParams.get("status") || urlParams.get("collection_status");
-    
-    if (payResult === "success" && status === "approved") {
-        localStorage.removeItem("pending_laforesta_order");
-        localStorage.removeItem("laforesta_cart");
-        localStorage.removeItem("laforesta_checkout_inputs");
-        localStorage.removeItem("laforesta_checkout_abierto");
-        localStorage.removeItem("laforesta_shippingCost");
-        localStorage.removeItem("laforesta_selectedZoneName");
-        localStorage.removeItem("laforesta_selectedLogistics");
-        localStorage.removeItem("laforesta_selectedDate");
-        localStorage.removeItem("laforesta_selectedTimeSlot");
-        localStorage.removeItem("laforesta_isExpressDelivery");
-        localStorage.removeItem("laforesta_selectedPalette");
-        cart = [];
-        updateCartUI();
-        alert("Pago acreditado exitosamente. Recibirá su comprobante y detalles de logística vía correo electrónico.");
-        window.history.replaceState({}, document.title, window.location.pathname);
-    } else if (payResult === "failure" || payResult === "pending" || status === "rejected" || status === "cancelled") {
-        localStorage.removeItem("pending_laforesta_order");
-        alert("El pago no fue acreditado o fue cancelado. Intente nuevamente.");
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-    
-    let yearEl = document.getElementById("year-footer");
-    if (yearEl) yearEl.innerText = new Date().getFullYear();
-    
-    let gardenFlow = document.getElementById("garden-flow");
-    if (gardenFlow) gardenFlow.style.transform = "translateY(100%)";
-    
-    updateCartUI();
-    restaurarProgresoCheckout();
-    
-    if (urlParams.get("action") === "open_cart") {
-        setTimeout(() => {
-            let b = document.getElementById("atelier-bag");
-            if (b && !b.classList.contains("open")) toggleCart();
-        }, 150);
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-    
-    let collages = document.querySelectorAll(".collage-page");
-    collages.forEach(c => {
-        c.addEventListener("mouseenter", function() {
-            if (window.innerWidth > 1024) {
-                collages.forEach(item => item.classList.remove("active-page"));
-                this.classList.add("active-page");
-            }
-        });
-        c.addEventListener("mouseleave", function() {
-            if (window.innerWidth > 1024) this.classList.remove("active-page");
-        });
-    });
-    
-    if (window.innerWidth <= 1024) {
-        let observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    collages.forEach(item => item.classList.remove("active-page"));
-                    entry.target.classList.add("active-page");
-                }
-            });
-        }, { root: null, rootMargin: "-35% 0px -35% 0px", threshold: 0 });
-        collages.forEach(item => observer.observe(item));
-    }
-    
-    let slides = document.querySelectorAll(".slide-item");
-    if (slides.length > 0) {
-        let cur = 0;
-        let total = slides.length;
-        let dots = document.getElementById("hero-dots");
-        let timer;
-        let isStopped = false;
-        let isMoving = false;
-        
-        function moveSlide(target, dir) {
-            if (isMoving) return;
-            isMoving = true;
-            let current = slides[cur];
-            let next = slides[target];
-            next.style.transition = "none";
-            next.style.zIndex = "20";
-            current.style.zIndex = "10";
-            next.style.transform = dir === "next" ? "translate3d(100%, 0, 0)" : "translate3d(-100%, 0, 0)";
-            
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    let transitionStyle = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
-                    next.style.transition = transitionStyle;
-                    current.style.transition = transitionStyle;
-                    next.style.transform = "translate3d(0%, 0, 0)";
-                    current.style.transform = dir === "next" ? "translate3d(-100%, 0, 0)" : "translate3d(100%, 0, 0)";
-                    cur = target;
-                    updateDots();
-                    updateAnims();
-                    setTimeout(() => { isMoving = false; }, 600);
-                });
-            });
-        }
-        
-        function updateDots() {
-            if (dots) {
-                Array.from(dots.children).forEach((dot, idx) => {
-                    let visual = dot.querySelector(".dot-visual") || dot;
-                    if (idx === cur) {
-                        visual.classList.remove("bg-transparent");
-                        visual.classList.add("bg-[#c5a059]", "scale-125");
-                    } else {
-                        visual.classList.remove("bg-[#c5a059]", "scale-125");
-                        visual.classList.add("bg-transparent");
-                    }
-                });
-            }
-        }
-        
-        function updateAnims() {
-            slides.forEach((s, idx) => {
-                let anims = s.querySelectorAll(".slide-anim");
-                if (idx === cur) {
-                    setTimeout(() => {
-                        anims.forEach(el => {
-                            el.classList.remove("opacity-0", "translate-y-4", "translate-y-8");
-                            el.classList.add("opacity-100", "translate-y-0");
-                        });
-                    }, 300);
-                } else {
-                    anims.forEach(el => {
-                        el.classList.remove("opacity-100", "translate-y-0");
-                        if (el.tagName === "H2") {
-                            el.classList.add("opacity-0", "translate-y-8");
-                        } else {
-                            el.classList.add("opacity-0", "translate-y-4");
-                        }
-                    });
-                }
-            });
-        }
-        
-        slides.forEach((s, idx) => {
-            if (idx === 0) {
-                s.style.transform = "translate3d(0%, 0, 0)";
-                s.style.zIndex = "20";
-            } else {
-                s.style.transform = "translate3d(100%, 0, 0)";
-                s.style.zIndex = "10";
-            }
-            if (dots) {
-                let btn = document.createElement("button");
-                btn.setAttribute("aria-label", "Ver diapositiva " + (idx + 1));
-                btn.className = "w-6 h-6 md:w-7 md:h-7 flex items-center justify-center rounded-full transition-all duration-300";
-                btn.innerHTML = `<span class="dot-visual block w-2 h-2 md:w-2.5 md:h-2.5 rounded-full border border-[#c5a059] transition-all duration-300 ${idx === 0 ? "bg-[#c5a059] scale-125" : "bg-transparent"}"></span>`;
-                btn.onclick = () => {
-                    if (isMoving || cur === idx) return;
-                    if (typeof window.stopAutoPlay === "function") window.stopAutoPlay();
-                    moveSlide(idx, idx > cur ? "next" : "prev");
-                };
-                btn.addEventListener("mouseenter", () => {
-                    let v = btn.querySelector(".dot-visual");
-                    if (v && idx !== cur) v.style.backgroundColor = "rgba(197,160,89,0.5)";
-                });
-                btn.addEventListener("mouseleave", () => {
-                    let v = btn.querySelector(".dot-visual");
-                    if (v && idx !== cur) v.style.backgroundColor = "";
-                });
-                dots.appendChild(btn);
-            }
-        });
-        
-        window.stopAutoPlay = function() {
-            isStopped = true;
-            clearInterval(timer);
-        };
-        
-        window.nextHeroSlide = function(userInteracted = false) {
-            if (userInteracted && typeof window.stopAutoPlay === "function") window.stopAutoPlay();
-            if (isMoving) return;
-            moveSlide((cur + 1) % total, "next");
-        };
-        
-        window.prevHeroSlide = function(userInteracted = false) {
-            if (userInteracted && typeof window.stopAutoPlay === "function") window.stopAutoPlay();
-            if (isMoving) return;
-            moveSlide((cur - 1 + total) % total, "prev");
-        };
-        
-        updateAnims();
-        timer = setInterval(() => {
-            if (!isStopped) window.nextHeroSlide(false);
-        }, 8000);
-        
-        let wrapper = document.getElementById("slider-wrapper");
-        if (wrapper) {
-            let startX = 0;
-            let endX = 0;
-            wrapper.addEventListener("touchstart", evt => { startX = evt.changedTouches[0].screenX; }, { passive: true });
-            wrapper.addEventListener("touchend", evt => {
-                endX = evt.changedTouches[0].screenX;
-                if (endX < startX - 50) window.nextHeroSlide(true);
-                if (endX > startX + 50) window.prevHeroSlide(true);
-            }, { passive: true });
-        }
-    }
-});
-
-setInterval(updateCountdown, 1000);
-updateCountdown();
-
 // ==========================================
-// SENSOR MAESTRO 4D & TELEMETRÍA GLOBAL (LA FORESTA)
+// SENSOR MAESTRO 4D & TELEMETRÍA GLOBAL
 // ==========================================
 window.LF_TRACKER_INITIALIZED = true;
 
@@ -1792,7 +1493,24 @@ if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
     window.goToStep._tracked4d = true;
 }
 
-// 7. Sensor Universal de Clics e Interacciones
+// 7. INYECCIÓN DE RETARDO PARA AGREGAR AL CARRITO (Páginas de Producto)
+// Esto evita que window.location.href mate el envío del evento a la base de datos
+const checkAgregarFunc = setInterval(() => {
+    if (typeof window.agregarYVolver === 'function' && !window.agregarYVolver._tracked4d) {
+        const originalAgregar = window.agregarYVolver;
+        window.agregarYVolver = function(id, name, price, img) {
+            window.trackEvent4D(id > 100 && id < 200 ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name });
+            // Pausa mágica de 250ms para que Cloudflare reciba el dato antes del salto de página
+            setTimeout(() => {
+                originalAgregar(id, name, price, img);
+            }, 250);
+        };
+        window.agregarYVolver._tracked4d = true;
+        clearInterval(checkAgregarFunc);
+    }
+}, 500);
+
+// 8. Sensor Universal de Clics e Interacciones
 document.addEventListener('click', function(e) {
     const target = e.target.closest('button, a, .step-option, .product-card');
     if (!target) return;
@@ -1810,9 +1528,9 @@ document.addEventListener('click', function(e) {
         }
     }
 
-    // Agregar al carrito
-    if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || textLower === 'añadir' || textLower.includes('añadir al atelier') || textLower === 'anadir') {
-        const matchId = onclickAttr.match(/(?:addToCart|agregarYVolver)\s*\(\s*(\d+)/);
+    // Agregar al carrito (Página Index/Categorías donde se usa addToCart nativo sin redirección inmediata)
+    if (onclickAttr.includes('addToCart(') || textLower === 'añadir' || textLower.includes('añadir al atelier') || textLower === 'anadir') {
+        const matchId = onclickAttr.match(/(?:addToCart)\s*\(\s*(\d+)/);
         const prodId = matchId ? parseInt(matchId[1], 10) : 0;
         
         const card = target.closest('.product-card, section, main') || document;
