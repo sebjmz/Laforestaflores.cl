@@ -636,11 +636,14 @@ async function cargarVistaPreviaPuntosNativo() {
             const container = document.getElementById('points-redemption-container');
             if (container && data.points_balance > 0) {
                 container.classList.remove('hidden');
-                window.puntosTotalesUsuario = data.points_balance;
-                window.maxPuntosCanjeables = data.max_redeemable_clp;
-                const ptsVisual = window.puntosTotalesUsuario - window.descuentoPuntos;
+                
                 let balEl = document.getElementById('checkout-points-balance');
-                if (balEl) balEl.innerText = `${ptsVisual.toLocaleString("es-CL")} pts`;
+                if (balEl) {
+                    balEl.setAttribute('data-saldo-total', data.points_balance);
+                    window.maxPuntosCanjeables = data.max_redeemable_clp;
+                    const ptsVisual = data.points_balance - (window.descuentoPuntos || 0);
+                    balEl.innerText = `${ptsVisual.toLocaleString("es-CL")} pts`;
+                }
 
                 let txt = `Puedes usar hasta ${data.max_redeemable_clp.toLocaleString("es-CL")} pts en esta compra (Cubre hasta el ${data.cap_pct}% del arreglo).`;
                 if (data.es_cumpleanos) txt = `¡Feliz Cumpleaños! Hoy puedes cubrir el 100% de tus flores con tus puntos. (Máx: ${data.max_redeemable_clp.toLocaleString("es-CL")})`;
@@ -674,25 +677,34 @@ async function cargarVistaPreviaPuntosNativo() {
 window.aplicarPuntos = function() {
     const btn = document.getElementById('btn-aplicar-puntos');
     const balanceEl = document.getElementById('checkout-points-balance');
+    
+    // Extraemos el saldo real que guardamos en el atributo
+    const saldoTotal = parseInt(balanceEl ? balanceEl.getAttribute('data-saldo-total') : 0) || 0;
 
     if (window.descuentoPuntos > 0) {
+        // Al anular el canje
         window.descuentoPuntos = 0;
         let pDisc = document.getElementById('checkout-points-discount');
         if(pDisc) pDisc.classList.add('hidden');
-        if(balanceEl) balanceEl.innerText = `${window.puntosTotalesUsuario.toLocaleString("es-CL")} pts`; 
+        if(balanceEl) balanceEl.innerText = `${saldoTotal.toLocaleString("es-CL")} pts`; 
         if(btn) {
             btn.innerText = "Usar mi saldo en esta compra";
             btn.classList.add('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
             btn.classList.remove('bg-[#c5a059]', 'border-transparent');
         }
     } else {
+        // Al aplicar el canje
         if(window.maxPuntosCanjeables <= 0) return;
         window.descuentoPuntos = window.maxPuntosCanjeables;
         let pDisc = document.getElementById('checkout-points-discount');
         if(pDisc) pDisc.classList.remove('hidden');
         let pAmt = document.getElementById('checkout-points-amount');
         if(pAmt) pAmt.innerText = `-$${window.descuentoPuntos.toLocaleString("es-CL")}`;
-        if(balanceEl) balanceEl.innerText = `${(window.puntosTotalesUsuario - window.descuentoPuntos).toLocaleString("es-CL")} pts`;
+        
+        // Resta visual exacta
+        const saldoRestante = saldoTotal - window.descuentoPuntos;
+        if(balanceEl) balanceEl.innerText = `${saldoRestante.toLocaleString("es-CL")} pts`;
+        
         if(btn) {
             btn.innerText = "✓ Saldo Aplicado (Hacer clic para anular)";
             btn.classList.remove('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
