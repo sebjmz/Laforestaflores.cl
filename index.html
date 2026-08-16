@@ -1449,9 +1449,9 @@
             <div id="step-4" class="checkout-step flex-col items-center w-full max-w-md text-center my-auto pb-12">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Paso 9</span>
                 <h3 class="font-serif text-4xl italic mb-4">Mensaje en la tarjeta</h3>
-                <p class="text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 mb-6 px-4 leading-relaxed font-bold">✍️ Opcional. Puedes usar los mensajes de inspiración y personalizarlos a tu gusto, o si prefieres, escríbenos el mensaje final por WhatsApp luego de tu compra.</p>
+                <p class="text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 mb-6 px-4 leading-relaxed font-bold">✍️ Este mensaje es opcional. También puedes usar los mensajes de inspiración y personalizarlos a tu gusto, o si prefieres, escribirnos el mensaje por WhatsApp luego de pagar.</p>
                 
-                <textarea id="card-message" aria-label="Mensaje para la tarjeta" oninput="guardarProgresoCheckout()" placeholder="Escriba su dedicatoria aquí..." class="w-full bg-white border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-32 mb-4 rounded shadow-sm"></textarea>
+                <textarea id="card-message" aria-label="Mensaje para la tarjeta" oninput="guardarProgresoCheckout()" placeholder="Escriba su dedicatoria aquí...(Opcional)" class="w-full bg-white border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-32 mb-4 rounded shadow-sm"></textarea>
                 
                 <div class="w-full">
                     <p class="text-[9px] uppercase tracking-widest opacity-40 mb-3 text-left">¿Necesitas inspiración?</p>
@@ -1480,7 +1480,7 @@
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Paso 10</span>
                 <h3 class="font-serif text-4xl italic mb-4">Teléfono destino <span class="text-sm font-sans uppercase tracking-widest text-zinc-400 block mt-2">(Opcional)</span></h3>
                 
-                <p class="text-[10px] uppercase tracking-widest text-[#c5a059] mb-8 px-4 leading-relaxed font-bold">🔒 Solo usaremos este número en caso de emergencia en conserjería, portería o si el repartidor se pierde. ¡Cuidamos tu sorpresa y nunca arruinaremos el secreto!</p>
+                <p class="text-[10px] uppercase tracking-widest text-[#c5a059] mb-8 px-4 leading-relaxed font-bold">🔒 Solo usaremos este número en caso de emergencia en conserjería, portería o si el repartidor se pierde. ¡Cuidamos tu presente y nunca arruinaremos la sorpresa!</p>
                 
                 <input type="tel" id="receiver-phone" aria-label="Teléfono de quien recibe" oninput="guardarProgresoCheckout()" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
                 <button onclick="goToStep('step-6')" class="mt-12 btn-premium w-full shadow-md">Siguiente</button>
