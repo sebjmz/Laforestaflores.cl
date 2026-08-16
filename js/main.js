@@ -1764,7 +1764,7 @@ updateCountdown();
     // 1. Registrar vista de página inmediata
     window.trackEvent4D('page_view');
 
-    // 2. Heartbeat para registrar el tiempo real sin perder datos
+    // 2. Heartbeat para registrar el tiempo real sin perder datos por bloqueos
     function reportTime(event) {
         const seconds = Math.round((Date.now() - pageStartTime) / 1000);
         const cart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
@@ -1795,7 +1795,7 @@ updateCountdown();
         }
     }
 
-    // Reportar tiempo cada 15 segundos y al salir/minimizar
+    // Reportar tiempo cada 15 segundos y al salir/minimizar (Soluciona el problema de 0s)
     setInterval(reportTime, 15000);
     window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') reportTime(event); });
     window.addEventListener('pagehide', reportTime);
@@ -1829,12 +1829,13 @@ updateCountdown();
             const titleEl = card.querySelector('h1, h3, h6, .product-title');
             const prodName = titleEl ? titleEl.innerText.trim() : pagePath.replace('/', '').replace('.html', '').replace(/-/g, ' ');
             
+            // Corrige los undefined de los upsells guardando correctamente en "target"
             if (prodId > 100 && prodId < 200) {
                 window.trackEvent4D('upsell_added', { product_name: prodName, target: prodName, product_id: prodId });
             } else {
                 window.trackEvent4D('add_to_cart', { product_name: prodName, target: prodName, product_id: prodId });
             }
-            return; // Detenemos aquí para no duplicar evento
+            return; 
         }
 
         // Selección de pasarelas
