@@ -1295,284 +1295,253 @@
         </div>
     </footer>
 
-    <div id="checkout-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden">
-        <div class="px-8 py-6 flex justify-between items-center border-b border-black/5">
-            <img src="img/logo-menu.webp" width="130" height="42" alt="La Foresta Flores" class="h-8 w-auto object-contain">
-            <button onclick="closeCheckout()" aria-label="Cerrar proceso de pago" class="text-4xl font-light hover:text-gold-leaf transition-colors">×</button>
+    <div id="checkout-flow" class="fixed inset-0 bg-[#fcfaf7] text-[#0a1f1c] z-[200] flex flex-col hidden overflow-hidden">
+        <!-- Encabezado Fijo -->
+        <div class="px-6 md:px-8 py-4 flex justify-between items-center border-b border-black/5 bg-white shadow-sm shrink-0">
+            <img src="img/logo-menu.webp" width="100" height="32" alt="La Foresta Flores" class="h-6 md:h-8 w-auto object-contain">
+            <button onclick="closeCheckout()" aria-label="Cerrar proceso de pago" class="text-3xl font-light hover:text-[#c5a059] transition-colors">×</button>
         </div>
 
-        <div class="flex-grow flex flex-col justify-center items-center p-6 relative">
-            <div id="step-1" class="checkout-step active flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 1</span>
-                <h3 class="font-serif text-4xl italic mb-12">¿Quién envía?</h3>
-                <input type="text" id="sender-name" aria-label="Nombre de quien envía" oninput="guardarProgresoCheckout()" placeholder="Nombre y Apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <button onclick="goToStep('step-buyer-email')" class="mt-12 btn-premium w-full">Siguiente</button>
-            </div>
-
-            <div id="step-buyer-email" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Contacto</span>
-                <h3 class="font-serif text-4xl italic mb-12">Correo electrónico</h3>
-                <p class="text-[10px] uppercase tracking-widest opacity-60 mb-6">Para enviar el comprobante digital de su pedido</p>
-                <input type="email" id="buyer-email" aria-label="Correo electrónico para el comprobante" oninput="guardarProgresoCheckout()" placeholder="su-correo@ejemplo.com" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <button onclick="validarEmailYContinuar()" class="mt-12 btn-premium w-full">Siguiente</button>
-                <button onclick="goToStep(1)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-2" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 2</span>
-                <h3 class="font-serif text-4xl italic mb-12">¿Quién recibe?</h3>
-                <input type="text" id="receiver-name" aria-label="Nombre de quien recibe" oninput="guardarProgresoCheckout()" placeholder="Nombre de esa persona especial" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <button onclick="goToStep('step-palette')" class="mt-12 btn-premium w-full">Siguiente</button>
-                <button onclick="goToStep('step-buyer-email')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-palette" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 3</span>
-                <h3 class="font-serif text-4xl italic mb-12">Tono de Selección</h3>
-                <div class="space-y-4 w-full">
-                    <button onclick="selectOption(this, 'palette'); setPalette('Tonos Pasteles & Calma')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Pasteles & Calma</button>
-                    <button onclick="selectOption(this, 'palette'); setPalette('Tonos Vibrantes & Coloridos')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Tonos Vibrantes & Coloridos</button>
-                </div>
-                <button onclick="goToStep(2)" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-            
-            <div id="step-3" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 4</span>
-                <h3 class="font-serif text-3xl italic mb-12">Logística</h3>
-                <div class="space-y-4 w-full">
-                    <button onclick="seleccionarModalidad('envio')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Envío a domicilio</button>
-                    <button onclick="seleccionarModalidad('retiro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Retiro en tienda</button>
-                </div>
-                <button onclick="goToStep('step-palette')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-zona" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Logística</span>
-                <h3 class="font-serif text-3xl italic mb-4">Seleccionar Zona</h3>
+        <!-- Contenedor Scrollable -->
+        <div class="flex-grow overflow-y-auto p-4 md:p-6 bg-zinc-50 relative pb-32">
+            <div class="max-w-2xl mx-auto space-y-6">
                 
-                <div class="w-full bg-[#c5a059]/10 border border-[#c5a059]/30 p-3 mb-6 text-left flex items-start gap-2 shadow-sm">
-                    <span class="text-[#c5a059] text-[10px] mt-0.5">⚠</span>
-                    <p class="text-[8px] uppercase tracking-widest leading-relaxed text-[#0a1f1c] opacity-80">
-                        <strong>Queremos que todo salga perfecto.</strong> Asegurate de eligir correctamente la zona para que nuestra ruta llegue a tiempo y sin inconvenientes.
-                    </p>
-                </div>
-                
-                <div class="space-y-3 w-full text-left">
-                    <button onclick="seleccionarZona(3500, 'Zona 1: Central (Reñaca/Jardín del Mar)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
-                        <div class="flex justify-between items-center w-full">
-                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">1. Zona Central</span>
-                            <span class="text-[11px] font-bold text-[#c5a059]">+$3.500</span>
+                <!-- FASE 1: Coordinación y Destino -->
+                <div class="bg-white rounded-xl border border-[#0a1f1c]/10 shadow-sm overflow-hidden">
+                    <div class="bg-[#0a1f1c] text-[#c5a059] px-6 py-4 flex items-center justify-between">
+                        <h3 class="font-serif text-xl md:text-2xl italic">1. Coordinación y Destino</h3>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <!-- Modalidad -->
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-3">Modalidad de Entrega</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button type="button" id="btn-envio" onclick="seleccionarModalidadUI('envio')" class="border-2 border-[#c5a059] bg-[#c5a059]/5 text-[#0a1f1c] py-3 rounded-lg text-xs uppercase tracking-widest font-bold transition-all shadow-sm">Envío a domicilio</button>
+                                <button type="button" id="btn-retiro" onclick="seleccionarModalidadUI('retiro')" class="border border-[#0a1f1c]/10 text-[#0a1f1c]/60 py-3 rounded-lg text-xs uppercase tracking-widest font-bold transition-all hover:bg-zinc-50">Retiro en Atelier</button>
+                            </div>
                         </div>
-                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Reñaca Centro, Los Almendros, Clínica Reñaca, Jardín del Mar, Los Pinos (Reñaca).</span>
-                    </button>
 
-                    <button onclick="seleccionarZona(5000, 'Zona 2: Local (Viña/Concón/Reñaca Norte)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
-                        <div class="flex justify-between items-center w-full">
-                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">2. Zona Local</span>
-                            <span class="text-[11px] font-bold text-[#c5a059]">+$5.000</span>
+                        <div id="panel-envio" class="space-y-6">
+                            <!-- Sector / Comuna -->
+                            <div>
+                                <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-3">Sector / Comuna</label>
+                                <select id="checkout-zona" onchange="actualizarZonaUI()" class="w-full bg-white border border-[#0a1f1c]/20 p-4 rounded-lg focus:outline-none focus:border-[#c5a059] text-sm font-bold text-[#0a1f1c] cursor-pointer appearance-none shadow-sm">
+                                    <option value="" disabled selected>Seleccione la zona de despacho...</option>
+                                    <option value="3500|Zona Central">Reñaca / Jardín del Mar / Los Almendros (+$3.500)</option>
+                                    <option value="5000|Zona Local">Gómez Carreño / Concón (+$5.000)</option>
+                                    <option value="7500|Zona Intermedia">Cerros de Viña / Chorrillos / Miraflores (+$7.500)</option>
+                                    <option value="10000|Zona Extendida">Plan Valparaíso / Paso Hondo / Quilpué (+$10.000)</option>
+                                    <option value="15000|Zona Extendida+">Quintero / Curauma / Placilla / El Belloto (+$15.000)</option>
+                                </select>
+                                <div class="mt-3 flex items-start gap-2 bg-blue-50/50 p-3 rounded-lg border border-blue-100">
+                                    <span class="text-blue-400 text-sm leading-none mt-0.5">❄️</span>
+                                    <p class="text-[9px] uppercase tracking-widest leading-relaxed text-[#0a1f1c]/70 font-medium">Nuestros despachos se realizan exclusivamente en vehículos climatizados (no en motocicletas) para garantizar que tus flores conserven su frescura e integridad visual intactas.</p>
+                                </div>
+                            </div>
+
+                            <!-- Dirección Exacta -->
+                            <div>
+                                <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-3">Dirección Exacta</label>
+                                <input type="text" id="address" placeholder="Calle, número, departamento o casa..." class="w-full bg-white border border-[#0a1f1c]/20 p-4 rounded-lg focus:outline-none focus:border-[#c5a059] text-sm font-medium text-[#0a1f1c] shadow-sm">
+                            </div>
                         </div>
-                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Reñaca Norte, Montemar, Higuerillas, Gómez Carreño, Hospital Naval, Glorias Navales, Santa Julia, Achupallas.</span>
-                    </button>
 
-                    <button onclick="seleccionarZona(7500, 'Zona 3: Intermedia (Viña Centro/Concón Alto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
-                        <div class="flex justify-between items-center w-full">
-                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">3. Zona Intermedia</span>
-                            <span class="text-[11px] font-bold text-[#c5a059]">+$7.500</span>
+                        <!-- Día y Horario -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-3">Día de Entrega</label>
+                                <select id="checkout-dia" class="w-full bg-white border border-[#0a1f1c]/20 p-4 rounded-lg focus:outline-none focus:border-[#c5a059] text-sm font-bold text-[#0a1f1c] cursor-pointer appearance-none shadow-sm">
+                                    <option value="Hoy">Hoy (Mismo Día)</option>
+                                    <option value="Mañana">Mañana</option>
+                                    <option value="Otro Día">Otro Día (Coordinaremos fecha por WhatsApp)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-3">Horario</label>
+                                <select id="checkout-horario" class="w-full bg-white border border-[#0a1f1c]/20 p-4 rounded-lg focus:outline-none focus:border-[#c5a059] text-sm font-bold text-[#0a1f1c] cursor-pointer appearance-none shadow-sm">
+                                    <option value="Mañana (11:00 a 13:00)">Mañana (11:00 a 13:00)</option>
+                                    <option value="Tarde (14:00 a 17:00)">Tarde (14:00 a 17:00)</option>
+                                    <option value="Vespertino (18:00 a 21:00)">Vespertino (18:00 a 21:00)</option>
+                                </select>
+                            </div>
                         </div>
-                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Viña Centro/Poniente, Clínica Ciudad del Mar, Hospital Gustavo Fricke, Cerros de Viña, Chorrillos, Miraflores, Cementerio Parque del Mar, Concón Los Romeros, Costa de Montemar, Lomas de Montemar.</span>
-                    </button>
-
-                    <button onclick="seleccionarZona(12000, 'Zona 4: Extendida (Quilpué/Valparaíso)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
-                        <div class="flex justify-between items-center w-full">
-                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">4. Zona Extendida</span>
-                            <span class="text-[11px] font-bold text-[#c5a059]">+$12.000</span>
+                        <div class="flex items-start gap-2 bg-[#c5a059]/5 p-3 rounded-lg border border-[#c5a059]/20">
+                            <span class="text-[#c5a059] text-sm leading-none mt-0.5">🕒</span>
+                            <p class="text-[9px] uppercase tracking-widest leading-relaxed text-[#0a1f1c]/80 font-medium">Tranquilo/a: si necesitas flexibilizar o precisar la entrega, puedes indicarnos por WhatsApp si la persona ya se encuentra en el lugar antes de que el pedido salga a ruta.</p>
                         </div>
-                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Mantagua (Las Gaviotas), Valparaíso Plan y Cerros, Hospital Carlos Van Buren, Quilpué Centro, Paso Hondo, Los Pinos.</span>
-                    </button>
 
-                    <button onclick="seleccionarZona(18000, 'Zona 5: Extendida+ (Quintero/Curauma/Belloto)')" class="step-option w-full p-4 flex flex-col gap-1.5 text-left bg-white">
-                        <div class="flex justify-between items-center w-full">
-                            <span class="text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c]">5. Zona Extendida+</span>
-                            <span class="text-[11px] font-bold text-[#c5a059]">+$18.000</span>
+                        <!-- Quién Recibe -->
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-3">¿Quién Recibe?</label>
+                            <input type="text" id="receiver-name" placeholder="Nombre y apellido de la persona homenajeada" class="w-full bg-white border border-[#0a1f1c]/20 p-4 rounded-lg focus:outline-none focus:border-[#c5a059] text-sm font-medium text-[#0a1f1c] shadow-sm">
                         </div>
-                        <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/50 leading-relaxed">Quintero, Curauma, Cementerio Parque del Sendero, Placilla de Peñuelas, El Belloto.</span>
-                    </button>
-                </div>
-                
-                <button onclick="goToStep(3)" class="mt-10 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black transition-opacity">Volver</button>
-            </div>
-
-            <div id="step-direccion" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-                <h3 class="font-serif text-3xl italic mb-6">Dirección de entrega</h3>
-                <input type="text" id="address" aria-label="Dirección de entrega" oninput="guardarProgresoCheckout()" placeholder="Calle, número, departamento o casa" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
-                <button onclick="confirmarDireccion()" class="btn-premium w-full">Confirmar dirección</button>
-                <button onclick="goToStep('step-zona')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-quien-retira" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Logística</span>
-                <h3 class="font-serif text-3xl italic mb-6">¿Quién pasará a retirar?</h3>
-                <input type="text" id="pickup-name" aria-label="Nombre de quien retira" oninput="guardarProgresoCheckout()" placeholder="Nombre y apellido" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-lg font-serif text-[#0a1f1c] mb-12">
-                <button onclick="goToStep('step-fecha')" class="btn-premium w-full">Confirmar</button>
-                <button onclick="goToStep(3)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-fecha" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 5</span>
-                <h3 class="font-serif text-3xl italic mb-12">Seleccionar fecha</h3>
-                <div class="space-y-4 w-full">
-                    <button onclick="seleccionarFecha('hoy')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Hoy</button>
-                    <button onclick="seleccionarFecha('futuro')" class="step-option w-full py-6 text-xs uppercase tracking-widest font-bold">Fecha futura</button>
-                </div>
-                <button onclick="regresarDesdeFecha()" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-calendario" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Calendario</span>
-                <h3 class="font-serif text-3xl italic mb-6">Elige el día</h3>
-                <div class="flex justify-between items-center w-full mb-6 px-2">
-                    <button onclick="cambiarMesCalendario(-1)" id="cal-prev" aria-label="Ver mes anterior" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Anterior</button>
-                    <span id="cal-month-title" class="text-xs uppercase tracking-widest font-bold text-gold-leaf"></span>
-                    <button onclick="cambiarMesCalendario(1)" id="cal-next" aria-label="Ver mes siguiente" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100">Siguiente</button>
-                </div>
-                <div class="grid grid-cols-7 gap-2 w-full text-center text-[9px] uppercase font-bold tracking-wider opacity-40 mb-2">
-                    <div>Do</div><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div>
-                </div>
-                <div id="calendar-grid" class="grid grid-cols-7 gap-2 w-full"></div>
-                <button onclick="goToStep('step-fecha')" class="mt-12 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-time" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 6</span>
-                <h3 class="font-serif text-3xl italic mb-2">Horario de entrega</h3>
-                <h4 id="time-step-chosen-date" class="text-[10px] uppercase tracking-[0.2em] text-[#0a1f1c]/60 mb-8 font-bold"></h4>
-                
-                <div id="time-slots-container" class="space-y-4 w-full mb-6"></div>
-                <button onclick="regresarDesdeTime()" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-4" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 7</span>
-                <h3 class="font-serif text-4xl italic mb-6">Mensaje en la tarjeta</h3>
-                
-                <textarea id="card-message" aria-label="Mensaje para la tarjeta" oninput="guardarProgresoCheckout()" placeholder="Escriba su dedicatoria aquí..." class="w-full bg-transparent border border-[#0a1f1c]/10 p-4 focus:outline-none focus:border-[#c5a059] text-lg font-serif text-[#0a1f1c] h-32 mb-4"></textarea>
-                
-                <div class="w-full">
-                    <p class="text-[9px] uppercase tracking-widest opacity-40 mb-3 text-left">¿Necesitas inspiración?</p>
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="escribirMensaje('romance')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Romance</button>
-                        <button onclick="escribirMensaje('condolencias')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Condolencias</button>
-                        <button onclick="escribirMensaje('agradecimiento')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Agradecimiento</button>
-                        <button onclick="escribirMensaje('cumpleanos')" class="text-[10px] uppercase tracking-widest font-bold py-2 px-3 border border-zinc-200 text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Cumpleaños</button>
                     </div>
                 </div>
 
-                <!-- Casilla de Envío Anónimo Funcional -->
-                <label class="flex items-start gap-4 mt-8 p-4 border border-[#0a1f1c]/10 rounded-lg bg-white/50 cursor-pointer hover:border-[#c5a059]/50 transition-colors w-full text-left shadow-sm">
-                  <input type="checkbox" id="envio-anonimo" class="w-5 h-5 accent-[#c5a059] cursor-pointer mt-0.5 shrink-0" style="-webkit-appearance: checkbox; appearance: auto;" onchange="guardarProgresoCheckout()">
-                  <div>
-                    <span class="block text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c] mb-1">Sorpresa Anónima</span>
-                    <span class="block text-[11px] text-[#0a1f1c]/60 leading-relaxed font-light">Entregaremos el arreglo y la tarjeta manteniendo tu identidad en absoluto secreto.</span>
-                  </div>
-                </label>
-
-                <button onclick="goToStep(5)" class="mt-12 btn-premium w-full">Siguiente</button>
-                <button onclick="goToStep('step-time')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-5" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-leaf mb-6">Paso 8</span>
-                <h3 class="font-serif text-4xl italic mb-12">Teléfono de quien recibe</h3>
-                <input type="tel" id="receiver-phone" aria-label="Teléfono de quien recibe" oninput="guardarProgresoCheckout()" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <button onclick="goToStep(6)" class="mt-12 btn-premium w-full">Siguiente</button>
-                <button onclick="goToStep(4)" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
-            </div>
-
-            <div id="step-6" class="checkout-step flex-col items-center w-full max-w-md text-center">
-                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Paso Final</span>
-                <h3 class="font-serif text-4xl italic mb-4">Confirmar y Pagar</h3>
-                
-                <p class="text-[9px] uppercase tracking-widest opacity-60 mb-6 leading-loose max-w-[280px] mx-auto text-center">
-                    Al confirmar tu pago, te enviaremos un correo con todos los detalles de tu compra. (Revisa tu Spam)
-                </p>
-                
-                <div class="w-full mb-6 flex justify-center items-center gap-2 border border-green-900/20 bg-green-50/50 py-3 rounded-lg shadow-sm">
-                    <span class="text-green-600 font-bold text-sm">✓</span>
-                    <span class="text-[10px] uppercase tracking-widest font-bold text-[#0a1f1c]">Frescura y calidad garantizada</span>
-                </div>
-
-                <div id="points-redemption-container" class="w-full bg-[#c5a059]/5 border border-[#c5a059]/30 p-5 mb-6 text-left shadow-sm rounded-lg hidden">
-                  <div class="flex justify-between items-center mb-3">
-                    <span class="text-[10px] uppercase tracking-widest font-bold text-[#0a1f1c] flex items-center gap-1.5">
-                      <svg class="w-3 h-3 text-[#c5a059]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                      Tu Saldo Acumulado
-                    </span>
-                    <span id="checkout-points-balance" class="font-serif text-sm text-[#0a1f1c] font-bold">$0</span>
-                  </div>
-                  <p id="checkout-max-discount" class="text-[10px] text-[#0a1f1c]/70 mb-4 leading-relaxed font-light"></p>
-                  <button onclick="aplicarPuntos()" id="btn-aplicar-puntos" class="w-full py-3 text-[10px] font-bold uppercase tracking-widest rounded border border-[#0a1f1c]/30 text-[#0a1f1c] hover:border-[#0a1f1c] hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-all duration-300">
-                    Usar mi saldo en esta compra
-                  </button>
-                </div>
-
-                <div id="checkout-summary" class="w-full bg-zinc-50 border border-[#0a1f1c]/10 p-5 mb-8 text-left shadow-sm rounded-lg">
-                  <div class="flex justify-between items-center mb-3">
-                    <span class="text-[10px] uppercase tracking-widest text-zinc-500">Subtotal Original</span>
-                    <span id="checkout-subtotal" class="font-serif text-sm text-[#0a1f1c]">$0</span>
-                  </div>
-                  
-                  <div id="checkout-tier-discount" class="flex justify-between items-center mb-3 hidden">
-                    <span id="checkout-tier-label" class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold">Beneficio Privé</span>
-                    <span id="checkout-tier-amount" class="font-serif text-sm text-[#c5a059] font-bold">-$0</span>
-                  </div>
-
-                  <div id="checkout-points-discount" class="flex justify-between items-center mb-3 hidden">
-                    <span class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold">Saldo Canjeado</span>
-                    <span id="checkout-points-amount" class="font-serif text-sm text-[#c5a059] font-bold">-$0</span>
-                  </div>
-
-                  <div class="flex justify-between items-start mb-4 border-b border-[#0a1f1c]/10 pb-4">
-                    <span id="checkout-shipping-label" class="text-[10px] uppercase tracking-widest text-zinc-500">Logística</span>
-                    <div class="text-right">
-                      <span id="checkout-shipping" class="font-serif text-sm text-[#0a1f1c]">$0</span>
-                      <span id="checkout-shipping-notice" class="text-[8px] uppercase tracking-[0.2em] font-bold text-[#0a1f1c] block mt-1 hidden"></span>
+                <!-- FASE 2: Dedicatoria y Tarjeta -->
+                <div class="bg-white rounded-xl border border-[#0a1f1c]/10 shadow-sm overflow-hidden">
+                    <div class="bg-zinc-100 text-[#0a1f1c] px-6 py-4 border-b border-[#0a1f1c]/10">
+                        <h3 class="font-serif text-xl md:text-2xl italic">2. Dedicatoria y Tarjeta <span class="text-[10px] font-sans uppercase tracking-widest font-bold text-[#0a1f1c]/40 ml-2">(Opcional)</span></h3>
                     </div>
-                  </div>
-                  
-                  <div class="flex justify-between items-end mt-2">
-                    <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Valor Total</span>
-                    <span id="checkout-final-total" class="font-serif text-2xl text-[#0a1f1c]">$0</span>
-                  </div>
-                </div>
-                <div id="payment-selector" class="w-full flex flex-col items-center gap-4">
-                    <button class="w-full py-4 border border-[#0a1f1c] bg-[#0a1f1c] text-[#c5a059] text-[12px] uppercase tracking-[0.2em] font-bold hover:bg-transparent hover:text-[#0a1f1c] transition-colors" onclick="iniciarMercadoPago()">
-                        Pagar con MercadoPago
-                    </button>
-                    <button class="w-full py-4 border border-[#0a1f1c] text-[#0a1f1c] text-[12px] uppercase tracking-[0.2em] font-bold hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors" onclick="iniciarPayPal()">
-                        Pagar con PayPal
-                    </button>
+                    <div class="p-6 space-y-6">
+                        <div class="flex items-start gap-2 mb-2">
+                            <span class="text-[#c5a059] text-sm leading-none mt-0.5">✍️</span>
+                            <p class="text-[10px] uppercase tracking-widest leading-relaxed text-[#0a1f1c]/70 font-medium">Cada tarjeta se escribe a mano en nuestro taller con caligrafía artesanal y tinta clásica sobre papel de alto gramaje.</p>
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-3 p-4 border border-[#c5a059] bg-[#c5a059]/5 rounded-lg cursor-pointer transition-all card-option-label shadow-sm">
+                                <input type="radio" name="card_option" value="escribir_ahora" checked onchange="toggleCardOptionsUI()" class="w-4 h-4 accent-[#c5a059]">
+                                <span class="text-xs md:text-sm uppercase tracking-widest font-bold text-[#0a1f1c]">Escribir dedicatoria ahora</span>
+                            </label>
+                            
+                            <div id="panel-dedicatoria" class="pl-8 pr-4 pb-4 animate-[fadeIn_0.3s_ease-out]">
+                                <textarea id="card-message" placeholder="Escriba su dedicatoria aquí..." class="w-full bg-white border border-[#0a1f1c]/20 p-4 rounded-lg focus:outline-none focus:border-[#c5a059] text-sm font-serif text-[#0a1f1c] h-28 resize-none mb-3 shadow-sm"></textarea>
+                                <div class="flex flex-wrap gap-2">
+                                    <button type="button" onclick="document.getElementById('card-message').value='Para la persona que ilumina mis días. Te amo infinitamente.'" class="text-[9px] uppercase tracking-widest font-bold py-1.5 px-3 border border-zinc-200 rounded-full text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Romance</button>
+                                    <button type="button" onclick="document.getElementById('card-message').value='Que este nuevo año de vida esté lleno de luz y bendiciones. ¡Feliz Cumpleaños!'" class="text-[9px] uppercase tracking-widest font-bold py-1.5 px-3 border border-zinc-200 rounded-full text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Cumpleaños</button>
+                                    <button type="button" onclick="document.getElementById('card-message').value='Acompañándote con mucho cariño en este momento tan difícil. Mis más sentidas condolencias.'" class="text-[9px] uppercase tracking-widest font-bold py-1.5 px-3 border border-zinc-200 rounded-full text-zinc-500 hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-[#c5a059]/5 transition-colors">Condolencias</button>
+                                </div>
+                            </div>
+
+                            <label class="flex items-center gap-3 p-4 border border-[#0a1f1c]/10 hover:border-[#c5a059]/50 rounded-lg cursor-pointer transition-all card-option-label">
+                                <input type="radio" name="card_option" value="whatsapp_luego" onchange="toggleCardOptionsUI()" class="w-4 h-4 accent-[#c5a059]">
+                                <div>
+                                    <span class="block text-xs md:text-sm uppercase tracking-widest font-bold text-[#0a1f1c]">Enviar mensaje por WhatsApp luego</span>
+                                    <span class="block text-[10px] text-[#0a1f1c]/50 mt-1">Completar mi compra ahora y enviar el texto después por chat.</span>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center gap-3 p-4 border border-[#0a1f1c]/10 hover:border-[#c5a059]/50 rounded-lg cursor-pointer transition-all card-option-label">
+                                <input type="radio" name="card_option" value="blanco" onchange="toggleCardOptionsUI()" class="w-4 h-4 accent-[#c5a059]">
+                                <div>
+                                    <span class="block text-xs md:text-sm uppercase tracking-widest font-bold text-[#0a1f1c]">Tarjeta en blanco</span>
+                                    <span class="block text-[10px] text-[#0a1f1c]/50 mt-1">Entregar tarjeta sellada en blanco para escribirla yo mismo/a.</span>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center gap-3 p-4 border border-[#0a1f1c]/10 hover:border-[#c5a059]/50 rounded-lg cursor-pointer transition-all card-option-label">
+                                <input type="radio" name="card_option" value="tarjeta_autor" onchange="toggleCardOptionsUI()" class="w-4 h-4 accent-[#c5a059]">
+                                <div>
+                                    <span class="block text-xs md:text-sm uppercase tracking-widest font-bold text-[#0a1f1c]">Tarjeta de Autor de la casa</span>
+                                    <span class="block text-[10px] text-[#0a1f1c]/50 mt-1">Incluir dedicatoria floral clásica y poética de cortesía de La Foresta.</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Sorpresa Anónima -->
+                        <div class="mt-6 pt-6 border-t border-[#0a1f1c]/10">
+                            <label class="flex items-start gap-4 p-4 border border-[#0a1f1c]/20 bg-zinc-100 rounded-lg cursor-pointer hover:border-[#c5a059]/50 transition-colors shadow-sm">
+                                <input type="checkbox" id="envio-anonimo" class="w-5 h-5 accent-[#c5a059] cursor-pointer mt-0.5 shrink-0" style="-webkit-appearance: checkbox; appearance: auto;">
+                                <div>
+                                    <span class="block text-[11px] uppercase tracking-widest font-bold text-[#0a1f1c] mb-1">Mantener mi nombre en reserva</span>
+                                    <span class="block text-[10px] text-[#0a1f1c]/60 leading-relaxed font-light">Sorpresa 100% anónima. Entregaremos el arreglo manteniendo tu identidad en absoluto secreto.</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="loading-payment" style="display: none;" class="mt-6 w-full text-center">
-                    <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Procesando Pasarela...</p>
+                <!-- FASE 3: Tus Datos y Pago -->
+                <div class="bg-white rounded-xl border border-[#0a1f1c]/10 shadow-sm overflow-hidden">
+                    <div class="bg-zinc-100 text-[#0a1f1c] px-6 py-4 border-b border-[#0a1f1c]/10">
+                        <h3 class="font-serif text-xl md:text-2xl italic">3. Tus Datos y Pago</h3>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <!-- Datos Comprador -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-3">Tu Nombre y Apellido (Comprador)</label>
+                                <input type="text" id="buyer-name" placeholder="Tu nombre para nuestra orden..." class="w-full bg-white border border-[#0a1f1c]/20 p-4 rounded-lg focus:outline-none focus:border-[#c5a059] text-sm font-medium text-[#0a1f1c] shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-3">Tu Correo Electrónico</label>
+                                <input type="email" id="buyer-email" placeholder="Para tu comprobante digital..." class="w-full bg-white border border-[#0a1f1c]/20 p-4 rounded-lg focus:outline-none focus:border-[#c5a059] text-sm font-medium text-[#0a1f1c] shadow-sm">
+                            </div>
+                        </div>
+
+                        <!-- Teléfonos -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-[#0a1f1c]/5">
+                            <div>
+                                <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-1">Tu WhatsApp (Quien envía)</label>
+                                <span class="block text-[9px] text-[#0a1f1c]/50 mb-3 font-medium">📱 Para enviarte fotos del ramo listo y coordinar últimos detalles.</span>
+                                <input type="tel" id="buyer-whatsapp" placeholder="+56 9..." class="w-full bg-white border border-[#0a1f1c]/20 p-4 rounded-lg focus:outline-none focus:border-[#c5a059] text-sm font-medium text-[#0a1f1c] shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase tracking-widest text-[#0a1f1c]/60 font-bold mb-1">Tel. Destinatario (Opcional)</label>
+                                <span class="block text-[9px] text-[#c5a059] mb-3 font-bold">🔒 Solo emergencias de portería. Jamás llamaremos antes.</span>
+                                <input type="tel" id="recipient-phone" placeholder="Opcional..." class="w-full bg-white border border-[#0a1f1c]/20 p-4 rounded-lg focus:outline-none focus:border-[#c5a059] text-sm font-medium text-[#0a1f1c] shadow-sm">
+                            </div>
+                        </div>
+
+                        <!-- Resumen y Pago -->
+                        <div class="mt-8 border-t border-[#0a1f1c]/10 pt-8">
+                            <div id="points-redemption-container" class="w-full bg-[#c5a059]/5 border border-[#c5a059]/30 p-5 mb-6 text-left shadow-sm rounded-lg hidden">
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="text-[10px] uppercase tracking-widest font-bold text-[#0a1f1c] flex items-center gap-1.5">Tu Saldo Acumulado</span>
+                                    <span id="checkout-points-balance" class="font-serif text-sm text-[#0a1f1c] font-bold">$0</span>
+                                </div>
+                                <p id="checkout-max-discount" class="text-[10px] text-[#0a1f1c]/70 mb-4 leading-relaxed font-light"></p>
+                                <button onclick="aplicarPuntos()" id="btn-aplicar-puntos" class="w-full py-3 text-[10px] font-bold uppercase tracking-widest rounded border border-[#0a1f1c]/30 text-[#0a1f1c] hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-all">Usar mi saldo en esta compra</button>
+                            </div>
+
+                            <div id="checkout-summary" class="w-full bg-zinc-50 border border-[#0a1f1c]/10 p-5 mb-8 text-left shadow-sm rounded-lg">
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500">Subtotal</span>
+                                    <span id="checkout-subtotal" class="font-serif text-sm text-[#0a1f1c]">$0</span>
+                                </div>
+                                
+                                <div id="checkout-tier-discount" class="flex justify-between items-center mb-3 hidden">
+                                    <span id="checkout-tier-label" class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold">Beneficio Club</span>
+                                    <span id="checkout-tier-amount" class="font-serif text-sm text-[#c5a059] font-bold">-$0</span>
+                                </div>
+
+                                <div id="checkout-points-discount" class="flex justify-between items-center mb-3 hidden">
+                                    <span class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold">Saldo Canjeado</span>
+                                    <span id="checkout-points-amount" class="font-serif text-sm text-[#c5a059] font-bold">-$0</span>
+                                </div>
+
+                                <div class="flex justify-between items-start mb-4 border-b border-[#0a1f1c]/10 pb-4">
+                                    <span id="checkout-shipping-label" class="text-[10px] uppercase tracking-widest text-zinc-500">Despacho</span>
+                                    <div class="text-right">
+                                        <span id="checkout-shipping" class="font-serif text-sm text-[#0a1f1c]">$0</span>
+                                        <span id="checkout-shipping-notice" class="text-[8px] uppercase tracking-[0.2em] font-bold text-[#c5a059] block mt-1 hidden"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between items-end mt-2">
+                                    <span class="text-xs uppercase tracking-widest font-bold text-[#0a1f1c]">Total a Pagar</span>
+                                    <span id="checkout-final-total" class="font-serif text-2xl text-[#0a1f1c] font-bold">$0</span>
+                                </div>
+                            </div>
+
+                            <!-- Opciones de Pago -->
+                            <div class="flex justify-center items-center space-x-4 opacity-60 grayscale mb-6">
+                                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" width="20" height="20" alt="Mercado Pago" class="h-5 w-auto object-contain">
+                                <span class="text-xs font-light text-zinc-300">|</span>
+                                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" width="16" height="16" alt="PayPal" class="h-4 w-auto object-contain">
+                                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" width="16" height="16" alt="Visa" class="h-4 w-auto object-contain">
+                                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" width="16" height="16" alt="Mastercard" class="h-4 w-auto object-contain">
+                            </div>
+
+                            <div id="payment-selector" class="w-full flex flex-col items-center gap-4">
+                                <button type="button" class="w-full py-4 bg-[#0a1f1c] text-[#c5a059] rounded-lg text-[11px] md:text-[12px] uppercase tracking-[0.2em] font-bold hover:scale-[1.02] transition-transform shadow-md" onclick="procesarPago('mp')">
+                                    Pagar con Mercado Pago (Webpay / Débito)
+                                </button>
+                                <button type="button" class="w-full py-4 bg-blue-600 text-white rounded-lg text-[11px] md:text-[12px] uppercase tracking-[0.2em] font-bold hover:scale-[1.02] transition-transform shadow-md" onclick="procesarPago('paypal')">
+                                    Pagar con PayPal (Internacional)
+                                </button>
+                            </div>
+
+                            <div id="loading-payment" style="display: none;" class="mt-6 w-full text-center">
+                                <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold animate-pulse">Procesando Pasarela de Pago Segura...</p>
+                            </div>
+
+                            <div id="paypal-container" class="w-full mt-4 hidden min-h-[150px]"></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mt-8 flex justify-center items-center mb-4 text-[#c5a059] text-[9px] uppercase tracking-widest font-bold">
-                    <span class="mr-2">★★★★★</span> 4.9/5 Puntuación Verificada
-                </div>
-                
-                <div class="flex justify-center items-center space-x-4 opacity-60 grayscale mb-8">
-                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" width="20" height="20" alt="Mercado Pago" class="h-5 w-auto object-contain">
-                    <span class="text-xs font-light text-zinc-300">|</span>
-                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" width="16" height="16" alt="PayPal" class="h-4 w-auto object-contain">
-                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" width="16" height="16" alt="Visa" class="h-4 w-auto object-contain">
-                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" width="16" height="16" alt="Mastercard" class="h-4 w-auto object-contain">
-                </div>
-
-                <div id="paypal-container" class="w-full mb-4 hidden min-h-[150px]"></div>
-
-                <button onclick="goToStep(5)" id="btn-volver-pago" class="text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
         </div>
     </div>
@@ -1809,50 +1778,146 @@
                     return totalPagar;
                 };
 
+                // LÓGICA DE INTERFAZ DEL NUEVO ACORDEÓN
+                window.seleccionarModalidadUI = function(mod) {
+                    window.selectedLogistics = mod;
+                    if(mod === 'retiro') {
+                        document.getElementById('btn-retiro').className = "border-2 border-[#c5a059] bg-[#c5a059]/5 text-[#0a1f1c] py-3 rounded-lg text-xs uppercase tracking-widest font-bold transition-all shadow-sm";
+                        document.getElementById('btn-envio').className = "border border-[#0a1f1c]/10 text-[#0a1f1c]/60 py-3 rounded-lg text-xs uppercase tracking-widest font-bold transition-all hover:bg-zinc-50";
+                        document.getElementById('panel-envio').classList.add('hidden');
+                        window.shippingCost = 0;
+                        window.selectedZoneName = "Retiro en Atelier";
+                    } else {
+                        document.getElementById('btn-envio').className = "border-2 border-[#c5a059] bg-[#c5a059]/5 text-[#0a1f1c] py-3 rounded-lg text-xs uppercase tracking-widest font-bold transition-all shadow-sm";
+                        document.getElementById('btn-retiro').className = "border border-[#0a1f1c]/10 text-[#0a1f1c]/60 py-3 rounded-lg text-xs uppercase tracking-widest font-bold transition-all hover:bg-zinc-50";
+                        document.getElementById('panel-envio').classList.remove('hidden');
+                        window.actualizarZonaUI();
+                    }
+                    if(typeof window.actualizarTotalConDespacho === 'function') window.actualizarTotalConDespacho();
+                };
+
+                window.actualizarZonaUI = function() {
+                    const val = document.getElementById('checkout-zona').value;
+                    if(val) {
+                        const parts = val.split('|');
+                        window.shippingCost = parseInt(parts[0], 10);
+                        window.selectedZoneName = parts[1];
+                    } else {
+                        window.shippingCost = 0;
+                        window.selectedZoneName = "No seleccionada";
+                    }
+                    if(typeof window.actualizarTotalConDespacho === 'function') window.actualizarTotalConDespacho();
+                };
+
+                window.toggleCardOptionsUI = function() {
+                    const radios = document.getElementsByName('card_option');
+                    let selected = 'escribir_ahora';
+                    for(let i=0; i<radios.length; i++) {
+                        const lbl = radios[i].closest('.card-option-label');
+                        if(radios[i].checked) {
+                            selected = radios[i].value;
+                            lbl.classList.remove('border-[#0a1f1c]/10');
+                            lbl.classList.add('border-[#c5a059]', 'bg-[#c5a059]/5');
+                        } else {
+                            lbl.classList.add('border-[#0a1f1c]/10');
+                            lbl.classList.remove('border-[#c5a059]', 'bg-[#c5a059]/5');
+                        }
+                    }
+                    if(selected === 'escribir_ahora') {
+                        document.getElementById('panel-dedicatoria').classList.remove('hidden');
+                    } else {
+                        document.getElementById('panel-dedicatoria').classList.add('hidden');
+                    }
+                };
+
+                window.procesarPago = function(metodo) {
+                    // Validar campos críticos
+                    const email = document.getElementById('buyer-email').value.trim();
+                    if(!email || !email.includes('@')) {
+                        alert("Por favor, ingrese un correo válido para enviarle el comprobante.");
+                        document.getElementById('buyer-email').focus();
+                        return;
+                    }
+                    if(window.selectedLogistics !== 'retiro' && !document.getElementById('checkout-zona').value) {
+                        alert("Por favor, seleccione el Sector / Comuna de despacho.");
+                        document.getElementById('checkout-zona').focus();
+                        return;
+                    }
+                    
+                    if (metodo === 'mp') {
+                        if(typeof window.iniciarMercadoPago === 'function') window.iniciarMercadoPago();
+                    } else {
+                        if(typeof window.iniciarPayPal === 'function') window.iniciarPayPal();
+                    }
+                };
+
+                // REEMPLAZO EXACTO MANTENIENDO COMPATIBILIDAD HACIA ATRÁS
                 window.obtenerPayloadOrden = function() {
                     const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
                     const subtotalOriginal = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
-                    const isAnon = document.getElementById('envio-anonimo') && document.getElementById('envio-anonimo').checked;
-                    const emisorAnonimo = isAnon ? "Alguien que te quiere (Anónimo)" : (document.getElementById("sender-name")?.value || "No especificado");
-                    const tEmail = document.getElementById("buyer-email")?.value.trim() || "";
-                    const tReceiver = document.getElementById("receiver-name")?.value || "No especificado";
-                    const tCard = document.getElementById("card-message")?.value || "";
-                    const tPhone = document.getElementById("receiver-phone")?.value || "";
-                    const selectedLogistics = window.selectedLogistics || localStorage.getItem('laforesta_selectedLogistics');
-                    const selectedZoneName = window.selectedZoneName || localStorage.getItem('laforesta_selectedZoneName') || '';
-                    const isExpressDelivery = window.isExpressDelivery || localStorage.getItem('laforesta_isExpressDelivery') === 'true';
+                    
+                    // Fase 1: Logística
+                    const selectedLogistics = window.selectedLogistics || 'envio';
+                    const selectedZoneName = window.selectedZoneName || '';
+                    const direccion = document.getElementById('address')?.value || '';
+                    const diaSelect = document.getElementById('checkout-dia')?.value || 'Hoy';
+                    const horSelect = document.getElementById('checkout-horario')?.value || '';
+                    const receptorName = document.getElementById('receiver-name')?.value || 'No especificado';
+                    
                     let tLogistics = selectedLogistics === 'envio' 
-                        ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById("address")?.value || ""}` 
-                        : `Retiro en Atelier Reñaca\n• *RETIRA:* ${document.getElementById("pickup-name")?.value || ""}`;
-                    if(isExpressDelivery && selectedLogistics === 'envio') tLogistics = "[SERVICIO EXPRESS] " + tLogistics;
-                    const tTime = window.selectedTimeSlot || localStorage.getItem('laforesta_selectedTimeSlot') || "No especificado";
-                    const sDate = window.selectedDate || localStorage.getItem('laforesta_selectedDate');
-                    const tFecha = sDate === "hoy" ? "Hoy" : sDate;
+                        ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${direccion}` 
+                        : `Retiro en Atelier Reñaca`;
+
+                    // Fase 2: Tarjeta
+                    const isAnon = document.getElementById('envio-anonimo')?.checked || false;
+                    let emisorReal = document.getElementById('buyer-name')?.value || 'Comprador sin nombre';
+                    const emisorNombre = isAnon ? "Alguien que te quiere (Anónimo)" : emisorReal;
+                    
+                    let opcionTarjeta = 'escribir_ahora';
+                    const radios = document.getElementsByName('card_option');
+                    for(let r of radios) { if(r.checked) opcionTarjeta = r.value; }
+                    
+                    let tCard = '';
+                    if(opcionTarjeta === 'escribir_ahora') tCard = document.getElementById('card-message')?.value || '';
+                    else if(opcionTarjeta === 'whatsapp_luego') tCard = '[PENDIENTE] Cliente enviará mensaje por WhatsApp';
+                    else if(opcionTarjeta === 'blanco') tCard = '[EN BLANCO] Entregar tarjeta sin escribir';
+                    else if(opcionTarjeta === 'tarjeta_autor') tCard = '[DE AUTOR] Tarjeta clásica poética La Foresta';
+
+                    // Fase 3: Contacto
+                    const tEmail = document.getElementById('buyer-email')?.value.trim() || '';
+                    const wComprador = document.getElementById('buyer-whatsapp')?.value || '';
+                    const fReceptor = document.getElementById('recipient-phone')?.value || 'No especificado';
+
+                    // Totales
                     const totalPagar = window.actualizarTotalConDespacho();
-                    const shippingCost = parseInt(window.shippingCost || localStorage.getItem('laforesta_shippingCost') || 0, 10);
-                    const costoEnvioBase = isExpressDelivery ? Math.round(shippingCost * 1.5) : shippingCost;
+                    const shippingCost = parseInt(window.shippingCost || 0, 10);
                     let bonoEnvio = 0;
-                    if (subtotalOriginal >= 69990) bonoEnvio = Math.min(costoEnvioBase, 7250);
-                    const envioFinal = Math.max(0, costoEnvioBase - bonoEnvio);
+                    if (subtotalOriginal >= 69990) bonoEnvio = Math.min(shippingCost, 7250);
+                    const envioFinal = Math.max(0, shippingCost - bonoEnvio);
 
                     return {
                         totalCLP: totalPagar,
                         metadata: {
-                            sender_name: emisorAnonimo,
-                            receiver_name: tReceiver,
-                            palette: window.selectedPalette || localStorage.getItem('laforesta_selectedPalette') || '',
+                            // Compatibilidad con sistemas antiguos
+                            sender_name: emisorNombre,
+                            receiver_name: receptorName,
+                            palette: 'Predeterminada del Diseño', // Se eliminó, se envía valor fijo
                             logistics_detail: tLogistics,
-                            time_slot: tTime,
-                            destination_phone: tPhone,
+                            time_slot: horSelect,
+                            destination_phone: fReceptor, // El teléfono secundario toma el lugar del antiguo
                             card_text: tCard,
                             total_price: totalPagar,
                             flowers_subtotal_clp: subtotalOriginal,
                             points_discount_clp: window.descuentoPuntos || 0,
                             order_summary: currentCart.map(e => `- ${e.name} (Cant: ${e.qty}) [c/u: $${e.price.toLocaleString("es-CL")}]`).join("\n"),
-                            fecha_entrega: tFecha,
+                            fecha_entrega: diaSelect,
                             valor_envio: envioFinal,
                             comprador_email: tEmail,
-                            ga_client_id: obtenerGA4ClientId()
+                            ga_client_id: obtenerGA4ClientId(),
+                            // Nuevos campos exclusivos (se mapearán en Make.com)
+                            buyer_whatsapp: wComprador,
+                            real_buyer_name: emisorReal,
+                            card_format: opcionTarjeta
                         }
                     };
                 };
