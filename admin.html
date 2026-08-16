@@ -198,6 +198,16 @@
         </div>
       </div>
 
+      <!-- TARJETA ESTELAR: INDEX -->
+      <section>
+        <h3 class="text-sm font-bold text-yellow-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+            ⭐ Rendimiento Estelar (Index / Home)
+        </h3>
+        <div id="index-stats-container" class="w-full mb-8">
+            <div class="text-zinc-500 text-xs italic">Cargando métricas de la página principal...</div>
+        </div>
+      </section>
+
       <section>
         <h3 class="text-sm font-bold text-[#c5a059] uppercase tracking-widest mb-6 flex items-center gap-2">🛒 Matriz de Productos (Convertidores)</h3>
         <div id="products-grid" class="grid-cards w-full"></div>
@@ -464,7 +474,7 @@
   }
 
   // Funciones Auxiliares Analíticas
-  function renderInteracciones(clicks) {
+  function renderInteracciones(clicks, limit = 3) {
       if (!clicks || clicks.length === 0) return '<span class="text-zinc-600 text-[10px]">Sin interacción interna asociada</span>';
       
       const agrupados = clicks.reduce((acc, c) => {
@@ -472,7 +482,7 @@
           return acc;
       }, {});
 
-      const topClicks = Object.entries(agrupados).sort((a, b) => b[1] - a[1]).slice(0, 3);
+      const topClicks = Object.entries(agrupados).sort((a, b) => b[1] - a[1]).slice(0, limit);
 
       return topClicks.map(([target, count]) => `
           <div class="flex justify-between items-center bg-black/20 px-2 py-1.5 rounded mb-1 border border-white/5">
@@ -718,6 +728,78 @@
       const res = await apicall('/api/admin/analytics');
       const data = await res.json();
       
+      // 0. Renderizar Tarjeta Estelar (Index)
+      const idx = data.index_stats;
+      const indexContainer = document.getElementById('index-stats-container');
+      
+      if (indexContainer && idx) {
+          const maxViews = idx.views || 1;
+          const s25 = idx.scroll['25'] || 0;
+          const s50 = idx.scroll['50'] || 0;
+          const s75 = idx.scroll['75'] || 0;
+          const s100 = idx.scroll['100'] || 0;
+          
+          const anchorsHtml = Object.entries(idx.anchors || {})
+              .sort((a, b) => b[1] - a[1])
+              .map(([anchor, count]) => `
+              <div class="flex justify-between items-center bg-black/20 px-2 py-1.5 rounded mb-1 border border-white/5">
+                  <span class="text-[9px] uppercase tracking-wider text-emerald-400 truncate w-32">${anchor}</span>
+                  <span class="text-[9px] font-bold text-white bg-emerald-500/20 px-1.5 py-0.5 rounded">${count} clics</span>
+              </div>`).join('');
+
+          indexContainer.innerHTML = `
+          <div class="card p-6 border border-[#c5a059]/50 bg-gradient-to-br from-[#c5a059]/10 to-transparent shadow-lg relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-64 h-64 bg-[#c5a059]/10 rounded-full blur-3xl pointer-events-none"></div>
+              <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 relative z-10">
+                  
+                  <div class="bg-black/20 p-5 rounded-xl border border-white/5 flex flex-col justify-center">
+                      <span class="text-[9px] uppercase tracking-widest text-zinc-400 block mb-2">Tráfico General</span>
+                      <p class="text-4xl font-serif text-[#c5a059] mb-1">${idx.views}</p>
+                      <span class="text-[10px] text-zinc-500 uppercase tracking-widest block mb-4 border-b border-white/5 pb-4">Visitas Únicas</span>
+                      
+                      <p class="text-3xl font-serif text-white mb-1">${idx.avg_time}s</p>
+                      <span class="text-[10px] text-zinc-500 uppercase tracking-widest block">Tiempo de Lectura Promedio</span>
+                  </div>
+
+                  <div class="bg-black/20 p-5 rounded-xl border border-white/5">
+                      <span class="text-[9px] uppercase tracking-widest text-zinc-400 block mb-4">Profundidad de Lectura (Scroll)</span>
+                      <div class="space-y-4">
+                          <div>
+                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-white">Bajaron al 25%</span><span class="text-[#c5a059] font-bold">${Math.round((s25/maxViews)*100)}%</span></div>
+                              <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s25/maxViews)*100}%"></div></div>
+                          </div>
+                          <div>
+                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-white">Bajaron al 50%</span><span class="text-[#c5a059] font-bold">${Math.round((s50/maxViews)*100)}%</span></div>
+                              <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s50/maxViews)*100}%"></div></div>
+                          </div>
+                          <div>
+                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-white">Bajaron al 75%</span><span class="text-[#c5a059] font-bold">${Math.round((s75/maxViews)*100)}%</span></div>
+                              <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s75/maxViews)*100}%"></div></div>
+                          </div>
+                          <div>
+                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-white">Llegaron al final (100%)</span><span class="text-[#c5a059] font-bold">${Math.round((s100/maxViews)*100)}%</span></div>
+                              <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s100/maxViews)*100}%"></div></div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="bg-black/20 p-5 rounded-xl border border-white/5">
+                      <span class="text-[9px] uppercase tracking-widest text-zinc-400 block mb-4">Navegación Interna (Secciones)</span>
+                      <div class="space-y-1 overflow-y-auto max-h-[160px] hide-scroll pr-1">
+                          ${anchorsHtml || '<span class="text-zinc-600 text-[10px]">Sin datos de anclas aún</span>'}
+                      </div>
+                  </div>
+
+                  <div class="bg-black/20 p-5 rounded-xl border border-white/5">
+                      <span class="text-[9px] uppercase tracking-widest text-zinc-400 block mb-4">Interacciones y Upsells</span>
+                      <div class="space-y-1 overflow-y-auto max-h-[160px] hide-scroll pr-1">
+                          ${renderInteracciones(idx.clicks, 6)}
+                      </div>
+                  </div>
+              </div>
+          </div>`;
+      }
+
       // 1. Matriz de Productos
       if (document.getElementById('products-grid')) {
         renderPlegableGrid('products-grid', data.products || [], p => {
