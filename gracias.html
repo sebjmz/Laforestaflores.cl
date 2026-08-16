@@ -151,8 +151,13 @@
     </script>
 <script>
 (function() {
+    // 1. Prevención de ejecuciones múltiples
+    if (window._LF_TRACKER_ACTIVE) return;
+    window._LF_TRACKER_ACTIVE = true;
+
     const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
     
+    // 2. Identificador de Sesión
     let sid = sessionStorage.getItem('lf_sid');
     if (!sid) { 
         sid = 'sid_' + Date.now() + '_' + Math.floor(Math.random()*100000); 
@@ -163,40 +168,68 @@
     if (pathActual === '/' || pathActual === '') pathActual = '/index.html';
     const startTime = Date.now();
 
+    // 3. Despachador Blindado (Fetch + Keepalive exclusivo)
     window.trackEvent4D = function(name, data = {}) {
         const payload = JSON.stringify({ session_id: sid, event_name: name, event_data: data, url: pathActual });
-        if (navigator.sendBeacon && name === 'time_on_page') {
-            navigator.sendBeacon(API_TRACK, new Blob([payload], { type: 'application/json' }));
-        } else {
-            fetch(API_TRACK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(()=>{});
-        }
+        fetch(API_TRACK, { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: payload, 
+            keepalive: true 
+        }).catch(()=>{});
     };
 
-    // 1. Registro de Visita
+    // 4. Registro Inicial y Compras
     trackEvent4D('page_view');
 
-    // 2. Registro de Conversión Real (Solo se ejecuta en gracias.html)
     if (pathActual.includes('gracias.html')) {
         const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
         cartData.forEach(item => {
             trackEvent4D('purchase', { product_id: item.id, product_name: item.name, price: item.price, qty: item.qty });
         });
-        // Si tienes una función para vaciar el carro tras pago, asegúrate de que corra DESPUÉS de este bloque.
     }
 
-    // 3. Captura exacta de retención en segundos (Time-on-Page)
-    window.addEventListener('beforeunload', function() {
+    // 5. Sistema de Latido (Heartbeat) - Solución del Tiempo
+    function reportarTiempo(event) {
         const secondsSpent = Math.round((Date.now() - startTime) / 1000);
-        trackEvent4D('time_on_page', { seconds: secondsSpent });
-    });
+        
+        // Extracción para posibles carritos abandonados
+        const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+        const cartVal = cartData.reduce((acc, item) => acc + (item.price * item.qty), 0);
+        const email = document.getElementById('buyer-email')?.value?.trim() || '';
+        const sender = document.getElementById('sender-name')?.value || '';
+        const receiver = document.getElementById('receiver-name')?.value || '';
+        const name = sender ? sender : receiver;
+        const phone = document.getElementById('receiver-phone')?.value || '';
+        const activeStep = document.querySelector(".checkout-step.active");
+        const currentStep = activeStep ? activeStep.id : 'checkout';
 
-    // 4. Interceptores Funcionales (Checkout y AddToCart globales)
+        // Envío constante y seguro del tiempo
+        trackEvent4D('time_on_page', { seconds: secondsSpent });
+
+        // Si se va con el carrito lleno, reportar posible abandono
+        if (event && (event.type === 'beforeunload' || event.type === 'pagehide') && email && cartVal > 0) {
+            trackEvent4D('abandonment_or_close', { step_name: currentStep, cart_value: cartVal, email: email, name: name, phone: phone });
+        }
+    }
+
+    // El latido: 15 segs, al minimizar (celular) o al cerrar
+    setInterval(reportarTiempo, 15000);
+    window.addEventListener('visibilitychange', function(e) { if (document.visibilityState === 'hidden') reportarTiempo(e); });
+    window.addEventListener('pagehide', reportarTiempo);
+    window.addEventListener('beforeunload', reportarTiempo);
+
+    // 6. Interceptores con Micro-Pausa (Solución del Salto)
     function engancharFuncionesGlobales() {
         if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
             const originalGoToStep = window.goToStep;
-            window.goToStep = function(step) { trackEvent4D('checkout_step', { step_target: String(step) }); return originalGoToStep.apply(this, arguments); };
+            window.goToStep = function(step) { 
+                trackEvent4D('checkout_step', { step_target: String(step) }); 
+                return originalGoToStep.apply(this, arguments); 
+            };
             window.goToStep._tracked4d = true;
         }
+        
         if (typeof window.addToCart === 'function' && !window.addToCart._tracked4d) {
             const originalAddToCart = window.addToCart;
             window.addToCart = function(id, name, price, img) {
@@ -205,18 +238,36 @@
             };
             window.addToCart._tracked4d = true;
         }
+
+        // LA PAUSA MÁGICA: Para botones en páginas de producto
+        if (typeof window.agregarYVolver === 'function' && !window.agregarYVolver._tracked4d) {
+            const originalAgregar = window.agregarYVolver;
+            window.agregarYVolver = function(id, name, price, img) {
+                trackEvent4D(id > 100 && id < 200 ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name });
+                setTimeout(() => { originalAgregar.apply(this, arguments); }, 250);
+            };
+            window.agregarYVolver._tracked4d = true;
+        }
     }
     setInterval(engancharFuncionesGlobales, 500);
 
-    // 5. Escucha de interacciones orgánicas en el DOM
+    // 7. Sensor Universal (Clics Orgánicos)
     document.addEventListener('click', function(e) {
         const el = e.target.closest('button, a, .step-option, [onclick]');
         if (!el) return;
 
         const onclickAttr = el.getAttribute('onclick') || '';
-        const text = (el.innerText || el.textContent || '').trim();
+        const hrefAttr = el.getAttribute('href') || '';
+        const text = (el.innerText || el.textContent || '').trim().toLowerCase();
 
-        if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || text === 'Añadir' || text.includes('Añadir al Atelier')) {
+        // Anclas
+        if (hrefAttr.startsWith('#') || hrefAttr.includes('#')) {
+            const anchor = hrefAttr.includes('#') ? '#' + hrefAttr.split('#')[1] : hrefAttr;
+            if (anchor && anchor !== '#') trackEvent4D('click', { target: anchor });
+        }
+
+        // Respaldo de clics de carro
+        if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || text === 'añadir' || text.includes('añadir al atelier')) {
             const matchId = onclickAttr.match(/(?:addToCart|agregarYVolver)\s*\(\s*(\d+)/);
             const prodId = matchId ? parseInt(matchId[1], 10) : 0;
             let prodName = 'Producto';
@@ -229,10 +280,15 @@
             if(prodName === 'Producto' && !pathActual.includes('index') && !pathActual.includes('categoria')) {
                 prodName = pathActual.replace('/', '').replace('.html', '').replace(/-/g, ' ');
             }
-            trackEvent4D(prodId > 100 && prodId < 200 ? 'upsell_added' : 'add_to_cart', { product_id: prodId, product_name: prodName });
+            
+            // Disparar solo si el interceptor falló
+            if (!window.agregarYVolver || !window.agregarYVolver._tracked4d) {
+                trackEvent4D(prodId > 100 && prodId < 200 ? 'upsell_added' : 'add_to_cart', { product_id: prodId, product_name: prodName });
+            }
             return;
         }
 
+        // Respaldo de clics de checkout
         if (onclickAttr.includes('goToStep') || onclickAttr.includes('seleccionarModalidad') || onclickAttr.includes('seleccionarZona') || onclickAttr.includes('seleccionarFecha') || onclickAttr.includes('openCheckout') || onclickAttr.includes('cargarPasarelas')) {
             let targetStep = 'interaccion_checkout';
             const matchStep = onclickAttr.match(/goToStep\s*\(\s*['"]?([^'")]+)['"]?\s*\)/);
@@ -241,15 +297,19 @@
             else if (onclickAttr.includes('seleccionarZona')) targetStep = 'seleccion_zona';
             else if (onclickAttr.includes('seleccionarFecha')) targetStep = 'seleccion_fecha';
             else if (onclickAttr.includes('openCheckout') || onclickAttr.includes('cargarPasarelas')) targetStep = 'step-1';
-            trackEvent4D('checkout_step', { step_target: String(targetStep) });
+            
+            if (!window.goToStep || !window.goToStep._tracked4d) {
+                trackEvent4D('checkout_step', { step_target: String(targetStep) });
+            }
             return;
         }
 
-        if (onclickAttr.includes('iniciarMercadoPago') || onclickAttr.includes('iniciarPayPal') || text.includes('MercadoPago') || text.includes('PayPal')) {
+        // Pagos
+        if (onclickAttr.includes('iniciarMercadoPago') || onclickAttr.includes('iniciarPayPal') || text.includes('mercadopago') || text.includes('paypal') || text.includes('pagar') || text.includes('finalizar compra') || text.includes('comprar')) {
             const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
             const totalVal = cartData.reduce((acc, item) => acc + (item.price * item.qty), 0);
             const email = document.getElementById('buyer-email')?.value || 'desconocido';
-            trackEvent4D('payment_initiated', { method: text.includes('PayPal') ? 'PayPal' : 'MercadoPago', cart_value: totalVal, email: email });
+            trackEvent4D('payment_initiated', { method: text.includes('paypal') ? 'PayPal' : 'MercadoPago/Otro', cart_value: totalVal, email: email });
         }
     }, true);
 })();
