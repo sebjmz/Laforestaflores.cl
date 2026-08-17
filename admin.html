@@ -80,7 +80,9 @@
   .dark tr:hover td { background: rgba(255,255,255,0.02); }
   
   .hidden-panel { display: none !important; }
-  .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .grid-cards { display: grid; gap: 1.5rem; grid-template-columns: repeat(1, minmax(0, 1fr)); }
+  @media (min-width: 768px) { .grid-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1280px) { .grid-cards { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
   .hide-scroll::-webkit-scrollbar { display: none; }
   
   .delta-badge {
@@ -677,7 +679,7 @@
       container.innerHTML = html;
   }
 
-  function renderPlegableGrid(containerId, items, renderFn, limit = 4) {
+  function renderPlegableGrid(containerId, items, renderFn, limit = 5) {
       const container = document.getElementById(containerId);
       if (!container) return;
       
