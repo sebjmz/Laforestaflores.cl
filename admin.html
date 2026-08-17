@@ -947,7 +947,12 @@
       const uList = document.getElementById('global-upsells-list');
       if (uList) {
         if (!baseStats.upsells) baseStats.upsells = {};
-        const validUpsells = (data.global_upsells || []).filter(u => u.name && u.name.trim() !== '' && u.name.trim() !== '+');
+        const validUpsells = (data.global_upsells || []).filter(u => {
+            if (!u.name) return false;
+            const cleanName = u.name.trim().toLowerCase();
+            if (cleanName === '' || cleanName === '+' || cleanName === 'producto') return false;
+            return true;
+        });
         
         if (validUpsells.length > 0) {
             uList.innerHTML = validUpsells.map(u => {
