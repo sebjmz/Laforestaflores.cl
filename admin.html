@@ -578,7 +578,8 @@
       if (str === 'step-6' || str === '6') return '11. Cierre y Pasarela';
       if (str === 'payment_initiated') return 'Intento de Pago (Pasarela)';
       if (str === 'purchase') return 'Compra Exitosa';
-      return stepName;
+      
+      return null; 
   }
 
   function renderEmbudoInteractivo(funnelData, detailedData) {
@@ -595,30 +596,31 @@
           const pct = Math.round((item.count / max) * 100);
           const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-orange-500', 'bg-rose-500'];
           
-          return `
-          <div class="mb-6 cursor-pointer group" onclick="document.getElementById('funnel-detalles-panel').classList.toggle('hidden')">
-              <div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 mb-2">
-                  <span>${item.step}</span>
-                  <span class="group-hover:text-[#c5a059] transition-colors text-[#0a1f1c] dark:text-white">${item.count} (${pct}%)</span>
-              </div>
-              <div class="w-full bg-[#0a1f1c]/5 dark:bg-white/5 rounded-full h-8 overflow-hidden flex items-center relative border border-transparent group-hover:border-[#c5a059]/50 transition-colors shadow-inner">
-                  <div class="${colors[index % colors.length]} h-full transition-all duration-1000" style="width: ${pct}%"></div>
-                  <span class="absolute right-4 text-[9px] font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity tracking-widest uppercase shadow-md drop-shadow-md">Ver Desglose 🔍</span>
-              </div>
-          </div>`;
+          return '<div class="mb-6 cursor-pointer group" onclick="document.getElementById(\'funnel-detalles-panel\').classList.toggle(\'hidden\')">' +
+              '<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 mb-2">' +
+                  '<span>' + item.step + '</span>' +
+                  '<span class="group-hover:text-[#c5a059] transition-colors text-[#0a1f1c] dark:text-white">' + item.count + ' (' + pct + '%)</span>' +
+              '</div>' +
+              '<div class="w-full bg-[#0a1f1c]/5 dark:bg-white/5 rounded-full h-8 overflow-hidden flex items-center relative border border-transparent group-hover:border-[#c5a059]/50 transition-colors shadow-inner">' +
+                  '<div class="' + colors[index % colors.length] + ' h-full transition-all duration-1000" style="width: ' + pct + '%"></div>' +
+                  '<span class="absolute right-4 text-[9px] font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity tracking-widest uppercase shadow-md drop-shadow-md">Ver Desglose 🔍</span>' +
+              '</div>' +
+          '</div>';
       }).join('');
 
       if (detailedData && detailedData.length > 0) {
           const normalizedMap = {};
           detailedData.forEach(d => {
               const cleanName = formatearPasoCheckout(d.step_name);
-              if (!normalizedMap[cleanName]) {
-                  normalizedMap[cleanName] = { step_name: cleanName, unique_visits: 0, total_actions: 0, avg_time_sec: 0, count: 0 };
+              if (cleanName) {
+                  if (!normalizedMap[cleanName]) {
+                      normalizedMap[cleanName] = { step_name: cleanName, unique_visits: 0, total_actions: 0, avg_time_sec: 0, count: 0 };
+                  }
+                  normalizedMap[cleanName].unique_visits += d.unique_visits;
+                  normalizedMap[cleanName].total_actions += d.total_actions;
+                  normalizedMap[cleanName].avg_time_sec += (d.avg_time_sec || 0);
+                  normalizedMap[cleanName].count += 1;
               }
-              normalizedMap[cleanName].unique_visits += d.unique_visits;
-              normalizedMap[cleanName].total_actions += d.total_actions;
-              normalizedMap[cleanName].avg_time_sec += (d.avg_time_sec || 0);
-              normalizedMap[cleanName].count += 1;
           });
 
           const detailedDataClean = Object.values(normalizedMap).map(d => {
@@ -628,49 +630,49 @@
 
           const maxVisits = detailedDataClean.length > 0 ? detailedDataClean[0].unique_visits || 1 : 1;
           
-          html += `
-          <div id="funnel-detalles-panel" class="hidden mt-8 bg-[#fcfaf7] dark:bg-[#0a1f1c] border border-[#c5a059]/30 rounded-xl p-4 md:p-6 shadow-xl transition-all duration-500 relative overflow-hidden">
-              <div class="absolute top-0 right-0 w-64 h-64 bg-[#c5a059]/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
-              <div class="flex justify-between items-center mb-6 border-b border-[#c5a059]/20 pb-4">
-                  <div>
-                      <h4 class="text-[#c5a059] font-bold text-[11px] md:text-[12px] uppercase tracking-[0.2em] mb-1">Desglose Analítico</h4>
-                      <span class="text-[#0a1f1c]/50 dark:text-zinc-500 text-[9px] uppercase tracking-widest block">Tráfico, interacción y fuga exacta</span>
-                  </div>
-                  <button onclick="document.getElementById('funnel-detalles-panel').classList.add('hidden')" class="text-[#0a1f1c]/50 dark:text-zinc-500 hover:text-[#c5a059] text-2xl font-light">×</button>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  ${detailedDataClean.map(d => {
-                      const retencion = Math.round((d.unique_visits / maxVisits) * 100);
-                      const fuga = 100 - retencion;
-                      const tiempoStr = d.avg_time_sec ? `${Math.round(d.avg_time_sec)}s pro.` : '0s pro.';
-                      
-                      return `
-                      <div class="bg-[#0a1f1c]/5 dark:bg-white/5 border border-[#0a1f1c]/10 dark:border-white/10 p-4 md:p-5 rounded-lg hover:border-[#c5a059]/50 transition-colors hover:bg-white/10 relative overflow-hidden">
-                          <div class="absolute bottom-0 left-0 h-1 bg-[#c5a059]/20 w-full">
-                              <div class="h-full bg-[#c5a059]" style="width: ${retencion}%"></div>
-                          </div>
-                          <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 block mb-2">Pantalla / Paso</span>
-                          <h5 class="text-[#0a1f1c] dark:text-[#fcfaf7] font-bold text-sm mb-4 truncate" title="${d.step_name}">${d.step_name}</h5>
-                          <div class="grid grid-cols-2 gap-4">
-                              <div>
-                                  <span class="text-[18px] md:text-[20px] font-serif text-[#c5a059] block leading-none mb-1">${d.unique_visits}</span>
-                                  <span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Usuarios<br>Únicos</span>
-                              </div>
-                              <div class="text-right">
-                                  <span class="text-[18px] md:text-[20px] font-serif text-[#0a1f1c] dark:text-white block leading-none mb-1">${tiempoStr}</span>
-                                  <span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Tiempo<br>Invertido</span>
-                              </div>
-                          </div>
-                          <div class="mt-4 pt-3 border-t border-[#0a1f1c]/10 dark:border-white/10 flex justify-between items-center">
-                              <span class="text-[9px] font-bold uppercase tracking-widest ${fuga > 50 ? 'text-red-500 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}">${fuga}% Fuga</span>
-                              <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/50 dark:text-zinc-500 border border-[#0a1f1c]/20 dark:border-zinc-600 px-1.5 py-0.5 rounded">Retiene: ${retencion}%</span>
-                          </div>
-                      </div>
-                      `;
-                  }).join('')}
-              </div>
-          </div>
-          `;
+          if (detailedDataClean.length > 0) {
+              html += '<div id="funnel-detalles-panel" class="hidden mt-8 bg-[#fcfaf7] dark:bg-[#0a1f1c] border border-[#c5a059]/30 rounded-xl p-4 md:p-6 shadow-xl transition-all duration-500 relative overflow-hidden">' +
+                  '<div class="absolute top-0 right-0 w-64 h-64 bg-[#c5a059]/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>' +
+                  '<div class="flex justify-between items-center mb-6 border-b border-[#c5a059]/20 pb-4">' +
+                      '<div>' +
+                          '<h4 class="text-[#c5a059] font-bold text-[11px] md:text-[12px] uppercase tracking-[0.2em] mb-1">Desglose Analítico</h4>' +
+                          '<span class="text-[#0a1f1c]/50 dark:text-zinc-500 text-[9px] uppercase tracking-widest block">Tráfico, interacción y fuga exacta</span>' +
+                      '</div>' +
+                      '<button onclick="document.getElementById(\'funnel-detalles-panel\').classList.add(\'hidden\')" class="text-[#0a1f1c]/50 dark:text-zinc-500 hover:text-[#c5a059] text-2xl font-light">×</button>' +
+                  '</div>' +
+                  '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
+                  
+              html += detailedDataClean.map(d => {
+                  const retencion = Math.round((d.unique_visits / maxVisits) * 100);
+                  const fuga = 100 - retencion;
+                  const tiempoStr = d.avg_time_sec ? Math.round(d.avg_time_sec) + 's pro.' : '0s pro.';
+                  const colorFuga = fuga > 50 ? 'text-red-500 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400';
+                  
+                  return '<div class="bg-[#0a1f1c]/5 dark:bg-white/5 border border-[#0a1f1c]/10 dark:border-white/10 p-4 md:p-5 rounded-lg hover:border-[#c5a059]/50 transition-colors hover:bg-white/10 relative overflow-hidden">' +
+                      '<div class="absolute bottom-0 left-0 h-1 bg-[#c5a059]/20 w-full">' +
+                          '<div class="h-full bg-[#c5a059]" style="width: ' + retencion + '%"></div>' +
+                      '</div>' +
+                      '<span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 block mb-2">Pantalla / Paso</span>' +
+                      '<h5 class="text-[#0a1f1c] dark:text-[#fcfaf7] font-bold text-sm mb-4 truncate" title="' + d.step_name + '">' + d.step_name + '</h5>' +
+                      '<div class="grid grid-cols-2 gap-4">' +
+                          '<div>' +
+                              '<span class="text-[18px] md:text-[20px] font-serif text-[#c5a059] block leading-none mb-1">' + d.unique_visits + '</span>' +
+                              '<span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Usuarios<br>Únicos</span>' +
+                          '</div>' +
+                          '<div class="text-right">' +
+                              '<span class="text-[18px] md:text-[20px] font-serif text-[#0a1f1c] dark:text-white block leading-none mb-1">' + tiempoStr + '</span>' +
+                              '<span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Tiempo<br>Invertido</span>' +
+                          '</div>' +
+                      '</div>' +
+                      '<div class="mt-4 pt-3 border-t border-[#0a1f1c]/10 dark:border-white/10 flex justify-between items-center">' +
+                          '<span class="text-[9px] font-bold uppercase tracking-widest ' + colorFuga + '">' + fuga + '% Fuga</span>' +
+                          '<span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/50 dark:text-zinc-500 border border-[#0a1f1c]/20 dark:border-zinc-600 px-1.5 py-0.5 rounded">Retiene: ' + retencion + '%</span>' +
+                      '</div>' +
+                  '</div>';
+              }).join('');
+              
+              html += '</div></div>';
+          }
       }
       container.innerHTML = html;
   }
