@@ -1418,14 +1418,22 @@ document.addEventListener('visibilitychange', async () => {
 });
 
 window.onload = function () {
+  const googleContainer = document.getElementById("google-btn-container");
+  const containerWidth = googleContainer ? googleContainer.clientWidth || 400 : 400;
+
   google.accounts.id.initialize({
-    client_id: "985936647023-hmadq5q6icvscivbi18qa7qiscgj1ehl.apps.googleusercontent.com",
+    client_id: "985936647023-hmadq5qbtcvskvbi18qa7qiscg1ehf.apps.googleusercontent.com",
     callback: handleGoogleResponse
   });
   
   google.accounts.id.renderButton(
-    document.getElementById("google-btn-container"),
-    { theme: document.documentElement.classList.contains('dark') ? 'filled_black' : 'outline', size: "large", text: "continue_with", width: "1000" }
+    googleContainer,
+    { 
+      theme: document.documentElement.classList.contains('dark') ? 'filled_black' : 'outline', 
+      size: "large", 
+      text: "continue_with", 
+      width: containerWidth 
+    }
   );
 
   window.fbAsyncInit = function() {
