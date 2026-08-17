@@ -609,7 +609,6 @@
       }).join('');
 
       if (detailedData && detailedData.length > 0) {
-          // 1. AGRUPACIÓN Y NORMALIZACIÓN
           const normalizedMap = {};
           detailedData.forEach(d => {
               const cleanName = formatearPasoCheckout(d.step_name);
@@ -622,7 +621,6 @@
               normalizedMap[cleanName].count += 1;
           });
 
-          // 2. PROMEDIO DE TIEMPOS Y ORDENAMIENTO
           const detailedDataClean = Object.values(normalizedMap).map(d => {
               d.avg_time_sec = Math.round(d.avg_time_sec / d.count);
               return d;
@@ -644,31 +642,31 @@
                   ${detailedDataClean.map(d => {
                       const retencion = Math.round((d.unique_visits / maxVisits) * 100);
                       const fuga = 100 - retencion;
-                      const tiempoStr = d.avg_time_sec ? \`\${Math.round(d.avg_time_sec)}s pro.\` : '0s pro.';
+                      const tiempoStr = d.avg_time_sec ? `${Math.round(d.avg_time_sec)}s pro.` : '0s pro.';
                       
-                      return \`
+                      return `
                       <div class="bg-[#0a1f1c]/5 dark:bg-white/5 border border-[#0a1f1c]/10 dark:border-white/10 p-4 md:p-5 rounded-lg hover:border-[#c5a059]/50 transition-colors hover:bg-white/10 relative overflow-hidden">
                           <div class="absolute bottom-0 left-0 h-1 bg-[#c5a059]/20 w-full">
-                              <div class="h-full bg-[#c5a059]" style="width: \${retencion}%\"></div>
+                              <div class="h-full bg-[#c5a059]" style="width: ${retencion}%"></div>
                           </div>
                           <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 block mb-2">Pantalla / Paso</span>
-                          <h5 class="text-[#0a1f1c] dark:text-[#fcfaf7] font-bold text-sm mb-4 truncate" title="\${d.step_name}">\${d.step_name}</h5>
+                          <h5 class="text-[#0a1f1c] dark:text-[#fcfaf7] font-bold text-sm mb-4 truncate" title="${d.step_name}">${d.step_name}</h5>
                           <div class="grid grid-cols-2 gap-4">
                               <div>
-                                  <span class="text-[18px] md:text-[20px] font-serif text-[#c5a059] block leading-none mb-1">\${d.unique_visits}</span>
+                                  <span class="text-[18px] md:text-[20px] font-serif text-[#c5a059] block leading-none mb-1">${d.unique_visits}</span>
                                   <span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Usuarios<br>Únicos</span>
                               </div>
                               <div class="text-right">
-                                  <span class="text-[18px] md:text-[20px] font-serif text-[#0a1f1c] dark:text-white block leading-none mb-1">\${tiempoStr}</span>
+                                  <span class="text-[18px] md:text-[20px] font-serif text-[#0a1f1c] dark:text-white block leading-none mb-1">${tiempoStr}</span>
                                   <span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Tiempo<br>Invertido</span>
                               </div>
                           </div>
                           <div class="mt-4 pt-3 border-t border-[#0a1f1c]/10 dark:border-white/10 flex justify-between items-center">
-                              <span class="text-[9px] font-bold uppercase tracking-widest \${fuga > 50 ? 'text-red-500 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}">\${fuga}% Fuga</span>
-                              <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/50 dark:text-zinc-500 border border-[#0a1f1c]/20 dark:border-zinc-600 px-1.5 py-0.5 rounded">Retiene: \${retencion}%</span>
+                              <span class="text-[9px] font-bold uppercase tracking-widest ${fuga > 50 ? 'text-red-500 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}">${fuga}% Fuga</span>
+                              <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/50 dark:text-zinc-500 border border-[#0a1f1c]/20 dark:border-zinc-600 px-1.5 py-0.5 rounded">Retiene: ${retencion}%</span>
                           </div>
                       </div>
-                      \`;
+                      `;
                   }).join('')}
               </div>
           </div>
