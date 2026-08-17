@@ -946,15 +946,24 @@
 
       const uList = document.getElementById('global-upsells-list');
       if (uList) {
-        if (data.global_upsells && data.global_upsells.length > 0) {
-            uList.innerHTML = data.global_upsells.map(u => {
+        if (!baseStats.upsells) baseStats.upsells = {};
+        const validUpsells = (data.global_upsells || []).filter(u => u.name && u.name.trim() !== '' && u.name.trim() !== '+');
+        
+        if (validUpsells.length > 0) {
+            uList.innerHTML = validUpsells.map(u => {
                 const conv = u.agregados > 0 ? Math.round((u.compras / u.agregados) * 100) : 0;
                 const ingresos = u.ingresos_potenciales ? `$${parseInt(u.ingresos_potenciales).toLocaleString('es-CL')}` : 'Por calcular';
+                
+                if (baseStats.upsells[u.name] === undefined) {
+                    baseStats.upsells[u.name] = u.agregados;
+                }
+                const deltaUpsell = getDeltaHtml(u.agregados, baseStats.upsells[u.name]);
+
                 return `
                 <div class="border-b border-[#0a1f1c]/10 dark:border-white/5 pb-4 mb-4 last:border-0 last:mb-0 last:pb-0">
                     <div class="flex justify-between items-start mb-2 gap-2">
                         <span class="text-[#0a1f1c] dark:text-white font-bold text-[12px] md:text-[13px] leading-tight">${u.name}</span>
-                        <span class="text-[#c5a059] text-[9px] md:text-[10px] font-bold bg-[#c5a059]/10 px-2 py-1 rounded whitespace-nowrap">${u.agregados} Agregados</span>
+                        <span class="text-[#c5a059] text-[9px] md:text-[10px] font-bold bg-[#c5a059]/10 px-2 py-1 rounded whitespace-nowrap">${u.agregados} Agregados ${deltaUpsell}</span>
                     </div>
                     <div class="flex justify-between items-center text-[10px] md:text-xs opacity-70 mb-2">
                         <span>Llegaron a Pago: ${u.intentos_pago || 0}</span>
