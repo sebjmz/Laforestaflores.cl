@@ -2151,6 +2151,33 @@
             trackEvent4D('payment_initiated', { method: text.includes('paypal') ? 'PayPal' : 'MercadoPago/Otro', cart_value: totalVal, email: email });
         }
     }, true);
+
+    // 8. Sensor de Profundidad de Lectura (Scroll)
+    const scrollMarks = { '25': false, '50': false, '75': false, '100': false };
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        if (scrollHeight <= 0) return;
+        
+        const scrollPercent = (scrollTop / scrollHeight) * 100;
+        
+        if (scrollPercent >= 25 && !scrollMarks['25']) { 
+            scrollMarks['25'] = true; 
+            trackEvent4D('scroll_depth', { depth: 25 }); 
+        }
+        if (scrollPercent >= 50 && !scrollMarks['50']) { 
+            scrollMarks['50'] = true; 
+            trackEvent4D('scroll_depth', { depth: 50 }); 
+        }
+        if (scrollPercent >= 75 && !scrollMarks['75']) { 
+            scrollMarks['75'] = true; 
+            trackEvent4D('scroll_depth', { depth: 75 }); 
+        }
+        if (scrollPercent >= 99 && !scrollMarks['100']) { 
+            scrollMarks['100'] = true; 
+            trackEvent4D('scroll_depth', { depth: 100 }); 
+        }
+    }, { passive: true });
 })();
 </script>
 </body>
