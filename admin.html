@@ -12,7 +12,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-  // Inicialización del Modo Oscuro
   function initTheme() {
     const savedTheme = localStorage.getItem('lf_admin_theme');
     const hour = new Date().getHours();
@@ -80,35 +79,45 @@
   .dark tr:hover td { background: rgba(255,255,255,0.02); }
   
   .hidden-panel { display: none !important; }
+  
   .grid-cards { display: grid; gap: 1.5rem; grid-template-columns: repeat(1, minmax(0, 1fr)); }
   @media (min-width: 768px) { .grid-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (min-width: 1280px) { .grid-cards { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  
   .hide-scroll::-webkit-scrollbar { display: none; }
   
   .delta-badge {
-      display: inline-block;
-      margin-left: 8px;
-      font-size: 0.6em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 6px;
+      font-size: 0.7em;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: bold;
-      vertical-align: super;
-      padding: 2px 6px;
+      font-weight: 800;
+      padding: 2px 5px;
       border-radius: 4px;
-      background-color: rgba(16, 185, 129, 0.1); /* emerald-500/10 */
-      color: #10b981; /* emerald-500 */
-      border: 1px solid rgba(16, 185, 129, 0.2);
+      line-height: 1;
+      vertical-align: middle;
+  }
+  .delta-pos {
+      background-color: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+  .delta-neg {
+      background-color: rgba(59, 130, 246, 0.15);
+      color: #3b82f6;
+      border: 1px solid rgba(59, 130, 246, 0.3);
   }
 </style>
 </head>
 <body class="bg-[#fcfaf7] dark:bg-[#050f0e] text-[#0a1f1c] dark:text-[#fcfaf7] transition-colors duration-500 h-screen flex flex-col md:flex-row overflow-hidden relative">
 
-  <!-- BOTÓN FLOTANTE MODO DÍA/NOCHE -->
   <button onclick="toggleTheme()" aria-label="Cambiar Modo" class="fixed bottom-6 left-6 z-[100] p-4 rounded-full bg-[#ffffff] dark:bg-[#0a1f1c] border border-[#c5a059]/50 text-[#c5a059] shadow-[0_4px_20px_rgba(0,0,0,0.15)] flex items-center justify-center hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">
       <svg id="theme-icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
       <svg id="theme-icon-moon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
   </button>
 
-  <!-- BOTÓN FLOTANTE GLOBAL DE ACTUALIZACIÓN 4D -->
   <button onclick="loadAnalytics()" id="floating-refresh" class="hidden-panel fixed bottom-6 right-6 z-[100] py-3 md:py-4 px-6 md:px-8 bg-[#c5a059] text-[#0a1f1c] hover:bg-white rounded-full text-xs md:text-sm uppercase tracking-widest font-bold shadow-[0_10px_30px_rgba(197,160,89,0.3)] transition-all cursor-pointer flex items-center gap-2 hover:scale-105 active:scale-95">
     <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -146,7 +155,6 @@
 
   <main class="flex-1 w-full h-full overflow-y-auto p-4 md:p-8 pb-28 md:pb-8 hidden" id="main-content">
     
-    <!-- VISTA DASHBOARD -->
     <div id="view-dashboard" class="hidden-panel space-y-6">
       <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-2">
         <div>
@@ -165,23 +173,23 @@
       <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <div class="card p-5">
           <p class="text-[9px] md:text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Nuevos Registros</p>
-          <p class="text-2xl font-serif text-[#0a1f1c] dark:text-white" id="kpi-signups">0</p>
+          <div class="flex items-center"><p class="text-2xl font-serif text-[#0a1f1c] dark:text-white" id="kpi-signups">0</p></div>
         </div>
         <div class="card p-5">
           <p class="text-[9px] md:text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Invitaciones</p>
-          <p class="text-2xl font-serif text-blue-500 dark:text-blue-400" id="kpi-referrals">0</p>
+          <div class="flex items-center"><p class="text-2xl font-serif text-blue-500 dark:text-blue-400" id="kpi-referrals">0</p></div>
         </div>
         <div class="card p-5">
           <p class="text-[9px] md:text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Puntos Emitidos</p>
-          <p class="text-2xl font-serif text-[#c5a059]" id="kpi-points">0 pts</p>
+          <div class="flex items-center"><p class="text-2xl font-serif text-[#c5a059]" id="kpi-points">0</p></div>
         </div>
         <div class="card p-5">
           <p class="text-[9px] md:text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Encuestas</p>
-          <p class="text-2xl font-serif text-emerald-600 dark:text-emerald-400" id="kpi-surveys">0</p>
+          <div class="flex items-center"><p class="text-2xl font-serif text-emerald-600 dark:text-emerald-400" id="kpi-surveys">0</p></div>
         </div>
         <div class="card p-5">
           <p class="text-[9px] md:text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-1">Clics Reseña</p>
-          <p class="text-2xl font-serif text-[#c5a059]" id="kpi-google-clicks">0</p>
+          <div class="flex items-center"><p class="text-2xl font-serif text-[#c5a059]" id="kpi-google-clicks">0</p></div>
         </div>
       </div>
 
@@ -196,17 +204,17 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="card p-6">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Pasivo Circulante</p>
-          <p class="text-3xl font-serif text-[#0a1f1c] dark:text-white" id="stat-points">0</p>
+          <div class="flex items-center"><p class="text-3xl font-serif text-[#0a1f1c] dark:text-white" id="stat-points">0</p></div>
           <p class="text-xs opacity-60 mt-2">Puntos pendientes de canje global</p>
         </div>
         <div class="card p-6">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">Ahorro Entregado</p>
-          <p class="text-3xl font-serif text-emerald-600 dark:text-emerald-400" id="stat-savings">$0</p>
+          <div class="flex items-center"><p class="text-3xl font-serif text-emerald-600 dark:text-emerald-400" id="stat-savings">$0</p></div>
           <p class="text-xs opacity-60 mt-2">Transferido a clientes</p>
         </div>
         <div class="card p-6">
           <p class="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-2">LTV Base Clientes</p>
-          <p class="text-3xl font-serif text-blue-500 dark:text-blue-400" id="stat-ltv">$0</p>
+          <div class="flex items-center"><p class="text-3xl font-serif text-blue-500 dark:text-blue-400" id="stat-ltv">$0</p></div>
           <p class="text-xs opacity-60 mt-2">Ventas registradas en CRM</p>
         </div>
       </div>
@@ -223,7 +231,6 @@
       </div>
     </div>
 
-    <!-- VISTA ANALYTICS 4D -->
     <div id="view-analytics" class="hidden-panel space-y-10">
       <div class="flex justify-between items-end border-b border-[#0a1f1c]/10 dark:border-white/10 pb-6">
         <div>
@@ -232,7 +239,6 @@
         </div>
       </div>
 
-      <!-- TARJETA ESTELAR: INDEX -->
       <section>
         <h3 class="text-sm font-bold text-yellow-500 dark:text-yellow-400 uppercase tracking-widest mb-6 flex items-center gap-2">
             ⭐ Rendimiento Estelar (Index / Home)
@@ -277,10 +283,9 @@
       <section class="pb-12 md:pb-24">
           <div class="card p-6 md:p-8 border-red-500/30 dark:border-red-900/50 bg-red-50 dark:bg-red-900/10">
             <h3 class="text-sm font-bold text-red-600 dark:text-red-400 uppercase tracking-widest mb-6 border-b border-red-500/20 dark:border-red-900/30 pb-3">Rescate de Carritos Abandonados con Correo</h3>
-            <p class="text-3xl md:text-4xl font-serif text-[#0a1f1c] dark:text-white mb-6" id="abandoned-total">
-              $0 
-              <span class="text-sm font-sans opacity-60 block mt-2" id="abandoned-count">0 intentos fallidos</span>
-            </p>
+            <div class="mb-6 flex flex-col md:flex-row items-baseline gap-4" id="abandoned-header">
+                <!-- Se inyecta por JS -->
+            </div>
             <div class="overflow-x-auto overflow-y-auto max-h-64 hide-scroll text-sm bg-white/50 dark:bg-black/20 p-4 rounded-lg border border-[#0a1f1c]/5 dark:border-transparent">
               <table class="w-full text-left min-w-[300px]">
                 <tbody id="abandoned-body"></tbody>
@@ -290,7 +295,6 @@
       </section>
     </div>
 
-    <!-- VISTA CLIENTES -->
     <div id="view-customers" class="hidden-panel space-y-6">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4">
         <h2 class="text-2xl font-bold text-[#0a1f1c] dark:text-white">Billetera de Clientes</h2>
@@ -314,7 +318,6 @@
       </div>
     </div>
 
-    <!-- VISTA ENCUESTAS -->
     <div id="view-surveys" class="hidden-panel space-y-6">
       <div class="flex justify-between items-end border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4">
         <h2 class="text-2xl font-bold text-[#0a1f1c] dark:text-white">Auditoría de Calidad</h2>
@@ -335,7 +338,6 @@
       </div>
     </div>
 
-    <!-- VISTA OPERACIONES -->
     <div id="view-ops" class="hidden-panel space-y-6">
       <h2 class="text-2xl font-bold text-[#0a1f1c] dark:text-white border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4">Operaciones Logísticas</h2>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -412,12 +414,26 @@
   let currentPeriod = '30';
   let timer;
 
-  // Almacenamiento en memoria para los deltas (sesión actual)
+  // Lógica de Retención y Deltas Universales
   let baseStats = {
-      indexViews: null,
+      loaded: false,
+      index: { views: 0, time: 0, s25: 0, s50: 0, s75: 0, s100: 0 },
+      indexAnchors: {},
+      indexClicks: {},
       products: {},
       categories: {},
-      tertiary: {}
+      tertiary: {},
+      upsells: {},
+      funnel: {},
+      detailedFunnel: {},
+      abandonedTotal: 0,
+      abandonedCount: 0
+  };
+
+  let baseDashboard = {
+      loaded: false,
+      points: 0, savings: 0, ltv: 0,
+      signups: 0, referrals: 0, kpiPoints: 0, surveys: 0, google: 0
   };
 
   function toggleTheme() {
@@ -515,6 +531,9 @@
   }
 
   function changePeriod(p) {
+    if (currentPeriod !== p) {
+        baseDashboard.loaded = false;
+    }
     currentPeriod = p;
     const periods = ['7', '30', '90', '180', '365'];
     
@@ -545,7 +564,21 @@
     loadStats();
   }
 
-  function renderInteracciones(clicks, limit = 3) {
+  function getDeltaHtml(newValue, baseValue, suffix = '', isCurrency = false) {
+      if (baseValue === null || baseValue === undefined) return '';
+      const delta = Math.round(Number(newValue) - Number(baseValue));
+      if (delta === 0) return '';
+      
+      let formattedDelta = isCurrency ? '$' + Math.abs(delta).toLocaleString('es-CL') : Math.abs(delta).toLocaleString('es-CL');
+      
+      if (delta > 0) {
+          return `<span class="delta-badge delta-pos">+${formattedDelta}${suffix}</span>`;
+      } else {
+          return `<span class="delta-badge delta-neg">-${formattedDelta}${suffix}</span>`;
+      }
+  }
+
+  function renderInteraccionesConDelta(clicks, limit, isFirst, baseDict) {
       if (!clicks || clicks.length === 0) return `<span class="text-[#0a1f1c]/50 dark:text-zinc-600 text-[10px]">Sin interacción interna asociada</span>`;
       
       const agrupados = clicks.reduce((acc, c) => {
@@ -553,14 +586,20 @@
           return acc;
       }, {});
 
+      if (isFirst) {
+          Object.entries(agrupados).forEach(([k,v]) => baseDict[k] = v);
+      }
+
       const topClicks = Object.entries(agrupados).sort((a, b) => b[1] - a[1]).slice(0, limit);
 
-      return topClicks.map(([target, count]) => `
+      return topClicks.map(([target, count]) => {
+          const delta = getDeltaHtml(count, baseDict[target] || 0);
+          return `
           <div class="flex justify-between items-center bg-[#0a1f1c]/5 dark:bg-black/20 px-2 py-1.5 rounded mb-1 border border-[#0a1f1c]/5 dark:border-white/5">
               <span class="text-[9px] uppercase tracking-wider text-[#0a1f1c]/60 dark:text-zinc-400 truncate w-32" title="${target}">${target}</span>
-              <span class="text-[9px] font-bold text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded">${count} clics</span>
-          </div>
-      `).join('');
+              <div class="flex items-center text-right"><span class="text-[9px] font-bold text-[#c5a059] bg-[#c5a059]/10 px-1.5 py-0.5 rounded mr-1">${count} clics</span>${delta}</div>
+          </div>`;
+      }).join('');
   }
 
   function formatearPasoCheckout(stepName) {
@@ -580,11 +619,10 @@
       if (str === 'step-6' || str === '6') return '11. Cierre y Pasarela';
       if (str === 'payment_initiated') return 'Intento de Pago (Pasarela)';
       if (str === 'purchase') return 'Compra Exitosa';
-      
       return null; 
   }
 
-  function renderEmbudoInteractivo(funnelData, detailedData) {
+  function renderEmbudoInteractivo(funnelData, detailedData, isFirst) {
       const container = document.getElementById('funnel-container');
       if (!container) return;
 
@@ -596,12 +634,18 @@
       let html = funnelData.map((item, index) => {
           const max = funnelData[0].count || 1;
           const pct = Math.round((item.count / max) * 100);
+          
+          if (isFirst) baseStats.funnel[item.step] = { count: item.count, pct: pct };
+          const baseF = baseStats.funnel[item.step] || { count: 0, pct: 0 };
+          const dCount = getDeltaHtml(item.count, baseF.count);
+          const dPct = getDeltaHtml(pct, baseF.pct, '%');
+          
           const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-orange-500', 'bg-rose-500'];
           
           return '<div class="mb-6 cursor-pointer group" onclick="document.getElementById(\'funnel-detalles-panel\').classList.toggle(\'hidden\')">' +
-              '<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 mb-2">' +
+              '<div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 mb-2">' +
                   '<span>' + item.step + '</span>' +
-                  '<span class="group-hover:text-[#c5a059] transition-colors text-[#0a1f1c] dark:text-white">' + item.count + ' (' + pct + '%)</span>' +
+                  '<span class="group-hover:text-[#c5a059] transition-colors text-[#0a1f1c] dark:text-white flex items-center">' + item.count + dCount + ' <span class="ml-1">(' + pct + '%' + dPct + ')</span></span>' +
               '</div>' +
               '<div class="w-full bg-[#0a1f1c]/5 dark:bg-white/5 rounded-full h-8 overflow-hidden flex items-center relative border border-transparent group-hover:border-[#c5a059]/50 transition-colors shadow-inner">' +
                   '<div class="' + colors[index % colors.length] + ' h-full transition-all duration-1000" style="width: ' + pct + '%"></div>' +
@@ -647,7 +691,15 @@
               html += detailedDataClean.map(d => {
                   const retencion = Math.round((d.unique_visits / maxVisits) * 100);
                   const fuga = 100 - retencion;
-                  const tiempoStr = d.avg_time_sec ? Math.round(d.avg_time_sec) + 's pro.' : '0s pro.';
+                  
+                  if (isFirst) baseStats.detailedFunnel[d.step_name] = { visits: d.unique_visits, time: d.avg_time_sec, fuga: fuga, ret: retencion };
+                  const baseDF = baseStats.detailedFunnel[d.step_name] || { visits: 0, time: 0, fuga: 0, ret: 0 };
+                  
+                  const dVisits = getDeltaHtml(d.unique_visits, baseDF.visits);
+                  const dTime = getDeltaHtml(d.avg_time_sec, baseDF.time, 's');
+                  const dFuga = getDeltaHtml(fuga, baseDF.fuga, '%');
+                  const dRet = getDeltaHtml(retencion, baseDF.ret, '%');
+                  
                   const colorFuga = fuga > 50 ? 'text-red-500 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400';
                   
                   return '<div class="bg-[#0a1f1c]/5 dark:bg-white/5 border border-[#0a1f1c]/10 dark:border-white/10 p-4 md:p-5 rounded-lg hover:border-[#c5a059]/50 transition-colors hover:bg-white/10 relative overflow-hidden">' +
@@ -658,17 +710,17 @@
                       '<h5 class="text-[#0a1f1c] dark:text-[#fcfaf7] font-bold text-sm mb-4 truncate" title="' + d.step_name + '">' + d.step_name + '</h5>' +
                       '<div class="grid grid-cols-2 gap-4">' +
                           '<div>' +
-                              '<span class="text-[18px] md:text-[20px] font-serif text-[#c5a059] block leading-none mb-1">' + d.unique_visits + '</span>' +
+                              '<div class="flex items-center"><span class="text-[18px] md:text-[20px] font-serif text-[#c5a059] block leading-none mb-1 mr-1">' + d.unique_visits + '</span>' + dVisits + '</div>' +
                               '<span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Usuarios<br>Únicos</span>' +
                           '</div>' +
-                          '<div class="text-right">' +
-                              '<span class="text-[18px] md:text-[20px] font-serif text-[#0a1f1c] dark:text-white block leading-none mb-1">' + tiempoStr + '</span>' +
-                              '<span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Tiempo<br>Invertido</span>' +
+                          '<div class="text-right flex flex-col items-end">' +
+                              '<div class="flex items-center"><span class="text-[18px] md:text-[20px] font-serif text-[#0a1f1c] dark:text-white block leading-none mb-1 mr-1">' + (d.avg_time_sec ? Math.round(d.avg_time_sec) + 's' : '0s') + '</span>' + dTime + '</div>' +
+                              '<span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Tiempo<br>Promedio</span>' +
                           '</div>' +
                       '</div>' +
                       '<div class="mt-4 pt-3 border-t border-[#0a1f1c]/10 dark:border-white/10 flex justify-between items-center">' +
-                          '<span class="text-[9px] font-bold uppercase tracking-widest ' + colorFuga + '">' + fuga + '% Fuga</span>' +
-                          '<span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/50 dark:text-zinc-500 border border-[#0a1f1c]/20 dark:border-zinc-600 px-1.5 py-0.5 rounded">Retiene: ' + retencion + '%</span>' +
+                          '<span class="flex items-center text-[9px] font-bold uppercase tracking-widest ' + colorFuga + '">' + fuga + '% Fuga ' + dFuga + '</span>' +
+                          '<span class="flex items-center text-[9px] uppercase tracking-widest text-[#0a1f1c]/50 dark:text-zinc-500 border border-[#0a1f1c]/20 dark:border-zinc-600 px-1.5 py-0.5 rounded">Retiene: ' + retencion + '% ' + dRet + '</span>' +
                       '</div>' +
                   '</div>';
               }).join('');
@@ -719,15 +771,6 @@
       render();
   }
 
-  function getDeltaHtml(newValue, baseValue) {
-      if (baseValue === null || baseValue === undefined) return '';
-      const delta = Number(newValue) - Number(baseValue);
-      if (delta > 0) {
-          return `<span class="delta-badge">+${delta}</span>`;
-      }
-      return '';
-  }
-
   async function loadStats() {
     try {
       const isDark = document.documentElement.classList.contains('dark');
@@ -737,16 +780,38 @@
       const res = await apicall(`/api/admin/stats?period=${currentPeriod}`);
       const data = await res.json();
       
-      document.getElementById('stat-points').innerText = parseInt(data.financial?.pasivo_circulante || 0).toLocaleString('es-CL');
-      document.getElementById('stat-savings').innerText = '$' + parseInt(data.financial?.ahorro_entregado || 0).toLocaleString('es-CL');
-      document.getElementById('stat-ltv').innerText = '$' + parseInt(data.financial?.ltv_total || 0).toLocaleString('es-CL');
+      const isFirstDb = !baseDashboard.loaded;
+      
+      const pts = parseInt(data.financial?.pasivo_circulante || 0);
+      const sav = parseInt(data.financial?.ahorro_entregado || 0);
+      const ltv = parseInt(data.financial?.ltv_total || 0);
+      const signups = (data.trend || []).reduce((acc, curr) => acc + curr.total, 0);
+      const refs = data.kpis?.referrals || 0;
+      const kpiPts = data.kpis?.pointsIssued || 0;
+      const surv = data.kpis?.surveysCompleted || 0;
+      const goog = data.kpis?.googleReviewsClicked || 0;
 
-      const totalSignups = (data.trend || []).reduce((acc, curr) => acc + curr.total, 0);
-      document.getElementById('kpi-signups').innerText = totalSignups.toLocaleString('es-CL');
-      document.getElementById('kpi-referrals').innerText = (data.kpis?.referrals || 0).toLocaleString('es-CL');
-      document.getElementById('kpi-points').innerText = (data.kpis?.pointsIssued || 0).toLocaleString('es-CL') + ' pts';
-      document.getElementById('kpi-surveys').innerText = (data.kpis?.surveysCompleted || 0).toLocaleString('es-CL');
-      document.getElementById('kpi-google-clicks').innerText = (data.kpis?.googleReviewsClicked || 0).toLocaleString('es-CL');
+      if (isFirstDb) {
+          baseDashboard.points = pts;
+          baseDashboard.savings = sav;
+          baseDashboard.ltv = ltv;
+          baseDashboard.signups = signups;
+          baseDashboard.referrals = refs;
+          baseDashboard.kpiPoints = kpiPts;
+          baseDashboard.surveys = surv;
+          baseDashboard.google = goog;
+          baseDashboard.loaded = true;
+      }
+
+      document.getElementById('stat-points').innerHTML = `${pts.toLocaleString('es-CL')} ${getDeltaHtml(pts, baseDashboard.points)}`;
+      document.getElementById('stat-savings').innerHTML = `$${sav.toLocaleString('es-CL')} ${getDeltaHtml(sav, baseDashboard.savings, '', true)}`;
+      document.getElementById('stat-ltv').innerHTML = `$${ltv.toLocaleString('es-CL')} ${getDeltaHtml(ltv, baseDashboard.ltv, '', true)}`;
+
+      document.getElementById('kpi-signups').innerHTML = `${signups.toLocaleString('es-CL')} ${getDeltaHtml(signups, baseDashboard.signups)}`;
+      document.getElementById('kpi-referrals').innerHTML = `${refs.toLocaleString('es-CL')} ${getDeltaHtml(refs, baseDashboard.referrals)}`;
+      document.getElementById('kpi-points').innerHTML = `${kpiPts.toLocaleString('es-CL')} pts ${getDeltaHtml(kpiPts, baseDashboard.kpiPoints)}`;
+      document.getElementById('kpi-surveys').innerHTML = `${surv.toLocaleString('es-CL')} ${getDeltaHtml(surv, baseDashboard.surveys)}`;
+      document.getElementById('kpi-google-clicks').innerHTML = `${goog.toLocaleString('es-CL')} ${getDeltaHtml(goog, baseDashboard.google)}`;
 
       if (chartTrend) chartTrend.destroy();
       const ctxTrend = document.getElementById('mainTrendChart').getContext('2d');
@@ -833,28 +898,55 @@
       const res = await apicall('/api/admin/analytics');
       const data = await res.json();
       
+      const isFirst = !baseStats.loaded;
+      
       const idx = data.index_stats;
       const indexContainer = document.getElementById('index-stats-container');
       
       if (indexContainer && idx) {
-          if (baseStats.indexViews === null) {
-              baseStats.indexViews = idx.views;
-          }
-          const deltaIndexViews = getDeltaHtml(idx.views, baseStats.indexViews);
-
           const maxViews = idx.views || 1;
           const s25 = idx.scroll['25'] || 0;
           const s50 = idx.scroll['50'] || 0;
           const s75 = idx.scroll['75'] || 0;
           const s100 = idx.scroll['100'] || 0;
           
+          const pct25 = Math.round((s25/maxViews)*100);
+          const pct50 = Math.round((s50/maxViews)*100);
+          const pct75 = Math.round((s75/maxViews)*100);
+          const pct100 = Math.round((s100/maxViews)*100);
+
+          if (isFirst) {
+              baseStats.index.views = idx.views;
+              baseStats.index.time = idx.avg_time;
+              baseStats.index.s25 = pct25;
+              baseStats.index.s50 = pct50;
+              baseStats.index.s75 = pct75;
+              baseStats.index.s100 = pct100;
+          }
+
+          const dIdxViews = getDeltaHtml(idx.views, baseStats.index.views);
+          const dIdxTime = getDeltaHtml(idx.avg_time, baseStats.index.time, 's');
+          const dS25 = getDeltaHtml(pct25, baseStats.index.s25, '%');
+          const dS50 = getDeltaHtml(pct50, baseStats.index.s50, '%');
+          const dS75 = getDeltaHtml(pct75, baseStats.index.s75, '%');
+          const dS100 = getDeltaHtml(pct100, baseStats.index.s100, '%');
+
           const anchorsHtml = Object.entries(idx.anchors || {})
               .sort((a, b) => b[1] - a[1])
-              .map(([anchor, count]) => `
-              <div class="flex justify-between items-center bg-[#0a1f1c]/5 dark:bg-black/20 px-2 py-1.5 rounded mb-1 border border-[#0a1f1c]/5 dark:border-white/5">
-                  <span class="text-[9px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 truncate w-32">${anchor}</span>
-                  <span class="text-[9px] font-bold text-[#0a1f1c] dark:text-white bg-emerald-500/20 px-1.5 py-0.5 rounded">${count} clics</span>
-              </div>`).join('');
+              .map(([anchor, count]) => {
+                  if (isFirst && baseStats.indexAnchors[anchor] === undefined) baseStats.indexAnchors[anchor] = count;
+                  const dCount = getDeltaHtml(count, baseStats.indexAnchors[anchor] || 0);
+                  
+                  const isVault = anchor.toLowerCase() === '#vault';
+                  const badgeStyle = isVault ? 'bg-[#c5a059] text-[#0a1f1c] font-bold' : 'bg-emerald-500/20 text-[#0a1f1c] dark:text-white';
+                  const labelStyle = isVault ? 'text-[#c5a059] font-bold underline' : 'text-emerald-600 dark:text-emerald-400';
+                  
+                  return `
+                  <div class="flex justify-between items-center bg-[#0a1f1c]/5 dark:bg-black/20 px-2 py-1.5 rounded mb-1 border ${isVault ? 'border-[#c5a059]' : 'border-[#0a1f1c]/5 dark:border-white/5'}">
+                      <span class="text-[9px] uppercase tracking-wider ${labelStyle} truncate w-32" title="${anchor}">${isVault ? '★ ' : ''}${anchor} ${isVault ? '(Colección)' : ''}</span>
+                      <div class="flex items-center text-right"><span class="text-[9px] ${badgeStyle} px-1.5 py-0.5 rounded mr-1">${count} clics</span>${dCount}</div>
+                  </div>`;
+              }).join('');
 
           indexContainer.innerHTML = `
           <div class="card p-6 border border-[#c5a059]/50 bg-gradient-to-br from-[#c5a059]/5 dark:from-[#c5a059]/10 to-transparent shadow-lg relative overflow-hidden">
@@ -863,10 +955,10 @@
                   
                   <div class="bg-white/50 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/5 dark:border-white/5 flex flex-col justify-center">
                       <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 block mb-2">Tráfico General</span>
-                      <p class="text-4xl font-serif text-[#c5a059] mb-1">${idx.views}${deltaIndexViews}</p>
+                      <div class="flex items-center"><p class="text-4xl font-serif text-[#c5a059] mb-1 mr-1">${idx.views}</p>${dIdxViews}</div>
                       <span class="text-[10px] text-[#0a1f1c]/50 dark:text-zinc-500 uppercase tracking-widest block mb-4 border-b border-[#0a1f1c]/10 dark:border-white/5 pb-4">Visitas Únicas</span>
                       
-                      <p class="text-3xl font-serif text-[#0a1f1c] dark:text-white mb-1">${idx.avg_time}s</p>
+                      <div class="flex items-center"><p class="text-3xl font-serif text-[#0a1f1c] dark:text-white mb-1 mr-1">${idx.avg_time}s</p>${dIdxTime}</div>
                       <span class="text-[10px] text-[#0a1f1c]/50 dark:text-zinc-500 uppercase tracking-widest block">Tiempo de Lectura Prom.</span>
                   </div>
 
@@ -874,20 +966,20 @@
                       <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 block mb-4">Profundidad de Lectura (Scroll)</span>
                       <div class="space-y-4">
                           <div>
-                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-[#0a1f1c] dark:text-white">Bajaron al 25%</span><span class="text-[#c5a059] font-bold">${Math.round((s25/maxViews)*100)}%</span></div>
-                              <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s25/maxViews)*100}%"></div></div>
+                              <div class="flex justify-between items-center text-[9px] mb-1 uppercase tracking-widest"><span class="text-[#0a1f1c] dark:text-white">25% (Testimonios / Inicio Colección)</span><span class="flex items-center text-[#c5a059] font-bold">${pct25}% ${dS25}</span></div>
+                              <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${pct25}%"></div></div>
                           </div>
                           <div>
-                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-[#0a1f1c] dark:text-white">Bajaron al 50%</span><span class="text-[#c5a059] font-bold">${Math.round((s50/maxViews)*100)}%</span></div>
-                              <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s50/maxViews)*100}%"></div></div>
+                              <div class="flex justify-between items-center text-[9px] mb-1 uppercase tracking-widest"><span class="text-[#0a1f1c] dark:text-white">50% (Colección Floral)</span><span class="flex items-center text-[#c5a059] font-bold">${pct50}% ${dS50}</span></div>
+                              <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${pct50}%"></div></div>
                           </div>
                           <div>
-                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-[#0a1f1c] dark:text-white">Bajaron al 75%</span><span class="text-[#c5a059] font-bold">${Math.round((s75/maxViews)*100)}%</span></div>
-                              <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s75/maxViews)*100}%"></div></div>
+                              <div class="flex justify-between items-center text-[9px] mb-1 uppercase tracking-widest"><span class="text-[#0a1f1c] dark:text-white">75% (Suscripción B2B & Jardinería)</span><span class="flex items-center text-[#c5a059] font-bold">${pct75}% ${dS75}</span></div>
+                              <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${pct75}%"></div></div>
                           </div>
                           <div>
-                              <div class="flex justify-between text-[9px] mb-1 uppercase tracking-widest"><span class="text-[#0a1f1c] dark:text-white">Llegaron al final</span><span class="text-[#c5a059] font-bold">${Math.round((s100/maxViews)*100)}%</span></div>
-                              <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${(s100/maxViews)*100}%"></div></div>
+                              <div class="flex justify-between items-center text-[9px] mb-1 uppercase tracking-widest"><span class="text-[#0a1f1c] dark:text-white">100% (FAQ & Footer)</span><span class="flex items-center text-[#c5a059] font-bold">${pct100}% ${dS100}</span></div>
+                              <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-[#c5a059] h-full" style="width: ${pct100}%"></div></div>
                           </div>
                       </div>
                   </div>
@@ -902,7 +994,7 @@
                   <div class="bg-white/50 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/5 dark:border-white/5">
                       <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 block mb-4">Interacciones y Upsells</span>
                       <div class="space-y-1 overflow-y-auto max-h-[160px] hide-scroll pr-1">
-                          ${renderInteracciones(idx.clicks, 6)}
+                          ${renderInteraccionesConDelta(idx.clicks, 6, isFirst, baseStats.indexClicks)}
                       </div>
                   </div>
               </div>
@@ -911,65 +1003,71 @@
 
       if (document.getElementById('products-grid')) {
         renderPlegableGrid('products-grid', data.products || [], p => {
-            if (baseStats.products[p.url] === undefined) {
-                baseStats.products[p.url] = { views: p.views, adds: p.adds };
+            if (isFirst) {
+                baseStats.products[p.url] = { views: p.views, adds: p.adds, time: p.avg_time, conv: p.conversion, clicks: {} };
             }
-            const deltaViews = getDeltaHtml(p.views, baseStats.products[p.url].views);
-            const deltaAdds = getDeltaHtml(p.adds, baseStats.products[p.url].adds);
+            const baseP = baseStats.products[p.url] || { views: 0, adds: 0, time: 0, conv: 0, clicks: {} };
+            const dViews = getDeltaHtml(p.views, baseP.views);
+            const dAdds = getDeltaHtml(p.adds, baseP.adds);
+            const dTime = getDeltaHtml(p.avg_time, baseP.time, 's');
+            const dConv = getDeltaHtml(p.conversion, baseP.conv, '%');
 
             return `
             <div class="card p-6 border border-[#c5a059]/30 bg-gradient-to-b from-[#c5a059]/5 dark:from-[#c5a059]/10 to-transparent hover:border-[#c5a059]/60 transition-all duration-300">
                 <div class="flex justify-between items-center border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4 mb-4">
                     <h4 class="font-serif italic text-xl text-[#c5a059] truncate pr-2 capitalize">${p.name}</h4>
-                    <span class="bg-[#c5a059] text-[#0a1f1c] px-3 py-1.5 rounded-md text-[11px] font-bold shadow-md">${p.conversion}% Conv</span>
+                    <span class="flex items-center bg-[#c5a059] text-[#0a1f1c] px-3 py-1.5 rounded-md text-[11px] font-bold shadow-md">${p.conversion}% ${dConv} Conv</span>
                 </div>
                 <div class="grid grid-cols-2 gap-4 text-sm mb-6">
-                    <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Vistas Totales</span><strong class="text-[#0a1f1c] dark:text-white text-lg">${p.views}${deltaViews}</strong></div>
-                    <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Agregados</span><strong class="text-[#0a1f1c] dark:text-white text-lg">${p.adds}${deltaAdds} <span class="text-[10px] font-normal opacity-60 ml-1 block md:inline">al carro</span></strong></div>
-                    <div class="col-span-2 bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Retención Promedio</span><strong class="text-[#0a1f1c] dark:text-white">${p.avg_time} segundos de lectura</strong></div>
+                    <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Vistas Totales</span><div class="flex items-center"><strong class="text-[#0a1f1c] dark:text-white text-lg">${p.views}</strong>${dViews}</div></div>
+                    <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Agregados</span><div class="flex items-center"><strong class="text-[#0a1f1c] dark:text-white text-lg">${p.adds}</strong>${dAdds}<span class="text-[10px] font-normal opacity-60 ml-1 block md:inline">al carro</span></div></div>
+                    <div class="col-span-2 bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Retención Promedio</span><div class="flex items-center"><strong class="text-[#0a1f1c] dark:text-white text-lg mr-1">${p.avg_time}s</strong>${dTime} <span class="text-[10px] opacity-60 ml-1">de lectura</span></div></div>
                 </div>
-                <div class="text-xs space-y-2 mt-4"><span class="text-[#c5a059] block mb-3 font-bold uppercase tracking-widest text-[10px]">Adicionales / Clics vinculados:</span>${renderInteracciones(p.clicks)}</div>
+                <div class="text-xs space-y-2 mt-4"><span class="text-[#c5a059] block mb-3 font-bold uppercase tracking-widest text-[10px]">Adicionales / Clics vinculados:</span>${renderInteraccionesConDelta(p.clicks, 4, isFirst, baseP.clicks)}</div>
             </div>`;
         });
       }
 
       if (document.getElementById('categories-grid')) {
         renderPlegableGrid('categories-grid', data.categories || [], c => {
-            if (baseStats.categories[c.url] === undefined) {
-                baseStats.categories[c.url] = c.views;
+            if (isFirst) {
+                baseStats.categories[c.url] = { views: c.views, time: c.avg_time, clicks: {} };
             }
-            const deltaCatViews = getDeltaHtml(c.views, baseStats.categories[c.url]);
+            const baseC = baseStats.categories[c.url] || { views: 0, time: 0, clicks: {} };
+            const dViews = getDeltaHtml(c.views, baseC.views);
+            const dTime = getDeltaHtml(c.avg_time, baseC.time, 's');
 
             return `
             <div class="card p-6 border border-emerald-500/30 dark:border-emerald-900/50 bg-gradient-to-b from-emerald-500/10 dark:from-emerald-900/20 to-transparent hover:border-emerald-500/50 transition-all duration-300">
                 <h4 class="font-bold text-emerald-600 dark:text-emerald-400 uppercase text-sm border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4 mb-4 capitalize">${c.url.replace('/', '').replace('.html', '').replace(/-/g, ' ')}</h4>
                 <div class="grid grid-cols-2 gap-4 text-sm mb-6">
-                    <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Visitas</span><strong class="text-[#0a1f1c] dark:text-white text-lg">${c.views}${deltaCatViews}</strong></div>
-                    <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Tiempo Prom.</span><strong class="text-[#0a1f1c] dark:text-white text-lg">${c.avg_time}s</strong></div>
+                    <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Visitas</span><div class="flex items-center"><strong class="text-[#0a1f1c] dark:text-white text-lg">${c.views}</strong>${dViews}</div></div>
+                    <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-3 rounded-lg"><span class="opacity-60 block text-[9px] uppercase tracking-widest mb-1">Tiempo Prom.</span><div class="flex items-center"><strong class="text-[#0a1f1c] dark:text-white text-lg">${c.avg_time}s</strong>${dTime}</div></div>
                 </div>
-                <div class="text-xs space-y-2 mt-4"><span class="text-emerald-600 dark:text-emerald-400 block mb-3 font-bold uppercase tracking-widest text-[10px]">Interacción Interna:</span>${renderInteracciones(c.clicks)}</div>
+                <div class="text-xs space-y-2 mt-4"><span class="text-emerald-600 dark:text-emerald-400 block mb-3 font-bold uppercase tracking-widest text-[10px]">Interacción Interna:</span>${renderInteraccionesConDelta(c.clicks, 4, isFirst, baseC.clicks)}</div>
             </div>`;
         });
       }
 
       if (document.getElementById('tertiary-grid')) {
         renderPlegableGrid('tertiary-grid', data.tertiary || [], t => {
-            if (baseStats.tertiary[t.url] === undefined) {
-                baseStats.tertiary[t.url] = t.views;
+            if (isFirst) {
+                baseStats.tertiary[t.url] = { views: t.views, time: t.avg_time };
             }
-            const deltaTerViews = getDeltaHtml(t.views, baseStats.tertiary[t.url]);
+            const baseT = baseStats.tertiary[t.url] || { views: 0, time: 0 };
+            const dViews = getDeltaHtml(t.views, baseT.views);
+            const dTime = getDeltaHtml(t.avg_time, baseT.time, 's');
 
             return `
             <div class="card p-5 border border-blue-500/30 dark:border-blue-900/50 bg-blue-50 dark:bg-blue-900/10 flex justify-between items-center hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all duration-300">
                 <span class="font-bold text-blue-600 dark:text-blue-400 uppercase text-[11px] tracking-widest">${t.url.replace('/', '').replace('.html', '').replace(/-/g, ' ')}</span>
-                <div class="text-right"><span class="block text-[#0a1f1c] dark:text-white text-lg font-bold">${t.views}${deltaTerViews} <span class="text-[10px] font-normal opacity-60 uppercase tracking-widest">Vistas</span></span><span class="block text-[10px] opacity-60 mt-1">${t.avg_time} segs de retención</span></div>
+                <div class="text-right flex flex-col items-end"><span class="flex items-center text-[#0a1f1c] dark:text-white text-lg font-bold">${t.views}${dViews} <span class="text-[10px] font-normal opacity-60 uppercase tracking-widest ml-1">Vistas</span></span><span class="flex items-center text-[10px] opacity-60 mt-1">${t.avg_time}s ${dTime} de retención</span></div>
             </div>`;
         });
       }
 
       const uList = document.getElementById('global-upsells-list');
       if (uList) {
-        if (!baseStats.upsells) baseStats.upsells = {};
         const validUpsells = (data.global_upsells || []).filter(u => {
             if (!u.name) return false;
             const cleanName = u.name.trim().toLowerCase();
@@ -982,23 +1080,28 @@
                 const conv = u.agregados > 0 ? Math.round((u.compras / u.agregados) * 100) : 0;
                 const ingresos = u.ingresos_potenciales ? `$${parseInt(u.ingresos_potenciales).toLocaleString('es-CL')}` : 'Por calcular';
                 
-                if (baseStats.upsells[u.name] === undefined) {
-                    baseStats.upsells[u.name] = u.agregados;
+                if (isFirst) {
+                    baseStats.upsells[u.name] = { agregados: u.agregados, pagos: u.intentos_pago, compras: u.compras, conv: conv };
                 }
-                const deltaUpsell = getDeltaHtml(u.agregados, baseStats.upsells[u.name]);
+                const baseU = baseStats.upsells[u.name] || { agregados: 0, pagos: 0, compras: 0, conv: 0 };
+                const dAgregados = getDeltaHtml(u.agregados, baseU.agregados);
+                const dPagos = getDeltaHtml(u.intentos_pago, baseU.pagos);
+                const dCompras = getDeltaHtml(u.compras, baseU.compras);
+                const dConv = getDeltaHtml(conv, baseU.conv, '%');
 
                 return `
                 <div class="border-b border-[#0a1f1c]/10 dark:border-white/5 pb-4 mb-4 last:border-0 last:mb-0 last:pb-0">
                     <div class="flex justify-between items-start mb-2 gap-2">
                         <span class="text-[#0a1f1c] dark:text-white font-bold text-[12px] md:text-[13px] leading-tight">${u.name}</span>
-                        <span class="text-[#c5a059] text-[9px] md:text-[10px] font-bold bg-[#c5a059]/10 px-2 py-1 rounded whitespace-nowrap">${u.agregados} Agregados ${deltaUpsell}</span>
+                        <div class="flex items-center"><span class="text-[#c5a059] text-[9px] md:text-[10px] font-bold bg-[#c5a059]/10 px-2 py-1 rounded whitespace-nowrap">${u.agregados} Agregados</span>${dAgregados}</div>
                     </div>
                     <div class="flex justify-between items-center text-[10px] md:text-xs opacity-70 mb-2">
-                        <span>Llegaron a Pago: ${u.intentos_pago || 0}</span>
-                        <span>Comprados: <strong class="${u.compras > 0 ? 'text-emerald-600 dark:text-emerald-400' : ''}">${u.compras || 0}</strong> <span class="text-emerald-600 dark:text-emerald-400 font-bold ml-1">(${ingresos})</span></span>
+                        <span class="flex items-center">Llegaron a Pago: ${u.intentos_pago || 0} ${dPagos}</span>
+                        <span class="flex items-center">Comprados: <strong class="${u.compras > 0 ? 'text-emerald-600 dark:text-emerald-400' : ''} mx-1">${u.compras || 0}</strong> ${dCompras} <span class="text-emerald-600 dark:text-emerald-400 font-bold ml-1">(${ingresos})</span></span>
                     </div>
-                    <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                    <div class="w-full bg-[#0a1f1c]/10 dark:bg-white/10 h-1.5 rounded-full overflow-hidden flex relative">
                         <div class="bg-gradient-to-r from-[#c5a059]/50 to-[#c5a059] h-full" style="width: ${conv}%"></div>
+                        <span class="absolute right-0 text-[8px] font-bold text-white px-1 shadow-sm leading-none flex items-center h-full">${conv}% ${dConv}</span>
                     </div>
                 </div>`;
             }).join('');
@@ -1010,10 +1113,19 @@
       const abandonedList = data.abandoned || [];
       const abandonedTotal = abandonedList.reduce((acc, curr) => acc + parseInt(curr.value || 0), 0);
       
-      const elAbTotal = document.getElementById('abandoned-total');
-      const elAbCount = document.getElementById('abandoned-count');
-      if (elAbTotal) elAbTotal.innerText = '$' + abandonedTotal.toLocaleString('es-CL');
-      if (elAbCount) elAbCount.innerText = abandonedList.length + ' leads detectados';
+      if (isFirst) {
+          baseStats.abandonedTotal = abandonedTotal;
+          baseStats.abandonedCount = abandonedList.length;
+      }
+      const dAbTotal = getDeltaHtml(abandonedTotal, baseStats.abandonedTotal, '', true);
+      const dAbCount = getDeltaHtml(abandonedList.length, baseStats.abandonedCount);
+
+      const elAbHeader = document.getElementById('abandoned-header');
+      if (elAbHeader) {
+          elAbHeader.innerHTML = `
+              <p class="text-3xl md:text-4xl font-serif text-[#0a1f1c] dark:text-white flex items-center">$${abandonedTotal.toLocaleString('es-CL')} ${dAbTotal}</p>
+              <span class="text-sm font-sans opacity-60 flex items-center">${abandonedList.length} intentos fallidos ${dAbCount}</span>`;
+      }
       
       const tbody = document.getElementById('abandoned-body');
       if (tbody) {
@@ -1033,7 +1145,11 @@
           }
       }
 
-      renderEmbudoInteractivo(data.funnel || [], data.detailed_funnel || []);
+      renderEmbudoInteractivo(data.funnel || [], data.detailed_funnel || [], isFirst);
+
+      if (isFirst) {
+          baseStats.loaded = true;
+      }
 
     } catch(e) { 
         console.error("Error al procesar analítica:", e); 
@@ -1130,7 +1246,6 @@
     }
   }
 
-  // Lógica de Previsualización y Compresión de Fotos Móviles
   const photoInput = document.getElementById('track-photo');
   const previewContainer = document.getElementById('preview-container');
   const photoPreview = document.getElementById('preview-img');
@@ -1153,7 +1268,7 @@
               const canvas = document.createElement('canvas');
               const ctx = canvas.getContext('2d');
               
-              const maxWidth = 800; // Resolución óptima web (ultraligera)
+              const maxWidth = 800;
               let scaleSize = maxWidth / img.width;
               if (scaleSize > 1) scaleSize = 1;
 
@@ -1162,7 +1277,7 @@
               
               ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
               
-              compressedBase64 = canvas.toDataURL('image/jpeg', 0.6); // 60% calidad
+              compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
               
               photoPreview.src = compressedBase64;
               previewContainer.classList.remove('hidden');
