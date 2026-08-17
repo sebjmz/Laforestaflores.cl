@@ -410,7 +410,7 @@
   let currentPeriod = '30';
   let timer;
 
-  // Almacenamiento en memoria para los deltas
+  // Almacenamiento en memoria para los deltas (sesión actual)
   let baseStats = {
       indexViews: null,
       products: {},
@@ -422,7 +422,7 @@
     const html = document.documentElement;
     html.classList.toggle('dark');
     localStorage.setItem('lf_admin_theme', html.classList.contains('dark') ? 'dark' : 'light');
-    if (chartTrend || chartTiers || chartRatings) loadStats(); // Re-render charts for colors
+    if (chartTrend || chartTiers || chartRatings) loadStats();
   }
 
   function login() {
@@ -698,7 +698,7 @@
 
   function getDeltaHtml(newValue, baseValue) {
       if (baseValue === null || baseValue === undefined) return '';
-      const delta = newValue - baseValue;
+      const delta = Number(newValue) - Number(baseValue);
       if (delta > 0) {
           return `<span class="delta-badge">+${delta}</span>`;
       }
@@ -1203,5 +1203,7 @@
 
   initApp();
 </script>
+</body>
+</html>
 </body>
 </html>
