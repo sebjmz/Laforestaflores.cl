@@ -563,20 +563,21 @@
 
   function formatearPasoCheckout(stepName) {
       const str = String(stepName).toLowerCase().trim();
-      if (str === 'step-1' || str === '1') return '1. Datos del Emisor';
-      if (str === 'step-buyer-email') return '2. Correo del Comprador';
-      if (str === 'step-2' || str === '2') return '3. Datos del Receptor';
-      if (str === 'step-palette') return '4. Tono / Paleta Floral';
-      if (str === 'modalidad_logistica') return '5. Tipo de Logística';
-      if (str === 'seleccion_zona' || str === 'step-zona') return '6. Selección de Zona';
-      if (str === 'step-direccion') return '7. Dirección Exacta';
-      if (str === 'step-fecha' || str === 'seleccion_fecha' || str === 'step-calendario') return '8. Día de Entrega';
-      if (str === 'step-time') return '9. Horario / Express';
-      if (str === 'step-4' || str === '4') return '10. Mensaje / Tarjeta';
-      if (str === 'step-5' || str === '5') return '11. Teléfono Destino';
-      if (str === 'step-6' || str === '6') return '12. Cierre y Pasarela';
-      if (str === 'payment_initiated') return 'Intento de Pago (MercadoPago/PayPal)';
-      if (str === 'purchase') return 'Compra Finalizada';
+      if (str === 'step-1' || str === '1' || str === 'datos del emisor') return '1. Datos del Emisor';
+      if (str === 'step-buyer-email' || str === 'correo del comprador') return '2. Correo del Comprador';
+      if (str === 'step-2' || str === '3' || str === 'datos del receptor') return '3. Datos del Receptor';
+      if (str === 'step-3' || str === 'modalidad_logistica') return '4. Tipo de Entrega (Envío vs Retiro)';
+      if (str === 'seleccion_zona' || str === 'step-zona') return '5. Selección de Sector';
+      if (str === 'step-direccion' || str === 'direccion exacta') return '6. Dirección Exacta';
+      if (str === 'step-quien-retira' || str === 'quien retira') return '6b. Datos de Quien Retira';
+      if (str === 'step-fecha' || str === 'seleccion_fecha' || str === 'step-calendario') return '7. Día de Entrega';
+      if (str === 'step-time') return '8. Horario de Entrega';
+      if (str === 'step-time-express') return '8. Horario de Entrega (Express)';
+      if (str === 'step-4' || str === '10. mensaje / tarjeta' || str === 'mensaje / tarjeta') return '9. Mensaje en la Tarjeta';
+      if (str === 'step-5' || str === '5') return '10. Teléfono de Destino';
+      if (str === 'step-6' || str === '6') return '11. Cierre y Pasarela';
+      if (str === 'payment_initiated') return 'Intento de Pago (Pasarela)';
+      if (str === 'purchase') return 'Compra Exitosa';
       return stepName;
   }
 
@@ -608,7 +609,27 @@
       }).join('');
 
       if (detailedData && detailedData.length > 0) {
-          const maxVisits = detailedData[0].unique_visits || 1;
+          // 1. AGRUPACIÓN Y NORMALIZACIÓN
+          const normalizedMap = {};
+          detailedData.forEach(d => {
+              const cleanName = formatearPasoCheckout(d.step_name);
+              if (!normalizedMap[cleanName]) {
+                  normalizedMap[cleanName] = { step_name: cleanName, unique_visits: 0, total_actions: 0, avg_time_sec: 0, count: 0 };
+              }
+              normalizedMap[cleanName].unique_visits += d.unique_visits;
+              normalizedMap[cleanName].total_actions += d.total_actions;
+              normalizedMap[cleanName].avg_time_sec += (d.avg_time_sec || 0);
+              normalizedMap[cleanName].count += 1;
+          });
+
+          // 2. PROMEDIO DE TIEMPOS Y ORDENAMIENTO
+          const detailedDataClean = Object.values(normalizedMap).map(d => {
+              d.avg_time_sec = Math.round(d.avg_time_sec / d.count);
+              return d;
+          }).sort((a, b) => b.unique_visits - a.unique_visits);
+
+          const maxVisits = detailedDataClean.length > 0 ? detailedDataClean[0].unique_visits || 1 : 1;
+          
           html += `
           <div id="funnel-detalles-panel" class="hidden mt-8 bg-[#fcfaf7] dark:bg-[#0a1f1c] border border-[#c5a059]/30 rounded-xl p-4 md:p-6 shadow-xl transition-all duration-500 relative overflow-hidden">
               <div class="absolute top-0 right-0 w-64 h-64 bg-[#c5a059]/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
@@ -620,34 +641,34 @@
                   <button onclick="document.getElementById('funnel-detalles-panel').classList.add('hidden')" class="text-[#0a1f1c]/50 dark:text-zinc-500 hover:text-[#c5a059] text-2xl font-light">×</button>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  ${detailedData.map(d => {
+                  ${detailedDataClean.map(d => {
                       const retencion = Math.round((d.unique_visits / maxVisits) * 100);
                       const fuga = 100 - retencion;
-                      const tiempoStr = d.avg_time_sec ? `${Math.round(d.avg_time_sec)}s pro.` : '0s pro.';
+                      const tiempoStr = d.avg_time_sec ? \`\${Math.round(d.avg_time_sec)}s pro.\` : '0s pro.';
                       
-                      return `
+                      return \`
                       <div class="bg-[#0a1f1c]/5 dark:bg-white/5 border border-[#0a1f1c]/10 dark:border-white/10 p-4 md:p-5 rounded-lg hover:border-[#c5a059]/50 transition-colors hover:bg-white/10 relative overflow-hidden">
                           <div class="absolute bottom-0 left-0 h-1 bg-[#c5a059]/20 w-full">
-                              <div class="h-full bg-[#c5a059]" style="width: ${retencion}%"></div>
+                              <div class="h-full bg-[#c5a059]" style="width: \${retencion}%\"></div>
                           </div>
                           <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/60 dark:text-zinc-400 block mb-2">Pantalla / Paso</span>
-                          <h5 class="text-[#0a1f1c] dark:text-[#fcfaf7] font-bold text-sm mb-4 truncate" title="${formatearPasoCheckout(d.step_name)}">${formatearPasoCheckout(d.step_name)}</h5>
+                          <h5 class="text-[#0a1f1c] dark:text-[#fcfaf7] font-bold text-sm mb-4 truncate" title="\${d.step_name}">\${d.step_name}</h5>
                           <div class="grid grid-cols-2 gap-4">
                               <div>
-                                  <span class="text-[18px] md:text-[20px] font-serif text-[#c5a059] block leading-none mb-1">${d.unique_visits}</span>
+                                  <span class="text-[18px] md:text-[20px] font-serif text-[#c5a059] block leading-none mb-1">\${d.unique_visits}</span>
                                   <span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Usuarios<br>Únicos</span>
                               </div>
                               <div class="text-right">
-                                  <span class="text-[18px] md:text-[20px] font-serif text-[#0a1f1c] dark:text-white block leading-none mb-1">${tiempoStr}</span>
+                                  <span class="text-[18px] md:text-[20px] font-serif text-[#0a1f1c] dark:text-white block leading-none mb-1">\${tiempoStr}</span>
                                   <span class="text-[8px] uppercase tracking-wider text-[#0a1f1c]/50 dark:text-zinc-500 block leading-tight">Tiempo<br>Invertido</span>
                               </div>
                           </div>
                           <div class="mt-4 pt-3 border-t border-[#0a1f1c]/10 dark:border-white/10 flex justify-between items-center">
-                              <span class="text-[9px] font-bold uppercase tracking-widest ${fuga > 50 ? 'text-red-500 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}">${fuga}% Fuga</span>
-                              <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/50 dark:text-zinc-500 border border-[#0a1f1c]/20 dark:border-zinc-600 px-1.5 py-0.5 rounded">Retiene: ${retencion}%</span>
+                              <span class="text-[9px] font-bold uppercase tracking-widest \${fuga > 50 ? 'text-red-500 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}">\${fuga}% Fuga</span>
+                              <span class="text-[9px] uppercase tracking-widest text-[#0a1f1c]/50 dark:text-zinc-500 border border-[#0a1f1c]/20 dark:border-zinc-600 px-1.5 py-0.5 rounded">Retiene: \${retencion}%</span>
                           </div>
                       </div>
-                      `;
+                      \`;
                   }).join('')}
               </div>
           </div>
