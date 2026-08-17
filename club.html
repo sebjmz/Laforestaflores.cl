@@ -1417,23 +1417,7 @@ document.addEventListener('visibilitychange', async () => {
     }
 });
 
-window.onload = function () {
-  google.accounts.id.initialize({
-    client_id: "985936647023-hmadq5q6icvscivbi18qa7qiscgj1ehl.apps.googleusercontent.com",
-    callback: handleGoogleResponse
-  });
-  
-  google.accounts.id.renderButton(
-    document.getElementById("google-btn-container"),
-    { 
-      theme: document.documentElement.classList.contains('dark') ? 'filled_black' : 'outline', 
-      size: "large", 
-      text: "continue_with", 
-      width: 400 
-    }
-  );
-
-  window.fbAsyncInit = function() {
+window.fbAsyncInit = function() {
   FB.init({
     appId      : '4313223078990361',
     cookie     : true,
