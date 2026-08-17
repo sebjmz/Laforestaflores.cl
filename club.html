@@ -11,6 +11,8 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js"></script>
 
 <script>
   function initTheme() {
@@ -180,6 +182,23 @@
           <p id="reset-error" class="text-red-500 dark:text-red-400 text-sm font-bold text-center mt-2"></p>
           <button type="button" onclick="showAuthTab('login')" class="w-full text-xs text-[#0a1f1c]/50 dark:text-white/50 hover:text-[#c5a059] uppercase tracking-widest font-bold mt-2 transition">Volver al inicio de sesión</button>
         </form>
+
+        <div id="social-auth-container" class="mt-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="flex-1 h-px bg-[#0a1f1c]/10 dark:bg-white/10"></div>
+            <span class="text-[10px] text-[#0a1f1c]/40 dark:text-white/40 uppercase tracking-widest font-bold">O ingresar con</span>
+            <div class="flex-1 h-px bg-[#0a1f1c]/10 dark:bg-white/10"></div>
+          </div>
+          
+          <div class="flex flex-col gap-4">
+            <div id="google-btn-container" class="w-full flex justify-center"></div>
+            
+            <button type="button" onclick="doFacebookLogin()" class="w-full bg-[#1877F2] text-white py-4 rounded-lg text-sm font-bold flex items-center justify-center gap-3 hover:bg-[#166FE5] shadow-md transition">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              Continuar con Facebook
+            </button>
+          </div>
+        </div>
       </div>
   </div>
 
@@ -582,6 +601,11 @@ function showAuthTab(tab){
   document.getElementById('tab-register').classList.toggle('border-[#c5a059]', tab === 'register');
   document.getElementById('tab-register').classList.toggle('text-[#0a1f1c]/40', tab !== 'register');
   document.getElementById('tab-register').classList.toggle('dark:text-white/40', tab !== 'register');
+
+  const socialContainer = document.getElementById('social-auth-container');
+  if(socialContainer) {
+    socialContainer.classList.toggle('hidden-panel', tab === 'forgot' || tab === 'reset');
+  }
 }
 
 function dispararFuegosArtificiales() {
@@ -1392,6 +1416,74 @@ document.addEventListener('visibilitychange', async () => {
         } catch(e) {}
     }
 });
+
+window.onload = function () {
+  google.accounts.id.initialize({
+    client_id: "TU_CLIENT_ID_GOOGLE.apps.googleusercontent.com",
+    callback: handleGoogleResponse
+  });
+  
+  google.accounts.id.renderButton(
+    document.getElementById("google-btn-container"),
+    { theme: document.documentElement.classList.contains('dark') ? 'filled_black' : 'outline', size: "large", text: "continue_with" }
+  );
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : 'TU_APP_ID_FACEBOOK',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v18.0'
+    });
+  };
+};
+
+async function handleGoogleResponse(response) {
+  const referral_code = document.getElementById('reg-referral')?.value || null;
+  try {
+    const res = await fetch(`${CLUB_API}/api/auth/google`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id_token: response.credential, referral_code })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    
+    localStorage.setItem('laforesta_prev_points', 0);
+    localStorage.setItem('laforesta_last_points', -1);
+    localStorage.setItem('laforesta_club_token', data.token);
+    loadDashboardInit();
+  } catch(err) {
+    alert(err.message || 'Ocurrió un error al conectar con Google.');
+  }
+}
+
+function doFacebookLogin() {
+  FB.login(function(response) {
+    if (response.authResponse) {
+      handleFacebookResponse(response.authResponse.accessToken);
+    }
+  }, {scope: 'email,public_profile'});
+}
+
+async function handleFacebookResponse(access_token) {
+  const referral_code = document.getElementById('reg-referral')?.value || null;
+  try {
+    const res = await fetch(`${CLUB_API}/api/auth/facebook`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ access_token, referral_code })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+
+    localStorage.setItem('laforesta_prev_points', 0);
+    localStorage.setItem('laforesta_last_points', -1);
+    localStorage.setItem('laforesta_club_token', data.token);
+    loadDashboardInit();
+  } catch(err) {
+    alert(err.message || 'Ocurrió un error al conectar con Facebook.');
+  }
+}
+
 </script>
 <script>
 (function() {
@@ -1416,7 +1508,6 @@ document.addEventListener('visibilitychange', async () => {
 
     trackEvent4D('page_view');
 
-    // Interceptor dinámico para acciones de Mi Club
     document.addEventListener('click', function(e) {
         const el = e.target.closest('button, a, [onclick]');
         if (!el) return;
@@ -1424,7 +1515,6 @@ document.addEventListener('visibilitychange', async () => {
         const onclickAttr = el.getAttribute('onclick') || '';
         const text = (el.innerText || el.textContent || '').trim();
 
-        // 1. Intentos de Login o Registro
         if (onclickAttr.includes('doLogin')) {
             trackEvent4D('club_login_attempt', { email: document.getElementById('login-email')?.value || '' });
         }
@@ -1432,18 +1522,15 @@ document.addEventListener('visibilitychange', async () => {
             trackEvent4D('club_register_attempt', { email: document.getElementById('reg-email')?.value || '' });
         }
 
-        // 2. Guardar Cumpleaños
         if (onclickAttr.includes('saveBirthday')) {
             trackEvent4D('club_birthday_saved', {});
         }
 
-        // 3. Guardar Fechas Importantes
         if (onclickAttr.includes('addDate') || text.includes('Guardar Fecha')) {
             const label = document.getElementById('date-label')?.value || 'Fecha importante';
             trackEvent4D('club_important_date_added', { label: label });
         }
 
-        // 4. Referidos y Compartir (WhatsApp / Copiar Código / QR)
         if (onclickAttr.includes('abrirShareModal') || text.includes('Compartir mi código')) {
             trackEvent4D('club_referral_modal_opened', {});
         }
@@ -1454,12 +1541,10 @@ document.addEventListener('visibilitychange', async () => {
             trackEvent4D('club_referral_whatsapp_clicked', {});
         }
 
-        // 5. Vincular Teléfono WhatsApp
         if (onclickAttr.includes('requestPhoneOtp') || text.includes('Generar enlace')) {
             trackEvent4D('club_phone_otp_requested', {});
         }
 
-        // 6. Enviar Reseña o Clic en Google desde el Club
         if (onclickAttr.includes('registrarClicGoogle') || text.includes('DEJAR MI RESEÑA EN GOOGLE')) {
             trackEvent4D('club_google_review_clicked', {});
         }
