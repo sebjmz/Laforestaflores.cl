@@ -584,6 +584,21 @@ function validarEmailYContinuar() {
         alert("Por favor, ingrese un correo electrónico válido para continuar.");
         return;
     }
+    
+    // CAPTURA GARANTIZADA: Envía el evento a tu Tracker 4D inmediatamente
+    if (typeof window.trackEvent4D === 'function') {
+        const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+        const cartVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+        const sender = document.getElementById('sender-name')?.value || '';
+        
+        window.trackEvent4D('abandonment_or_close', { 
+            step_name: 'step-buyer-email',
+            email: t, 
+            name: sender, 
+            cart_value: cartVal 
+        });
+    }
+
     goToStep(2);
 }
 
@@ -1462,10 +1477,17 @@ function reportTime(event) {
     const seconds = Math.round((Date.now() - pageStartTime) / 1000);
     const currentCart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
     const cartVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-    const email = document.getElementById('buyer-email')?.value?.trim() || '';
-    const name = document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || '';
-    const phone = document.getElementById('receiver-phone')?.value?.trim() || '';
-    const currentStep = document.querySelector(".checkout-step.active")?.id || 'checkout';
+    
+    // EXTRACCIÓN BLINDADA: Lee la pantalla y el LocalStorage
+    const inputsLocales = JSON.parse(localStorage.getItem('laforesta_checkout_inputs') || '{}');
+    const email = document.getElementById('buyer-email')?.value?.trim() || inputsLocales.buyerEmail || '';
+    const sender = document.getElementById('sender-name')?.value || inputsLocales.senderName || '';
+    const receiver = document.getElementById('receiver-name')?.value || inputsLocales.receiverName || '';
+    const name = sender ? sender : receiver;
+    const phone = document.getElementById('receiver-phone')?.value?.trim() || inputsLocales.receiverPhone || '';
+    
+    const activeStep = document.querySelector(".checkout-step.active");
+    const currentStep = activeStep ? activeStep.id : 'checkout';
 
     window.trackEvent4D('time_on_page', { 
         seconds: seconds,
