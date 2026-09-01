@@ -12,7 +12,6 @@
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js"></script>
 
 <script>
   function initTheme() {
@@ -192,11 +191,6 @@
           
           <div class="flex flex-col gap-3 max-w-[400px] mx-auto w-full">
             <div id="google-btn-container" class="w-full flex justify-center"></div>
-            
-            <button type="button" onclick="doFacebookLogin()" class="w-full bg-white dark:bg-[#131314] border border-[#dadce0] dark:border-[#8e918f] text-[#3c4043] dark:text-[#e3e3e3] rounded-[4px] flex items-center px-3 hover:bg-[#f8f9fa] dark:hover:bg-[#1e1e1f] transition shadow-sm" style="height: 40px; font-family: 'Roboto', arial, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.25px;">
-              <svg class="w-[18px] h-[18px] shrink-0" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-              <span class="flex-1 text-center pr-[18px]">Continuar con Facebook</span>
-            </button>
           </div>
         </div>
       </div>
@@ -487,7 +481,7 @@
                 <div class="text-center mb-6">
                     <span class="text-5xl block mb-3">✨</span>
                     <h3 class="font-serif text-2xl md:text-3xl italic text-[#0a1f1c] dark:text-white mb-2 leading-tight">¡Gracias por confiar en nosotros!</h3>
-                    <p class="text-sm md:text-base text-[#0a1f1c]/70 dark:text-white/70 mt-4 leading-relaxed">Nos importa mucho tu experiencia. ¿Nos cuentas en unos segundos cómo estuvo todo? <strong class="text-[#c5a059] block mt-1">Tu tiempo es muy valioso, así que te dejaremos un pequeño regalo al final.</strong></p>
+                    <p class="text-sm md:text-base text-[#0a1f1c]/70 dark:text-white/70 mt-4 leading-relaxed">Nos importa mucho tu experiencia. ¿Nos cuentas en unos segundos cómo estuvo todo? <strong class="text-[#c5a059] block mt-1">Tu tiempo es muy valioso, así que te dejaremos un regalo al final.</strong></p>
                 </div>
                 
                 <form id="survey-form" onsubmit="return enviarEncuesta(event)">
@@ -1417,15 +1411,6 @@ document.addEventListener('visibilitychange', async () => {
     }
 });
 
-window.fbAsyncInit = function() {
-  FB.init({
-    appId      : '4313223078990361',
-    cookie     : true,
-    xfbml      : true,
-    version    : 'v20.0'
-  });
-};
-
 window.onload = function () {
   google.accounts.id.initialize({
     client_id: "985936647023-hmadq5q6icvscivbi18qa7qiscgj1ehl.apps.googleusercontent.com",
@@ -1461,34 +1446,6 @@ async function handleGoogleResponse(response) {
     alert(err.message || 'Ocurrió un error al conectar con Google.');
   }
 }
-
-function doFacebookLogin() {
-  FB.login(function(response) {
-    if (response.authResponse) {
-      handleFacebookResponse(response.authResponse.accessToken);
-    }
-  }, {scope: 'email,public_profile'});
-}
-
-async function handleFacebookResponse(access_token) {
-  const referral_code = document.getElementById('reg-referral')?.value || null;
-  try {
-    const res = await fetch(`${CLUB_API}/api/auth/facebook`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ access_token, referral_code })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error);
-
-    localStorage.setItem('laforesta_prev_points', 0);
-    localStorage.setItem('laforesta_last_points', -1);
-    localStorage.setItem('laforesta_club_token', data.token);
-    loadDashboardInit();
-  } catch(err) {
-    alert(err.message || 'Ocurrió un error al conectar con Facebook.');
-  }
-}
-
 </script>
 <script>
 (function() {
@@ -1558,3 +1515,4 @@ async function handleFacebookResponse(access_token) {
 </script>
 </body>
 </html>
+```[cite: 3]
