@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gracias por tu respuesta | La Foresta Flores</title>
+
+<link rel="icon" type="image/webp" href="/img/favicon.webp">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  body { background: #0a1f1c; color: #fcfaf7; font-family: 'Plus Jakarta Sans', sans-serif; }
+  .font-serif { font-family: 'Playfair Display', serif; }
+</style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6 text-center">
+  <div class="max-w-md w-full bg-white/5 border border-white/10 p-8 rounded-2xl shadow-2xl">
+    <span class="text-5xl block mb-4">🙏</span>
+    <h1 class="font-serif text-3xl md:text-4xl italic text-[#c5a059] mb-4">Gracias por tu honestidad</h1>
+    
+    <div id="loading" class="animate-pulse py-4">
+      <p class="text-white/70 text-sm">Registrando tu respuesta y preparando tus puntos...</p>
+    </div>
+
+    <div id="success" class="hidden">
+      <p class="text-white/80 text-sm mb-6 leading-relaxed">Hemos registrado tu comentario en el taller. Tal como lo prometimos, tus <strong>1.000 puntos ($1.000)</strong> han quedado en pausa.</p>
+      <p class="text-[#c5a059] font-bold text-sm mb-8">Tienes 24 horas para activar tu cuenta gratuita y sumarlos a tu saldo inicial.</p>
+      <a id="register-link" href="/club.html?tab=register" class="block w-full bg-[#c5a059] text-[#0a1f1c] font-bold py-4 rounded-lg text-xs uppercase tracking-widest shadow-md hover:scale-105 transition">
+        Crear cuenta y atrapar mis puntos
+      </a>
+    </div>
+
+    <div id="error" class="hidden mt-4">
+      <p class="text-red-400 text-sm mb-4 font-bold">Ocurrió un problema al procesar tu respuesta o el enlace ya caducó.</p>
+      <a href="/" class="text-[#c5a059] text-xs uppercase tracking-widest underline font-bold">Volver a la tienda</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const params = new URLSearchParams(window.location.search);
+      const reason = params.get('reason');
+      const email = params.get('email');
+      const sid = params.get('sid');
+      
+      const registerLink = document.getElementById('register-link');
+      if (email) {
+        registerLink.href = `/club.html?email=${encodeURIComponent(email)}&tab=register`;
+      }
+
+      if (!reason || !email) {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('error').classList.remove('hidden');
+        return;
+      }
+
+      try {
+        const res = await fetch('https://club-laforesta.sebjmz.workers.dev/api/feedback-bonus', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reason, email, session_id: sid })
+        });
+        
+        document.getElementById('loading').classList.add('hidden');
+        
+        if (res.ok) {
+          document.getElementById('success').classList.remove('hidden');
+        } else {
+          document.getElementById('error').classList.remove('hidden');
+        }
+      } catch (err) {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('error').classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
