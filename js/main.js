@@ -1596,6 +1596,8 @@ document.addEventListener('click', function(e) {
     }
 }, true);
 
+})();
+    
  function renderizarCatalogo() {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
