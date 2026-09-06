@@ -412,32 +412,6 @@
             #hero-slider p { font-size: 0.9rem !important; margin-bottom: 1rem !important; }
             #hero-slider .btn-premium { padding: 0.6rem 1.5rem !important; font-size: 0.8rem !important; }
         }
-
-        /* Google Translate Styling */
-        .goog-te-banner-frame.skiptranslate { display: none !important; }
-        body { top: 0px !important; }
-        #goog-gt-tt { display: none !important; }
-        .goog-te-gadget { color: transparent !important; font-size: 0px !important; }
-        .goog-te-gadget .goog-te-combo {
-            background-color: rgba(10,31,28,0.8);
-            color: #c5a059;
-            border: 1px solid rgba(197,160,89,0.3);
-            border-radius: 4px;
-            padding: 4px 6px;
-            font-size: 9px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            outline: none;
-            cursor: pointer;
-            margin: 0;
-            appearance: none;
-            -webkit-appearance: none;
-            text-align: center;
-            height: 24px;
-        }
-        .goog-te-gadget .goog-te-combo option { background-color: #0a1f1c; color: #c5a059; }
-        #google_translate_element { display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
@@ -516,7 +490,6 @@
         </div>
         
         <div class="flex items-center space-x-4 md:space-x-6 flex-shrink-0">
-            <div id="google_translate_element"></div>
             <a href="/club.html" aria-label="Iniciar Sesión" class="flex items-center gap-1.5 group hover:scale-105 transition-transform duration-300">
                 <svg class="w-5 h-5 md:hidden text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -2207,17 +2180,5 @@
     }, { passive: true });
 })();
 </script>
-
-    <!-- Google Translate Script -->
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'es',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-            }, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
 </body>
 </html>
