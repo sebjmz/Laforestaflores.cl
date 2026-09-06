@@ -2092,7 +2092,7 @@
 
     // 7. Sensor Universal (Clics Orgánicos)
     document.addEventListener('click', function(e) {
-        const el = e.target.closest('button, a, .step-option, [onclick]');
+        const el = e.target.closest('button, a, .step-option, .product-card, [onclick], [role="button"]');
         if (!el) return;
 
         const onclickAttr = el.getAttribute('onclick') || '';
