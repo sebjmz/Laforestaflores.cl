@@ -1414,9 +1414,12 @@ function escribirMensaje(e) {
 // ==========================================
 // SENSOR MAESTRO 4D & TELEMETRÍA GLOBAL
 // ==========================================
-window.LF_TRACKER_INITIALIZED = true;
+(function() {
+    if (window._LF_TRACKER_ACTIVE) return; // <-- El candado: si index.html ya lo activó, main.js se detiene aquí.
+    window._LF_TRACKER_ACTIVE = true;
+    window.LF_TRACKER_INITIALIZED = true;
 
-const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
+    const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
 
 let sid = sessionStorage.getItem('lf_sid_4d') || sessionStorage.getItem('lf_sid');
 if (!sid) {
@@ -1541,7 +1544,7 @@ const checkAgregarFunc = setInterval(() => {
 
 // 8. Sensor Universal de Clics e Interacciones
 document.addEventListener('click', function(e) {
-    const target = e.target.closest('button, a, .step-option, .product-card');
+    const target = e.target.closest('button, a, .step-option, .product-card, [onclick], [role="button"]');
     if (!target) return;
 
     const text = (target.innerText || target.textContent || '').trim();
