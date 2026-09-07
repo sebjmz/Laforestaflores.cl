@@ -548,6 +548,25 @@ function updateCartUI() {
     }
 }
 
+/* ==========================================
+   SINCRONIZACIÓN DE LA BOLSA AL LLEGAR AL INDEX
+   (Cuando se agrega un producto desde una página
+   de producto o de catálogo y se vuelve al index)
+   ========================================== */
+(function sincronizarBolsaAlCargar() {
+    if (typeof updateCartUI === "function") updateCartUI();
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("action") === "open_cart") {
+        if (cart.length > 0 && typeof toggleCart === "function") toggleCart();
+
+        params.delete("action");
+        const queryLimpio = params.toString();
+        const urlLimpia = window.location.pathname + (queryLimpio ? "?" + queryLimpio : "") + window.location.hash;
+        window.history.replaceState({}, document.title, urlLimpia);
+    }
+})();
+
 function guardarProgresoCheckout() {
     let e = {
         senderName: document.getElementById("sender-name")?.value || "",
