@@ -730,7 +730,6 @@ function goToStep(e) {
     if (a) a.classList.add("active");
     guardarProgresoCheckout();
     
-    // Validar saldo y nivel si se entra al checkout de pago final
     if (t === "step-6") {
         cargarVistaPreviaPuntosNativo();
     }
@@ -1413,7 +1412,7 @@ function escribirMensaje(e) {
 }
 
 // ==========================================
-// LÓGICA DEL SLIDER PRINCIPAL (HERO)
+// LÓGICA DEL SLIDER
 // ==========================================
 let currentSlide = 0;
 let slideInterval;
@@ -1437,14 +1436,6 @@ function initHeroSlider() {
         s.style.pointerEvents = i === 0 ? 'auto' : 'none';
         s.style.transition = 'opacity 1s ease-in-out';
         s.style.zIndex = i === 0 ? '2' : '1';
-        
-        const anims = s.querySelectorAll('.slide-anim');
-        if (i === 0) {
-            anims.forEach(el => {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-            });
-        }
     });
 
     startAutoSlide();
@@ -1452,26 +1443,15 @@ function initHeroSlider() {
 
 window.goToHeroSlide = function(index) {
     if(slides.length === 0) return;
-    
     slides[currentSlide].style.opacity = '0';
     slides[currentSlide].style.pointerEvents = 'none';
     slides[currentSlide].style.zIndex = '1';
-    const oldAnims = slides[currentSlide].querySelectorAll('.slide-anim');
-    oldAnims.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(1rem)';
-    });
     
     currentSlide = (index + slides.length) % slides.length;
+    
     slides[currentSlide].style.opacity = '1';
     slides[currentSlide].style.pointerEvents = 'auto';
     slides[currentSlide].style.zIndex = '2';
-    
-    const newAnims = slides[currentSlide].querySelectorAll('.slide-anim');
-    newAnims.forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
-    });
     
     if (dotsContainer) {
         const dots = dotsContainer.querySelectorAll('button');
@@ -1666,7 +1646,7 @@ document.addEventListener('click', function(e) {
 }, true);
 
 // ==========================================
-// RENDERIZADO DEL CATÁLOGO
+// RENDERIZADO DEL CATÁLOGO (CORREGIDO)
 // ==========================================
 window.renderizarCatalogo = function() {
     const grid = document.getElementById('product-grid');
@@ -1711,7 +1691,7 @@ window.renderizarCatalogo = function() {
 // INICIALIZACIÓN CENTRALIZADA
 // ==========================================
 function iniciarSitio() {
-    if (typeof initHeroSlider === "function") initHeroSlider();
+    initHeroSlider();
     renderizarCatalogo();
     setInterval(updateCountdown, 1000);
     updateCountdown();
