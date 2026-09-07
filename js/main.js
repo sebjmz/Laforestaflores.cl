@@ -117,6 +117,35 @@ function selectB2BSegment(e) {
     }
 }
 
+function registrarOrdenIntranet(e, t, a) {
+    fetch("https://laforesta-intranet.sebjmz.workers.dev/api/orden", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            orderId: e,
+            email: t.metadata.comprador_email,
+            receptor: t.metadata.receiver_name,
+            direccion: t.metadata.logistics_detail.split("•")[1] || t.metadata.logistics_detail,
+            fecha: t.metadata.fecha_entrega + " / " + t.metadata.time_slot,
+            totalCompra: a
+        })
+    }).catch(e => console.error("Fallo sincr. Intranet:", e));
+}
+
+function backToB2BStep1() {
+    let e = document.getElementById("b2b-step-1"),
+        t = document.getElementById("b2b-step-2");
+    t.classList.add("opacity-0", "translate-x-8");
+    setTimeout(() => {
+        t.classList.add("hidden");
+        t.classList.remove("flex");
+        e.classList.remove("hidden");
+        e.classList.add("flex");
+        e.offsetWidth;
+        setTimeout(() => e.classList.remove("opacity-0", "-translate-x-8"), 10);
+    }, 300);
+}
+
 function resetB2BFlow() {
     let e = document.getElementById("b2b-final-form");
     if (e) e.reset();
@@ -213,7 +242,7 @@ try {
     selectedLogistics = localStorage.getItem("laforesta_selectedLogistics") || "";
     selectedDate = localStorage.getItem("laforesta_selectedDate") || "";
     selectedTimeSlot = localStorage.getItem("laforesta_selectedTimeSlot") || "";
-    isExpressDelivery = localStorage.getItem("laforesta_isExpressDelivery") === "true";
+    isExpressDelivery = "true" === localStorage.getItem("laforesta_isExpressDelivery");
 } catch (e) {
     console.warn("Navegación privada detectada, funciones de memoria limitadas.");
 }
@@ -571,7 +600,13 @@ function restaurarProgresoCheckout() {
             if (el) el.value = e[id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] || "";
         });
         if (localStorage.getItem("laforesta_checkout_abierto") === "true") {
-            cargarPasarelasYAbrirCheckout();
+            let t = document.getElementById("checkout-flow");
+            if (t) {
+                t.classList.add("open");
+                t.classList.remove("hidden");
+                goToStep(e.currentStep);
+                if ("step-time" === e.currentStep) renderHorariosInteligentes();
+            }
         }
     }
 }
@@ -615,7 +650,8 @@ function openCheckout() {
     
     let a = JSON.parse(localStorage.getItem("laforesta_checkout_inputs"));
     goToStep(a?.currentStep || 1);
-    if ((a?.currentStep || "step-1") === "step-time") renderHorariosInteligentes();
+    let r = a?.currentStep || "step-1";
+    if (r === "step-time") renderHorariosInteligentes();
     
     let o = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
     trackGA4("begin_checkout", {
@@ -648,10 +684,14 @@ async function cargarVistaPreviaPuntosNativo() {
             const container = document.getElementById('points-redemption-container');
             if (container && data.points_balance > 0) {
                 container.classList.remove('hidden');
-                const ptsVisual = window.descuentoPuntos > 0 ? 0 : data.points_balance;
+                
                 let balEl = document.getElementById('checkout-points-balance');
-                if (balEl) balEl.innerText = `${ptsVisual.toLocaleString("es-CL")} pts`;
-                window.maxPuntosCanjeables = data.max_redeemable_clp;
+                if (balEl) {
+                    balEl.setAttribute('data-saldo-total', data.points_balance);
+                    window.maxPuntosCanjeables = data.max_redeemable_clp;
+                    const ptsVisual = data.points_balance - (window.descuentoPuntos || 0);
+                    balEl.innerText = `${ptsVisual.toLocaleString("es-CL")} pts`;
+                }
 
                 let txt = `Puedes usar hasta ${data.max_redeemable_clp.toLocaleString("es-CL")} pts en esta compra (Cubre hasta el ${data.cap_pct}% del arreglo).`;
                 if (data.es_cumpleanos) txt = `¡Feliz Cumpleaños! Hoy puedes cubrir el 100% de tus flores con tus puntos. (Máx: ${data.max_redeemable_clp.toLocaleString("es-CL")})`;
@@ -685,12 +725,13 @@ async function cargarVistaPreviaPuntosNativo() {
 window.aplicarPuntos = function() {
     const btn = document.getElementById('btn-aplicar-puntos');
     const balanceEl = document.getElementById('checkout-points-balance');
+    const saldoTotal = parseInt(balanceEl ? balanceEl.getAttribute('data-saldo-total') : 0) || 0;
 
     if (window.descuentoPuntos > 0) {
         window.descuentoPuntos = 0;
         let pDisc = document.getElementById('checkout-points-discount');
         if(pDisc) pDisc.classList.add('hidden');
-        if(balanceEl) balanceEl.innerText = `${(window.maxPuntosCanjeables || 0).toLocaleString("es-CL")} pts`; 
+        if(balanceEl) balanceEl.innerText = `${saldoTotal.toLocaleString("es-CL")} pts`; 
         if(btn) {
             btn.innerText = "Usar mi saldo en esta compra";
             btn.classList.add('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
@@ -703,7 +744,10 @@ window.aplicarPuntos = function() {
         if(pDisc) pDisc.classList.remove('hidden');
         let pAmt = document.getElementById('checkout-points-amount');
         if(pAmt) pAmt.innerText = `-$${window.descuentoPuntos.toLocaleString("es-CL")}`;
-        if(balanceEl) balanceEl.innerText = `0 pts`;
+        
+        const saldoRestante = Math.max(0, saldoTotal - window.descuentoPuntos);
+        if(balanceEl) balanceEl.innerText = `${saldoRestante.toLocaleString("es-CL")} pts`;
+        
         if(btn) {
             btn.innerText = "✓ Saldo Aplicado (Hacer clic para anular)";
             btn.classList.remove('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
@@ -1590,7 +1634,7 @@ window.renderizarCatalogo = function() {
     productosPrincipales.forEach(item => {
         const textoMedalla = getLuxuryBadge(item.id);
         const medallaHtml = textoMedalla ? `<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm z-20">${textoMedalla}</div>` : '';
-        const etiquetaUrgencia = item.id === 3 || item.id === 5 ? `<div class="urgency-tag">Últimas 2 unidades</div>` : '';
+        const etiquetaUrgencia = (item.id === 3 || item.id === 5) ? `<div class="urgency-tag">Últimas 2 unidades</div>` : '';
 
         html += `
         <div class="product-card group flex flex-col h-full">
@@ -1625,6 +1669,43 @@ window.renderizarCatalogo = function() {
 // ==========================================
 // EJECUCIÓN DEL DOM, SLIDER Y COLLAGE
 // ==========================================
+if (!document.getElementById('fab-wave-style')) {
+    let style = document.createElement('style');
+    style.id = 'fab-wave-style';
+    style.innerHTML = `
+    @keyframes oceanRipple {
+        0% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.8), 0 0 0 0 rgba(197, 160, 89, 0.4); }
+        70% { box-shadow: 0 0 0 15px rgba(197, 160, 89, 0), 0 0 0 30px rgba(197, 160, 89, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0), 0 0 0 0 rgba(197, 160, 89, 0); }
+    }
+    .fab-wave {
+        animation: oceanRipple 2s infinite cubic-bezier(0.4, 0, 0.6, 1) !important;
+        border-color: #c5a059 !important;
+    }`;
+    document.head.appendChild(style);
+}
+
+function toggleFabMenu() {
+    let fabBtn = document.getElementById("main-fab-btn") || document.querySelector('button[aria-label="Menú rápido"]');
+    if (fabBtn && !localStorage.getItem('laforesta_fab_interacted')) {
+        localStorage.setItem('laforesta_fab_interacted', 'true');
+        fabBtn.classList.remove('fab-wave');
+    }
+    let e = document.getElementById("fab-menu"),
+        t = document.getElementById("fab-icon");
+    if (e && t) {
+        if (e.classList.contains("opacity-0")) {
+            e.classList.remove("opacity-0", "pointer-events-none", "invisible", "translate-y-4");
+            e.classList.add("opacity-100", "pointer-events-auto", "translate-y-0");
+            t.style.transform = "rotate(180deg)";
+        } else {
+            e.classList.add("opacity-0", "pointer-events-none", "invisible", "translate-y-4");
+            e.classList.remove("opacity-100", "pointer-events-auto", "translate-y-0");
+            t.style.transform = "rotate(0deg)";
+        }
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     
     // 1. FAB
@@ -1704,6 +1785,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }, obsOptions);
             collagePages.forEach(p => observer.observe(p));
         }
+    }
+
+    // Renderizar catálogo inmediatamente
+    if (typeof window.renderizarCatalogo === "function") {
+        window.renderizarCatalogo();
     }
 
     // 5. Motor Original del Slider (Descompreso)
@@ -1856,7 +1942,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// 6. Iniciar UI dependiente del DOM
-if (typeof window.renderizarCatalogo === "function") window.renderizarCatalogo();
 setInterval(updateCountdown, 1000);
 updateCountdown();
