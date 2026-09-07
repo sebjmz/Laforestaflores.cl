@@ -584,21 +584,7 @@ function validarEmailYContinuar() {
         alert("Por favor, ingrese un correo electrónico válido para continuar.");
         return;
     }
-    
-    // Forzamos el guardado en LocalStorage por seguridad
-    if (typeof guardarProgresoCheckout === 'function') guardarProgresoCheckout();
-
-    // Notificamos al tracker 4D la captura sin declararlo como abandono aún
-    if (typeof window.trackEvent4D === 'function') {
-        const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
-        const cartVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-        window.trackEvent4D('email_captured', { 
-            email: t, 
-            cart_value: cartVal 
-        });
-    }
-
-    goToStep("step-2");
+    goToStep(2);
 }
 
 function openCheckout() {
@@ -1471,21 +1457,15 @@ window.addEventListener('scroll', function() {
     });
 }, { passive: true });
 
+// 5. Heartbeat y reporte de tiempo continuo
 function reportTime(event) {
     const seconds = Math.round((Date.now() - pageStartTime) / 1000);
     const currentCart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
     const cartVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-    
-    // EXTRACCIÓN BLINDADA: Lee la pantalla primero, si está vacío, lee el LocalStorage
-    const inputsLocales = JSON.parse(localStorage.getItem('laforesta_checkout_inputs') || '{}');
-    const email = document.getElementById('buyer-email')?.value?.trim() || inputsLocales.buyerEmail || '';
-    const sender = document.getElementById('sender-name')?.value || inputsLocales.senderName || '';
-    const receiver = document.getElementById('receiver-name')?.value || inputsLocales.receiverName || '';
-    const name = sender ? sender : receiver;
-    const phone = document.getElementById('receiver-phone')?.value?.trim() || inputsLocales.receiverPhone || '';
-    
-    const activeStep = document.querySelector(".checkout-step.active");
-    const currentStep = activeStep ? activeStep.id : (inputsLocales.currentStep || 'checkout');
+    const email = document.getElementById('buyer-email')?.value?.trim() || '';
+    const name = document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || '';
+    const phone = document.getElementById('receiver-phone')?.value?.trim() || '';
+    const currentStep = document.querySelector(".checkout-step.active")?.id || 'checkout';
 
     window.trackEvent4D('time_on_page', { 
         seconds: seconds,
@@ -1495,7 +1475,6 @@ function reportTime(event) {
         phone: phone
     });
 
-    // Reporte seguro de abandono
     if (event && (event.type === 'beforeunload' || event.type === 'pagehide') && email && cartVal > 0) {
         window.trackEvent4D('abandonment_or_close', {
             step_name: currentStep,
