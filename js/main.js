@@ -1415,7 +1415,7 @@ function escribirMensaje(e) {
 // SENSOR MAESTRO 4D & TELEMETRÍA GLOBAL
 // ==========================================
 (function() {
-    if (window._LF_TRACKER_ACTIVE) return; // <-- El candado: si index.html ya lo activó, main.js se detiene aquí.
+    if (window._LF_TRACKER_ACTIVE) return;
     window._LF_TRACKER_ACTIVE = true;
     window.LF_TRACKER_INITIALIZED = true;
 
@@ -1597,8 +1597,8 @@ document.addEventListener('click', function(e) {
 }, true);
 
 })();
-    
- function renderizarCatalogo() {
+
+function renderizarCatalogo() {
     const grid = document.getElementById('product-grid');
     if (!grid) {
         console.warn("No se encontró el contenedor del catálogo en esta página.");
@@ -1635,7 +1635,6 @@ document.addEventListener('click', function(e) {
     grid.innerHTML = html;
 }
 
-// Ejecución segura sin importar los tiempos de carga
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', renderizarCatalogo);
 } else {
