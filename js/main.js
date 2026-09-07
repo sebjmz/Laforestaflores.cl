@@ -1635,8 +1635,14 @@ function renderizarCatalogo() {
     grid.innerHTML = html;
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderizarCatalogo);
-} else {
+function iniciarSitio() {
     renderizarCatalogo();
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciarSitio);
+} else {
+    iniciarSitio();
 }
