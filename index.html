@@ -597,7 +597,7 @@
         </p>
     </div>
     <div>
-        <button onclick="document.getElementById('vault').scrollIntoView();" aria-label="Explorar colección de flores" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Ver flores</button>
+        <button onclick="scrollToVault()" aria-label="Explorar colección de flores" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Ver flores</button>
     </div>
 </div>
                 </div>
@@ -648,11 +648,11 @@
         </div> 
         
         <button onclick="prevHeroSlide(true)" aria-label="Ver imagen anterior" class="hidden lg:block absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
-            <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
-        </button>
-        <button onclick="nextHeroSlide(true)" aria-label="Ver imagen siguiente" class="hidden lg:block absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
-            <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
-        </button>
+    <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
+</button>
+<button onclick="nextHeroSlide(true)" aria-label="Ver imagen siguiente" class="hidden lg:block absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+    <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
+</button>
 
         <div class="absolute bottom-10 right-10 md:bottom-12 md:right-16 z-50 flex space-x-3 items-center" id="hero-dots"></div>
 
