@@ -722,6 +722,7 @@ window.aplicarPuntos = function() {
     }
     actualizarTotalConDespacho();
 };
+
 function goToStep(e) {
     let t = typeof e === "number" ? `step-${e}` : e;
     document.querySelectorAll(".checkout-step").forEach(step => step.classList.remove("active"));
@@ -729,7 +730,6 @@ function goToStep(e) {
     if (a) a.classList.add("active");
     guardarProgresoCheckout();
     
-    // Validar saldo y nivel si se entra al checkout de pago final
     if (t === "step-6") {
         cargarVistaPreviaPuntosNativo();
     }
@@ -1412,14 +1412,84 @@ function escribirMensaje(e) {
 }
 
 // ==========================================
+// LÓGICA DEL SLIDER
+// ==========================================
+let currentSlide = 0;
+let slideInterval;
+let slides = [];
+let dotsContainer = null;
+
+function initHeroSlider() {
+    slides = document.querySelectorAll('.slide-item');
+    dotsContainer = document.getElementById('hero-dots');
+    if (slides.length === 0) return;
+
+    if (dotsContainer) {
+        dotsContainer.innerHTML = '';
+        slides.forEach((_, i) => {
+            dotsContainer.innerHTML += `<button onclick="goToHeroSlide(${i})" class="w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === 0 ? 'bg-[#c5a059] scale-125' : 'bg-white/40 hover:bg-white/70'}"></button>`;
+        });
+    }
+
+    slides.forEach((s, i) => {
+        s.style.opacity = i === 0 ? '1' : '0';
+        s.style.pointerEvents = i === 0 ? 'auto' : 'none';
+        s.style.transition = 'opacity 1s ease-in-out';
+        s.style.zIndex = i === 0 ? '2' : '1';
+    });
+
+    startAutoSlide();
+}
+
+window.goToHeroSlide = function(index) {
+    if(slides.length === 0) return;
+    slides[currentSlide].style.opacity = '0';
+    slides[currentSlide].style.pointerEvents = 'none';
+    slides[currentSlide].style.zIndex = '1';
+    
+    currentSlide = (index + slides.length) % slides.length;
+    
+    slides[currentSlide].style.opacity = '1';
+    slides[currentSlide].style.pointerEvents = 'auto';
+    slides[currentSlide].style.zIndex = '2';
+    
+    if (dotsContainer) {
+        const dots = dotsContainer.querySelectorAll('button');
+        dots.forEach((d, i) => {
+            d.className = `w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === currentSlide ? 'bg-[#c5a059] scale-125' : 'bg-white/40 hover:bg-white/70'}`;
+        });
+    }
+};
+
+window.nextHeroSlide = function(manual = false) {
+    window.goToHeroSlide(currentSlide + 1);
+    if(manual) resetAutoSlide();
+};
+
+window.prevHeroSlide = function(manual = false) {
+    window.goToHeroSlide(currentSlide - 1);
+    if(manual) resetAutoSlide();
+};
+
+function startAutoSlide() {
+    slideInterval = setInterval(() => window.nextHeroSlide(), 5000);
+}
+
+function resetAutoSlide() {
+    clearInterval(slideInterval);
+    startAutoSlide();
+}
+
+window.stopAutoPlay = function() {
+    clearInterval(slideInterval);
+};
+
+// ==========================================
 // SENSOR MAESTRO 4D & TELEMETRÍA GLOBAL
 // ==========================================
-(function() {
-    if (window._LF_TRACKER_ACTIVE) return;
-    window._LF_TRACKER_ACTIVE = true;
-    window.LF_TRACKER_INITIALIZED = true;
+window.LF_TRACKER_INITIALIZED = true;
 
-    const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
+const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
 
 let sid = sessionStorage.getItem('lf_sid_4d') || sessionStorage.getItem('lf_sid');
 if (!sid) {
@@ -1432,7 +1502,6 @@ let pagePath = window.location.pathname;
 if (pagePath === '/' || pagePath === '') pagePath = '/index.html';
 const pageStartTime = Date.now();
 
-// 1. Declaración global directa
 window.trackEvent4D = function(name, data = {}) {
     const payload = JSON.stringify({
         session_id: sid,
@@ -1449,10 +1518,8 @@ window.trackEvent4D = function(name, data = {}) {
     }).catch(() => {});
 };
 
-// 2. Registro de vista inmediata
 window.trackEvent4D('page_view');
 
-// 3. Registro de compra en gracias.html
 if (pagePath.includes('gracias.html')) {
     const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
     cartData.forEach(item => {
@@ -1460,7 +1527,6 @@ if (pagePath.includes('gracias.html')) {
     });
 }
 
-// 4. Sensor de Profundidad de Lectura (Scroll Depth)
 let scrollFlags = { 25: false, 50: false, 75: false, 100: false };
 window.addEventListener('scroll', function() {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -1478,17 +1544,10 @@ function reportTime(event) {
     const seconds = Math.round((Date.now() - pageStartTime) / 1000);
     const currentCart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
     const cartVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-    
-    // EXTRACCIÓN BLINDADA: Lee la pantalla primero, si está vacío, lee el LocalStorage
-    const inputsLocales = JSON.parse(localStorage.getItem('laforesta_checkout_inputs') || '{}');
-    const email = document.getElementById('buyer-email')?.value?.trim() || inputsLocales.buyerEmail || '';
-    const sender = document.getElementById('sender-name')?.value || inputsLocales.senderName || '';
-    const receiver = document.getElementById('receiver-name')?.value || inputsLocales.receiverName || '';
-    const name = sender ? sender : receiver;
-    const phone = document.getElementById('receiver-phone')?.value?.trim() || inputsLocales.receiverPhone || '';
-    
-    const activeStep = document.querySelector(".checkout-step.active");
-    const currentStep = activeStep ? activeStep.id : (inputsLocales.currentStep || 'checkout');
+    const email = document.getElementById('buyer-email')?.value?.trim() || '';
+    const name = document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || '';
+    const phone = document.getElementById('receiver-phone')?.value?.trim() || '';
+    const currentStep = document.querySelector(".checkout-step.active")?.id || 'checkout';
 
     window.trackEvent4D('time_on_page', { 
         seconds: seconds,
@@ -1498,7 +1557,6 @@ function reportTime(event) {
         phone: phone
     });
 
-    // Reporte seguro de abandono
     if (event && (event.type === 'beforeunload' || event.type === 'pagehide') && email && cartVal > 0) {
         window.trackEvent4D('abandonment_or_close', {
             step_name: currentStep,
@@ -1515,7 +1573,6 @@ window.addEventListener('visibilitychange', () => { if (document.visibilityState
 window.addEventListener('pagehide', reportTime);
 window.addEventListener('beforeunload', reportTime);
 
-// 6. Interceptores de Avance en el Checkout
 if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
     const originalGoToStep = window.goToStep;
     window.goToStep = function(step) { 
@@ -1525,14 +1582,11 @@ if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
     window.goToStep._tracked4d = true;
 }
 
-// 7. INYECCIÓN DE RETARDO PARA AGREGAR AL CARRITO (Páginas de Producto)
-// Esto evita que window.location.href mate el envío del evento a la base de datos
 const checkAgregarFunc = setInterval(() => {
     if (typeof window.agregarYVolver === 'function' && !window.agregarYVolver._tracked4d) {
         const originalAgregar = window.agregarYVolver;
         window.agregarYVolver = function(id, name, price, img) {
             window.trackEvent4D(id > 100 && id < 200 ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name });
-            // Pausa mágica de 250ms para que Cloudflare reciba el dato antes del salto de página
             setTimeout(() => {
                 originalAgregar(id, name, price, img);
             }, 250);
@@ -1542,9 +1596,8 @@ const checkAgregarFunc = setInterval(() => {
     }
 }, 500);
 
-// 8. Sensor Universal de Clics e Interacciones
 document.addEventListener('click', function(e) {
-    const target = e.target.closest('button, a, .step-option, .product-card, [onclick], [role="button"]');
+    const target = e.target.closest('button, a, .step-option, .product-card');
     if (!target) return;
 
     const text = (target.innerText || target.textContent || '').trim();
@@ -1552,7 +1605,6 @@ document.addEventListener('click', function(e) {
     const onclickAttr = target.getAttribute('onclick') || '';
     const hrefAttr = target.getAttribute('href') || '';
 
-    // Anclas
     if (hrefAttr.startsWith('#') || hrefAttr.includes('#')) {
         const anchor = hrefAttr.includes('#') ? '#' + hrefAttr.split('#')[1] : hrefAttr;
         if (anchor && anchor !== '#') {
@@ -1560,7 +1612,6 @@ document.addEventListener('click', function(e) {
         }
     }
 
-    // Agregar al carrito (Página Index/Categorías donde se usa addToCart nativo sin redirección inmediata)
     if (onclickAttr.includes('addToCart(') || textLower === 'añadir' || textLower.includes('añadir al atelier') || textLower === 'anadir') {
         const matchId = onclickAttr.match(/(?:addToCart)\s*\(\s*(\d+)/);
         const prodId = matchId ? parseInt(matchId[1], 10) : 0;
@@ -1577,7 +1628,6 @@ document.addEventListener('click', function(e) {
         return;
     }
 
-    // Pasarelas
     if (onclickAttr.includes('iniciarMercadoPago') || textLower.includes('mercadopago')) {
         const cartVal = JSON.parse(localStorage.getItem('laforesta_cart') || '[]').reduce((acc, item) => acc + (item.price * item.qty), 0);
         const email = document.getElementById('buyer-email')?.value?.trim() || '';
@@ -1590,15 +1640,15 @@ document.addEventListener('click', function(e) {
         return;
     }
 
-    // Clics generales
     if (text && text.length > 0 && text.length < 40 && !hrefAttr.startsWith('#')) {
         window.trackEvent4D('click', { target: text });
     }
 }, true);
 
-})();
-
-function renderizarCatalogo() {
+// ==========================================
+// RENDERIZADO DEL CATÁLOGO (CORREGIDO)
+// ==========================================
+window.renderizarCatalogo = function() {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
 
@@ -1607,11 +1657,11 @@ function renderizarCatalogo() {
 
     productosPrincipales.forEach(item => {
         const textoMedalla = getLuxuryBadge(item.id);
-        const medallaHtml = textoMedalla ? `<div class="absolute top-3 left-3 bg-[#fcfaf7] text-[#0a1f1c] text-[8px] font-bold uppercase tracking-[0.2em] px-2.5 py-1 z-20 shadow-sm border border-[#0a1f1c]/10">${textoMedalla}</div>` : '';
+        const medallaHtml = textoMedalla ? `<div class="absolute top-3 right-3 bg-white text-[#0a1f1c] text-[8px] font-bold uppercase tracking-[0.2em] px-2.5 py-1 z-20 shadow-sm border border-[#0a1f1c]/10 rounded-sm">${textoMedalla}</div>` : '';
 
         html += `
         <div class="product-card flex flex-col bg-transparent relative group">
-            <div class="img-zoom-container relative w-full aspect-square overflow-hidden mb-4 rounded-sm border border-[#0a1f1c]/10 shadow-sm">
+            <div class="img-zoom-container relative w-full aspect-[4/5] overflow-hidden mb-4 rounded-md">
                 ${medallaHtml}
                 <a href="${item.url}" class="block w-full h-full">
                     <img src="${item.img}" alt="${item.name}" loading="lazy" class="w-full h-full object-cover relative z-10 transition-transform duration-700 group-hover:scale-105">
@@ -1626,8 +1676,8 @@ function renderizarCatalogo() {
                 </p>
                 <div class="flex justify-between items-center mt-auto border-t border-[#0a1f1c]/10 pt-4">
                     <span class="text-sm md:text-base font-bold text-[#0a1f1c]">$${item.price.toLocaleString("es-CL")}</span>
-                    <button onclick="addToCart(${item.id}, '${item.name}', ${item.price}, '${item.img}')" class="border border-[#0a1f1c]/20 px-5 py-2.5 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] hover:border-[#c5a059] hover:text-[#c5a059] transition-all rounded-sm">
-                        Añadir
+                    <button onclick="addToCart(${item.id}, '${item.name}', ${item.price}, '${item.img}')" class="border border-[#0a1f1c]/20 px-5 py-2 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] hover:border-[#c5a059] hover:text-[#c5a059] transition-all rounded-sm">
+                        AÑADIR
                     </button>
                 </div>
             </div>
@@ -1635,9 +1685,13 @@ function renderizarCatalogo() {
     });
 
     grid.innerHTML = html;
-}
+};
 
+// ==========================================
+// INICIALIZACIÓN CENTRALIZADA
+// ==========================================
 function iniciarSitio() {
+    initHeroSlider();
     renderizarCatalogo();
     setInterval(updateCountdown, 1000);
     updateCountdown();
