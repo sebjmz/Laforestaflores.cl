@@ -1600,34 +1600,36 @@ document.addEventListener('click', function(e) {
 
 function renderizarCatalogo() {
     const grid = document.getElementById('product-grid');
-    if (!grid) {
-        console.warn("No se encontró el contenedor del catálogo en esta página.");
-        return;
-    }
+    if (!grid) return;
 
     let html = '';
-    // Filtramos para mostrar solo los ramos principales (ids menores a 100)
     const productosPrincipales = catalog.filter(p => p.id < 100);
 
     productosPrincipales.forEach(item => {
         const textoMedalla = getLuxuryBadge(item.id);
-        const medallaHtml = textoMedalla ? `<div class="absolute top-3 left-3 bg-[#c5a059] text-[#0a1f1c] text-[8px] font-bold uppercase tracking-widest px-2 py-1 z-20 shadow-sm">${textoMedalla}</div>` : '';
+        const medallaHtml = textoMedalla ? `<div class="absolute top-3 left-3 bg-[#fcfaf7] text-[#0a1f1c] text-[8px] font-bold uppercase tracking-[0.2em] px-2.5 py-1 z-20 shadow-sm border border-[#0a1f1c]/10">${textoMedalla}</div>` : '';
 
         html += `
         <div class="product-card flex flex-col bg-transparent relative group">
-            <div class="img-zoom-container relative w-full aspect-[4/5] overflow-hidden mb-4 rounded-sm border border-zinc-200 shadow-sm">
+            <div class="img-zoom-container relative w-full aspect-square overflow-hidden mb-4 rounded-sm border border-[#0a1f1c]/10 shadow-sm">
                 ${medallaHtml}
                 <a href="${item.url}" class="block w-full h-full">
                     <img src="${item.img}" alt="${item.name}" loading="lazy" class="w-full h-full object-cover relative z-10 transition-transform duration-700 group-hover:scale-105">
                 </a>
             </div>
-            <div class="flex flex-col flex-grow text-left px-1">
-                <div class="flex justify-between items-start mb-2 gap-2">
-                    <a href="${item.url}" class="hover:text-[#c5a059] transition-colors"><h3 class="font-serif text-lg md:text-xl italic text-[#0a1f1c] leading-tight">${item.name}</h3></a>
-                    <span class="font-bold text-[#0a1f1c] shrink-0">$${item.price.toLocaleString("es-CL")}</span>
+            <div class="flex flex-col flex-grow text-left">
+                <a href="${item.url}" class="hover:text-[#c5a059] transition-colors">
+                    <h3 class="font-serif text-lg md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${item.name}</h3>
+                </a>
+                <p class="text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-[#0a1f1c]/40 mb-4 line-clamp-2">
+                    <span class="text-[#c5a059]">★★★★★</span> ${item.desc}
+                </p>
+                <div class="flex justify-between items-center mt-auto border-t border-[#0a1f1c]/10 pt-4">
+                    <span class="text-sm md:text-base font-bold text-[#0a1f1c]">$${item.price.toLocaleString("es-CL")}</span>
+                    <button onclick="addToCart(${item.id}, '${item.name}', ${item.price}, '${item.img}')" class="border border-[#0a1f1c]/20 px-5 py-2.5 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] hover:border-[#c5a059] hover:text-[#c5a059] transition-all rounded-sm">
+                        Añadir
+                    </button>
                 </div>
-                <p class="text-[9px] md:text-[10px] uppercase tracking-widest text-[#0a1f1c]/50 mb-5 line-clamp-2">${item.desc}</p>
-                <button onclick="addToCart(${item.id}, '${item.name}', ${item.price}, '${item.img}')" class="mt-auto w-full py-3 border border-[#0a1f1c]/20 text-[#0a1f1c] text-[10px] font-bold uppercase tracking-widest hover:border-[#c5a059] hover:bg-[#c5a059]/5 hover:text-[#c5a059] transition-all rounded-sm">Añadir al Atelier</button>
             </div>
         </div>`;
     });
