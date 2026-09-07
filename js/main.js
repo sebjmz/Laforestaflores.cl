@@ -7,6 +7,12 @@ window.puntosTotalesUsuario = 0;
 let mapasCargados = false;
 let pasarelasCargadas = false;
 
+/* ==========================================
+   HERO SLIDER (Portada)
+   ========================================== */
+let p=document.querySelectorAll(".slide-item");if(p.length>0){let m=0,u=p.length,g=document.getElementById("hero-dots"),$,y=!1,f=!1;function b(e,t){if(f)return;f=!0;let a=p[m],r=p[e];r.style.transition="none",r.style.zIndex="20",a.style.zIndex="10","next"===t?r.style.transform="translate3d(100%, 0, 0)":r.style.transform="translate3d(-100%, 0, 0)",requestAnimationFrame(()=>{requestAnimationFrame(()=>{let o="0.6s",n="cubic-bezier(0.16, 1, 0.3, 1)";r.style.transition=`transform ${o} ${n}`,a.style.transition=`transform ${o} ${n}`,r.style.transform="translate3d(0%, 0, 0)","next"===t?a.style.transform="translate3d(-100%, 0, 0)":a.style.transform="translate3d(100%, 0, 0)",m=e,v(),h(),setTimeout(()=>{f=!1},600)})})}function v(){g&&Array.from(g.children).forEach((e,t)=>{let a=e.querySelector(".dot-visual")||e;t===m?(a.classList.remove("bg-transparent"),a.classList.add("bg-[#c5a059]","scale-125")):(a.classList.remove("bg-[#c5a059]","scale-125"),a.classList.add("bg-transparent"))})}function h(){p.forEach((e,t)=>{let a=e.querySelectorAll(".slide-anim");t===m?setTimeout(()=>{a.forEach(e=>{e.classList.remove("opacity-0","translate-y-4","translate-y-8"),e.classList.add("opacity-100","translate-y-0")})},300):a.forEach(e=>{e.classList.remove("opacity-100","translate-y-0"),"H2"===e.tagName?e.classList.add("opacity-0","translate-y-8"):e.classList.add("opacity-0","translate-y-4")})})}p.forEach((e,t)=>{if(0===t?(e.style.transform="translate3d(0%, 0, 0)",e.style.zIndex="20"):(e.style.transform="translate3d(100%, 0, 0)",e.style.zIndex="10"),g){let a=document.createElement("button");a.setAttribute("aria-label","Ver diapositiva "+(t+1)),a.className="w-6 h-6 md:w-7 md:h-7 flex items-center justify-center rounded-full transition-all duration-300",a.innerHTML=`<span class="dot-visual block w-2 h-2 md:w-2.5 md:h-2.5 rounded-full border border-[#c5a059] transition-all duration-300 ${0===t?"bg-[#c5a059] scale-125":"bg-transparent"}"></span>`,a.onclick=()=>{if(f||m===t)return;"function"==typeof window.stopAutoPlay&&window.stopAutoPlay();let e=t>m?"next":"prev";b(t,e)},a.addEventListener("mouseenter",()=>{let e=a.querySelector(".dot-visual");e&&t!==m&&(e.style.backgroundColor="rgba(197,160,89,0.5)")}),a.addEventListener("mouseleave",()=>{let e=a.querySelector(".dot-visual");e&&t!==m&&(e.style.backgroundColor="")}),g.appendChild(a)}}),window.stopAutoPlay=function(){y=!0,clearInterval($)},window.nextHeroSlide=function(e=!1){if(e&&"function"==typeof window.stopAutoPlay&&window.stopAutoPlay(),f)return;let t=(m+1)%u;b(t,"next")},window.prevHeroSlide=function(e=!1){if(e&&"function"==typeof window.stopAutoPlay&&window.stopAutoPlay(),f)return;let t=(m-1+u)%u;b(t,"prev")},h(),$=setInterval(()=>{y||nextHeroSlide(!1)},8e3);let _=document.getElementById("slider-wrapper");if(_){let x=0,E=0;_.addEventListener("touchstart",e=>{x=e.changedTouches[0].screenX},{passive:!0}),_.addEventListener("touchend",e=>{(E=e.changedTouches[0].screenX)<x-50&&window.nextHeroSlide(!0),E>x+50&&window.prevHeroSlide(!0)},{passive:!0})}}
+
+
 function cargarMapasYAbrirModal() {
     if (mapasCargados) {
         openCoverageModal();
@@ -584,18 +590,6 @@ function validarEmailYContinuar() {
         alert("Por favor, ingrese un correo electrónico válido para continuar.");
         return;
     }
-    
-    if (typeof guardarProgresoCheckout === 'function') guardarProgresoCheckout();
-
-    if (typeof window.trackEvent4D === 'function') {
-        const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
-        const cartVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-        window.trackEvent4D('email_captured', { 
-            email: t, 
-            cart_value: cartVal 
-        });
-    }
-
     goToStep(2);
 }
 
@@ -648,10 +642,14 @@ async function cargarVistaPreviaPuntosNativo() {
             const container = document.getElementById('points-redemption-container');
             if (container && data.points_balance > 0) {
                 container.classList.remove('hidden');
-                const ptsVisual = window.descuentoPuntos > 0 ? 0 : data.points_balance;
+                
                 let balEl = document.getElementById('checkout-points-balance');
-                if (balEl) balEl.innerText = `${ptsVisual.toLocaleString("es-CL")} pts`;
-                window.maxPuntosCanjeables = data.max_redeemable_clp;
+                if (balEl) {
+                    balEl.setAttribute('data-saldo-total', data.points_balance);
+                    window.maxPuntosCanjeables = data.max_redeemable_clp;
+                    const ptsVisual = data.points_balance - (window.descuentoPuntos || 0);
+                    balEl.innerText = `${ptsVisual.toLocaleString("es-CL")} pts`;
+                }
 
                 let txt = `Puedes usar hasta ${data.max_redeemable_clp.toLocaleString("es-CL")} pts en esta compra (Cubre hasta el ${data.cap_pct}% del arreglo).`;
                 if (data.es_cumpleanos) txt = `¡Feliz Cumpleaños! Hoy puedes cubrir el 100% de tus flores con tus puntos. (Máx: ${data.max_redeemable_clp.toLocaleString("es-CL")})`;
@@ -685,12 +683,13 @@ async function cargarVistaPreviaPuntosNativo() {
 window.aplicarPuntos = function() {
     const btn = document.getElementById('btn-aplicar-puntos');
     const balanceEl = document.getElementById('checkout-points-balance');
+    const saldoTotal = parseInt(balanceEl ? balanceEl.getAttribute('data-saldo-total') : 0) || 0;
 
     if (window.descuentoPuntos > 0) {
         window.descuentoPuntos = 0;
         let pDisc = document.getElementById('checkout-points-discount');
         if(pDisc) pDisc.classList.add('hidden');
-        if(balanceEl) balanceEl.innerText = `${(window.maxPuntosCanjeables || 0).toLocaleString("es-CL")} pts`; 
+        if(balanceEl) balanceEl.innerText = `${saldoTotal.toLocaleString("es-CL")} pts`; 
         if(btn) {
             btn.innerText = "Usar mi saldo en esta compra";
             btn.classList.add('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
@@ -703,7 +702,10 @@ window.aplicarPuntos = function() {
         if(pDisc) pDisc.classList.remove('hidden');
         let pAmt = document.getElementById('checkout-points-amount');
         if(pAmt) pAmt.innerText = `-$${window.descuentoPuntos.toLocaleString("es-CL")}`;
-        if(balanceEl) balanceEl.innerText = `0 pts`;
+        
+        const saldoRestante = Math.max(0, saldoTotal - window.descuentoPuntos);
+        if(balanceEl) balanceEl.innerText = `${saldoRestante.toLocaleString("es-CL")} pts`;
+        
         if(btn) {
             btn.innerText = "✓ Saldo Aplicado (Hacer clic para anular)";
             btn.classList.remove('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
@@ -712,7 +714,6 @@ window.aplicarPuntos = function() {
     }
     actualizarTotalConDespacho();
 };
-
 function goToStep(e) {
     let t = typeof e === "number" ? `step-${e}` : e;
     document.querySelectorAll(".checkout-step").forEach(step => step.classList.remove("active"));
@@ -720,6 +721,7 @@ function goToStep(e) {
     if (a) a.classList.add("active");
     guardarProgresoCheckout();
     
+    // Validar saldo y nivel si se entra al checkout de pago final
     if (t === "step-6") {
         cargarVistaPreviaPuntosNativo();
     }
@@ -1402,461 +1404,176 @@ function escribirMensaje(e) {
 }
 
 // ==========================================
-// TELEMETRÍA 4D
+// SENSOR MAESTRO 4D & TELEMETRÍA GLOBAL
 // ==========================================
-(function() {
-    if (window._LF_TRACKER_ACTIVE) return;
-    window._LF_TRACKER_ACTIVE = true;
+window.LF_TRACKER_INITIALIZED = true;
 
-    const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
-    
-    let sid = sessionStorage.getItem('lf_sid');
-    if (!sid) { 
-        sid = 'sid_' + Date.now() + '_' + Math.floor(Math.random()*100000); 
-        sessionStorage.setItem('lf_sid', sid); 
-    }
+const API_TRACK = 'https://club-laforesta.sebjmz.workers.dev/api/track';
 
-    let pathActual = window.location.pathname;
-    if (pathActual === '/' || pathActual === '') pathActual = '/index.html';
-    const startTime = Date.now();
+let sid = sessionStorage.getItem('lf_sid_4d') || sessionStorage.getItem('lf_sid');
+if (!sid) {
+    sid = 'sid_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+    sessionStorage.setItem('lf_sid_4d', sid);
+    sessionStorage.setItem('lf_sid', sid);
+}
 
-    window.trackEvent4D = function(name, data = {}) {
-        const payload = JSON.stringify({ session_id: sid, event_name: name, event_data: data, url: pathActual });
-        fetch(API_TRACK, { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: payload, 
-            keepalive: true 
-        }).catch(()=>{});
-    };
+let pagePath = window.location.pathname;
+if (pagePath === '/' || pagePath === '') pagePath = '/index.html';
+const pageStartTime = Date.now();
 
-    trackEvent4D('page_view');
-
-    if (pathActual.includes('gracias.html')) {
-        const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
-        cartData.forEach(item => {
-            trackEvent4D('purchase', { product_id: item.id, product_name: item.name, price: item.price, qty: item.qty });
-        });
-    }
-
-    function reportarTiempo(event) {
-        const secondsSpent = Math.round((Date.now() - startTime) / 1000);
-        
-        const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
-        const cartVal = cartData.reduce((acc, item) => acc + (item.price * item.qty), 0);
-        const email = document.getElementById('buyer-email')?.value?.trim() || '';
-        const sender = document.getElementById('sender-name')?.value || '';
-        const receiver = document.getElementById('receiver-name')?.value || '';
-        const name = sender ? sender : receiver;
-        const phone = document.getElementById('receiver-phone')?.value || '';
-        const activeStep = document.querySelector(".checkout-step.active");
-        const currentStep = activeStep ? activeStep.id : 'checkout';
-
-        trackEvent4D('time_on_page', { seconds: secondsSpent });
-
-        if (event && (event.type === 'beforeunload' || event.type === 'pagehide') && email && cartVal > 0) {
-            trackEvent4D('abandonment_or_close', { step_name: currentStep, cart_value: cartVal, email: email, name: name, phone: phone });
-        }
-    }
-
-    setInterval(reportarTiempo, 15000);
-    window.addEventListener('visibilitychange', function(e) { if (document.visibilityState === 'hidden') reportarTiempo(e); });
-    window.addEventListener('pagehide', reportarTiempo);
-    window.addEventListener('beforeunload', reportarTiempo);
-
-    function engancharFuncionesGlobales() {
-        if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
-            const originalGoToStep = window.goToStep;
-            window.goToStep = function(step) { 
-                trackEvent4D('checkout_step', { step_target: String(step) }); 
-                return originalGoToStep.apply(this, arguments); 
-            };
-            window.goToStep._tracked4d = true;
-        }
-        
-        if (typeof window.addToCart === 'function' && !window.addToCart._tracked4d) {
-            const originalAddToCart = window.addToCart;
-            window.addToCart = function(id, name, price, img) {
-                trackEvent4D(id > 100 && id < 200 ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name });
-                return originalAddToCart.apply(this, arguments);
-            };
-            window.addToCart._tracked4d = true;
-        }
-
-        if (typeof window.agregarYVolver === 'function' && !window.agregarYVolver._tracked4d) {
-            const originalAgregar = window.agregarYVolver;
-            window.agregarYVolver = function(id, name, price, img) {
-                trackEvent4D(id > 100 && id < 200 ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name });
-                setTimeout(() => { originalAgregar.apply(this, arguments); }, 250);
-            };
-            window.agregarYVolver._tracked4d = true;
-        }
-    }
-    setInterval(engancharFuncionesGlobales, 500);
-
-    document.addEventListener('click', function(e) {
-        const el = e.target.closest('button, a, .step-option, .product-card, [onclick], [role="button"]');
-        if (!el) return;
-
-        const onclickAttr = el.getAttribute('onclick') || '';
-        const hrefAttr = el.getAttribute('href') || '';
-        const text = (el.innerText || el.textContent || '').trim().toLowerCase();
-
-        if (hrefAttr.startsWith('#') || hrefAttr.includes('#')) {
-            const anchor = hrefAttr.includes('#') ? '#' + hrefAttr.split('#')[1] : hrefAttr;
-            if (anchor && anchor !== '#') trackEvent4D('click', { target: anchor });
-        }
-
-        if (onclickAttr.includes('addToCart') || onclickAttr.includes('agregarYVolver') || text === 'añadir' || text.includes('añadir al atelier')) {
-            const matchId = onclickAttr.match(/(?:addToCart|agregarYVolver)\s*\(\s*(\d+)/);
-            const prodId = matchId ? parseInt(matchId[1], 10) : 0;
-            let prodName = 'Producto';
-            
-            const cardContainer = el.closest('.product-card, section, main');
-            if (cardContainer) {
-                const titleEl = cardContainer.querySelector('h1, h3, .product-title');
-                if (titleEl) prodName = titleEl.innerText.trim();
-            }
-            if(prodName === 'Producto' && !pathActual.includes('index') && !pathActual.includes('categoria')) {
-                prodName = pathActual.replace('/', '').replace('.html', '').replace(/-/g, ' ');
-            }
-            
-            if (!window.agregarYVolver || !window.agregarYVolver._tracked4d) {
-                trackEvent4D(prodId > 100 && prodId < 200 ? 'upsell_added' : 'add_to_cart', { product_id: prodId, product_name: prodName });
-            }
-            return;
-        }
-
-        if (onclickAttr.includes('goToStep') || onclickAttr.includes('seleccionarModalidad') || onclickAttr.includes('seleccionarZona') || onclickAttr.includes('seleccionarFecha') || onclickAttr.includes('openCheckout') || onclickAttr.includes('cargarPasarelas')) {
-            let targetStep = 'interaccion_checkout';
-            const matchStep = onclickAttr.match(/goToStep\s*\(\s*['"]?([^'")]+)['"]?\s*\)/);
-            if (matchStep) targetStep = matchStep[1];
-            else if (onclickAttr.includes('seleccionarModalidad')) targetStep = 'modalidad_logistica';
-            else if (onclickAttr.includes('seleccionarZona')) targetStep = 'seleccion_zona';
-            else if (onclickAttr.includes('seleccionarFecha')) targetStep = 'seleccion_fecha';
-            else if (onclickAttr.includes('openCheckout') || onclickAttr.includes('cargarPasarelas')) targetStep = 'step-1';
-            
-            if (!window.goToStep || !window.goToStep._tracked4d) {
-                trackEvent4D('checkout_step', { step_target: String(targetStep) });
-            }
-            return;
-        }
-
-        if (onclickAttr.includes('iniciarMercadoPago') || onclickAttr.includes('iniciarPayPal') || text.includes('mercadopago') || text.includes('paypal') || text.includes('pagar') || text.includes('finalizar compra') || text.includes('comprar')) {
-            const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
-            const totalVal = cartData.reduce((acc, item) => acc + (item.price * item.qty), 0);
-            const email = document.getElementById('buyer-email')?.value || 'desconocido';
-            trackEvent4D('payment_initiated', { method: text.includes('paypal') ? 'PayPal' : 'MercadoPago/Otro', cart_value: totalVal, email: email });
-        }
-    }, true);
-
-    const scrollMarks = { '25': false, '50': false, '75': false, '100': false };
-    window.addEventListener('scroll', function() {
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        if (scrollHeight <= 0) return;
-        
-        const scrollPercent = (scrollTop / scrollHeight) * 100;
-        
-        if (scrollPercent >= 25 && !scrollMarks['25']) { 
-            scrollMarks['25'] = true; 
-            trackEvent4D('scroll_depth', { depth: 25 }); 
-        }
-        if (scrollPercent >= 50 && !scrollMarks['50']) { 
-            scrollMarks['50'] = true; 
-            trackEvent4D('scroll_depth', { depth: 50 }); 
-        }
-        if (scrollPercent >= 75 && !scrollMarks['75']) { 
-            scrollMarks['75'] = true; 
-            trackEvent4D('scroll_depth', { depth: 75 }); 
-        }
-        if (scrollPercent >= 99 && !scrollMarks['100']) { 
-            scrollMarks['100'] = true; 
-            trackEvent4D('scroll_depth', { depth: 100 }); 
-        }
-    }, { passive: true });
-})();
-
-// ==========================================
-// RENDERIZADO DEL CATÁLOGO (DISEÑO RESTAURADO)
-// ==========================================
-window.renderizarCatalogo = function() {
-    const grid = document.getElementById('product-grid');
-    if (!grid) return;
-
-    let html = '';
-    const productosPrincipales = catalog.filter(p => p.id < 100);
-
-    productosPrincipales.forEach(item => {
-        const textoMedalla = getLuxuryBadge(item.id);
-        const medallaHtml = textoMedalla ? `<div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm z-20">${textoMedalla}</div>` : '';
-        const etiquetaUrgencia = item.id === 3 || item.id === 5 ? `<div class="urgency-tag">Últimas 2 unidades</div>` : '';
-
-        html += `
-        <div class="product-card group flex flex-col h-full">
-            <a href="${item.url || '#'}" class="block">
-                <div class="img-zoom-container aspect-[4/5] mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center rounded-xl overflow-hidden shadow-sm border border-[#0a1f1c]/5">
-                    <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
-                    ${etiquetaUrgencia}
-                    <img src="${item.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${item.name}" loading="lazy">
-                    ${medallaHtml}
-                </div>
-            </a>
-            <div class="flex flex-col flex-grow mb-3 md:mb-4 text-left">
-                <a href="${item.url || '#'}" class="hover:text-[#c5a059] transition-colors inline-block py-1">
-                    <h3 class="font-serif text-sm md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${item.name}</h3>
-                </a>
-                <p class="text-[8px] md:text-[10px] uppercase tracking-widest opacity-70 mt-1 line-clamp-2">
-                    <span class="text-[#c5a059] mr-1">★★★★★</span> ${item.desc}
-                </p>
-            </div>
-            <div class="mt-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-t border-[#0a1f1c]/10 pt-4">
-                <span class="font-serif text-base md:text-xl text-[#0a1f1c] font-bold">$${item.price.toLocaleString("es-CL")}</span>
-                <button onclick="addToCart(${item.id}, '${item.name}', ${item.price}, '${item.img}')" class="w-full md:w-auto px-4 py-3 border border-[#0a1f1c] text-[#0a1f1c] text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors duration-300 text-center rounded-sm">
-                    AÑADIR
-                </button>
-            </div>
-        </div>`;
+// 1. Declaración global directa
+window.trackEvent4D = function(name, data = {}) {
+    const payload = JSON.stringify({
+        session_id: sid,
+        event_name: name,
+        event_data: data,
+        url: pagePath
     });
 
-    grid.innerHTML = html;
+    fetch(API_TRACK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+        keepalive: true
+    }).catch(() => {});
 };
 
-// ==========================================
-// EJECUCIÓN DEL DOM, SLIDER Y COLLAGE
-// ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-    
-    // 1. FAB
-    let fabBtn = document.getElementById("main-fab-btn") || document.querySelector('button[aria-label="Menú rápido"]');
-    if (fabBtn && !localStorage.getItem('laforesta_fab_interacted')) {
-        fabBtn.classList.add('fab-wave');
-    }
+// 2. Registro de vista inmediata
+window.trackEvent4D('page_view');
 
-    // 2. Checkout Success
-    let urlParams = new URLSearchParams(window.location.search);
-    let paymentResult = urlParams.get("payment_result");
-    let status = urlParams.get("status") || urlParams.get("collection_status");
-    
-    if ("success" === paymentResult && "approved" === status) {
-        localStorage.removeItem("pending_laforesta_order");
-        localStorage.removeItem("laforesta_cart");
-        localStorage.removeItem("laforesta_checkout_inputs");
-        localStorage.removeItem("laforesta_checkout_abierto");
-        localStorage.removeItem("laforesta_shippingCost");
-        localStorage.removeItem("laforesta_selectedZoneName");
-        localStorage.removeItem("laforesta_selectedLogistics");
-        localStorage.removeItem("laforesta_selectedDate");
-        localStorage.removeItem("laforesta_selectedTimeSlot");
-        localStorage.removeItem("laforesta_isExpressDelivery");
-        localStorage.removeItem("laforesta_selectedPalette");
-        cart = [];
-        updateCartUI();
-        alert("Pago acreditado exitosamente. Recibirá su comprobante y detalles de logística vía correo electrónico.");
-        window.history.replaceState({}, document.title, window.location.pathname);
-    } else if ("failure" === paymentResult || "pending" === paymentResult || "rejected" === status || "cancelled" === status) {
-        localStorage.removeItem("pending_laforesta_order");
-        alert("El pago no fue acreditado o fue cancelado. Intente nuevamente.");
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
+// 3. Registro de compra en gracias.html
+if (pagePath.includes('gracias.html')) {
+    const cartData = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+    cartData.forEach(item => {
+        window.trackEvent4D('purchase', { product_id: item.id, product_name: item.name, price: item.price, qty: item.qty });
+    });
+}
 
-    // 3. Footer Year & Reset UI
-    let yearEl = document.getElementById("year-footer");
-    if (yearEl) yearEl.innerText = new Date().getFullYear();
-    let gardenEl = document.getElementById("garden-flow");
-    if (gardenEl) gardenEl.style.transform = "translateY(100%)";
+// 4. Sensor de Profundidad de Lectura (Scroll Depth)
+let scrollFlags = { 25: false, 50: false, 75: false, 100: false };
+window.addEventListener('scroll', function() {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) return;
+    const scrollPct = Math.round((window.scrollY / docHeight) * 100);
+    [25, 50, 75, 100].forEach(depth => {
+        if (scrollPct >= depth && !scrollFlags[depth]) {
+            scrollFlags[depth] = true;
+            window.trackEvent4D('scroll_depth', { depth: depth });
+        }
+    });
+}, { passive: true });
 
-    updateCartUI();
-    restaurarProgresoCheckout();
+// 5. Heartbeat y reporte de tiempo continuo
+function reportTime(event) {
+    const seconds = Math.round((Date.now() - pageStartTime) / 1000);
+    const currentCart = JSON.parse(localStorage.getItem('laforesta_cart') || '[]');
+    const cartVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+    const email = document.getElementById('buyer-email')?.value?.trim() || '';
+    const name = document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || '';
+    const phone = document.getElementById('receiver-phone')?.value?.trim() || '';
+    const currentStep = document.querySelector(".checkout-step.active")?.id || 'checkout';
 
-    if ("open_cart" === urlParams.get("action")) {
-        setTimeout(() => {
-            let bag = document.getElementById("atelier-bag");
-            if (bag && !bag.classList.contains("open")) toggleCart();
-        }, 150);
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
+    window.trackEvent4D('time_on_page', { 
+        seconds: seconds,
+        cart_value: cartVal,
+        email: email,
+        name: name,
+        phone: phone
+    });
 
-    // 4. Collage Logic
-    let collagePages = document.querySelectorAll(".collage-page");
-    if (collagePages.length > 0) {
-        collagePages.forEach(page => {
-            page.addEventListener("mouseenter", function() {
-                if (window.innerWidth > 1024) {
-                    collagePages.forEach(e => e.classList.remove("active-page"));
-                    this.classList.add("active-page");
-                }
-            });
-            page.addEventListener("mouseleave", function() {
-                if (window.innerWidth > 1024) this.classList.remove("active-page");
-            });
+    if (event && (event.type === 'beforeunload' || event.type === 'pagehide') && email && cartVal > 0) {
+        window.trackEvent4D('abandonment_or_close', {
+            step_name: currentStep,
+            cart_value: cartVal,
+            email: email,
+            name: name,
+            phone: phone
         });
+    }
+}
 
-        if (window.innerWidth <= 1024) {
-            let obsOptions = { root: null, rootMargin: "-35% 0px -35% 0px", threshold: 0 };
-            let observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        collagePages.forEach(e => e.classList.remove("active-page"));
-                        entry.target.classList.add("active-page");
-                    }
-                });
-            }, obsOptions);
-            collagePages.forEach(p => observer.observe(p));
+setInterval(reportTime, 15000);
+window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') reportTime(event); });
+window.addEventListener('pagehide', reportTime);
+window.addEventListener('beforeunload', reportTime);
+
+// 6. Interceptores de Avance en el Checkout
+if (typeof window.goToStep === 'function' && !window.goToStep._tracked4d) {
+    const originalGoToStep = window.goToStep;
+    window.goToStep = function(step) { 
+        window.trackEvent4D('checkout_step', { step_target: String(step) }); 
+        return originalGoToStep.apply(this, arguments); 
+    };
+    window.goToStep._tracked4d = true;
+}
+
+// 7. INYECCIÓN DE RETARDO PARA AGREGAR AL CARRITO (Páginas de Producto)
+// Esto evita que window.location.href mate el envío del evento a la base de datos
+const checkAgregarFunc = setInterval(() => {
+    if (typeof window.agregarYVolver === 'function' && !window.agregarYVolver._tracked4d) {
+        const originalAgregar = window.agregarYVolver;
+        window.agregarYVolver = function(id, name, price, img) {
+            window.trackEvent4D(id > 100 && id < 200 ? 'upsell_added' : 'add_to_cart', { product_id: id, product_name: name });
+            // Pausa mágica de 250ms para que Cloudflare reciba el dato antes del salto de página
+            setTimeout(() => {
+                originalAgregar(id, name, price, img);
+            }, 250);
+        };
+        window.agregarYVolver._tracked4d = true;
+        clearInterval(checkAgregarFunc);
+    }
+}, 500);
+
+// 8. Sensor Universal de Clics e Interacciones
+document.addEventListener('click', function(e) {
+    const target = e.target.closest('button, a, .step-option, .product-card');
+    if (!target) return;
+
+    const text = (target.innerText || target.textContent || '').trim();
+    const textLower = text.toLowerCase();
+    const onclickAttr = target.getAttribute('onclick') || '';
+    const hrefAttr = target.getAttribute('href') || '';
+
+    // Anclas
+    if (hrefAttr.startsWith('#') || hrefAttr.includes('#')) {
+        const anchor = hrefAttr.includes('#') ? '#' + hrefAttr.split('#')[1] : hrefAttr;
+        if (anchor && anchor !== '#') {
+            window.trackEvent4D('click', { target: anchor });
         }
     }
 
-    // 5. Motor Original del Slider (Descompreso)
-    let p = document.querySelectorAll(".slide-item");
-    if (p.length > 0) {
-        let m = 0, u = p.length, g = document.getElementById("hero-dots"), $, y = false, f = false;
-
-        function b(targetIdx, direction) {
-            if (f) return;
-            f = true;
-            let currentSlide = p[m], targetSlide = p[targetIdx];
-            
-            targetSlide.style.transition = "none";
-            targetSlide.style.zIndex = "20";
-            currentSlide.style.zIndex = "10";
-            
-            if (direction === "next") {
-                targetSlide.style.transform = "translate3d(100%, 0, 0)";
-            } else {
-                targetSlide.style.transform = "translate3d(-100%, 0, 0)";
-            }
-            
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    let dur = "0.6s", ease = "cubic-bezier(0.16, 1, 0.3, 1)";
-                    targetSlide.style.transition = `transform ${dur} ${ease}`;
-                    currentSlide.style.transition = `transform ${dur} ${ease}`;
-                    targetSlide.style.transform = "translate3d(0%, 0, 0)";
-                    
-                    if (direction === "next") {
-                        currentSlide.style.transform = "translate3d(-100%, 0, 0)";
-                    } else {
-                        currentSlide.style.transform = "translate3d(100%, 0, 0)";
-                    }
-                    
-                    m = targetIdx;
-                    v(); 
-                    h(); 
-                    setTimeout(() => { f = false; }, 600);
-                });
-            });
+    // Agregar al carrito (Página Index/Categorías donde se usa addToCart nativo sin redirección inmediata)
+    if (onclickAttr.includes('addToCart(') || textLower === 'añadir' || textLower.includes('añadir al atelier') || textLower === 'anadir') {
+        const matchId = onclickAttr.match(/(?:addToCart)\s*\(\s*(\d+)/);
+        const prodId = matchId ? parseInt(matchId[1], 10) : 0;
+        
+        const card = target.closest('.product-card, section, main') || document;
+        const titleEl = card.querySelector('h1, h3, h6, .product-title');
+        let prodName = titleEl ? titleEl.innerText.trim() : pagePath.replace('/', '').replace('.html', '').replace(/-/g, ' ');
+        
+        if (prodId > 100 && prodId < 200) {
+            window.trackEvent4D('upsell_added', { product_name: prodName, target: prodName, product_id: prodId });
+        } else {
+            window.trackEvent4D('add_to_cart', { product_name: prodName, target: prodName, product_id: prodId });
         }
-
-        function v() {
-            if (g) {
-                Array.from(g.children).forEach((btn, idx) => {
-                    let dot = btn.querySelector(".dot-visual") || btn;
-                    if (idx === m) {
-                        dot.classList.remove("bg-transparent");
-                        dot.classList.add("bg-[#c5a059]", "scale-125");
-                    } else {
-                        dot.classList.remove("bg-[#c5a059]", "scale-125");
-                        dot.classList.add("bg-transparent");
-                    }
-                });
-            }
-        }
-
-        function h() {
-            p.forEach((slide, idx) => {
-                let anims = slide.querySelectorAll(".slide-anim");
-                if (idx === m) {
-                    setTimeout(() => {
-                        anims.forEach(el => {
-                            el.classList.remove("opacity-0", "translate-y-4", "translate-y-8");
-                            el.classList.add("opacity-100", "translate-y-0");
-                        });
-                    }, 300);
-                } else {
-                    anims.forEach(el => {
-                        el.classList.remove("opacity-100", "translate-y-0");
-                        if (el.tagName === "H2") {
-                            el.classList.add("opacity-0", "translate-y-8");
-                        } else {
-                            el.classList.add("opacity-0", "translate-y-4");
-                        }
-                    });
-                }
-            });
-        }
-
-        p.forEach((slide, idx) => {
-            if (idx === 0) {
-                slide.style.transform = "translate3d(0%, 0, 0)";
-                slide.style.zIndex = "20";
-            } else {
-                slide.style.transform = "translate3d(100%, 0, 0)";
-                slide.style.zIndex = "10";
-            }
-            
-            if (g) {
-                let btn = document.createElement("button");
-                btn.setAttribute("aria-label", "Ver diapositiva " + (idx + 1));
-                btn.className = "w-6 h-6 md:w-7 md:h-7 flex items-center justify-center rounded-full transition-all duration-300";
-                btn.innerHTML = `<span class="dot-visual block w-2 h-2 md:w-2.5 md:h-2.5 rounded-full border border-[#c5a059] transition-all duration-300 ${idx === 0 ? "bg-[#c5a059] scale-125" : "bg-transparent"}"></span>`;
-                
-                btn.onclick = () => {
-                    if (f || m === idx) return;
-                    if (typeof window.stopAutoPlay === "function") window.stopAutoPlay();
-                    let direction = idx > m ? "next" : "prev";
-                    b(idx, direction);
-                };
-                
-                btn.addEventListener("mouseenter", () => {
-                    let dot = btn.querySelector(".dot-visual");
-                    if (dot && idx !== m) dot.style.backgroundColor = "rgba(197,160,89,0.5)";
-                });
-                
-                btn.addEventListener("mouseleave", () => {
-                    let dot = btn.querySelector(".dot-visual");
-                    if (dot && idx !== m) dot.style.backgroundColor = "";
-                });
-                
-                g.appendChild(btn);
-            }
-        });
-
-        window.stopAutoPlay = function() {
-            y = true;
-            clearInterval($);
-        };
-
-        window.nextHeroSlide = function(manual = false) {
-            if (manual && typeof window.stopAutoPlay === "function") window.stopAutoPlay();
-            if (f) return;
-            let target = (m + 1) % u;
-            b(target, "next");
-        };
-
-        window.prevHeroSlide = function(manual = false) {
-            if (manual && typeof window.stopAutoPlay === "function") window.stopAutoPlay();
-            if (f) return;
-            let target = (m - 1 + u) % u;
-            b(target, "prev");
-        };
-
-        h(); 
-        $ = setInterval(() => { if (!y) window.nextHeroSlide(false); }, 8000);
-
-        let wrapper = document.getElementById("slider-wrapper");
-        if (wrapper) {
-            let startX = 0, endX = 0;
-            wrapper.addEventListener("touchstart", e => { startX = e.changedTouches[0].screenX; }, { passive: true });
-            wrapper.addEventListener("touchend", e => {
-                endX = e.changedTouches[0].screenX;
-                if (endX < startX - 50) window.nextHeroSlide(true);
-                if (endX > startX + 50) window.prevHeroSlide(true);
-            }, { passive: true });
-        }
+        return;
     }
-});
 
-// 6. Iniciar UI dependiente del DOM
-if (typeof window.renderizarCatalogo === "function") window.renderizarCatalogo();
-setInterval(updateCountdown, 1000);
-updateCountdown();
+    // Pasarelas
+    if (onclickAttr.includes('iniciarMercadoPago') || textLower.includes('mercadopago')) {
+        const cartVal = JSON.parse(localStorage.getItem('laforesta_cart') || '[]').reduce((acc, item) => acc + (item.price * item.qty), 0);
+        const email = document.getElementById('buyer-email')?.value?.trim() || '';
+        window.trackEvent4D('payment_initiated', { method: 'MercadoPago', target: 'MercadoPago', cart_value: cartVal, email: email });
+        return;
+    } else if (onclickAttr.includes('iniciarPayPal') || textLower.includes('paypal')) {
+        const cartVal = JSON.parse(localStorage.getItem('laforesta_cart') || '[]').reduce((acc, item) => acc + (item.price * item.qty), 0);
+        const email = document.getElementById('buyer-email')?.value?.trim() || '';
+        window.trackEvent4D('payment_initiated', { method: 'PayPal', target: 'PayPal', cart_value: cartVal, email: email });
+        return;
+    }
+
+    // Clics generales
+    if (text && text.length > 0 && text.length < 40 && !hrefAttr.startsWith('#')) {
+        window.trackEvent4D('click', { target: text });
+    }
+}, true);
