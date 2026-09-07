@@ -1600,7 +1600,10 @@ document.addEventListener('click', function(e) {
     
  function renderizarCatalogo() {
     const grid = document.getElementById('product-grid');
-    if (!grid) return;
+    if (!grid) {
+        console.warn("No se encontró el contenedor del catálogo en esta página.");
+        return;
+    }
 
     let html = '';
     // Filtramos para mostrar solo los ramos principales (ids menores a 100)
@@ -1632,5 +1635,9 @@ document.addEventListener('click', function(e) {
     grid.innerHTML = html;
 }
 
-// Ejecutar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', renderizarCatalogo);
+// Ejecución segura sin importar los tiempos de carga
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderizarCatalogo);
+} else {
+    renderizarCatalogo();
+}
