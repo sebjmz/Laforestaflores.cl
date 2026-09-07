@@ -412,6 +412,14 @@
             #hero-slider p { font-size: 0.9rem !important; margin-bottom: 1rem !important; }
             #hero-slider .btn-premium { padding: 0.6rem 1.5rem !important; font-size: 0.8rem !important; }
         }
+        
+        .slide-item {
+            pointer-events: none;
+        }
+        .slide-item[style*="opacity: 1"], 
+        .slide-item.active {
+            pointer-events: auto;
+        }
     </style>
 </head>
 <body>
