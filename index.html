@@ -412,14 +412,6 @@
             #hero-slider p { font-size: 0.9rem !important; margin-bottom: 1rem !important; }
             #hero-slider .btn-premium { padding: 0.6rem 1.5rem !important; font-size: 0.8rem !important; }
         }
-        
-        .slide-item {
-            pointer-events: none;
-        }
-        .slide-item[style*="opacity: 1"], 
-        .slide-item.active {
-            pointer-events: auto;
-        }
     </style>
 </head>
 <body>
@@ -597,7 +589,7 @@
         </p>
     </div>
     <div>
-        <button onclick="scrollToVault()" aria-label="Explorar colección de flores" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Ver flores</button>
+        <button onclick="document.getElementById('vault').scrollIntoView();" aria-label="Explorar colección de flores" class="btn-premium px-8 py-3 md:px-10 md:py-4 text-base md:text-lg shadow-lg border border-transparent hover:!bg-[#c5a059] hover:!text-[#0a1f1c] transition-colors duration-300">Ver flores</button>
     </div>
 </div>
                 </div>
@@ -648,11 +640,11 @@
         </div> 
         
         <button onclick="prevHeroSlide(true)" aria-label="Ver imagen anterior" class="hidden lg:block absolute top-1/2 left-2 md:left-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
-    <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
-</button>
-<button onclick="nextHeroSlide(true)" aria-label="Ver imagen siguiente" class="hidden lg:block absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
-    <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
-</button>
+            <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <button onclick="nextHeroSlide(true)" aria-label="Ver imagen siguiente" class="hidden lg:block absolute top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 text-white/70 hover:text-[#c5a059] hover:scale-110 transition-all duration-300 p-2 drop-shadow-md">
+            <svg class="w-10 h-10 md:w-16 md:h-16 font-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path></svg>
+        </button>
 
         <div class="absolute bottom-10 right-10 md:bottom-12 md:right-16 z-50 flex space-x-3 items-center" id="hero-dots"></div>
 
@@ -1658,7 +1650,303 @@
     });
     </script>
 
-    <script src="js/main.js?v=3" defer></script>
+    <!-- INTEGRACIÓN LOCAL DE LÓGICA CLUB Y ANÓNIMO -->
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        window.descuentoPuntos = 0;
+        window.maxPuntosCanjeables = 0;
+        window.tierDiscount = 0;
+        
+        const botones = document.querySelectorAll("button");
+        botones.forEach(b => {
+            if(b.getAttribute("onclick") && b.getAttribute("onclick").includes("goToStep('step-6')")) {
+                b.addEventListener('click', async () => {
+                    const token = localStorage.getItem('laforesta_club_token');
+                    if(!token) return;
+                    
+                    const subtotalFlores = (window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]')).reduce((sum, item) => sum + item.price * item.qty, 0);
+                    
+                    try {
+                        const res = await fetch(`https://club-laforesta.sebjmz.workers.dev/api/redeem-preview?flowers_subtotal=${subtotalFlores}`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        if(res.ok) {
+                            const data = await res.json();
+                            const container = document.getElementById('points-redemption-container');
+                            if(container && data.points_balance > 0) {
+                                container.classList.remove('hidden');
+                                
+                                const balanceEl = document.getElementById('checkout-points-balance');
+                                if (balanceEl) {
+                                    balanceEl.setAttribute('data-saldo-total', data.points_balance);
+                                    window.maxPuntosCanjeables = data.max_redeemable_clp;
+                                    const puntosDisponiblesVisual = data.points_balance - (window.descuentoPuntos || 0);
+                                    balanceEl.innerText = `${puntosDisponiblesVisual.toLocaleString("es-CL")} pts`;
+                                }
+                                
+                                let textoDescuento = `Puedes usar hasta ${data.max_redeemable_clp.toLocaleString("es-CL")} pts en esta compra (Cubre hasta el ${data.cap_pct}% del arreglo).`;
+                                if(data.es_cumpleanos) {
+                                    textoDescuento = `¡Feliz Cumpleaños! Hoy puedes cubrir el 100% de tus flores con tus puntos. (Máx: ${data.max_redeemable_clp.toLocaleString("es-CL")})`;
+                                }
+                                document.getElementById('checkout-max-discount').innerText = textoDescuento;
+                            }
+                            
+                            let pct = 0.03;
+                            let tierNameLabel = "Beneficio Cuarzo (3%)";
+                            
+                            if(data.tier === 'Diamante') {
+                                pct = 0.05;
+                                tierNameLabel = "Beneficio Diamante (5%)";
+                            } else if(data.tier === 'Zafiro') {
+                                pct = 0.04;
+                                tierNameLabel = "Beneficio Zafiro (4%)";
+                            }
+                            
+                            window.tierDiscount = Math.round(subtotalFlores * pct);
+                            if(window.tierDiscount > 0) {
+                                document.getElementById('checkout-tier-discount').classList.remove('hidden');
+                                document.getElementById('checkout-tier-label').innerText = tierNameLabel;
+                                document.getElementById('checkout-tier-amount').innerText = `-$${window.tierDiscount.toLocaleString("es-CL")}`;
+                            }
+                            
+                            if(typeof window.actualizarTotalConDespacho === 'function') {
+                                window.actualizarTotalConDespacho();
+                            }
+                        }
+                    } catch(e) { console.warn("Error preview club", e); }
+                });
+            }
+        });
+
+        window.aplicarPuntos = function() {
+            const btn = document.getElementById('btn-aplicar-puntos');
+            const balanceEl = document.getElementById('checkout-points-balance');
+            const saldoTotal = parseInt(balanceEl ? balanceEl.getAttribute('data-saldo-total') : 0) || 0;
+
+            if (window.descuentoPuntos > 0) {
+                window.descuentoPuntos = 0;
+                let pDisc = document.getElementById('checkout-points-discount');
+                if(pDisc) pDisc.classList.add('hidden');
+                if(balanceEl) balanceEl.innerText = `${saldoTotal.toLocaleString("es-CL")} pts`; 
+                if(btn) {
+                    btn.innerText = "Usar mi saldo en esta compra";
+                    btn.classList.add('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
+                    btn.classList.remove('bg-[#c5a059]', 'border-transparent');
+                }
+            } else {
+                if(window.maxPuntosCanjeables <= 0) return;
+                window.descuentoPuntos = window.maxPuntosCanjeables;
+                let pDisc = document.getElementById('checkout-points-discount');
+                if(pDisc) pDisc.classList.remove('hidden');
+                let pAmt = document.getElementById('checkout-points-amount');
+                if(pAmt) pAmt.innerText = `-$${window.descuentoPuntos.toLocaleString("es-CL")}`;
+                
+                const saldoRestante = Math.max(0, saldoTotal - window.descuentoPuntos);
+                if(balanceEl) balanceEl.innerText = `${saldoRestante.toLocaleString("es-CL")} pts`;
+                
+                if(btn) {
+                    btn.innerText = "✓ Saldo Aplicado (Hacer clic para anular)";
+                    btn.classList.remove('border-[#0a1f1c]/30', 'text-[#0a1f1c]');
+                    btn.classList.add('bg-[#c5a059]', 'text-[#0a1f1c]', 'border-transparent');
+                }
+            }
+            if(typeof window.actualizarTotalConDespacho === 'function') window.actualizarTotalConDespacho();
+        };
+        const checkMainJsLoaded = setInterval(() => {
+            if (typeof window.actualizarTotalConDespacho === 'function') {
+                clearInterval(checkMainJsLoaded);
+                window.actualizarTotalConDespacho = function() {
+                    const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
+                    const subtotalOriginal = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
+                    const subtotalConDescuentos = Math.max(0, subtotalOriginal - (window.tierDiscount || 0) - (window.descuentoPuntos || 0));
+                    const shippingCost = parseInt(window.shippingCost || localStorage.getItem('laforesta_shippingCost') || 0, 10);
+                    const isExpressDelivery = window.isExpressDelivery || localStorage.getItem('laforesta_isExpressDelivery') === 'true';
+                    const selectedLogistics = window.selectedLogistics || localStorage.getItem('laforesta_selectedLogistics');
+                    const costoEnvioBase = isExpressDelivery ? Math.round(shippingCost * 1.5) : shippingCost;
+                    let bonoEnvio = 0;
+                    if (subtotalOriginal >= 69990) bonoEnvio = Math.min(costoEnvioBase, 7250);
+                    const envioFinal = Math.max(0, costoEnvioBase - bonoEnvio);
+                    const totalPagar = subtotalConDescuentos + envioFinal;
+                    const elSub = document.getElementById('checkout-subtotal');
+                    const elShip = document.getElementById('checkout-shipping');
+                    const elTotal = document.getElementById('checkout-final-total');
+                    const elNotice = document.getElementById('checkout-shipping-notice');
+                    const elLabel = document.getElementById('checkout-shipping-label');
+
+                    if(elSub) elSub.innerText = `$${subtotalOriginal.toLocaleString("es-CL")}`;
+                    if(elTotal) elTotal.innerText = `$${totalPagar.toLocaleString("es-CL")}`;
+                    if(elLabel) {
+                        if(isExpressDelivery && selectedLogistics === 'envio') {
+                            elLabel.innerHTML = `<span class="inline-flex items-center gap-1.5">Logística <span class="bg-[#c5a059]/10 text-[#c5a059] border border-[#c5a059]/30 px-1.5 py-[2px] rounded-sm text-[7px] md:text-[8px] font-bold uppercase tracking-widest whitespace-nowrap leading-none mt-0.5">Express (+50%)</span></span>`;
+                        } else {
+                            elLabel.innerText = 'Logística';
+                        }
+                    }
+                    if(elShip && elNotice) {
+                        if(selectedLogistics === 'retiro') {
+                            elShip.innerText = "Retiro en tienda ($0)";
+                            elNotice.classList.add("hidden");
+                        } else {
+                            if (subtotalOriginal >= 69990) {
+                                if(envioFinal === 0) {
+                                    elShip.innerText = "$0";
+                                    elNotice.innerText = "Envío de Cortesía";
+                                    elNotice.classList.remove("hidden");
+                                } else {
+                                    elShip.innerText = `$${envioFinal.toLocaleString("es-CL")}`;
+                                    elNotice.innerText = "Bono Envío Aplicado (-$7.250)";
+                                    elNotice.classList.remove("hidden");
+                                }
+                            } else {
+                                elShip.innerText = `$${costoEnvioBase.toLocaleString("es-CL")}`;
+                                elNotice.classList.add("hidden");
+                            }
+                        }
+                    }
+                    const cartTotal = document.getElementById('cart-total');
+                    const cartNotice = document.getElementById('cart-shipping-notice');
+                    if(cartTotal) cartTotal.innerText = `$${subtotalOriginal.toLocaleString("es-CL")}`;
+                    if(cartNotice) {
+                        if(subtotalOriginal >= 69990) {
+                            cartNotice.style.opacity = "1";
+                            cartNotice.style.transform = "translateY(0)";
+                            cartNotice.innerText = "Envío de cortesía";
+                        } else {
+                            cartNotice.style.opacity = "1";
+                            cartNotice.style.transform = "translateY(0)";
+                            cartNotice.innerText = `agrega $${(69990 - subtotalOriginal).toLocaleString("es-CL")} para envío de cortesía`;
+                        }
+                    }
+                    const stickyTotal = document.getElementById('sticky-cart-total');
+                    if(stickyTotal) stickyTotal.innerText = `$${subtotalOriginal.toLocaleString("es-CL")}`;
+                    return totalPagar;
+                };
+
+                window.obtenerPayloadOrden = function() {
+                    const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
+                    const subtotalOriginal = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
+                    const isAnon = document.getElementById('envio-anonimo') && document.getElementById('envio-anonimo').checked;
+                    const emisorAnonimo = isAnon ? "Alguien que te quiere (Anónimo)" : (document.getElementById("sender-name")?.value || "No especificado");
+                    const tEmail = document.getElementById("buyer-email")?.value.trim() || "";
+                    const tReceiver = document.getElementById("receiver-name")?.value || "No especificado";
+                    const tCard = document.getElementById("card-message")?.value || "";
+                    const tPhone = document.getElementById("receiver-phone")?.value || "";
+                    const tNote = document.getElementById("delivery-note")?.value || "";
+                    const selectedLogistics = window.selectedLogistics || localStorage.getItem('laforesta_selectedLogistics');
+                    const selectedZoneName = window.selectedZoneName || localStorage.getItem('laforesta_selectedZoneName') || '';
+                    const isExpressDelivery = window.isExpressDelivery || localStorage.getItem('laforesta_isExpressDelivery') === 'true';
+                    let tLogistics = selectedLogistics === 'envio' 
+                        ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById("address")?.value || ""}` 
+                        : `Retiro en Atelier Reñaca\n• *RETIRA:* ${document.getElementById("pickup-name")?.value || ""}`;
+                    
+                    if (tNote.trim() !== "") tLogistics += `\n• *NOTA:* ${tNote.trim()}`;
+                    
+                    if(isExpressDelivery && selectedLogistics === 'envio') tLogistics = "[SERVICIO EXPRESS] " + tLogistics;
+                    
+                    const tTime = window.selectedTimeSlot || localStorage.getItem('laforesta_selectedTimeSlot') || "No especificado";
+                    const sDate = window.selectedDate || localStorage.getItem('laforesta_selectedDate');
+                    const tFecha = sDate === "hoy" ? "Hoy" : sDate;
+                    const totalPagar = window.actualizarTotalConDespacho();
+                    const shippingCost = parseInt(window.shippingCost || localStorage.getItem('laforesta_shippingCost') || 0, 10);
+                    const costoEnvioBase = isExpressDelivery ? Math.round(shippingCost * 1.5) : shippingCost;
+                    let bonoEnvio = 0;
+                    if (subtotalOriginal >= 69990) bonoEnvio = Math.min(costoEnvioBase, 7250);
+                    const envioFinal = Math.max(0, costoEnvioBase - bonoEnvio);
+
+                    return {
+                        totalCLP: totalPagar,
+                        metadata: {
+                            sender_name: emisorAnonimo,
+                            receiver_name: tReceiver,
+                            palette: 'Predeterminada del Diseño',
+                            logistics_detail: tLogistics,
+                            time_slot: tTime,
+                            destination_phone: tPhone,
+                            card_text: tCard,
+                            total_price: totalPagar,
+                            flowers_subtotal_clp: subtotalOriginal,
+                            points_discount_clp: window.descuentoPuntos || 0,
+                            order_summary: currentCart.map(e => `- ${e.name} (Cant: ${e.qty}) [c/u: $${e.price.toLocaleString("es-CL")}]`).join("\n"),
+                            fecha_entrega: tFecha,
+                            valor_envio: envioFinal,
+                            comprador_email: tEmail,
+                            ga_client_id: obtenerGA4ClientId()
+                        }
+                    };
+                };
+            }
+        }, 100);
+        
+        window.validarEmailYContinuar = function() {
+            let e = document.getElementById("buyer-email");
+            if (!e) return;
+            let t = e.value.trim();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t)) {
+                alert("Por favor, ingrese un correo electrónico válido para continuar.");
+                return;
+            }
+            goToStep('step-2');
+        };
+
+        window.seleccionarModalidad = function(e) {
+            selectedLogistics = e;
+            if (e === "envio") {
+                goToStep("step-zona");
+            } else {
+                shippingCost = 0;
+                selectedZoneName = "Retiro en tienda";
+                if(typeof window.actualizarTotalConDespacho === 'function') window.actualizarTotalConDespacho();
+                goToStep("step-quien-retira");
+            }
+        };
+
+        window.seleccionarZona = function(e, t) {
+            shippingCost = e;
+            selectedZoneName = t;
+            if(typeof window.actualizarTotalConDespacho === 'function') window.actualizarTotalConDespacho();
+            goToStep("step-direccion");
+        };
+
+        window.confirmarDireccion = function() {
+            let e = document.getElementById("address");
+            if (!e || !e.value.trim()) return alert("Ingrese la dirección de entrega.");
+            goToStep("step-fecha");
+        };
+
+        window.regresarDesdeFecha = function() {
+            if (selectedLogistics === "envio") {
+                goToStep("step-direccion");
+            } else {
+                goToStep("step-quien-retira");
+            }
+        };
+        
+        // Modificación del destino del horario (ahora va al paso 4: Mensaje Tarjeta en vez del antiguo palette)
+        const checkHorarioFunc = setInterval(() => {
+            if (typeof window.definirHorario === 'function') {
+                clearInterval(checkHorarioFunc);
+                const oldDefinirHorario = window.definirHorario;
+                window.definirHorario = function(e, t) {
+                    selectedTimeSlot = e;
+                    isExpressDelivery = t;
+                    if(typeof window.actualizarTotalConDespacho === 'function') window.actualizarTotalConDespacho();
+                    setTimeout(() => goToStep('step-4'), 400); 
+                };
+            }
+        }, 100);
+        
+        window.regresarDesdeTime = function() {
+            if (selectedDate === "hoy") {
+                goToStep("step-fecha");
+            } else {
+                goToStep("step-calendario");
+            }
+        };
+
+    });
+    </script>
+
+    <script src="js/main.js?v=2" defer></script>
 
     <!-- Google Tag Manager -->
     <script>
@@ -1804,7 +2092,7 @@
 
     // 7. Sensor Universal (Clics Orgánicos)
     document.addEventListener('click', function(e) {
-        const el = e.target.closest('button, a, .step-option, .product-card, [onclick], [role="button"]');
+        const el = e.target.closest('button, a, .step-option, [onclick]');
         if (!el) return;
 
         const onclickAttr = el.getAttribute('onclick') || '';
