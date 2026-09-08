@@ -373,6 +373,45 @@ function getLuxuryBadge(e) {
     }
 }
 
+/* ==========================================
+   RENDERIZADO DE LA COLECCIÓN (Grid de productos)
+   ========================================== */
+function renderProductGrid() {
+    const grid = document.getElementById("product-grid");
+    if (!grid) return;
+
+    grid.innerHTML = catalog.map(product => `
+        <div class="product-card group flex flex-col h-full">
+            <a href="${product.url}" class="block">
+                <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center rounded-xl">
+                    <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
+                    <img src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" loading="lazy">
+
+                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm z-20">
+                        ${getLuxuryBadge(product.id) || "Colección Vital"}
+                    </div>
+                </div>
+            </a>
+
+            <div class="flex flex-col flex-grow mb-3 md:mb-4">
+                <a href="${product.url}" class="hover:text-[#c5a059] transition-colors">
+                    <h3 class="font-serif text-sm md:text-xl italic text-[#0a1f1c] leading-tight mb-1">${product.name}</h3>
+                </a>
+                <p class="text-[8px] md:text-[10px] uppercase tracking-widest opacity-50 mt-1 line-clamp-2"><span class="text-[#c5a059] mr-1">★★★★★</span> ${product.desc}</p>
+            </div>
+
+            <div class="mt-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                <span class="font-serif text-base md:text-xl text-[#0a1f1c]">$${product.price.toLocaleString("es-CL")}</span>
+                <button onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.img}')"
+                        class="w-full md:w-auto px-4 py-3 border border-[#0a1f1c] text-[#0a1f1c] text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-[#0a1f1c] hover:text-[#c5a059] transition-colors duration-300 text-center">
+                    Añadir
+                </button>
+            </div>
+        </div>
+    `).join("");
+}
+renderProductGrid();
+
 function toggleCart() {
     let e = document.getElementById("atelier-bag");
     let t = document.getElementById("cart-overlay");
