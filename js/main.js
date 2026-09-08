@@ -553,7 +553,17 @@ function updateCartUI() {
    (Cuando se agrega un producto desde una página
    de producto o de catálogo y se vuelve al index)
    ========================================== */
-(function sincronizarBolsaAlCargar() {
+function sincronizarBolsaAlCargar() {
+    // Vuelve a leer siempre el carrito real desde localStorage,
+    // por si la variable "cart" en memoria quedó desactualizada
+    // (por ejemplo, al restaurar la página desde el caché de
+    // retroceso del navegador -bfcache-).
+    try {
+        cart = JSON.parse(localStorage.getItem("laforesta_cart")) || [];
+    } catch (err) {
+        cart = [];
+    }
+
     if (typeof updateCartUI === "function") updateCartUI();
 
     const params = new URLSearchParams(window.location.search);
@@ -565,7 +575,16 @@ function updateCartUI() {
         const urlLimpia = window.location.pathname + (queryLimpio ? "?" + queryLimpio : "") + window.location.hash;
         window.history.replaceState({}, document.title, urlLimpia);
     }
-})();
+}
+sincronizarBolsaAlCargar();
+
+// Si el navegador restaura esta página desde su caché de retroceso
+// (bfcache) al volver con "Atrás", el JS no se vuelve a ejecutar por
+// defecto y la bolsa se queda "congelada" con el estado anterior.
+// Este listener fuerza una resincronización en ese caso.
+window.addEventListener("pageshow", function(event) {
+    if (event.persisted) sincronizarBolsaAlCargar();
+});
 
 function guardarProgresoCheckout() {
     let e = {
