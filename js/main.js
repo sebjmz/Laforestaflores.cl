@@ -958,13 +958,14 @@ function renderCalendar() {
         let disponibles = 30 - ocupados;
 
         if (y.getTime() <= f.getTime()) {
-            e.innerHTML += `<div class="py-3 text-zinc-300 font-serif text-sm cursor-not-allowed">${day}</div>`;
+            e.innerHTML += `<div class="py-2 flex items-center justify-center text-zinc-300 font-serif text-sm cursor-not-allowed w-full h-full">${day}</div>`;
         } else if (disponibles <= 0) {
-            e.innerHTML += `<button disabled class="py-2 font-serif text-sm text-zinc-300 cursor-not-allowed flex flex-col items-center justify-center w-full h-full"><span class="line-through">${day}</span><span class="text-[6px] text-[#c5a059] uppercase tracking-tighter leading-none mt-1">Agotado</span></button>`;
+            e.innerHTML += `<button disabled class="py-2 font-serif text-sm text-zinc-300 cursor-not-allowed flex flex-col items-center justify-center w-full h-full"><span class="line-through">${day}</span><span class="text-[5px] md:text-[6px] text-[#c5a059] uppercase tracking-widest leading-none mt-1">Agotado</span></button>`;
         } else {
+            // Si hay más de 5, el badge queda vacío para no ensuciar el calendario
             let badge = disponibles <= 5 
-                ? `<span class="text-[6px] text-[#c5a059] uppercase tracking-tighter leading-none mt-1">Quedan ${disponibles}</span>` 
-                : `<span class="text-[6px] text-emerald-600 uppercase tracking-tighter leading-none mt-1">Disponible</span>`;
+                ? `<span class="text-[5px] md:text-[6px] text-[#c5a059] uppercase tracking-tighter leading-none mt-1">Quedan ${disponibles}</span>` 
+                : ``; 
             
             e.innerHTML += `<button onclick="seleccionarDiaCalendario('${dateStr}')" aria-label="Seleccionar el ${day} de este mes" class="py-2 font-serif text-sm hover:text-gold-leaf transition font-bold text-[#0a1f1c] flex flex-col items-center justify-center w-full h-full"><span>${day}</span>${badge}</button>`;
         }
