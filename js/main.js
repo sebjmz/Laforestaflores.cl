@@ -1438,6 +1438,13 @@ function updateCountdown() {
     }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById("countdown-timer")) {
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+});
+
 function escribirMensaje(e) {
     let t = document.getElementById("card-message");
     if (!t) return;
