@@ -343,7 +343,7 @@ const catalog = [
     { id: 15, name: "Sereno", price: 59900, img: "img/sereno.webp", desc: "Rosas y lirios blancos en caja gris.", url: "sereno.html" },
     { id: 16, name: "Dulce Amor", price: 48900, img: "img/dulce-amor.webp", desc: "Selección de flores en tonos rosados y blancos.", url: "dulce-amor.html" },
     { id: 17, name: "Esperanza", price: 138900, img: "img/esperanza.webp", desc: "Cesto de lirios y rosas blancas.", url: "esperanza.html" },
-    { id: 18, name: "Luz de Primavera", price: 47900, img: "img/luz-de-primavera.webp", desc: "Girasoles, gerberas y rosas amarillas.", url: "luz-de-primavera.html" }
+    { id: 18, name: "Luz de Primavera", price: 47900, img: "img/luz-de-primavera.webp", desc: "Girasoles, gerberas y rosas amarillas.", url: "luz-de-primavera.html" },
     { id: 201, name: "Cubre Urna Sublime", price: 129900, img: "img/cubre-urna.webp", desc: "Delicado homenaje en tonos blancos y crema.", url: "cubre-urna-sublime.html" },
     { id: 202, name: "Cojín de Condolencias", price: 58900, img: "img/cojin.webp", desc: "Composición sobria en rosas y astromelias.", url: "cojin-de-condolencias.html" }
 ];
