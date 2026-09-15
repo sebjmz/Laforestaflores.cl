@@ -3,6 +3,7 @@ window.descuentoPuntos = 0;
 window.maxPuntosCanjeables = 0;
 window.tierDiscount = 0;
 window.puntosTotalesUsuario = 0;
+window.datosCuposMes = {};
 
 let mapasCargados = false;
 let pasarelasCargadas = false;
@@ -11,7 +12,6 @@ let pasarelasCargadas = false;
    HERO SLIDER (Portada)
    ========================================== */
 let p=document.querySelectorAll(".slide-item");if(p.length>0){let m=0,u=p.length,g=document.getElementById("hero-dots"),$,y=!1,f=!1;function b(e,t){if(f)return;f=!0;let a=p[m],r=p[e];r.style.transition="none",r.style.zIndex="20",a.style.zIndex="10","next"===t?r.style.transform="translate3d(100%, 0, 0)":r.style.transform="translate3d(-100%, 0, 0)",requestAnimationFrame(()=>{requestAnimationFrame(()=>{let o="0.6s",n="cubic-bezier(0.16, 1, 0.3, 1)";r.style.transition=`transform ${o} ${n}`,a.style.transition=`transform ${o} ${n}`,r.style.transform="translate3d(0%, 0, 0)","next"===t?a.style.transform="translate3d(-100%, 0, 0)":a.style.transform="translate3d(100%, 0, 0)",m=e,v(),h(),setTimeout(()=>{f=!1},600)})})}function v(){g&&Array.from(g.children).forEach((e,t)=>{let a=e.querySelector(".dot-visual")||e;t===m?(a.classList.remove("bg-transparent"),a.classList.add("bg-[#c5a059]","scale-125")):(a.classList.remove("bg-[#c5a059]","scale-125"),a.classList.add("bg-transparent"))})}function h(){p.forEach((e,t)=>{let a=e.querySelectorAll(".slide-anim");t===m?setTimeout(()=>{a.forEach(e=>{e.classList.remove("opacity-0","translate-y-4","translate-y-8"),e.classList.add("opacity-100","translate-y-0")})},300):a.forEach(e=>{e.classList.remove("opacity-100","translate-y-0"),"H2"===e.tagName?e.classList.add("opacity-0","translate-y-8"):e.classList.add("opacity-0","translate-y-4")})})}p.forEach((e,t)=>{if(0===t?(e.style.transform="translate3d(0%, 0, 0)",e.style.zIndex="20"):(e.style.transform="translate3d(100%, 0, 0)",e.style.zIndex="10"),g){let a=document.createElement("button");a.setAttribute("aria-label","Ver diapositiva "+(t+1)),a.className="w-6 h-6 md:w-7 md:h-7 flex items-center justify-center rounded-full transition-all duration-300",a.innerHTML=`<span class="dot-visual block w-2 h-2 md:w-2.5 md:h-2.5 rounded-full border border-[#c5a059] transition-all duration-300 ${0===t?"bg-[#c5a059] scale-125":"bg-transparent"}"></span>`,a.onclick=()=>{if(f||m===t)return;"function"==typeof window.stopAutoPlay&&window.stopAutoPlay();let e=t>m?"next":"prev";b(t,e)},a.addEventListener("mouseenter",()=>{let e=a.querySelector(".dot-visual");e&&t!==m&&(e.style.backgroundColor="rgba(197,160,89,0.5)")}),a.addEventListener("mouseleave",()=>{let e=a.querySelector(".dot-visual");e&&t!==m&&(e.style.backgroundColor="")}),g.appendChild(a)}}),window.stopAutoPlay=function(){y=!0,clearInterval($)},window.nextHeroSlide=function(e=!1){if(e&&"function"==typeof window.stopAutoPlay&&window.stopAutoPlay(),f)return;let t=(m+1)%u;b(t,"next")},window.prevHeroSlide=function(e=!1){if(e&&"function"==typeof window.stopAutoPlay&&window.stopAutoPlay(),f)return;let t=(m-1+u)%u;b(t,"prev")},h(),$=setInterval(()=>{y||nextHeroSlide(!1)},8e3);let _=document.getElementById("slider-wrapper");if(_){let x=0,E=0;_.addEventListener("touchstart",e=>{x=e.changedTouches[0].screenX},{passive:!0}),_.addEventListener("touchend",e=>{(E=e.changedTouches[0].screenX)<x-50&&window.nextHeroSlide(!0),E>x+50&&window.prevHeroSlide(!0)},{passive:!0})}}
-
 
 function cargarMapasYAbrirModal() {
     if (mapasCargados) {
@@ -669,7 +669,7 @@ function validarEmailYContinuar() {
         alert("Por favor, ingrese un correo electrónico válido para continuar.");
         return;
     }
-    goToStep(2);
+    goToStep("step-2");
 }
 
 function openCheckout() {
@@ -687,7 +687,7 @@ function openCheckout() {
     setTimeout(() => t.classList.add("open"), 10);
     
     let a = JSON.parse(localStorage.getItem("laforesta_checkout_inputs"));
-    goToStep(a?.currentStep || 1);
+    goToStep(a?.currentStep || "step-1");
     if ((a?.currentStep || "step-1") === "step-time") renderHorariosInteligentes();
     
     let o = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
@@ -704,6 +704,41 @@ function closeCheckout() {
     if (e) {
         e.classList.remove("open");
         setTimeout(() => e.classList.add("hidden"), 700);
+    }
+}
+
+async function cargarCupos(fechaDate) {
+    const yyyy = fechaDate.getFullYear();
+    const mm = String(fechaDate.getMonth() + 1).padStart(2, "0");
+    try {
+        const res = await fetch(`https://old-brook-bf01.sebjmz.workers.dev/cupos?mes=${yyyy}-${mm}`);
+        if(res.ok) window.datosCuposMes = await res.json();
+    } catch(e) { console.error("Error al cargar cupos:", e); }
+}
+
+function actualizarVistaHoy() {
+    const stepFecha = document.getElementById("step-fecha");
+    if (!stepFecha) return;
+    const btnHoy = stepFecha.querySelector("button[onclick*=\"seleccionarFecha('hoy')\"]");
+    if (!btnHoy) return;
+    
+    const d = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
+    const hoyStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const ocupados = window.datosCuposMes[hoyStr] || 0;
+    const disponibles = 30 - ocupados;
+    
+    if (disponibles <= 0) {
+        btnHoy.innerHTML = `<div class="flex flex-col items-center justify-center w-full"><span class="text-zinc-400 line-through">Hoy</span><span class="text-[9px] text-[#c5a059] mt-2 tracking-widest font-bold">Cupos para este día agotados</span></div>`;
+        btnHoy.onclick = null;
+        btnHoy.classList.add("cursor-not-allowed", "opacity-50");
+    } else if (disponibles <= 5) {
+        btnHoy.innerHTML = `<div class="flex flex-col items-center justify-center w-full"><span>Hoy</span><span class="text-[9px] text-[#c5a059] mt-2 tracking-widest font-bold">Solo quedan ${disponibles} pedidos disponibles</span></div>`;
+        btnHoy.onclick = () => seleccionarFecha('hoy');
+        btnHoy.classList.remove("cursor-not-allowed", "opacity-50");
+    } else {
+        btnHoy.innerHTML = `<div class="flex flex-col items-center justify-center w-full"><span>Hoy</span><span class="text-[9px] text-emerald-600 mt-2 tracking-widest font-bold">Más de 5 disponibles para este día</span></div>`;
+        btnHoy.onclick = () => seleccionarFecha('hoy');
+        btnHoy.classList.remove("cursor-not-allowed", "opacity-50");
     }
 }
 
@@ -793,14 +828,21 @@ window.aplicarPuntos = function() {
     }
     actualizarTotalConDespacho();
 };
-function goToStep(e) {
+
+async function goToStep(e) {
     let t = typeof e === "number" ? `step-${e}` : e;
+    
+    if (t === "step-fecha") {
+        const d = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
+        await cargarCupos(d);
+        actualizarVistaHoy();
+    }
+    
     document.querySelectorAll(".checkout-step").forEach(step => step.classList.remove("active"));
     let a = document.getElementById(t);
     if (a) a.classList.add("active");
     guardarProgresoCheckout();
     
-    // Validar saldo y nivel si se entra al checkout de pago final
     if (t === "step-6") {
         cargarVistaPreviaPuntosNativo();
     }
@@ -820,7 +862,7 @@ function selectOption(e) {
 
 function setPalette(e) {
     selectedPalette = e;
-    setTimeout(() => goToStep(3), 400);
+    setTimeout(() => goToStep("step-3"), 400);
 }
 
 function seleccionarModalidad(e) {
@@ -856,12 +898,13 @@ function regresarDesdeFecha() {
     }
 }
 
-function seleccionarFecha(e) {
+async function seleccionarFecha(e) {
     if (e === "futuro") {
         let t = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
         let a = new Date(t);
         a.setDate(a.getDate() + 1);
         currentCalendarDate = a.getMonth() !== t.getMonth() ? new Date(a.getFullYear(), a.getMonth(), 1) : new Date(t.getFullYear(), t.getMonth(), 1);
+        await cargarCupos(currentCalendarDate);
         renderCalendar();
         goToStep("step-calendario");
     } else {
@@ -909,17 +952,28 @@ function renderCalendar() {
         y.setHours(0, 0, 0, 0);
         let f = new Date(a.getFullYear(), a.getMonth(), a.getDate());
         f.setHours(0, 0, 0, 0);
+        
+        let dateStr = `${r}-${String(o + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        let ocupados = window.datosCuposMes[dateStr] || 0;
+        let disponibles = 30 - ocupados;
+
         if (y.getTime() <= f.getTime()) {
             e.innerHTML += `<div class="py-3 text-zinc-300 font-serif text-sm cursor-not-allowed">${day}</div>`;
+        } else if (disponibles <= 0) {
+            e.innerHTML += `<button disabled class="py-2 font-serif text-sm text-zinc-300 cursor-not-allowed flex flex-col items-center justify-center w-full h-full"><span class="line-through">${day}</span><span class="text-[6px] text-[#c5a059] uppercase tracking-tighter leading-none mt-1">Agotado</span></button>`;
         } else {
-            let dateStr = `${r}-${String(o + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-            e.innerHTML += `<button onclick="seleccionarDiaCalendario('${dateStr}')" aria-label="Seleccionar el ${day} de este mes" class="py-3 font-serif text-sm hover:text-gold-leaf transition font-bold text-[#0a1f1c]">${day}</button>`;
+            let badge = disponibles <= 5 
+                ? `<span class="text-[6px] text-[#c5a059] uppercase tracking-tighter leading-none mt-1">Quedan ${disponibles}</span>` 
+                : `<span class="text-[6px] text-emerald-600 uppercase tracking-tighter leading-none mt-1">Disponible</span>`;
+            
+            e.innerHTML += `<button onclick="seleccionarDiaCalendario('${dateStr}')" aria-label="Seleccionar el ${day} de este mes" class="py-2 font-serif text-sm hover:text-gold-leaf transition font-bold text-[#0a1f1c] flex flex-col items-center justify-center w-full h-full"><span>${day}</span>${badge}</button>`;
         }
     }
 }
 
-function cambiarMesCalendario(e) {
+async function cambiarMesCalendario(e) {
     currentCalendarDate.setMonth(currentCalendarDate.getMonth() + e);
+    await cargarCupos(currentCalendarDate);
     renderCalendar();
 }
 
@@ -1005,7 +1059,7 @@ function definirHorario(e, t) {
     selectedTimeSlot = e;
     isExpressDelivery = t;
     actualizarTotalConDespacho();
-    setTimeout(() => goToStep(4), 400);
+    setTimeout(() => goToStep("step-4"), 400);
 }
 
 function actualizarTotalConDespacho() {
