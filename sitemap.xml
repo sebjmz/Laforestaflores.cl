@@ -49,6 +49,18 @@
 
     <!-- Productos Individuales -->
     <url>
+        <loc>https://laforestaflores.cl/luz-de-primavera.html</loc>
+        <lastmod>2026-09-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://laforestaflores.cl/destello-de-primavera.html</loc>
+        <lastmod>2026-09-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://laforestaflores.cl/amor-eterno.html</loc>
         <lastmod>2026-08-13</lastmod>
         <changefreq>monthly</changefreq>
