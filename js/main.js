@@ -962,7 +962,6 @@ function renderCalendar() {
         } else if (disponibles <= 0) {
             e.innerHTML += `<button disabled class="py-2 font-serif text-sm text-zinc-300 cursor-not-allowed flex flex-col items-center justify-center w-full h-full"><span class="line-through">${day}</span><span class="text-[5px] md:text-[6px] text-[#c5a059] uppercase tracking-widest leading-none mt-1">Agotado</span></button>`;
         } else {
-            // Si hay más de 5, el badge queda vacío para no ensuciar el calendario
             let badge = disponibles <= 5 
                 ? `<span class="text-[5px] md:text-[6px] text-[#c5a059] uppercase tracking-tighter leading-none mt-1">Quedan ${disponibles}</span>` 
                 : ``; 
