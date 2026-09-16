@@ -1830,57 +1830,60 @@
                 };
 
                 window.obtenerPayloadOrden = function() {
-                    const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
-                    const subtotalOriginal = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
-                    const isAnon = document.getElementById('envio-anonimo') && document.getElementById('envio-anonimo').checked;
-                    const emisorAnonimo = isAnon ? "Alguien que te quiere (Anónimo)" : (document.getElementById("sender-name")?.value || "No especificado");
-                    const tEmail = document.getElementById("buyer-email")?.value.trim() || "";
-                    const tReceiver = document.getElementById("receiver-name")?.value || "No especificado";
-                    const tCard = document.getElementById("card-message")?.value || "";
-                    const tPhone = document.getElementById("receiver-phone")?.value || "";
-                    const tNote = document.getElementById("delivery-note")?.value || "";
-                    const selectedLogistics = window.selectedLogistics || localStorage.getItem('laforesta_selectedLogistics');
-                    const selectedZoneName = window.selectedZoneName || localStorage.getItem('laforesta_selectedZoneName') || '';
-                    const isExpressDelivery = window.isExpressDelivery || localStorage.getItem('laforesta_isExpressDelivery') === 'true';
-                    let tLogistics = selectedLogistics === 'envio' 
-                        ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById("address")?.value || ""}` 
-                        : `Retiro en Atelier Reñaca\n• *RETIRA:* ${document.getElementById("pickup-name")?.value || ""}`;
-                    
-                    if (tNote.trim() !== "") tLogistics += `\n• *NOTA:* ${tNote.trim()}`;
-                    
-                    if(isExpressDelivery && selectedLogistics === 'envio') tLogistics = "[SERVICIO EXPRESS] " + tLogistics;
-                    
-                    const tTime = window.selectedTimeSlot || localStorage.getItem('laforesta_selectedTimeSlot') || "No especificado";
-                    const sDate = window.selectedDate || localStorage.getItem('laforesta_selectedDate');
-                    const tFecha = sDate === "hoy" ? "Hoy" : sDate;
-                    const totalPagar = window.actualizarTotalConDespacho();
-                    const shippingCost = parseInt(window.shippingCost || localStorage.getItem('laforesta_shippingCost') || 0, 10);
-                    const costoEnvioBase = isExpressDelivery ? Math.round(shippingCost * 1.5) : shippingCost;
-                    let bonoEnvio = 0;
-                    if (subtotalOriginal >= 69990) bonoEnvio = Math.min(costoEnvioBase, 7250);
-                    const envioFinal = Math.max(0, costoEnvioBase - bonoEnvio);
+    const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
+    const subtotalOriginal = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const isAnon = document.getElementById('envio-anonimo') && document.getElementById('envio-anonimo').checked;
+    const realSender = document.getElementById("sender-name")?.value || "No especificado";
+    const emisorAnonimo = isAnon ? "Alguien que te quiere (Anónimo)" : realSender;
+    const tEmail = document.getElementById("buyer-email")?.value.trim() || "";
+    const tReceiver = document.getElementById("receiver-name")?.value || "No especificado";
+    const tCard = document.getElementById("card-message")?.value || "";
+    const tPhone = document.getElementById("receiver-phone")?.value || "";
+    const tNote = document.getElementById("delivery-note")?.value || "";
+    const selectedLogistics = window.selectedLogistics || localStorage.getItem('laforesta_selectedLogistics');
+    const selectedZoneName = window.selectedZoneName || localStorage.getItem('laforesta_selectedZoneName') || '';
+    const isExpressDelivery = window.isExpressDelivery || localStorage.getItem('laforesta_isExpressDelivery') === 'true';
+    
+    let tLogistics = selectedLogistics === 'envio' 
+        ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById("address")?.value || ""}` 
+        : `Retiro en Atelier Reñaca\n• *RETIRA:* ${document.getElementById("pickup-name")?.value || ""}`;
+    
+    if (tNote.trim() !== "") tLogistics += `\n• *NOTA:* ${tNote.trim()}`;
+    
+    if(isExpressDelivery && selectedLogistics === 'envio') tLogistics = "[SERVICIO EXPRESS] " + tLogistics;
+    
+    const tTime = window.selectedTimeSlot || localStorage.getItem('laforesta_selectedTimeSlot') || "No especificado";
+    const sDate = window.selectedDate || localStorage.getItem('laforesta_selectedDate');
+    const tFecha = sDate === "hoy" ? "Hoy" : sDate;
+    const totalPagar = window.actualizarTotalConDespacho();
+    const shippingCost = parseInt(window.shippingCost || localStorage.getItem('laforesta_shippingCost') || 0, 10);
+    const costoEnvioBase = isExpressDelivery ? Math.round(shippingCost * 1.5) : shippingCost;
+    let bonoEnvio = 0;
+    if (subtotalOriginal >= 69990) bonoEnvio = Math.min(costoEnvioBase, 7250);
+    const envioFinal = Math.max(0, costoEnvioBase - bonoEnvio);
 
-                    return {
-                        totalCLP: totalPagar,
-                        metadata: {
-                            sender_name: emisorAnonimo,
-                            receiver_name: tReceiver,
-                            palette: 'Predeterminada del Diseño',
-                            logistics_detail: tLogistics,
-                            time_slot: tTime,
-                            destination_phone: tPhone,
-                            card_text: tCard,
-                            total_price: totalPagar,
-                            flowers_subtotal_clp: subtotalOriginal,
-                            points_discount_clp: window.descuentoPuntos || 0,
-                            order_summary: currentCart.map(e => `- ${e.name} (Cant: ${e.qty}) [c/u: $${e.price.toLocaleString("es-CL")}]`).join("\n"),
-                            fecha_entrega: tFecha,
-                            valor_envio: envioFinal,
-                            comprador_email: tEmail,
-                            ga_client_id: obtenerGA4ClientId()
-                        }
-                    };
-                };
+    return {
+        totalCLP: totalPagar,
+        metadata: {
+            sender_name: emisorAnonimo,
+            real_buyer_name: realSender,
+            receiver_name: tReceiver,
+            palette: 'Predeterminada del Diseño',
+            logistics_detail: tLogistics,
+            time_slot: tTime,
+            destination_phone: tPhone,
+            card_text: tCard,
+            total_price: totalPagar,
+            flowers_subtotal_clp: subtotalOriginal,
+            points_discount_clp: window.descuentoPuntos || 0,
+            order_summary: currentCart.map(e => `- ${e.name} (Cant: ${e.qty}) [c/u: $${e.price.toLocaleString("es-CL")}]`).join("\n"),
+            fecha_entrega: tFecha,
+            valor_envio: envioFinal,
+            comprador_email: tEmail,
+            ga_client_id: obtenerGA4ClientId()
+        }
+    };
+};
             }
         }, 100);
         
