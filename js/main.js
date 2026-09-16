@@ -732,7 +732,7 @@ function actualizarVistaHoy() {
         btnHoy.onclick = null;
         btnHoy.classList.add("cursor-not-allowed", "opacity-50");
     } else if (disponibles <= 5) {
-        btnHoy.innerHTML = `<div class="flex flex-col items-center justify-center w-full"><span>Hoy</span><span class="text-[9px] text-[#c5a059] mt-2 tracking-widest font-bold">Solo quedan ${disponibles} pedidos disponibles</span></div>`;
+        btnHoy.innerHTML = `<div class="flex flex-col items-center justify-center w-full"><span>Hoy</span><span class="text-[9px] text-[#c5a059] mt-2 tracking-widest font-bold">Solo ${disponibles} pedidos disponibles</span></div>`;
         btnHoy.onclick = () => seleccionarFecha('hoy');
         btnHoy.classList.remove("cursor-not-allowed", "opacity-50");
     } else {
@@ -963,7 +963,7 @@ function renderCalendar() {
             e.innerHTML += `<button disabled class="py-2 font-serif text-sm text-zinc-300 cursor-not-allowed flex flex-col items-center justify-center w-full h-full"><span class="line-through">${day}</span><span class="text-[5px] md:text-[6px] text-[#c5a059] uppercase tracking-widest leading-none mt-1">Agotado</span></button>`;
         } else {
             let badge = disponibles <= 5 
-                ? `<span class="text-[5px] md:text-[6px] text-[#c5a059] uppercase tracking-tighter leading-none mt-1">Quedan ${disponibles}</span>` 
+                ? `<span class="text-[5px] md:text-[6px] text-[#c5a059] uppercase tracking-tighter leading-none mt-1">Disp ${disponibles}</span>` 
                 : ``; 
             
             e.innerHTML += `<button onclick="seleccionarDiaCalendario('${dateStr}')" aria-label="Seleccionar el ${day} de este mes" class="py-2 font-serif text-sm hover:text-gold-leaf transition font-bold text-[#0a1f1c] flex flex-col items-center justify-center w-full h-full"><span>${day}</span>${badge}</button>`;
