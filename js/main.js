@@ -1236,13 +1236,12 @@ function obtenerPayloadOrden() {
     let receiver = document.getElementById("receiver-name")?.value || "No especificado";
     let message = document.getElementById("card-message")?.value || "";
     let phone = document.getElementById("receiver-phone")?.value || "";
-    let note = document.getElementById("delivery-note")?.value || ""; // Capturamos la nota
+    let note = document.getElementById("delivery-note")?.value || "";
 
     let logisticsDetail = selectedLogistics === "envio" 
         ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById("address")?.value || ""}` 
         : `Retiro en Atelier Reñaca\n• *RETIRA:* ${document.getElementById("pickup-name")?.value || ""}`;
         
-    // Inyectamos la nota a la logística si existe
     if (note.trim() !== "") {
         logisticsDetail += `\n• *NOTA:* ${note.trim()}`;
     }
@@ -1268,10 +1267,10 @@ function obtenerPayloadOrden() {
     return {
         totalCLP: totalPagar,
         metadata: {
-            sender_name: sender, // El que se imprime en la tarjeta (Anónimo o Real)
-            real_buyer_name: realSender, // El nombre real que llega directo a Make.com y tus correos internos
+            sender_name: sender,
+            real_buyer_name: realSender,
             receiver_name: receiver,
-            palette: selectedPalette || "Predeterminada del Diseño", // Aseguramos un fallback limpio
+            palette: selectedPalette || "Predeterminada del Diseño",
             logistics_detail: logisticsDetail,
             time_slot: timeSlot,
             destination_phone: phone,
