@@ -849,10 +849,13 @@
 
                     <div class="w-full overflow-x-auto pb-1 hide-scroll">
                         <nav aria-label="Filtros de colección" class="flex items-center space-x-6 md:space-x-8 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 whitespace-nowrap min-w-max">
-    <a href="/bienvenida-primavera.html" class="hover:text-[#0a1f1c] text-zinc-400 transition-all relative mr-5">
-        Primavera
-        <span class="absolute -top-3 -right-7 text-[#c5a059] text-[8px] animate-pulse font-extrabold tracking-normal">NOVEDAD</span>
+    
+    <!-- Enlace Primavera con NOVEDAD integrado al flujo (Sin absolute) -->
+    <a href="/bienvenida-primavera.html" class="hover:text-[#0a1f1c] text-zinc-400 transition-all flex items-start group">
+        <span class="pb-1 border-b-2 border-transparent">Primavera</span>
+        <span class="text-[#c5a059] text-[8px] animate-pulse font-extrabold ml-1.5 -mt-1 tracking-normal">NOVEDAD</span>
     </a>
+
     <a href="#vault" class="text-[#0a1f1c] border-b-2 border-[#0a1f1c] pb-1 transition-all">Todos</a>
     <a href="/romance-aniversario.html" class="hover:text-[#c5a059] transition-all pb-1">Romance</a>
     <a href="/condolencias.html" class="hover:text-[#c5a059] transition-all pb-1">Condolencias</a>
