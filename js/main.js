@@ -1230,15 +1230,22 @@ function sendGardenConsultation() {
 
 function obtenerPayloadOrden() {
     let isAnon = document.getElementById("envio-anonimo") && document.getElementById("envio-anonimo").checked;
-    let sender = isAnon ? "Alguien que te quiere (Anónimo)" : (document.getElementById("sender-name")?.value || "No especificado");
+    let realSender = document.getElementById("sender-name")?.value || "No especificado";
+    let sender = isAnon ? "Alguien que te quiere (Anónimo)" : realSender;
     let email = document.getElementById("buyer-email")?.value.trim() || "";
     let receiver = document.getElementById("receiver-name")?.value || "No especificado";
     let message = document.getElementById("card-message")?.value || "";
     let phone = document.getElementById("receiver-phone")?.value || "";
-    
+    let note = document.getElementById("delivery-note")?.value || ""; // Capturamos la nota
+
     let logisticsDetail = selectedLogistics === "envio" 
         ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById("address")?.value || ""}` 
         : `Retiro en Atelier Reñaca\n• *RETIRA:* ${document.getElementById("pickup-name")?.value || ""}`;
+        
+    // Inyectamos la nota a la logística si existe
+    if (note.trim() !== "") {
+        logisticsDetail += `\n• *NOTA:* ${note.trim()}`;
+    }
         
     if (isExpressDelivery && selectedLogistics === "envio") {
         logisticsDetail = "[SERVICIO EXPRESS] " + logisticsDetail;
@@ -1261,9 +1268,10 @@ function obtenerPayloadOrden() {
     return {
         totalCLP: totalPagar,
         metadata: {
-            sender_name: sender,
+            sender_name: sender, // El que se imprime en la tarjeta (Anónimo o Real)
+            real_buyer_name: realSender, // El nombre real que llega directo a Make.com y tus correos internos
             receiver_name: receiver,
-            palette: selectedPalette,
+            palette: selectedPalette || "Predeterminada del Diseño", // Aseguramos un fallback limpio
             logistics_detail: logisticsDetail,
             time_slot: timeSlot,
             destination_phone: phone,
