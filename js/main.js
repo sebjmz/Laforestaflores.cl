@@ -624,7 +624,10 @@ sincronizarBolsaAlCargar();
 // defecto y la bolsa se queda "congelada" con el estado anterior.
 // Este listener fuerza una resincronización en ese caso.
 window.addEventListener("pageshow", function(event) {
-    if (event.persisted) sincronizarBolsaAlCargar();
+    if (event.persisted) {
+        sincronizarBolsaAlCargar();
+        restaurarProgresoCheckout();
+    }
 });
 
 function guardarProgresoCheckout() {
@@ -1494,6 +1497,8 @@ function updateCountdown() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    restaurarProgresoCheckout();
+    
     if (document.getElementById("countdown-timer")) {
         updateCountdown();
         setInterval(updateCountdown, 1000);
