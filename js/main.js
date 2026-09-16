@@ -636,9 +636,11 @@ function guardarProgresoCheckout() {
         buyerEmail: document.getElementById("buyer-email")?.value || "",
         receiverName: document.getElementById("receiver-name")?.value || "",
         address: document.getElementById("address")?.value || "",
+        deliveryNote: document.getElementById("delivery-note")?.value || "", // <- AHORA SE GUARDA LA NOTA
         pickupName: document.getElementById("pickup-name")?.value || "",
         cardMessage: document.getElementById("card-message")?.value || "",
         receiverPhone: document.getElementById("receiver-phone")?.value || "",
+        isAnon: document.getElementById("envio-anonimo")?.checked || false, // <- AHORA SE GUARDA EL ANONIMATO
         currentStep: document.querySelector(".checkout-step.active")?.id || "step-1"
     };
     localStorage.setItem("laforesta_checkout_inputs", JSON.stringify(e));
@@ -654,10 +656,18 @@ function guardarProgresoCheckout() {
 function restaurarProgresoCheckout() {
     let e = JSON.parse(localStorage.getItem("laforesta_checkout_inputs"));
     if (e) {
-        ["sender-name", "buyer-email", "receiver-name", "address", "pickup-name", "card-message", "receiver-phone"].forEach(id => {
+        // AHORA SE RESTAURA LA NOTA DEL REPARTIDOR TAMBIÉN
+        ["sender-name", "buyer-email", "receiver-name", "address", "delivery-note", "pickup-name", "card-message", "receiver-phone"].forEach(id => {
             let el = document.getElementById(id);
             if (el) el.value = e[id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] || "";
         });
+        
+        // AHORA SE RESTAURA EL ESTADO DEL CHECKBOX DE ANONIMATO
+        let anonCheckbox = document.getElementById("envio-anonimo");
+        if (anonCheckbox && e.isAnon !== undefined) {
+            anonCheckbox.checked = e.isAnon;
+        }
+
         if (localStorage.getItem("laforesta_checkout_abierto") === "true") {
             cargarPasarelasYAbrirCheckout();
         }
