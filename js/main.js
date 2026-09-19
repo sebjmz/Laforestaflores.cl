@@ -682,6 +682,21 @@ function validarEmailYContinuar() {
         alert("Por favor, ingrese un correo electrónico válido para continuar.");
         return;
     }
+    
+    // --- INYECCIÓN DEL EVENTO PARA EL SISTEMA DE RESCATE ---
+    if (typeof window.trackEvent4D === 'function') {
+        const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
+        const cartVal = currentCart.reduce((sum, item) => sum + item.price * item.qty, 0);
+        const senderName = document.getElementById('sender-name')?.value || '';
+        
+        window.trackEvent4D('lead_captured', { 
+            email: t, 
+            step_name: 'step-buyer-email', 
+            cart_value: cartVal, 
+            name: senderName 
+        });
+    }
+    
     goToStep("step-2");
 }
 
