@@ -207,12 +207,6 @@
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://laforestaflores.cl/despachos.html</loc>
-        <lastmod>2026-08-13</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
         <loc>https://laforestaflores.cl/devoluciones.html</loc>
         <lastmod>2026-08-13</lastmod>
         <changefreq>yearly</changefreq>
@@ -230,11 +224,36 @@
         <changefreq>yearly</changefreq>
         <priority>0.5</priority>
     </url>
-    <url>
-        <loc>https://laforestaflores.cl/gracias.html</loc>
-        <lastmod>2026-08-13</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.5</priority>
-    </url>
 
+
+  <url>
+    <loc>https://laforestaflores.cl/flores-parque-del-mar.html</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://laforestaflores.cl/flores-para-velorio-vina-del-mar.html</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://laforestaflores.cl/flores-iglesias-vina-del-mar.html</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://laforestaflores.cl/flores-licenciatura-vina-del-mar.html</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://laforestaflores.cl/flores-eventos-vina-del-mar.html</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 </urlset>

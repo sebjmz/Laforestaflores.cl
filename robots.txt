@@ -1,9 +1,14 @@
 User-agent: *
 Allow: /
+Disallow: /admin.html
+Disallow: /despachos.html
 Disallow: /index-test.html
 Disallow: /index-test3.html
+Disallow: /index-oficial.html
 Disallow: /juego.html
 Disallow: /juego2.html
+Disallow: /feedback.html
+Disallow: /gracias.html
 Disallow: /gracias1.html
 
 Sitemap: https://laforestaflores.cl/sitemap.xml
