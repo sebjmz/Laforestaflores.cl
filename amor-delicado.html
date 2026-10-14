@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>try{if(sessionStorage.getItem('lf_intro_in')){sessionStorage.removeItem('lf_intro_in');document.documentElement.classList.add('lf-in')}}catch(e){}</script>
+<style>@view-transition{navigation:auto}html.lf-in::after{content:"";position:fixed;inset:0;background:#fbf8f1;z-index:2147483647;pointer-events:none;animation:lfin .7s ease .1s forwards}@keyframes lfin{to{opacity:0;visibility:hidden}}@media (prefers-reduced-motion:reduce){html.lf-in::after{animation-duration:.01s}}</style>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -599,5 +602,6 @@
     }, true);
 })();
 </script>
+<script src="/js/intro.js" defer></script>
 </body>
 </html>
