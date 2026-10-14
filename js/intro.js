@@ -42,10 +42,9 @@
   '#lfc .name span{font:400 clamp(2rem,5vw,4.5rem)/1 "Cormorant Garamond",Georgia,serif;letter-spacing:.38em;padding-left:.38em}'+
   '#lfc .ph span{font:italic 400 clamp(1.4rem,3vw,2.6rem)/1.35 "Cormorant Garamond",Georgia,serif}'+
   '#lfc .end span{font:400 clamp(1.3rem,2.6vw,2.3rem)/1.35 "Cormorant Garamond",Georgia,serif;letter-spacing:.03em}'+
-  '#lfc .bar{position:absolute;left:50%;top:calc(50% + clamp(70px,9vw,130px));width:min(420px,70vw);height:3px;border-radius:3px;transform:translateX(-50%);background:rgba(10,31,28,.16)}'+
-  '#lfc .fill{position:relative;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,rgba(197,160,89,0) 0%,rgba(197,160,89,.35) 45%,#c5a059 85%,#e0bb6a 100%)}'+
-  '#lfc .fill::after{content:"";position:absolute;right:-2px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:#f0d48f;box-shadow:0 0 6px 2px rgba(224,187,106,.85),0 0 16px 5px rgba(197,160,89,.45)}'+
-'#lfc .skip{position:fixed;left:50%;transform:translateX(-50%);bottom:max(28px,calc(env(safe-area-inset-bottom) + 16px));font:600 12px/1 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.12em;text-transform:uppercase;background:#0a1f1c;color:#fbf8f1;border:1px solid #0a1f1c;border-radius:999px;padding:14px 26px;cursor:pointer;white-space:nowrap;box-shadow:0 6px 18px rgba(10,31,28,.18);transition:background .2s,color .2s,box-shadow .2s;touch-action:manipulation;z-index:2}'+
+  '#lfc .bar{position:absolute;left:50%;top:calc(50% + clamp(70px,9vw,130px));width:min(420px,70vw);height:3px;border-radius:3px;transform:translateX(-50%);background:rgba(10,31,28,.16);overflow:hidden}'+
+  '#lfc .fill{height:100%;width:100%;border-radius:3px;transform-origin:left center;transform:scaleX(0);background:linear-gradient(90deg,#a9822f,#c5a059)}'+
+  '#lfc .skip{position:fixed;left:50%;transform:translateX(-50%);bottom:max(28px,calc(env(safe-area-inset-bottom) + 16px));font:600 12px/1 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.12em;text-transform:uppercase;background:#0a1f1c;color:#fbf8f1;border:1px solid #0a1f1c;border-radius:999px;padding:14px 26px;cursor:pointer;white-space:nowrap;box-shadow:0 6px 18px rgba(10,31,28,.18);transition:background .2s,color .2s,box-shadow .2s;touch-action:manipulation;z-index:2}'+
   '#lfc .skip:hover{background:#fbf8f1;color:#0a1f1c;box-shadow:0 8px 22px rgba(10,31,28,.22)}#lfc .skip:focus-visible{outline:2px solid #c5a059;outline-offset:3px}'+
   '@media (prefers-reduced-motion:reduce){#lfc,#lfc .st,#lfc .vid{transition:none;transform:none}}';
   function font(){
@@ -78,7 +77,7 @@
     function begin(){ // arranca los 3 s exactos: barra 0→100 % con rAF + pasos
       if(started||done)return;started=true;
       var t0=performance.now();
-      (function tick(now){var k=Math.min(1,((now||performance.now())-t0)/MS);fill.style.width=(k*100)+'%';if(k<1&&!done)raf=requestAnimationFrame(tick)})(t0);
+      (function tick(now){var k=Math.min(1,((now||performance.now())-t0)/MS);fill.style.transform='scaleX('+k+')';if(k<1&&!done)raf=requestAnimationFrame(tick)})(t0);
       timers.push(setTimeout(go,MS));
     }
     if(vid){
