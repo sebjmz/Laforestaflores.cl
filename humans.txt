@@ -1,0 +1,9 @@
+/* TEAM */
+Florería: La Foresta Flores
+Ubicación: Reñaca, Viña del Mar, Chile
+Instagram: @laforestaflores
+
+/* SITE */
+Last update: 2026/10/14
+Language: Español (Chile)
+Standards: HTML5, CSS3, Schema.org

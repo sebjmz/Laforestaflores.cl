@@ -1,0 +1,15 @@
+{
+  "name": "La Foresta Flores",
+  "short_name": "La Foresta",
+  "description": "Florería en Reñaca, Viña del Mar. Abiertos los 7 días, 12 cuotas sin interés con Mercado Pago y PayPal internacional.",
+  "lang": "es-CL",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fcfaf7",
+  "theme_color": "#0a1f1c",
+  "icons": [
+    {"src": "/img/favicon.webp", "sizes": "512x512", "type": "image/webp"},
+    {"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml"}
+  ]
+}

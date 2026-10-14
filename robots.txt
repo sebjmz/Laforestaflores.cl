@@ -1,4 +1,27 @@
+# La Foresta Flores - robots.txt
 User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /despachos.html
+Disallow: /index-test.html
+Disallow: /index-test3.html
+Disallow: /index-oficial.html
+Disallow: /juego.html
+Disallow: /juego2.html
+Disallow: /feedback.html
+Disallow: /gracias.html
+Disallow: /gracias1.html
+
+# Buscadores y crawlers de IA permitidos en páginas públicas
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: PerplexityBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
 Allow: /
 Disallow: /admin.html
 Disallow: /despachos.html
