@@ -32,7 +32,6 @@
 ## Servicio
 
 - [Seguimiento de pedido](https://laforestaflores.cl/seguimiento.html)
-- [Club La Foresta](https://laforestaflores.cl/club.html)
 - [Preguntas frecuentes](https://laforestaflores.cl/#faq)
 
 ## Políticas
