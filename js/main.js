@@ -14,22 +14,7 @@ let pasarelasCargadas = false;
 let p=document.querySelectorAll(".slide-item");if(p.length>0){let m=0,u=p.length,g=document.getElementById("hero-dots"),$,y=!1,f=!1;function b(e,t){if(f)return;f=!0;let a=p[m],r=p[e];r.style.transition="none",r.style.zIndex="20",a.style.zIndex="10","next"===t?r.style.transform="translate3d(100%, 0, 0)":r.style.transform="translate3d(-100%, 0, 0)",requestAnimationFrame(()=>{requestAnimationFrame(()=>{let o="0.6s",n="cubic-bezier(0.16, 1, 0.3, 1)";r.style.transition=`transform ${o} ${n}`,a.style.transition=`transform ${o} ${n}`,r.style.transform="translate3d(0%, 0, 0)","next"===t?a.style.transform="translate3d(-100%, 0, 0)":a.style.transform="translate3d(100%, 0, 0)",m=e,v(),h(),setTimeout(()=>{f=!1},600)})})}function v(){g&&Array.from(g.children).forEach((e,t)=>{let a=e.querySelector(".dot-visual")||e;t===m?(a.classList.remove("bg-transparent"),a.classList.add("bg-[#c5a059]","scale-125")):(a.classList.remove("bg-[#c5a059]","scale-125"),a.classList.add("bg-transparent"))})}function h(){p.forEach((e,t)=>{let a=e.querySelectorAll(".slide-anim");t===m?setTimeout(()=>{a.forEach(e=>{e.classList.remove("opacity-0","translate-y-4","translate-y-8"),e.classList.add("opacity-100","translate-y-0")})},300):a.forEach(e=>{e.classList.remove("opacity-100","translate-y-0"),"H2"===e.tagName?e.classList.add("opacity-0","translate-y-8"):e.classList.add("opacity-0","translate-y-4")})})}p.forEach((e,t)=>{if(0===t?(e.style.transform="translate3d(0%, 0, 0)",e.style.zIndex="20"):(e.style.transform="translate3d(100%, 0, 0)",e.style.zIndex="10"),g){let a=document.createElement("button");a.setAttribute("aria-label","Ver diapositiva "+(t+1)),a.className="w-6 h-6 md:w-7 md:h-7 flex items-center justify-center rounded-full transition-all duration-300",a.innerHTML=`<span class="dot-visual block w-2 h-2 md:w-2.5 md:h-2.5 rounded-full border border-[#c5a059] transition-all duration-300 ${0===t?"bg-[#c5a059] scale-125":"bg-transparent"}"></span>`,a.onclick=()=>{if(f||m===t)return;"function"==typeof window.stopAutoPlay&&window.stopAutoPlay();let e=t>m?"next":"prev";b(t,e)},a.addEventListener("mouseenter",()=>{let e=a.querySelector(".dot-visual");e&&t!==m&&(e.style.backgroundColor="rgba(197,160,89,0.5)")}),a.addEventListener("mouseleave",()=>{let e=a.querySelector(".dot-visual");e&&t!==m&&(e.style.backgroundColor="")}),g.appendChild(a)}}),window.stopAutoPlay=function(){y=!0,clearInterval($)},window.nextHeroSlide=function(e=!1){if(e&&"function"==typeof window.stopAutoPlay&&window.stopAutoPlay(),f)return;let t=(m+1)%u;b(t,"next")},window.prevHeroSlide=function(e=!1){if(e&&"function"==typeof window.stopAutoPlay&&window.stopAutoPlay(),f)return;let t=(m-1+u)%u;b(t,"prev")},h(),$=setInterval(()=>{y||nextHeroSlide(!1)},8e3);let _=document.getElementById("slider-wrapper");if(_){let x=0,E=0;_.addEventListener("touchstart",e=>{x=e.changedTouches[0].screenX},{passive:!0}),_.addEventListener("touchend",e=>{(E=e.changedTouches[0].screenX)<x-50&&window.nextHeroSlide(!0),E>x+50&&window.prevHeroSlide(!0)},{passive:!0})}}
 
 function cargarMapasYAbrirModal() {
-    if (mapasCargados) {
-        openCoverageModal();
-    } else {
-        let e = document.createElement("link");
-        e.rel = "stylesheet";
-        e.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-        document.head.appendChild(e);
-
-        let t = document.createElement("script");
-        t.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
-        t.onload = () => {
-            mapasCargados = true;
-            openCoverageModal();
-        };
-        document.body.appendChild(t);
-    }
+    openCoverageModal();
 }
 
 function cargarPasarelasYAbrirCheckout() {
@@ -235,68 +220,8 @@ try {
     console.warn("MercadoPago SDK bloqueado o no cargado aún.");
 }
 
-let mapInitialized = false;
-let coverageMap;
-let circleLayers = {};
-const zoneData = [
-    { id: 1, radius: 2200, color: "#c5a059", fillOpacity: 0.4, name: "Central" },
-    { id: 2, radius: 4500, color: "#c5a059", fillOpacity: 0.25, name: "Local" },
-    { id: 3, radius: 6500, color: "#c5a059", fillOpacity: 0.15, name: "Intermedia" },
-    { id: 4, radius: 11500, color: "#c5a059", fillOpacity: 0.08, name: "Extendida" },
-    { id: 5, radius: 20000, color: "#c5a059", fillOpacity: 0.03, name: "Extendida+" }
-];
-const atelierCenter = [-32.97074205954955, -71.5431332198481];
-
-function initCoverageMap() {
-    if (mapInitialized) return;
-    let e = document.getElementById("coverage-map");
-    if (!e) return;
-    coverageMap = L.map("coverage-map", { zoomControl: true, scrollWheelZoom: false }).setView(atelierCenter, 10);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png", {
-        attribution: "© OpenStreetMap",
-        subdomains: "abcd",
-        maxZoom: 18
-    }).addTo(coverageMap);
-    
-    [...zoneData].reverse().forEach(z => {
-        let t = L.circle(atelierCenter, {
-            radius: z.radius,
-            color: z.color,
-            weight: 1,
-            fillColor: z.color,
-            fillOpacity: z.fillOpacity,
-            interactive: false
-        }).addTo(coverageMap);
-        circleLayers[z.id] = t;
-    });
-    
-    let t = L.divIcon({
-        html: '<div class="w-3 h-3 bg-[#c5a059] rounded-full border border-[#0a1f1c] shadow-[0_0_15px_rgba(197,160,89,1)]"></div>',
-        className: ""
-    });
-    L.marker(atelierCenter, { icon: t }).addTo(coverageMap).bindTooltip("Atelier", {
-        permanent: true,
-        direction: "right",
-        className: "atelier-tooltip"
-    }).openTooltip();
-    mapInitialized = true;
-}
-
-function highlightZone(e) {
-    if (circleLayers[e]) {
-        circleLayers[e].setStyle({ fillOpacity: 0.6, weight: 3, color: "#ffffff" });
-        circleLayers[e].bringToFront();
-    }
-}
-
-function resetZone(e) {
-    if (!circleLayers[e]) return;
-    let t = zoneData.find(z => z.id === e);
-    if (t) circleLayers[e].setStyle({ fillOpacity: t.fillOpacity, weight: 1, color: t.color });
-    [...zoneData].reverse().forEach(z => {
-        if (circleLayers[z.id]) circleLayers[z.id].bringToFront();
-    });
-}
+function highlightZone() {}
+function resetZone() {}
 
 function openCoverageModal() {
     let e = document.getElementById("coverage-modal");
@@ -304,11 +229,7 @@ function openCoverageModal() {
         e.classList.remove("hidden");
         setTimeout(() => {
             e.classList.remove("opacity-0");
-            initCoverageMap();
         }, 10);
-        setTimeout(() => {
-            if (coverageMap) coverageMap.invalidateSize();
-        }, 550);
         document.body.style.overflow = "hidden";
         if (typeof window.stopAutoPlay === "function") window.stopAutoPlay();
     }

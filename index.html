@@ -695,7 +695,7 @@
                             Cuidamos cada detalle para que tu sorpresa llegue impecable y a tiempo, desde Quintero y Concón hasta Curauma.
                         </p>
                         <div class="slide-anim opacity-0 translate-y-4 transition-all duration-1000 delay-500">
-                            <button onclick="cargarMapasYAbrirModal()" aria-label="Ver mapa de zonas de cobertura" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver zonas de cobertura</button>
+                            <button onclick="cargarMapasYAbrirModal()" aria-label="Ver zonas y costos de despacho" class="px-8 py-3 md:px-10 md:py-4 text-base md:text-lg font-bold shadow-lg border border-[#c5a059] text-[#c5a059] bg-white/5 backdrop-blur-md hover:bg-[#c5a059] hover:text-[#0a1f1c] transition-all duration-300">Ver zonas de cobertura</button>
                         </div>
                     </div>
                 </div>
@@ -1146,68 +1146,45 @@
         </div>
     </div>
 
-    <div id="coverage-modal" class="fixed inset-0 bg-[#0a1f1c]/95 backdrop-blur-xl z-[200] hidden opacity-0 transition-opacity duration-500 flex flex-col justify-center items-center p-4 sm:p-6 md:p-12">
-        <div class="w-full max-w-6xl bg-transparent flex flex-col lg:flex-row gap-8 lg:gap-12 relative text-[#fcfaf7] h-full lg:h-auto max-h-full">
-            
-            <button onclick="closeCoverageModal()" aria-label="Cerrar mapa de cobertura" class="absolute -top-10 lg:-top-12 right-0 text-4xl font-light text-[#fcfaf7]/50 hover:text-[#c5a059] transition-colors z-20">×</button>
-            
-            <div class="w-full lg:w-1/2 flex items-center justify-center relative h-[35vh] md:h-[45vh] lg:h-[600px] bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] shrink-0 mb-6 lg:mb-0 mt-6 lg:mt-0">
-                <div id="coverage-map" class="w-full h-full z-10"></div>
-            </div>
-
-            <div class="w-full lg:w-1/2 flex flex-col lg:justify-center py-2 overflow-y-auto hide-scroll pb-24 lg:pb-0 min-h-0">
-                <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-[#8a6d3d] mb-4 block">Nuestro Compromiso</span>
-                <h3 class="font-serif text-4xl md:text-5xl italic mb-8">Zonas de Despacho</h3>
-                
-                <div class="space-y-4">
-                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(1)" onmouseleave="resetZone(1)">
-                        <div class="flex justify-between items-center mb-1">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">1. Central</h4>
-                            <span class="text-xs text-[#c5a059] font-serif">+$3.500</span>
-                        </div>
-                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Reñaca Centro, Los Almendros, Clínica Reñaca, Jardín del Mar, Los Pinos.</p>
-                    </div>
-
-                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(2)" onmouseleave="resetZone(2)">
-                        <div class="flex justify-between items-center mb-1">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">2. Local</h4>
-                            <span class="text-xs text-[#c5a059] font-serif">+$5.000</span>
-                        </div>
-                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Reñaca Norte, Montemar, Higuerillas, Gómez Carreño, Hospital Naval, Glorias Navales.</p>
-                    </div>
-
-                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(3)" onmouseleave="resetZone(3)">
-                        <div class="flex justify-between items-center mb-1">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">3. Intermedia</h4>
-                            <span class="text-xs text-[#c5a059] font-serif">+$7.500</span>
-                        </div>
-                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Viña Centro, Clínica Ciudad del Mar, Cerros de Viña, Chorrillos, Concón Los Romeros.</p>
-                    </div>
-
-                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(4)" onmouseleave="resetZone(4)">
-                        <div class="flex justify-between items-center mb-1">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">4. Extendida</h4>
-                            <span class="text-xs text-[#c5a059] font-serif">+$10.000</span>
-                        </div>
-                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Mantagua (Las Gaviotas), Valparaíso Plan y Cerros, Quilpué Centro, Paso Hondo.</p>
-                    </div>
-
-                    <div class="border border-white/10 p-4 rounded-lg hover:border-[#c5a059]/50 hover:bg-white/5 transition-all cursor-crosshair" onmouseenter="highlightZone(5)" onmouseleave="resetZone(5)">
-                        <div class="flex justify-between items-center mb-1">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-white">5. Extendida+</h4>
-                            <span class="text-xs text-[#c5a059] font-serif">+$15.000</span>
-                        </div>
-                        <p class="text-[10px] uppercase tracking-wider text-white/50 leading-relaxed">Quintero, Curauma, Placilla de Peñuelas, El Belloto.</p>
-                    </div>
-                </div>
-
-                <div class="mt-8 bg-[#c5a059]/10 border border-[#c5a059]/30 p-4 text-left flex items-start gap-3 rounded-lg">
-                    <span class="text-[#c5a059] text-xs">⚠</span>
-                    <p class="text-[9px] uppercase tracking-widest leading-relaxed text-white/80">
-                        <strong>Beneficio Exclusivo:</strong> Envíos gratis o bonificados sobre $69.990. Pase el cursor sobre cada zona para visualizar el área en el mapa.
-                    </p>
-                </div>
-            </div>
+    <div id="coverage-modal" role="dialog" aria-modal="true" aria-labelledby="lfz-title" class="fixed inset-0 z-[200] hidden opacity-0 transition-opacity duration-500" onclick="if(event.target===this)closeCoverageModal()">
+        <style>
+        #coverage-modal{background:rgba(10,31,28,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+        #coverage-modal .lfz-card{position:relative;background:#fbf8f1;color:#0a1f1c;max-width:640px;margin:6vh auto;border-radius:18px;padding:40px 36px 32px;box-shadow:0 24px 60px rgba(0,0,0,.25)}
+        #coverage-modal .lfz-close{position:absolute;top:12px;right:14px;width:44px;height:44px;border-radius:50%;font-size:26px;line-height:1;color:#0a1f1c;opacity:.6;background:none;border:0;cursor:pointer}
+        #coverage-modal .lfz-close:hover{opacity:1}
+        #coverage-modal .lfz-kicker{font-size:10px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#a9822f}
+        #coverage-modal h3{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:clamp(28px,4.5vw,38px);margin:6px 0 22px}
+        #coverage-modal .lfz-list{list-style:none;margin:0;padding:0;border-top:1px solid rgba(10,31,28,.12)}
+        #coverage-modal .lfz-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:13px 0;border-bottom:1px solid rgba(10,31,28,.12)}
+        #coverage-modal .lfz-name{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:0 0 3px}
+        #coverage-modal .lfz-sec{font-size:12.5px;line-height:1.45;color:rgba(10,31,28,.65);margin:0}
+        #coverage-modal .lfz-price{font-family:Georgia,serif;font-size:17px;white-space:nowrap;padding-top:1px}
+        #coverage-modal .lfz-facts{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:11px}
+        #coverage-modal .lfz-facts li{display:flex;gap:11px;font-size:14px;line-height:1.45}
+        #coverage-modal .lfz-facts li span:first-child{color:#a9822f;flex:0 0 auto}
+        #coverage-modal .lfz-cta{display:block;width:100%;margin-top:26px;padding:16px;border:0;border-radius:999px;background:#0a1f1c;color:#fbf8f1;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+        #coverage-modal .lfz-cta:hover{background:#13332e}
+        @media (max-width:640px){#coverage-modal .lfz-card{margin:0;min-height:100%;border-radius:0;padding:56px 22px 28px}}
+        </style>
+        <div class="lfz-card">
+            <button onclick="closeCoverageModal()" aria-label="Cerrar" class="lfz-close">&times;</button>
+            <p class="lfz-kicker">Nuestro compromiso</p>
+            <h3 id="lfz-title">Despacho a domicilio</h3>
+            <ul class="lfz-list">
+                    <li class="lfz-row"><div><p class="lfz-name">Central</p><p class="lfz-sec">Reñaca Centro, Los Almendros, Clínica Reñaca, Jardín del Mar, Los Pinos</p></div><span class="lfz-price">$3.500</span></li>
+                    <li class="lfz-row"><div><p class="lfz-name">Local</p><p class="lfz-sec">Reñaca Norte, Montemar, Higuerillas, Gómez Carreño, Hospital Naval, Glorias Navales</p></div><span class="lfz-price">$5.000</span></li>
+                    <li class="lfz-row"><div><p class="lfz-name">Intermedia</p><p class="lfz-sec">Viña Centro, Clínica Ciudad del Mar, Cerros de Viña, Chorrillos, Concón Los Romeros</p></div><span class="lfz-price">$7.500</span></li>
+                    <li class="lfz-row"><div><p class="lfz-name">Extendida</p><p class="lfz-sec">Mantagua (Las Gaviotas), Valparaíso Plan y Cerros, Quilpué Centro, Paso Hondo</p></div><span class="lfz-price">$10.000</span></li>
+                    <li class="lfz-row"><div><p class="lfz-name">Extendida+</p><p class="lfz-sec">Quintero, Curauma, Placilla de Peñuelas, El Belloto</p></div><span class="lfz-price">$15.000</span></li>
+            </ul>
+            <ul class="lfz-facts">
+                <li><span>✦</span><span><strong>Gratis o bonificado</strong> en compras sobre $69.990.</span></li>
+                <li><span>✦</span><span>Entregamos <strong>los 7 días</strong> en tres bloques: 11:00–13:00 · 14:00–17:00 · 18:00–21:00.</span></li>
+                <li><span>✦</span><span><strong>Express el mismo día (1–2 h)</strong> para compras antes de las 18:00: +50% del envío de tu zona.</span></li>
+                <li><span>✦</span><span><strong>Seguimiento con foto</strong> de tu arreglo y de su entrega.</span></li>
+                <li><span>✦</span><span><strong>Retiro sin costo</strong> en nuestro atelier, de 10:30 a 19:00.</span></li>
+            </ul>
+            <button class="lfz-cta" onclick="closeCoverageModal();setTimeout(function(){var v=document.getElementById('vault');if(v)v.scrollIntoView({behavior:'smooth'})},520)">Ver flores</button>
         </div>
     </div>
 
@@ -1258,11 +1235,11 @@
                     <div class="pt-4 pb-2 text-sm md:text-base text-zinc-600 font-light leading-relaxed">
                         <p class="mb-3">¡Tenemos beneficio exclusivo! El envío es <strong>gratis o bonificado</strong> para compras sobre $69.990. Para montos menores, el valor depende de la zona:</p>
                         <ul class="space-y-2 pl-4">
-                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Central (Reñaca):</strong> $3.500</li>
-                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Local (Viña, Concón, Reñaca Norte):</strong> $5.000</li>
-                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Intermedia (Cerros de Viña, Chorrillos):</strong> $7.500</li>
-                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Extendida (Valparaíso, Quilpué):</strong> $10.000</li>
-                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Extendida+ (Quintero, Curauma, El Belloto):</strong> $15.000</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Central (Reñaca Centro, Los Almendros, Clínica Reñaca, Jardín del Mar, Los Pinos):</strong> $3.500</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Local (Reñaca Norte, Montemar, Higuerillas, Gómez Carreño, Hospital Naval, Glorias Navales):</strong> $5.000</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Intermedia (Viña Centro, Clínica Ciudad del Mar, Cerros de Viña, Chorrillos, Concón Los Romeros):</strong> $7.500</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Extendida (Mantagua (Las Gaviotas), Valparaíso Plan y Cerros, Quilpué Centro, Paso Hondo):</strong> $10.000</li>
+                            <li><span class="text-[#c5a059] mr-2">✦</span><strong>Zona Extendida+ (Quintero, Curauma, Placilla de Peñuelas, El Belloto):</strong> $15.000</li>
                         </ul>
                     </div>
                 </details>
@@ -2071,7 +2048,7 @@
     });
     </script>
 
-    <script src="js/main.js?v=1" defer></script>
+    <script src="js/main.js?v=2" defer></script>
 
     <!-- Google Tag Manager -->
     <script>
