@@ -6,6 +6,18 @@ window.puntosTotalesUsuario = 0;
 window.datosCuposMes = {};
 
 let mapasCargados = false;
+
+/* Hora de Santiago sin parsear texto (Safari/iOS no entiende el espacio especial antes de AM/PM) */
+function ahoraSantiago() {
+    try {
+        const p = {};
+        new Intl.DateTimeFormat("en-US", { timeZone: "America/Santiago", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric", second: "numeric", hourCycle: "h23" })
+            .formatToParts(new Date()).forEach(x => { p[x.type] = x.value; });
+        const d = new Date(+p.year, +p.month - 1, +p.day, (+p.hour) % 24, +p.minute, +p.second);
+        if (!isNaN(d.getTime())) return d;
+    } catch (e) {}
+    return new Date();
+}
 let pasarelasCargadas = false;
 
 /* ==========================================
@@ -308,7 +320,7 @@ function renderProductGrid() {
             <a href="${product.url}" class="block">
                 <div class="img-zoom-container aspect-square mb-4 md:mb-6 relative bg-zinc-100 flex items-center justify-center rounded-xl">
                     <span class="font-serif italic text-zinc-300 text-3xl absolute z-0">LF</span>
-                    <img src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" loading="lazy">
+                    <img data-src="${product.img}" onerror="this.style.opacity='0'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 z-10" alt="${product.name}" decoding="async">
 
                     <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-[#0a1f1c] shadow-sm z-20">
                         ${getLuxuryBadge(product.id) || "Colección Vital"}
@@ -332,6 +344,28 @@ function renderProductGrid() {
             </div>
         </div>
     `).join("");
+    cargarImagenesGrid(grid);
+}
+
+/* Carga diferida propia: el loading="lazy" nativo no disparaba en Safari/iOS para este grid */
+function cargarImagenesGrid(root) {
+    let pend = Array.prototype.slice.call(root.querySelectorAll("img[data-src]"));
+    const cargar = img => { if (img.dataset.src) { img.src = img.dataset.src; img.removeAttribute("data-src"); } };
+    // Revisión por posición (sin depender de IntersectionObserver ni de loading="lazy")
+    const revisar = () => {
+        const limite = (window.innerHeight || 800) + 600;
+        pend = pend.filter(img => {
+            const r = img.getBoundingClientRect();
+            if (r.top < limite && r.bottom > -600) { cargar(img); return false; }
+            return true;
+        });
+        if (!pend.length) { clearInterval(t); window.removeEventListener("scroll", revisar); }
+    };
+    const t = setInterval(revisar, 400);
+    window.addEventListener("scroll", revisar, { passive: true });
+    revisar();
+    // Después de 6 s cargar el resto igual
+    setTimeout(() => { pend.forEach(cargar); pend = []; revisar(); }, 6000);
 }
 renderProductGrid();
 
@@ -671,7 +705,7 @@ function actualizarVistaHoy() {
     const btnHoy = stepFecha.querySelector("button[onclick*=\"seleccionarFecha('hoy')\"]");
     if (!btnHoy) return;
     
-    const d = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
+    const d = ahoraSantiago();
     const hoyStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     const ocupados = window.datosCuposMes[hoyStr] || 0;
     const disponibles = 30 - ocupados;
@@ -782,7 +816,7 @@ async function goToStep(e) {
     let t = typeof e === "number" ? `step-${e}` : e;
     
     if (t === "step-fecha") {
-        const d = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
+        const d = ahoraSantiago();
         await cargarCupos(d);
         actualizarVistaHoy();
     }
@@ -849,7 +883,7 @@ function regresarDesdeFecha() {
 
 async function seleccionarFecha(e) {
     if (e === "futuro") {
-        let t = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
+        let t = ahoraSantiago();
         let a = new Date(t);
         a.setDate(a.getDate() + 1);
         currentCalendarDate = a.getMonth() !== t.getMonth() ? new Date(a.getFullYear(), a.getMonth(), 1) : new Date(t.getFullYear(), t.getMonth(), 1);
@@ -870,7 +904,7 @@ function renderCalendar() {
     let t = document.getElementById("cal-month-title");
     if (!e || !t) return;
     
-    let a = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
+    let a = ahoraSantiago();
     let r = currentCalendarDate.getFullYear();
     let o = currentCalendarDate.getMonth();
     const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -940,7 +974,7 @@ function renderHorariosInteligentes() {
     if (!e) return;
     e.innerHTML = "";
     
-    let a = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
+    let a = ahoraSantiago();
     let r = a.getHours();
     let o = a.getMinutes();
     let n = r + o / 60;
@@ -1431,7 +1465,7 @@ function toggleGardenImage() {
 
 function updateCountdown() {
     try {
-        let e = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
+        let e = ahoraSantiago();
         if (isNaN(e.getTime())) return;
         let t = new Date(e);
         t.setHours(18, 0, 0, 0);
