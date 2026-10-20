@@ -367,7 +367,7 @@ function cargarImagenesGrid(root) {
     // Después de 6 s cargar el resto igual
     setTimeout(() => { pend.forEach(cargar); pend = []; revisar(); }, 6000);
 }
-renderProductGrid();
+try { renderProductGrid(); } catch (e) { console.warn("grid", e); }
 
 function toggleCart() {
     let e = document.getElementById("atelier-bag");
@@ -1484,12 +1484,13 @@ function updateCountdown() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    restaurarProgresoCheckout();
-    
-    if (document.getElementById("countdown-timer")) {
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-    }
+    try { restaurarProgresoCheckout(); } catch (e) { console.warn("checkout restore", e); }
+    try {
+        if (document.getElementById("countdown-timer")) {
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+    } catch (e) { console.warn("countdown", e); }
 });
 
 function escribirMensaje(e) {

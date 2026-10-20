@@ -2048,7 +2048,25 @@
     });
     </script>
 
-    <script src="js/main.js?v=4" defer></script>
+    <script>
+    /* Fail-safe iOS: build check, fallback de grilla/contador, guardia de rAF */
+    (function(){
+      var BUILD="5";
+      try{fetch("/version.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){
+        if(j&&j.v&&j.v!==BUILD){var k="lf_rl_"+j.v,done=false;try{done=sessionStorage.getItem(k)}catch(e){}
+          if(!done){try{sessionStorage.setItem(k,"1")}catch(e){}location.replace("/?v="+j.v+location.hash)}}
+      }).catch(function(){})}catch(e){}
+      var raf=false;try{requestAnimationFrame(function(){raf=true})}catch(e){}
+      setTimeout(function(){if(!raf)document.documentElement.classList.add("lf-noblur")},1200);
+      setTimeout(function(){
+        try{var g=document.getElementById("product-grid");if(g&&!g.children.length&&typeof renderProductGrid==="function")renderProductGrid()}catch(e){}
+        try{var c=document.getElementById("countdown-timer");if(c&&/Verificando/.test(c.textContent)){
+          c.innerHTML="<span class='opacity-80'>Envío Express disponible hasta las 18:00</span>"}}catch(e){}
+      },3000);
+    })();
+    </script>
+    <style>.lf-noblur *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}</style>
+    <script src="js/main.js?v=5" defer></script>
 
     <!-- Google Tag Manager -->
     <script>
