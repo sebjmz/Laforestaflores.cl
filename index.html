@@ -1572,8 +1572,9 @@
                 <input type="tel" id="receiver-phone" aria-label="Teléfono de quien recibe" oninput="guardarProgresoCheckout()" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
                 <p class="text-[9px] uppercase tracking-widest text-zinc-400 mt-2 mb-8">Teléfono destino (opcional)</p>
 
-                <input type="tel" id="sender-phone" aria-label="Tu teléfono (quien envía)" oninput="guardarProgresoCheckout()" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]" required>
-                <p class="text-[9px] uppercase tracking-widest text-[#0a1f1c] mt-2 font-bold">Tu teléfono (quien envía)</p>
+                <input type="tel" id="sender-phone" aria-label="Tu teléfono (quien envía)" oninput="guardarProgresoCheckout()" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <p class="text-[9px] uppercase tracking-widest text-[#0a1f1c] mt-2 font-bold">Tu teléfono (quien envía) · opcional</p>
+                <p class="text-[10px] text-[#0a1f1c]/60 mt-1">Recomendado en funerales y velorios, por si necesitamos coordinar la entrega contigo.</p>
 
                 <button onclick="validarTelefonosYContinuar()" class="mt-12 btn-premium w-full shadow-md">Siguiente</button>
                 <button onclick="goToStep('step-4')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
@@ -1921,7 +1922,7 @@
     const tReceiver = document.getElementById("receiver-name")?.value || "No especificado";
     const tCard = document.getElementById("card-message")?.value || "";
     const tPhoneRecibe = (document.getElementById("receiver-phone")?.value || "").trim() || "no indicado";
-    const tPhoneEnvia = (document.getElementById("sender-phone")?.value || "").trim();
+    const tPhoneEnvia = (document.getElementById("sender-phone")?.value || "").trim() || "no indicado";
     const tPhone = `Recibe: ${tPhoneRecibe} | Envía: ${tPhoneEnvia}`;
     const tNote = document.getElementById("delivery-note")?.value || "";
     const selectedLogistics = window.selectedLogistics || localStorage.getItem('laforesta_selectedLogistics');
@@ -2059,7 +2060,7 @@
     <script>
     /* Fail-safe iOS: build check, fallback de grilla/contador, guardia de rAF */
     (function(){
-      var BUILD="6";
+      var BUILD="8";
       try{fetch("/version.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){
         if(j&&j.v&&j.v!==BUILD){var k="lf_rl_"+j.v,done=false;try{done=sessionStorage.getItem(k)}catch(e){}
           if(!done){try{sessionStorage.setItem(k,"1")}catch(e){}location.replace("/?v="+j.v+location.hash)}}
@@ -2074,7 +2075,7 @@
     })();
     </script>
     <style>.lf-noblur *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}</style>
-    <script src="js/main.js?v=7" defer></script>
+    <script src="js/main.js?v=8" defer></script>
 
     <!-- Google Tag Manager -->
     <script>

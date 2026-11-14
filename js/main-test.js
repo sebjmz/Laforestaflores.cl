@@ -218,7 +218,7 @@ function limpiarProductosNoDisponibles() {
 
 function telefonosOrden() {
     const recibe = (document.getElementById('receiver-phone')?.value || '').trim() || 'no indicado';
-    const envia = (document.getElementById('sender-phone')?.value || '').trim();
+    const envia = (document.getElementById('sender-phone')?.value || '').trim() || "no indicado";
     return {
         destination_phone: `Recibe: ${recibe} | Envía: ${envia}`,
         sender_phone: envia
@@ -226,12 +226,7 @@ function telefonosOrden() {
 }
 
 function validarTelefonoRemitente() {
-    const v = (document.getElementById('sender-phone')?.value || '').trim();
-    if (!v) {
-        alert("Por favor, ingrese su teléfono (quien envía) para continuar.");
-        return false;
-    }
-    return true;
+    return true; // opcional (útil en funerales y velorios)
 }
 
 function validarTelefonosYContinuar() {
