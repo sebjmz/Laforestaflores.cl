@@ -203,12 +203,49 @@ let selectedTimeSlot = "";
 let isExpressDelivery = false;
 let b2bTurnstileToken = null;
 let gardenTurnstileToken = null;
+const PRODUCTOS_NO_DISPONIBLES = [204];
+
+function productoNoDisponible(id) {
+    return PRODUCTOS_NO_DISPONIBLES.includes(Number(id));
+}
+
+function limpiarProductosNoDisponibles() {
+    const antes = (cart || []).length;
+    cart = (cart || []).filter(item => !productoNoDisponible(item.id));
+    if (cart.length !== antes) {
+        localStorage.setItem("laforesta_cart", JSON.stringify(cart));
+    }
+}
+
+function telefonosOrden() {
+    const recibe = (document.getElementById("receiver-phone")?.value || "").trim() || "no indicado";
+    const envia = (document.getElementById("sender-phone")?.value || "").trim();
+    return {
+        destination_phone: `Recibe: ${recibe} | Envía: ${envia}`,
+        sender_phone: envia
+    };
+}
+
+function validarTelefonoRemitente() {
+    const v = (document.getElementById("sender-phone")?.value || "").trim();
+    if (!v) {
+        alert("Por favor, ingrese su teléfono (quien envía) para continuar.");
+        return false;
+    }
+    return true;
+}
+
+function validarTelefonosYContinuar() {
+    if (!validarTelefonoRemitente()) return;
+    goToStep("step-6");
+}
 
 function onB2BTurnstileSuccess(e) { b2bTurnstileToken = e; }
 function onGardenTurnstileSuccess(e) { gardenTurnstileToken = e; }
 
 try {
     cart = JSON.parse(localStorage.getItem("laforesta_cart")) || [];
+    limpiarProductosNoDisponibles();
     selectedGardenSpace = localStorage.getItem("laforesta_selectedGardenSpace") || "";
     selectedPalette = localStorage.getItem("laforesta_selectedPalette") || "";
     shippingCost = parseInt(localStorage.getItem("laforesta_shippingCost")) || 0;
@@ -386,6 +423,10 @@ function toggleCart() {
 
 function addToCart(e, t, a, r) {
     try {
+        if (productoNoDisponible(e)) {
+            alert("Este producto no está disponible.");
+            return;
+        }
         let o = cart.find(item => item.id === e);
         if (o) {
             o.qty++;
@@ -556,6 +597,7 @@ function sincronizarBolsaAlCargar() {
     // retroceso del navegador -bfcache-).
     try {
         cart = JSON.parse(localStorage.getItem("laforesta_cart")) || [];
+        limpiarProductosNoDisponibles();
     } catch (err) {
         cart = [];
     }
@@ -595,6 +637,7 @@ function guardarProgresoCheckout() {
         pickupName: document.getElementById("pickup-name")?.value || "",
         cardMessage: document.getElementById("card-message")?.value || "",
         receiverPhone: document.getElementById("receiver-phone")?.value || "",
+        senderPhone: document.getElementById("sender-phone")?.value || "",
         isAnon: document.getElementById("envio-anonimo")?.checked || false, // <- AHORA SE GUARDA EL ANONIMATO
         currentStep: document.querySelector(".checkout-step.active")?.id || "step-1"
     };
@@ -612,7 +655,7 @@ function restaurarProgresoCheckout() {
     let e = JSON.parse(localStorage.getItem("laforesta_checkout_inputs"));
     if (e) {
         // AHORA SE RESTAURA LA NOTA DEL REPARTIDOR TAMBIÉN
-        ["sender-name", "buyer-email", "receiver-name", "address", "delivery-note", "pickup-name", "card-message", "receiver-phone"].forEach(id => {
+        ["sender-name", "buyer-email", "receiver-name", "address", "delivery-note", "pickup-name", "card-message", "receiver-phone", "sender-phone"].forEach(id => {
             let el = document.getElementById(id);
             if (el) el.value = e[id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] || "";
         });
@@ -1205,7 +1248,9 @@ function obtenerPayloadOrden() {
     let email = document.getElementById("buyer-email")?.value.trim() || "";
     let receiver = document.getElementById("receiver-name")?.value || "No especificado";
     let message = document.getElementById("card-message")?.value || "";
-    let phone = document.getElementById("receiver-phone")?.value || "";
+    let phones = telefonosOrden();
+    let phone = phones.destination_phone;
+    let senderPhone = phones.sender_phone;
     let note = document.getElementById("delivery-note")?.value || "";
 
     let logisticsDetail = selectedLogistics === "envio" 
@@ -1244,6 +1289,7 @@ function obtenerPayloadOrden() {
             logistics_detail: logisticsDetail,
             time_slot: timeSlot,
             destination_phone: phone,
+            sender_phone: senderPhone,
             card_text: message,
             total_price: totalPagar,
             flowers_subtotal_clp: subtotalFlores,
@@ -1259,6 +1305,7 @@ function obtenerPayloadOrden() {
 
 async function iniciarMercadoPago() {
     if (cart.length === 0) return alert("El atelier está vacío.");
+    if (!validarTelefonoRemitente()) return;
     
     let sel = document.getElementById("payment-selector");
     let btnVolver = document.getElementById("btn-volver-pago");
@@ -1342,6 +1389,7 @@ async function iniciarMercadoPago() {
 
 function iniciarPayPal() {
     if (cart.length === 0) return alert("El atelier está vacío.");
+    if (!validarTelefonoRemitente()) return;
     
     if (typeof paypal === "undefined") {
         let loading = document.getElementById("loading-payment");
@@ -1603,7 +1651,8 @@ function reportTime(event) {
     const cartVal = currentCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
     const email = document.getElementById('buyer-email')?.value?.trim() || '';
     const name = document.getElementById('sender-name')?.value || document.getElementById('receiver-name')?.value || '';
-    const phone = document.getElementById('receiver-phone')?.value?.trim() || '';
+    const phones = telefonosOrden();
+    const phone = phones.destination_phone;
     const currentStep = document.querySelector(".checkout-step.active")?.id || 'checkout';
 
     window.trackEvent4D('time_on_page', { 
@@ -1611,7 +1660,8 @@ function reportTime(event) {
         cart_value: cartVal,
         email: email,
         name: name,
-        phone: phone
+        phone: phone,
+        sender_phone: phones.sender_phone
     });
 
     if (event && (event.type === 'beforeunload' || event.type === 'pagehide') && email && cartVal > 0) {
@@ -1620,7 +1670,8 @@ function reportTime(event) {
             cart_value: cartVal,
             email: email,
             name: name,
-            phone: phone
+            phone: phone,
+            sender_phone: phones.sender_phone
         });
     }
 }

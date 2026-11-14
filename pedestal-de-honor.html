@@ -41,6 +41,23 @@
     <meta name="twitter:description" content="Elegante arreglo de presencia respetuosa montado en pedestal, compuesto por flores seleccionadas para honrar la memoria con dignidad en Viña del Mar.">
     <meta name="twitter:image" content="https://laforestaflores.cl/img/pedestal.webp">
 <style id="lf-nav-tablet">@media (min-width:1024px) and (max-width:1279.98px){nav.fixed.md\:px-12{padding-left:1.75rem;padding-right:1.75rem}nav.fixed>div.space-x-12>:not([hidden])~:not([hidden]){margin-left:1.75rem}nav.fixed div[class~="lg:flex"]{letter-spacing:.14em}nav.fixed div[class~="lg:flex"]>:not([hidden])~:not([hidden]){margin-left:1.1rem}nav.fixed>div:last-child.space-x-8>:not([hidden])~:not([hidden]){margin-left:1.25rem}}</style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Pedestal de Honor",
+      "image": "https://laforestaflores.cl/img/pedestal.webp",
+      "description": "Elegante arreglo de presencia respetuosa montado en pedestal, compuesto por flores seleccionadas para honrar la memoria con dignidad en Viña del Mar.",
+      "brand": { "@type": "Brand", "name": "La Foresta Flores" },
+      "offers": {
+        "@type": "Offer",
+        "url": "https://laforestaflores.cl/pedestal-de-honor.html",
+        "priceCurrency": "CLP",
+        "price": "164900",
+        "availability": "https://schema.org/OutOfStock"
+      }
+    }
+    </script>
 </head>
 <body>
 
@@ -88,25 +105,17 @@
                 </article>
 
                 <div class="pt-6">
-                    <button onclick="agregarYVolver(204, 'Pedestal de Honor', 164900, 'img/pedestal.webp')" class="w-full btn-premium py-5 text-xs font-bold uppercase tracking-[0.2em] shadow-lg hover:shadow-none">
-                        Añadir al Atelier & Personalizar
-                    </button>
-                    <p class="text-[9px] text-center mt-4 uppercase tracking-widest opacity-40 flex items-center justify-center gap-2">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
-                        Pago seguro vía Mercado Pago o PayPal
-                    </p>
+                    <div class="w-full py-5 text-xs font-bold uppercase tracking-[0.2em] text-center border border-[#0a1f1c]/20 text-[#0a1f1c]/50 cursor-not-allowed">
+                        No disponible
+                    </div>
                 </div>
             </section>
         </div>
     </main>
 
     <script>
-        function agregarYVolver(id, name, price, img) {
-            let cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
-            const existing = cart.find(item => item.id === id);
-            if (existing) { existing.qty++; } else { cart.push({ id, name, price, img, qty: 1 }); }
-            localStorage.setItem('laforesta_cart', JSON.stringify(cart));
-            window.location.href = '/index.html?action=open_cart';
+        function agregarYVolver() {
+            alert("Este producto no está disponible.");
         }
         function volverInteligente() {
             if (document.referrer && document.referrer.includes(window.location.hostname)) { window.history.back(); } else { window.location.href = '/coronas-funebres.html'; }

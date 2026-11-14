@@ -1565,12 +1565,17 @@
 
             <div id="step-5" class="checkout-step flex-col items-center w-full max-w-md text-center my-auto pb-12">
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Paso 10</span>
-                <h3 class="font-serif text-4xl italic mb-4">Teléfono destino <span class="text-sm font-sans uppercase tracking-widest text-zinc-400 block mt-2">(Opcional)</span></h3>
+                <h3 class="font-serif text-4xl italic mb-4">Teléfonos</h3>
                 
-                <p class="text-[10px] uppercase tracking-widest text-[#c5a059] mb-8 px-4 leading-relaxed font-bold">Solo usaremos este número en caso de emergencia en conserjería o si el repartidor se pierde. En caso de condolencia puede escribir el teléfono de familiar cercano</p>
+                <p class="text-[10px] uppercase tracking-widest text-[#c5a059] mb-8 px-4 leading-relaxed font-bold">El teléfono de quien recibe es opcional. Solo lo usaremos en caso de emergencia en conserjería o si el repartidor se pierde. En caso de condolencia puede escribir el teléfono de un familiar cercano.</p>
                 
                 <input type="tel" id="receiver-phone" aria-label="Teléfono de quien recibe" oninput="guardarProgresoCheckout()" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
-                <button onclick="goToStep('step-6')" class="mt-12 btn-premium w-full shadow-md">Siguiente</button>
+                <p class="text-[9px] uppercase tracking-widest text-zinc-400 mt-2 mb-8">Teléfono destino (opcional)</p>
+
+                <input type="tel" id="sender-phone" aria-label="Tu teléfono (quien envía)" oninput="guardarProgresoCheckout()" placeholder="+56 9..." class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]" required>
+                <p class="text-[9px] uppercase tracking-widest text-[#0a1f1c] mt-2 font-bold">Tu teléfono (quien envía)</p>
+
+                <button onclick="validarTelefonosYContinuar()" class="mt-12 btn-premium w-full shadow-md">Siguiente</button>
                 <button onclick="goToStep('step-4')" class="mt-6 text-[9px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 border-b border-black">Volver</button>
             </div>
 
@@ -1915,7 +1920,9 @@
     const tEmail = document.getElementById("buyer-email")?.value.trim() || "";
     const tReceiver = document.getElementById("receiver-name")?.value || "No especificado";
     const tCard = document.getElementById("card-message")?.value || "";
-    const tPhone = document.getElementById("receiver-phone")?.value || "";
+    const tPhoneRecibe = (document.getElementById("receiver-phone")?.value || "").trim() || "no indicado";
+    const tPhoneEnvia = (document.getElementById("sender-phone")?.value || "").trim();
+    const tPhone = `Recibe: ${tPhoneRecibe} | Envía: ${tPhoneEnvia}`;
     const tNote = document.getElementById("delivery-note")?.value || "";
     const selectedLogistics = window.selectedLogistics || localStorage.getItem('laforesta_selectedLogistics');
     const selectedZoneName = window.selectedZoneName || localStorage.getItem('laforesta_selectedZoneName') || '';
@@ -1949,6 +1956,7 @@
             logistics_detail: tLogistics,
             time_slot: tTime,
             destination_phone: tPhone,
+            sender_phone: tPhoneEnvia,
             card_text: tCard,
             total_price: totalPagar,
             flowers_subtotal_clp: subtotalOriginal,
@@ -2066,7 +2074,7 @@
     })();
     </script>
     <style>.lf-noblur *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}</style>
-    <script src="js/main.js?v=6" defer></script>
+    <script src="js/main.js?v=7" defer></script>
 
     <!-- Google Tag Manager -->
     <script>
@@ -2159,16 +2167,17 @@
         const sender = document.getElementById('sender-name')?.value || '';
         const receiver = document.getElementById('receiver-name')?.value || '';
         const name = sender ? sender : receiver;
-        const phone = document.getElementById('receiver-phone')?.value || '';
+        const phones = (typeof telefonosOrden === 'function') ? telefonosOrden() : { destination_phone: document.getElementById('receiver-phone')?.value || '', sender_phone: document.getElementById('sender-phone')?.value || '' };
+        const phone = phones.destination_phone;
         const activeStep = document.querySelector(".checkout-step.active");
         const currentStep = activeStep ? activeStep.id : 'checkout';
 
         // Envío constante y seguro del tiempo
-        trackEvent4D('time_on_page', { seconds: secondsSpent });
+        trackEvent4D('time_on_page', { seconds: secondsSpent, phone: phone, sender_phone: phones.sender_phone });
 
         // Si se va con el carrito lleno, reportar posible abandono
         if (event && (event.type === 'beforeunload' || event.type === 'pagehide') && email && cartVal > 0) {
-            trackEvent4D('abandonment_or_close', { step_name: currentStep, cart_value: cartVal, email: email, name: name, phone: phone });
+            trackEvent4D('abandonment_or_close', { step_name: currentStep, cart_value: cartVal, email: email, name: name, phone: phone, sender_phone: phones.sender_phone });
         }
     }
 

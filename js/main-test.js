@@ -202,12 +202,49 @@ let selectedTimeSlot = '';
 let isExpressDelivery = false;
 let b2bTurnstileToken = null;
 let gardenTurnstileToken = null;
+const PRODUCTOS_NO_DISPONIBLES = [204];
+
+function productoNoDisponible(id) {
+    return PRODUCTOS_NO_DISPONIBLES.includes(Number(id));
+}
+
+function limpiarProductosNoDisponibles() {
+    const antes = (cart || []).length;
+    cart = (cart || []).filter(item => !productoNoDisponible(item.id));
+    if (cart.length !== antes) {
+        localStorage.setItem('laforesta_cart', JSON.stringify(cart));
+    }
+}
+
+function telefonosOrden() {
+    const recibe = (document.getElementById('receiver-phone')?.value || '').trim() || 'no indicado';
+    const envia = (document.getElementById('sender-phone')?.value || '').trim();
+    return {
+        destination_phone: `Recibe: ${recibe} | Envía: ${envia}`,
+        sender_phone: envia
+    };
+}
+
+function validarTelefonoRemitente() {
+    const v = (document.getElementById('sender-phone')?.value || '').trim();
+    if (!v) {
+        alert("Por favor, ingrese su teléfono (quien envía) para continuar.");
+        return false;
+    }
+    return true;
+}
+
+function validarTelefonosYContinuar() {
+    if (!validarTelefonoRemitente()) return;
+    goToStep('step-6');
+}
 
 function onB2BTurnstileSuccess(token) { b2bTurnstileToken = token; }
 function onGardenTurnstileSuccess(token) { gardenTurnstileToken = token; }
 
 try {
     cart = JSON.parse(localStorage.getItem('laforesta_cart')) || [];
+    limpiarProductosNoDisponibles();
     selectedGardenSpace = localStorage.getItem('laforesta_selectedGardenSpace') || '';
     selectedPalette = localStorage.getItem('laforesta_selectedPalette') || '';
     shippingCost = parseInt(localStorage.getItem('laforesta_shippingCost')) || 0;
@@ -427,6 +464,10 @@ function toggleCart() {
 
 function addToCart(id, name, price, img) {
     try {
+        if (productoNoDisponible(id)) {
+            alert("Este producto no está disponible.");
+            return;
+        }
         const existing = cart.find(item => item.id === id);
         if (existing) { existing.qty++; }
         else { cart.push({ id, name, price, img, qty: 1 }); }
@@ -594,6 +635,7 @@ function guardarProgresoCheckout() {
         pickupName: document.getElementById('pickup-name')?.value || '',
         cardMessage: document.getElementById('card-message')?.value || '',
         receiverPhone: document.getElementById('receiver-phone')?.value || '',
+        senderPhone: document.getElementById('sender-phone')?.value || '',
         currentStep: document.querySelector('.checkout-step.active')?.id || 'step-1'
     };
     localStorage.setItem('laforesta_checkout_inputs', JSON.stringify(progresoInputs));
@@ -609,7 +651,7 @@ function guardarProgresoCheckout() {
 function restaurarProgresoCheckout() {
     const progreso = JSON.parse(localStorage.getItem('laforesta_checkout_inputs'));
     if (!progreso) return;
-    const fields = ['sender-name', 'buyer-email', 'receiver-name', 'address', 'pickup-name', 'card-message', 'receiver-phone'];
+    const fields = ['sender-name', 'buyer-email', 'receiver-name', 'address', 'pickup-name', 'card-message', 'receiver-phone', 'sender-phone'];
     fields.forEach(field => {
         const el = document.getElementById(field);
         if (el) el.value = progreso[field.replace(/-([a-z])/g, (g) => g[1].toUpperCase())] || '';
@@ -1024,7 +1066,9 @@ function obtenerPayloadOrden() {
     const correoComprador = document.getElementById('buyer-email')?.value.trim() || '';
     const receptor = document.getElementById('receiver-name')?.value || 'No especificado';
     const mensaje = document.getElementById('card-message')?.value || '';
-    const fonoDestino = document.getElementById('receiver-phone')?.value || '';
+    const phones = telefonosOrden();
+    const fonoDestino = phones.destination_phone;
+    const fonoRemitente = phones.sender_phone;
     
     let destinoFinal = selectedLogistics === 'envio' 
         ? `Envío a Domicilio (${selectedZoneName})\n• *DIRECCIÓN:* ${document.getElementById('address')?.value || ''}`
@@ -1048,7 +1092,7 @@ function obtenerPayloadOrden() {
         totalCLP: totalCLPFinal,
         metadata: {
             sender_name: emisor, receiver_name: receptor, palette: selectedPalette,
-            logistics_detail: destinoFinal, time_slot: horario, destination_phone: fonoDestino,
+            logistics_detail: destinoFinal, time_slot: horario, destination_phone: fonoDestino, sender_phone: fonoRemitente,
             card_text: mensaje, total_price: totalCLPFinal, order_summary: articulos,
             fecha_entrega: fechaTexto, valor_envio: costoEnvioReal, comprador_email: correoComprador 
         }
@@ -1057,6 +1101,7 @@ function obtenerPayloadOrden() {
 
 async function iniciarMercadoPago() {
     if(cart.length === 0) return alert("El atelier está vacío.");
+    if (!validarTelefonoRemitente()) return;
     
     document.getElementById('payment-selector').style.display = 'none';
     document.getElementById('btn-volver-pago').style.display = 'none';
@@ -1112,6 +1157,7 @@ async function iniciarMercadoPago() {
 
 function iniciarPayPal() {
     if(cart.length === 0) return alert("El atelier está vacío.");
+    if (!validarTelefonoRemitente()) return;
 
     if (typeof paypal === 'undefined') {
         alert("El sistema de pago internacional no pudo cargar (posible bloqueo por AdBlock o conexión). Por favor, desactive el bloqueador de anuncios o intente recargar la página.");
