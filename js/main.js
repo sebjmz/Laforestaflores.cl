@@ -217,17 +217,9 @@ function limpiarProductosNoDisponibles() {
     }
 }
 
-function fechaEntregaLegible(sel) {
-    const dias = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
-    let d;
-    if (!sel || sel === "hoy") { d = ahoraSantiago(); }
-    else {
-        const c = String(sel).split("-");
-        if (c.length !== 3) return "";
-        d = new Date(parseInt(c[0], 10), parseInt(c[1], 10) - 1, parseInt(c[2], 10));
-    }
-    const dd = String(d.getDate()).padStart(2, "0"), mm = String(d.getMonth() + 1).padStart(2, "0");
-    return `${dias[d.getDay()]} ${dd}-${mm}-${d.getFullYear()}`;
+function fechaHoyISO() {
+    const d = ahoraSantiago();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 function telefonosOrden() {
@@ -1275,8 +1267,7 @@ function obtenerPayloadOrden() {
     
     let timeSlot = selectedTimeSlot || "No especificado";
     let deliveryDate = selectedDate === "hoy" ? "Hoy" : selectedDate;
-    const fechaLegible = fechaEntregaLegible(selectedDate);
-    if (fechaLegible) timeSlot = `${timeSlot} | ${selectedDate === "hoy" ? "Hoy, " : ""}${fechaLegible}`;
+    if (selectedDate === "hoy") timeSlot = `${timeSlot} | ${fechaHoyISO()}`;
     
     let subtotalFlores = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
     let puntos = parseInt(window.descuentoPuntos || 0, 10) || 0;

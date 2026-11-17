@@ -1940,8 +1940,7 @@
     let tTime = window.selectedTimeSlot || localStorage.getItem('laforesta_selectedTimeSlot') || "No especificado";
     const sDate = window.selectedDate || localStorage.getItem('laforesta_selectedDate');
     const tFecha = sDate === "hoy" ? "Hoy" : sDate;
-    const tFechaLegible = (typeof fechaEntregaLegible === 'function') ? fechaEntregaLegible(sDate) : '';
-    if (tFechaLegible) tTime = `${tTime} | ${sDate === "hoy" ? "Hoy, " : ""}${tFechaLegible}`;
+    if (sDate === "hoy" && typeof fechaHoyISO === 'function') tTime = `${tTime} | ${fechaHoyISO()}`;
     const totalPagar = window.actualizarTotalConDespacho();
     const shippingCost = parseInt(window.shippingCost || localStorage.getItem('laforesta_shippingCost') || 0, 10);
     const costoEnvioBase = isExpressDelivery ? Math.round(shippingCost * 1.5) : shippingCost;
@@ -2062,7 +2061,7 @@
     <script>
     /* Fail-safe iOS: build check, fallback de grilla/contador, guardia de rAF */
     (function(){
-      var BUILD="9";
+      var BUILD="10";
       try{fetch("/version.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){
         if(j&&j.v&&j.v!==BUILD){var k="lf_rl_"+j.v,done=false;try{done=sessionStorage.getItem(k)}catch(e){}
           if(!done){try{sessionStorage.setItem(k,"1")}catch(e){}location.replace("/?v="+j.v+location.hash)}}
@@ -2077,7 +2076,7 @@
     })();
     </script>
     <style>.lf-noblur *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}</style>
-    <script src="js/main.js?v=9" defer></script>
+    <script src="js/main.js?v=10" defer></script>
 
     <!-- Google Tag Manager -->
     <script>
