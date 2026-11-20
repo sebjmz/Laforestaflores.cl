@@ -1376,14 +1376,20 @@
           const res = await apicall('/api/admin/tracking', 'POST', payload);
           const data = await res.json();
 
-          if (res.ok) {
-              msg.innerHTML = `✅ Actualizado y Correo Enviado<br><a href="${data.tracking_link}" target="_blank" class="underline mt-2 inline-block lowercase font-normal opacity-80">Ver seguimiento público</a>`;
+          const link = data.tracking_link
+              ? `<br><a href="${data.tracking_link}" target="_blank" class="underline mt-2 inline-block lowercase font-normal opacity-80">Ver seguimiento público</a>`
+              : '';
+          if (res.ok && data.email_sent) {
+              msg.innerHTML = `✅ Actualizado y correo enviado` + link;
               msg.className = 'text-sm mt-4 text-center text-emerald-600 dark:text-emerald-400 font-bold tracking-widest';
-              
+
               document.getElementById('track-order').value = '';
               photoInputs.forEach(function(input) { if (input) input.value = ''; });
               previewContainer.classList.add('hidden');
               compressedBase64 = null;
+          } else if (data.tracking_link || data.ok) {
+              msg.innerHTML = '⚠️ El pedido se actualizó, pero el correo no se envió. ' + (data.error || 'Revisa el destinatario e inténtalo de nuevo.') + link;
+              msg.className = 'text-sm mt-4 text-center text-yellow-600 dark:text-yellow-400 font-bold tracking-widest';
           } else {
               msg.innerText = '❌ ' + (data.error || 'Error al actualizar');
               msg.className = 'text-sm mt-4 text-center text-red-500 dark:text-red-400 font-bold tracking-widest';
