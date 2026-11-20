@@ -80,6 +80,47 @@
   .dark tr:hover td { background: rgba(255,255,255,0.02); }
   
   .hidden-panel { display: none !important; }
+
+  .logistics-card {
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 12px;
+    border: 1px solid rgba(10,31,28,0.10);
+    background: #fff;
+    padding: 1rem 1.1rem;
+    transition: 0.2s;
+  }
+  .dark .logistics-card {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.10);
+  }
+  .logistics-card:hover, .logistics-card:focus-visible {
+    border-color: #c5a059;
+    box-shadow: 0 0 0 2px rgba(197,160,89,0.25);
+    outline: none;
+  }
+  .logistics-card.is-selected {
+    border-color: #c5a059;
+    box-shadow: 0 0 0 2px rgba(197,160,89,0.45);
+  }
+  .logistics-badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+  .logistics-badge-confirmado { background: rgba(10,31,28,0.08); color: #0a1f1c; }
+  .dark .logistics-badge-confirmado { background: rgba(255,255,255,0.10); color: #fff; }
+  .logistics-badge-en_camino { background: rgba(197,160,89,0.20); color: #8a6a2a; }
+  .dark .logistics-badge-en_camino { color: #c5a059; }
+  .logistics-badge-entregado { background: rgba(16,185,129,0.15); color: #047857; }
+  .dark .logistics-badge-entregado { color: #34d399; }
+
   
   .grid-cards { display: grid; gap: 1.5rem; grid-template-columns: repeat(1, minmax(0, 1fr)); }
   @media (min-width: 768px) { .grid-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -346,6 +387,18 @@
 
     <div id="view-ops" class="hidden-panel space-y-6">
       <h2 class="text-2xl font-bold text-[#0a1f1c] dark:text-white border-b border-[#0a1f1c]/10 dark:border-white/10 pb-4">Operaciones Logísticas</h2>
+
+      <div class="card p-5 md:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
+          <div>
+            <h3 class="font-bold text-[#c5a059] text-lg">Pedidos de hoy y próximos 3 días</h3>
+            <p id="logistics-agenda-range" class="text-xs opacity-60 mt-1">Cargando…</p>
+          </div>
+          <button type="button" onclick="loadLogisticsAgenda()" class="text-[10px] uppercase tracking-widest font-bold text-[#c5a059] border border-[#c5a059]/40 px-4 py-2 rounded-lg hover:bg-[#c5a059] hover:text-[#0a1f1c] transition self-start">Actualizar</button>
+        </div>
+        <div id="logistics-agenda" class="space-y-3"></div>
+      </div>
+
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         <div class="card p-6 md:p-8 border-[#c5a059]/30 relative overflow-hidden">
@@ -508,6 +561,121 @@
     return res;
   }
 
+
+  const LOGISTICS_STATUS_LABEL = {
+    confirmado: 'Confirmado',
+    en_camino: 'En camino',
+    entregado: 'Entregado'
+  };
+
+  function escHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, function(ch) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch];
+    });
+  }
+
+  function formatLogisticsDate(iso) {
+    if (!iso) return '';
+    const parts = iso.split('-').map(Number);
+    const dt = new Date(parts[0], (parts[1] || 1) - 1, parts[2] || 1);
+    return dt.toLocaleDateString('es-CL', { weekday: 'short', day: 'numeric', month: 'short' });
+  }
+
+  function formatProducts(raw) {
+    if (!raw) return '';
+    return String(raw).split('\n').map(function(line) {
+      return line.replace(/^\s*-\s*/, '').replace(/\s*\[c\/u:[^\]]*\]\s*/g, '').trim();
+    }).filter(Boolean).join(' · ');
+  }
+
+  function logisticsTypeLine(detail) {
+    if (!detail) return '';
+    const first = String(detail).split('\n')[0].trim();
+    return first.replace(/^\[[^\]]+\]\s*/, '');
+  }
+
+  async function loadLogisticsAgenda() {
+    const box = document.getElementById('logistics-agenda');
+    const range = document.getElementById('logistics-agenda-range');
+    if (!box) return;
+    box.innerHTML = '<p class="text-sm opacity-60 italic">Cargando pedidos…</p>';
+    try {
+      const res = await apicall('/api/admin/logistics');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'No se pudo cargar');
+      if (range) {
+        range.textContent = data.today && data.until
+          ? `Del ${formatLogisticsDate(data.today)} al ${formatLogisticsDate(data.until)}`
+          : '';
+      }
+      const orders = data.orders || [];
+      if (!orders.length) {
+        box.innerHTML = '<p class="text-sm opacity-60">No hay pedidos programados de hoy a los próximos 3 días.</p>';
+        return;
+      }
+      const selected = (document.getElementById('track-order')?.value || '').trim();
+      const groups = {};
+      orders.forEach(function(o) {
+        (groups[o.delivery_date] || (groups[o.delivery_date] = [])).push(o);
+      });
+      box.innerHTML = Object.keys(groups).sort().map(function(date) {
+        const cards = groups[date].map(function(o) {
+          const status = o.status || 'confirmado';
+          const sel = selected && selected === o.order_id ? ' is-selected' : '';
+          const products = formatProducts(o.products);
+          const typeLine = logisticsTypeLine(o.logistics_detail);
+          const lines = [];
+          if (products) lines.push(`<p class="text-sm font-medium text-[#0a1f1c] dark:text-white">${escHtml(products)}</p>`);
+          if (typeLine) lines.push(`<p class="text-xs opacity-70">${escHtml(typeLine)}</p>`);
+          if (o.address) lines.push(`<p class="text-xs opacity-80 break-words whitespace-normal">${escHtml(o.address)}</p>`);
+          if (o.note) lines.push(`<p class="text-xs italic opacity-70 whitespace-normal">Nota: ${escHtml(o.note)}</p>`);
+          const names = [];
+          if (o.sender_name) names.push(`De: ${escHtml(o.sender_name)}`);
+          if (o.recipient_name) names.push(`Para: ${escHtml(o.recipient_name)}`);
+          if (names.length) lines.push(`<p class="text-xs opacity-80">${names.join(' · ')}</p>`);
+          if (o.recipient_phone) lines.push(`<p class="text-xs opacity-70">Tel. destino: ${escHtml(o.recipient_phone)}</p>`);
+          if (o.card_message) lines.push(`<p class="text-xs opacity-70 whitespace-normal break-words">Tarjeta: “${escHtml(o.card_message)}”</p>`);
+          return `
+            <button type="button" class="logistics-card${sel}" data-order-id="${escHtml(o.order_id)}" data-status="${escHtml(status)}" onclick="selectLogisticsOrder('${escHtml(o.order_id)}', '${escHtml(status)}')">
+              <div class="flex items-start justify-between gap-3 mb-2">
+                <div class="min-w-0">
+                  <p class="font-bold tracking-widest text-sm text-[#0a1f1c] dark:text-white break-all">#${escHtml(o.order_id)}</p>
+                  <p class="text-[11px] uppercase tracking-widest text-[#c5a059] mt-1">${escHtml(o.time_slot || 'Horario no indicado')}</p>
+                </div>
+                <span class="logistics-badge logistics-badge-${escHtml(status)}">${escHtml(LOGISTICS_STATUS_LABEL[status] || status)}</span>
+              </div>
+              ${lines.join('')}
+            </button>`;
+        }).join('');
+        return `<div class="space-y-2">
+          <p class="text-[10px] uppercase tracking-widest font-bold text-[#0a1f1c]/60 dark:text-white/60 pt-1">${escHtml(formatLogisticsDate(date))}</p>
+          ${cards}
+        </div>`;
+      }).join('');
+    } catch (e) {
+      box.innerHTML = `<p class="text-sm text-red-500 font-bold">${escHtml(e.message || 'Error al cargar la agenda')}</p>`;
+    }
+  }
+
+  function selectLogisticsOrder(orderId, status) {
+    const input = document.getElementById('track-order');
+    const select = document.getElementById('track-status');
+    if (input) {
+      input.value = orderId;
+      input.focus();
+    }
+    if (select) {
+      if (status === 'en_camino') select.value = 'entregado';
+      else if (status === 'entregado') select.value = 'entregado';
+      else select.value = 'transito';
+    }
+    document.querySelectorAll('.logistics-card').forEach(function(btn) {
+      btn.classList.toggle('is-selected', btn.getAttribute('data-order-id') === orderId);
+    });
+    const formCard = document.getElementById('track-order')?.closest('.card');
+    if (formCard) formCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   function nav(view) {
     const views = ['dashboard', 'customers', 'surveys', 'analytics', 'ops'];
     
@@ -539,6 +707,7 @@
     if (view === 'analytics') loadAnalytics();
     if (view === 'customers') loadCustomers();
     if (view === 'surveys') loadSurveys();
+    if (view === 'ops') loadLogisticsAgenda();
   }
 
   function searchDebounce(func) {
@@ -1384,11 +1553,13 @@
               msg.className = 'text-sm mt-4 text-center text-emerald-600 dark:text-emerald-400 font-bold tracking-widest';
 
               document.getElementById('track-order').value = '';
+              loadLogisticsAgenda();
               photoInputs.forEach(function(input) { if (input) input.value = ''; });
               previewContainer.classList.add('hidden');
               compressedBase64 = null;
           } else if (data.tracking_link || data.ok) {
               msg.innerHTML = '⚠️ El pedido se actualizó, pero el correo no se envió. ' + (data.error || 'Revisa el destinatario e inténtalo de nuevo.') + link;
+              loadLogisticsAgenda();
               msg.className = 'text-sm mt-4 text-center text-yellow-600 dark:text-yellow-400 font-bold tracking-widest';
           } else {
               msg.innerText = '❌ ' + (data.error || 'Error al actualizar');
