@@ -368,7 +368,16 @@
             
             <div class="bg-[#0a1f1c]/5 dark:bg-black/20 p-5 rounded-xl border border-[#0a1f1c]/10 dark:border-white/5">
                 <label class="block text-[10px] md:text-xs uppercase tracking-widest text-[#0a1f1c]/60 dark:text-white/60 font-bold mb-3">Evidencia Fotográfica (Opcional)</label>
-                <input type="file" id="track-photo" accept="image/*" class="block w-full text-sm text-[#0a1f1c]/70 dark:text-white/70 file:mr-4 file:py-3 file:px-6 file:rounded-lg file:border-0 file:text-xs file:font-bold file:uppercase file:tracking-widest file:bg-[#c5a059] file:text-[#0a1f1c] hover:file:bg-white hover:file:cursor-pointer transition-all">
+                <div class="grid grid-cols-2 gap-3">
+                  <label class="btn-gold relative flex items-center justify-center p-3 rounded-lg text-xs font-bold uppercase tracking-widest text-center cursor-pointer overflow-hidden leading-tight">
+                    <input type="file" id="track-photo-camera" accept="image/*" capture="environment" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                    📷 Sacar foto
+                  </label>
+                  <label class="btn-gold relative flex items-center justify-center p-3 rounded-lg text-xs font-bold uppercase tracking-widest text-center cursor-pointer overflow-hidden leading-tight">
+                    <input type="file" id="track-photo-gallery" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                    🖼️ Elegir de galería
+                  </label>
+                </div>
                 <span class="text-xs opacity-60 italic mt-2 block">Se comprimirá automáticamente.</span>
                 
                 <div id="preview-container" class="hidden mt-4 text-center">
@@ -1288,18 +1297,28 @@
     }
   }
 
-  const photoInput = document.getElementById('track-photo');
+  const photoInputs = [
+    document.getElementById('track-photo-camera'),
+    document.getElementById('track-photo-gallery')
+  ];
   const previewContainer = document.getElementById('preview-container');
   const photoPreview = document.getElementById('preview-img');
   let compressedBase64 = null;
 
-  photoInput.addEventListener('change', async function(e) {
+  function clearPhotoInputs(except) {
+    photoInputs.forEach(function(input) {
+      if (input && input !== except) input.value = '';
+    });
+  }
+
+  function handlePhotoChange(e) {
       const file = e.target.files[0];
       if (!file) {
           previewContainer.classList.add('hidden');
           compressedBase64 = null;
           return;
       }
+      clearPhotoInputs(e.target);
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -1325,6 +1344,10 @@
               previewContainer.classList.remove('hidden');
           };
       };
+  }
+
+  photoInputs.forEach(function(input) {
+    if (input) input.addEventListener('change', handlePhotoChange);
   });
 
   async function updateTracking() {
@@ -1358,7 +1381,7 @@
               msg.className = 'text-sm mt-4 text-center text-emerald-600 dark:text-emerald-400 font-bold tracking-widest';
               
               document.getElementById('track-order').value = '';
-              photoInput.value = '';
+              photoInputs.forEach(function(input) { if (input) input.value = ''; });
               previewContainer.classList.add('hidden');
               compressedBase64 = null;
           } else {
