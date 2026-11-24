@@ -104,6 +104,12 @@
     border-color: #c5a059;
     box-shadow: 0 0 0 2px rgba(197,160,89,0.45);
   }
+  .logistics-card a {
+    color: #c5a059;
+    text-decoration: underline;
+    font-weight: 600;
+  }
+  .logistics-card a:hover { opacity: 0.85; }
   .logistics-badge {
     display: inline-block;
     font-size: 10px;
@@ -581,11 +587,105 @@
     return dt.toLocaleDateString('es-CL', { weekday: 'short', day: 'numeric', month: 'short' });
   }
 
+
+  const PRODUCT_PAGE_BY_NAME = {
+    'amor delicado': 'amor-delicado.html',
+    'susurro de amor': 'susurro-de-amor.html',
+    'amor eterno': 'amor-eterno.html',
+    'pasion de sol': 'pasion-de-sol.html',
+    'monte mar signature': 'monte-mar-signature.html',
+    'brisa de primavera': 'brisa-de-primavera.html',
+    'golden bloom': 'golden-bloom.html',
+    'suave amanecer': 'suave-amanecer.html',
+    'jardin de verano': 'jardin-de-verano.html',
+    'susurro rose': 'susurro-rose.html',
+    'luz de atardecer': 'luz-de-atardecer.html',
+    'encanto vivo': 'encanto-vivo.html',
+    'luz infinita': 'luz-infinita.html',
+    'luz del alba': 'luz-del-alba.html',
+    'sereno': 'sereno.html',
+    'dulce amor': 'dulce-amor.html',
+    'esperanza': 'esperanza.html',
+    'luz de primavera': 'luz-de-primavera.html',
+    'destello de primavera': 'destello-de-primavera.html',
+    'cubre urna sublime': 'cubre-urna-sublime.html',
+    'cojin de condolencias': 'cojin-de-condolencias.html',
+    'corona memorial premium': 'corona-memorial-premium.html',
+    'pedestal de honor': 'pedestal-de-honor.html'
+  };
+
+  function productPageHref(name) {
+    const key = String(name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+    const page = PRODUCT_PAGE_BY_NAME[key];
+    return page ? ('https://laforestaflores.cl/' + page) : null;
+  }
+
+  function addressAlreadyHasLocality(address) {
+    return /\b(re[nñ]aca|vi[nñ]a(?:\s+del\s+mar)?|conc[oó]n|valpara[ií]so|quilpu[eé]|quintero|curauma|placilla|belloto|mantagua)\b/i.test(String(address || ''));
+  }
+
+  function inferComunaFromDetail(address, detail) {
+    if (addressAlreadyHasLocality(address)) return '';
+    const zoneMatch = String(detail || '').match(/Env[ií]o a Domicilio\s*\(([^)]+)\)/i);
+    const zone = zoneMatch ? zoneMatch[1].trim() : '';
+    if (/Zona\s*1\b/i.test(zone) || /Central\s*\(\s*Re[nñ]aca/i.test(zone)) return 'Reñaca, Viña del Mar';
+    if (/Zona\s*2\b/i.test(zone) || /Zona\s*3\b/i.test(zone)) return 'Viña del Mar';
+    const hints = [
+      [/\bquilpu[eé]\b/i, 'Quilpué'],
+      [/\bvalpara[ií]so\b/i, 'Valparaíso'],
+      [/\bconc[oó]n\b/i, 'Concón'],
+      [/\bquintero\b/i, 'Quintero'],
+      [/\bcurauma\b/i, 'Curauma'],
+      [/\bre[nñ]aca\b/i, 'Reñaca, Viña del Mar'],
+      [/\bvi[nñ]a\b/i, 'Viña del Mar']
+    ];
+    for (let i = 0; i < hints.length; i++) {
+      if (hints[i][0].test(zone)) return hints[i][1];
+    }
+    return '';
+  }
+
+  function mapsDirectionsHref(address, detail) {
+    const addr = String(address || '').trim();
+    if (!addr) return null;
+    const parts = [addr];
+    const comuna = inferComunaFromDetail(addr, detail);
+    if (comuna) parts.push(comuna);
+    if (!/\bchile\b/i.test(addr) && !/\bchile\b/i.test(comuna)) parts.push('Chile');
+    return 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(parts.join(', '));
+  }
+
+  function agendaLink(href, label) {
+    if (!href || !label) return escHtml(label || '');
+    return '<a href="' + escHtml(href) + '" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">' + escHtml(label) + '</a>';
+  }
+
   function formatProducts(raw) {
     if (!raw) return '';
     return String(raw).split('\n').map(function(line) {
-      return line.replace(/^\s*-\s*/, '').replace(/\s*\[c\/u:[^\]]*\]\s*/g, '').trim();
+      const cleaned = line.replace(/^\s*-\s*/, '').replace(/\s*\[c\/u:[^\]]*\]\s*/g, '').trim();
+      if (!cleaned) return '';
+      const m = cleaned.match(/^(.+?)(\s+\(Cant:.*\))?$/);
+      const name = (m ? m[1] : cleaned).trim();
+      const suffix = (m && m[2]) ? escHtml(m[2]) : '';
+      const href = productPageHref(name);
+      if (!href) return escHtml(cleaned);
+      return agendaLink(href, name) + suffix;
     }).filter(Boolean).join(' · ');
+  }
+
+  function formatAddressLink(address, detail) {
+    if (!address) return '';
+    const href = mapsDirectionsHref(address, detail);
+    return href ? agendaLink(href, address) : escHtml(address);
+  }
+
+  function logisticsCardKey(ev) {
+    if (ev.key !== 'Enter' && ev.key !== ' ') return;
+    if (ev.target && ev.target.closest && ev.target.closest('a')) return;
+    ev.preventDefault();
+    const card = ev.currentTarget;
+    selectLogisticsOrder(card.getAttribute('data-order-id'), card.getAttribute('data-status'));
   }
 
   function logisticsTypeLine(detail) {
@@ -625,9 +725,9 @@
           const products = formatProducts(o.products);
           const typeLine = logisticsTypeLine(o.logistics_detail);
           const lines = [];
-          if (products) lines.push(`<p class="text-sm font-medium text-[#0a1f1c] dark:text-white">${escHtml(products)}</p>`);
+          if (products) lines.push(`<p class="text-sm font-medium text-[#0a1f1c] dark:text-white">${products}</p>`);
           if (typeLine) lines.push(`<p class="text-xs opacity-70">${escHtml(typeLine)}</p>`);
-          if (o.address) lines.push(`<p class="text-xs opacity-80 break-words whitespace-normal">${escHtml(o.address)}</p>`);
+          if (o.address) lines.push(`<p class="text-xs opacity-80 break-words whitespace-normal">${formatAddressLink(o.address, o.logistics_detail)}</p>`);
           if (o.note) lines.push(`<p class="text-xs italic opacity-70 whitespace-normal">Nota: ${escHtml(o.note)}</p>`);
           const names = [];
           if (o.sender_name) names.push(`De: ${escHtml(o.sender_name)}`);
@@ -636,7 +736,7 @@
           if (o.recipient_phone) lines.push(`<p class="text-xs opacity-70">Tel. destino: ${escHtml(o.recipient_phone)}</p>`);
           if (o.card_message) lines.push(`<p class="text-xs opacity-70 whitespace-normal break-words">Tarjeta: “${escHtml(o.card_message)}”</p>`);
           return `
-            <button type="button" class="logistics-card${sel}" data-order-id="${escHtml(o.order_id)}" data-status="${escHtml(status)}" onclick="selectLogisticsOrder('${escHtml(o.order_id)}', '${escHtml(status)}')">
+            <div class="logistics-card${sel}" role="button" tabindex="0" data-order-id="${escHtml(o.order_id)}" data-status="${escHtml(status)}" onclick="if(!event.target.closest('a')) selectLogisticsOrder('${escHtml(o.order_id)}', '${escHtml(status)}')" onkeydown="logisticsCardKey(event)">
               <div class="flex items-start justify-between gap-3 mb-2">
                 <div class="min-w-0">
                   <p class="font-bold tracking-widest text-sm text-[#0a1f1c] dark:text-white break-all">#${escHtml(o.order_id)}</p>
@@ -645,7 +745,7 @@
                 <span class="logistics-badge logistics-badge-${escHtml(status)}">${escHtml(LOGISTICS_STATUS_LABEL[status] || status)}</span>
               </div>
               ${lines.join('')}
-            </button>`;
+            </div>`;
         }).join('');
         return `<div class="space-y-2">
           <p class="text-[10px] uppercase tracking-widest font-bold text-[#0a1f1c]/60 dark:text-white/60 pt-1">${escHtml(formatLogisticsDate(date))}</p>
