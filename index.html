@@ -1392,7 +1392,10 @@
                 <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-[#c5a059] mb-6">Paso 2</span>
                 <h3 class="font-serif text-4xl italic mb-12">Correo electrónico</h3>
                 <p class="text-[10px] uppercase tracking-widest opacity-60 mb-6 px-4 leading-relaxed font-bold">Solo lo usaremos para enviarte la confirmación de compra.</p>
-                <input type="email" id="buyer-email" aria-label="Correo electrónico para el comprobante" oninput="guardarProgresoCheckout()" placeholder="su-correo@ejemplo.com" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <input type="email" id="buyer-email" aria-label="Correo electrónico para el comprobante" oninput="guardarProgresoCheckout(); actualizarAvisosCorreo()" placeholder="su-correo@ejemplo.com" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <p id="email-typo-hint" class="text-[12px] mt-3 text-[#0a1f1c]/55 italic hidden" role="status"></p>
+                <input type="email" id="buyer-email-confirm" aria-label="Confirma tu correo" oninput="guardarProgresoCheckout(); actualizarAvisosCorreo()" placeholder="Confirma tu correo" autocomplete="off" class="w-full bg-transparent border-b border-[#0a1f1c]/20 py-4 mt-4 focus:outline-none focus:border-[#c5a059] text-center text-xl font-serif text-[#0a1f1c]">
+                <p id="email-confirm-msg" class="text-[12px] mt-3 text-[#9b3d2c] hidden" role="alert"></p>
 
                 <label class="flex items-start gap-4 mt-8 p-4 border border-[#0a1f1c]/10 rounded bg-white cursor-pointer hover:border-[#c5a059]/50 transition-colors w-full text-left shadow-sm">
                   <input type="checkbox" id="marketing-consent" class="w-5 h-5 accent-[#c5a059] cursor-pointer mt-0.5 shrink-0" style="-webkit-appearance: checkbox; appearance: auto;" onchange="guardarProgresoCheckout()">
@@ -1983,6 +1986,11 @@
         alert("Por favor, ingrese un correo electrónico válido para continuar.");
         return;
     }
+    if (typeof window.correosCheckoutCoinciden === "function" && !window.correosCheckoutCoinciden()) {
+        if (typeof window.actualizarAvisosCorreo === "function") window.actualizarAvisosCorreo(true);
+        document.getElementById("buyer-email-confirm")?.focus();
+        return;
+    }
     
     if (typeof window.trackEvent4D === 'function') {
         const currentCart = window.cart || JSON.parse(localStorage.getItem('laforesta_cart')||'[]');
@@ -2061,7 +2069,7 @@
     <script>
     /* Fail-safe iOS: build check, fallback de grilla/contador, guardia de rAF */
     (function(){
-      var BUILD="10";
+      var BUILD="11";
       try{fetch("/version.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){
         if(j&&j.v&&j.v!==BUILD){var k="lf_rl_"+j.v,done=false;try{done=sessionStorage.getItem(k)}catch(e){}
           if(!done){try{sessionStorage.setItem(k,"1")}catch(e){}location.replace("/?v="+j.v+location.hash)}}
@@ -2076,7 +2084,7 @@
     })();
     </script>
     <style>.lf-noblur *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}</style>
-    <script src="js/main.js?v=10" defer></script>
+    <script src="js/main.js?v=11" defer></script>
 
     <!-- Google Tag Manager -->
     <script>

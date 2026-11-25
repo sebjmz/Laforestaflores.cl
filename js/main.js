@@ -631,6 +631,7 @@ function guardarProgresoCheckout() {
     let e = {
         senderName: document.getElementById("sender-name")?.value || "",
         buyerEmail: document.getElementById("buyer-email")?.value || "",
+        buyerEmailConfirm: document.getElementById("buyer-email-confirm")?.value || "",
         receiverName: document.getElementById("receiver-name")?.value || "",
         address: document.getElementById("address")?.value || "",
         deliveryNote: document.getElementById("delivery-note")?.value || "", // <- AHORA SE GUARDA LA NOTA
@@ -655,7 +656,7 @@ function restaurarProgresoCheckout() {
     let e = JSON.parse(localStorage.getItem("laforesta_checkout_inputs"));
     if (e) {
         // AHORA SE RESTAURA LA NOTA DEL REPARTIDOR TAMBIÉN
-        ["sender-name", "buyer-email", "receiver-name", "address", "delivery-note", "pickup-name", "card-message", "receiver-phone", "sender-phone"].forEach(id => {
+        ["sender-name", "buyer-email", "buyer-email-confirm", "receiver-name", "address", "delivery-note", "pickup-name", "card-message", "receiver-phone", "sender-phone"].forEach(id => {
             let el = document.getElementById(id);
             if (el) el.value = e[id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] || "";
         });
@@ -672,12 +673,87 @@ function restaurarProgresoCheckout() {
     }
 }
 
+
+function normalizarEmailCheckout(s) {
+    return String(s || "").trim().toLowerCase();
+}
+
+function correosCheckoutCoinciden() {
+    const a = normalizarEmailCheckout(document.getElementById("buyer-email")?.value);
+    const b = normalizarEmailCheckout(document.getElementById("buyer-email-confirm")?.value);
+    return !!(a && b && a === b);
+}
+
+function sugerirTypoEmail(email) {
+    const s = normalizarEmailCheckout(email);
+    const at = s.lastIndexOf("@");
+    if (at < 1) return null;
+    const local = s.slice(0, at);
+    const domain = s.slice(at + 1);
+    const typo = {
+        "gmial.com": "gmail.com",
+        "gmal.com": "gmail.com",
+        "gmil.com": "gmail.com",
+        "hotmial.com": "hotmail.com"
+    };
+    if (typo[domain]) return local + "@" + typo[domain];
+    if (/\.con$/.test(domain)) return local + "@" + domain.slice(0, -4) + ".com";
+    return null;
+}
+
+function actualizarAvisosCorreo(forzar) {
+    const email = document.getElementById("buyer-email")?.value || "";
+    const confirm = document.getElementById("buyer-email-confirm")?.value || "";
+    const msg = document.getElementById("email-confirm-msg");
+    const hint = document.getElementById("email-typo-hint");
+    if (msg) {
+        const mostrar = (forzar || confirm.trim()) && !correosCheckoutCoinciden();
+        if (mostrar) {
+            msg.textContent = "Los correos no coinciden";
+            msg.classList.remove("hidden");
+        } else {
+            msg.textContent = "";
+            msg.classList.add("hidden");
+        }
+    }
+    if (hint) {
+        const sug = sugerirTypoEmail(email) || (confirm.trim() ? sugerirTypoEmail(confirm) : null);
+        if (sug) {
+            hint.textContent = "¿Quisiste decir " + sug + "?";
+            hint.classList.remove("hidden");
+        } else {
+            hint.textContent = "";
+            hint.classList.add("hidden");
+        }
+    }
+}
+
+function exigirCorreosCoincidentes() {
+    const t = document.getElementById("buyer-email")?.value.trim() || "";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t) || !correosCheckoutCoinciden()) {
+        actualizarAvisosCorreo(true);
+        if (typeof goToStep === "function") goToStep("step-buyer-email");
+        const dest = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t)
+            ? document.getElementById("buyer-email")
+            : document.getElementById("buyer-email-confirm");
+        if (dest) dest.focus();
+        return false;
+    }
+    actualizarAvisosCorreo();
+    return true;
+}
+
 function validarEmailYContinuar() {
     let e = document.getElementById("buyer-email");
     if (!e) return;
     let t = e.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t)) {
         alert("Por favor, ingrese un correo electrónico válido para continuar.");
+        return;
+    }
+    if (!correosCheckoutCoinciden()) {
+        actualizarAvisosCorreo(true);
+        document.getElementById("buyer-email-confirm")?.focus();
         return;
     }
     
@@ -1307,6 +1383,7 @@ function obtenerPayloadOrden() {
 async function iniciarMercadoPago() {
     if (cart.length === 0) return alert("El atelier está vacío.");
     if (!validarTelefonoRemitente()) return;
+    if (!exigirCorreosCoincidentes()) return;
     
     let sel = document.getElementById("payment-selector");
     let btnVolver = document.getElementById("btn-volver-pago");
@@ -1391,6 +1468,7 @@ async function iniciarMercadoPago() {
 function iniciarPayPal() {
     if (cart.length === 0) return alert("El atelier está vacío.");
     if (!validarTelefonoRemitente()) return;
+    if (!exigirCorreosCoincidentes()) return;
     
     if (typeof paypal === "undefined") {
         let loading = document.getElementById("loading-payment");
